@@ -1,1 +1,2 @@
-(use-package magit)
+(use-package magit
+  :defer t)
