@@ -1,0 +1,15 @@
+# emacs
+auto-save-list
+
+# package
+elpa
+straight
+
+# org
+org-roam.db
+
+# magit
+transient
+
+# autosave
+*.*~

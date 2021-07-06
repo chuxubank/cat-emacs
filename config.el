@@ -1,0 +1,2 @@
+(cat! "nano")
+(cat! "magit")
