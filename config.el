@@ -1,2 +1,3 @@
-(cat! "nano")
 (cat! "magit")
+(cat! "meow")
+(cat! "nano")
