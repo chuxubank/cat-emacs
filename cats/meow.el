@@ -76,7 +76,6 @@
    '("%" . meow-query-replace-regexp)
    '("<escape>" . meow-last-buffer)))
 (use-package meow
-  :demand t
   :init
   (meow-global-mode 1)
   :config

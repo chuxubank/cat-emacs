@@ -1,3 +1,14 @@
+;;; os
+(defconst EMACS27+   (> emacs-major-version 26))
+(defconst EMACS28+   (> emacs-major-version 27))
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+(defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
+(defconst IS-WSL1    (and IS-LINUX (string-match "-Microsoft" operating-system-release)))
+(defconst IS-WSL2    (and IS-LINUX (string-match "-microsoft" operating-system-release)))
+(defconst IS-WSL     (or IS-WSL1 IS-WSL2))
+
 ;;; ui
 (scroll-bar-mode 0)
 (menu-bar-mode 0)

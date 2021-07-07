@@ -1,6 +1,7 @@
 (use-package org-roam
   :custom
   (org-roam-directory (file-truename "~/org-roam"))
+  (org-roam-link-auto-replace nil)
   :bind (("C-c n r f" . org-roam-find-file)
 	 :map org-roam-mode-map
          ("C-c n r r" . org-roam)
