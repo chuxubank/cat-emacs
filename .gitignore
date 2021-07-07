@@ -2,6 +2,13 @@
 auto-save-list
 server
 
+# backup
+*.*~
+
+# history
+history
+recentf
+
 # package
 elpa
 straight
@@ -11,6 +18,3 @@ org-roam.db
 
 # magit
 transient
-
-# autosave
-*.*~
