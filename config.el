@@ -5,4 +5,5 @@
 (cat! "org")
 (cat! "org-roam")
 (cat! "rime")
+(cat! "telega")
 
