@@ -1,8 +1,9 @@
 ;;; startup
 (setq org-startup-indented t
       org-link-abbrev-alist
-      '("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
-      '("wiki-en" . "https://en.wikipedia.org/wiki/%s"))
+      (list
+       '("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
+       '("wiki-en" . "https://en.wikipedia.org/wiki/%s")))
 
 ;;; ui
 (with-no-warnings
