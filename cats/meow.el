@@ -1,3 +1,7 @@
+(use-package meow)
+
+(meow-global-mode)
+
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-leader-define-key
@@ -75,10 +79,8 @@
    '("&" . meow-query-replace)
    '("%" . meow-query-replace-regexp)
    '("<escape>" . meow-last-buffer)))
-(use-package meow
-  :init
-  (meow-global-mode 1)
-  :config
+
+(with-eval-after-load 'meow
   (meow-setup)
   (meow-setup-line-number)
   (meow-setup-indicator)
