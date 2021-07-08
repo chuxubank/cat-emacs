@@ -36,3 +36,12 @@
   (define-key rime-active-mode-map [tab] 'rime-inline-ascii)
   (define-key rime-mode-map (kbd "C-`") 'rime-send-keybinding)
   (define-key rime-mode-map (kbd "M-j") 'rime-force-enable))
+
+(when (featurep 'nano-modeline)
+  (defun +nano-modeline-rime-indicator (args)
+    (cl-destructuring-bind (status name primary secondary) args
+      (list status
+	    name
+	    (concat primary " " (rime-lighter))
+	    secondary)))
+  (advice-add #'nano-modeline-compose :filter-args #'+nano-modeline-rime-indicator))

@@ -83,5 +83,4 @@
 (with-eval-after-load 'meow
   (meow-setup)
   (meow-setup-line-number)
-  (meow-setup-indicator)
   (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit))
