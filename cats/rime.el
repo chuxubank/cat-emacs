@@ -4,6 +4,10 @@
 (when IS-MAC
   (setq rime-librime-root "~/librime/dist"))
 
+(when IS-MINGW64
+  (setq rime-librime-root (getenv "emacs_dir")
+	rime-share-data-dir (concat (getenv "emacs_dir") "/share/rime-data")))
+
 (setq
  rime-user-data-dir "~/rime"
  rime-disable-predicates
