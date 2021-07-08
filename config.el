@@ -20,6 +20,7 @@
 
 ;;; app
 (cat! "telega")
+(cat! "pdf")
 
 ;;; keybinding
 (cat! "map")
