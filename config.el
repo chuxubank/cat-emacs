@@ -22,6 +22,7 @@
 ;;; app
 (cat! "telega")
 (cat! "pdf")
+(cat! "elfeed")
 
 ;;; keybinding
 (cat! "map")
