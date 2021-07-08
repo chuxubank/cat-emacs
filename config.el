@@ -4,7 +4,8 @@
 ;;; edit
 (cat! "meow")
 
-;;; company
+;;; completion
+(cat! "company")
 (cat! "orderless")
 (cat! "selectrum")
 
