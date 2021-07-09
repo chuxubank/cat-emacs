@@ -1,28 +1,28 @@
 ;;; theme
-(cat! "nano")
+(cat! "+nano")
 
 ;;; edit
-(cat! "meow")
+(cat! "+meow")
 
 ;;; completion
-(cat! "company")
-(cat! "orderless")
-(cat! "selectrum")
+(cat! "+company")
+(cat! "+orderless")
+(cat! "+selectrum")
 
 ;;; git
-(cat! "magit")
+(cat! "+magit")
 
 ;;; org
-(cat! "org")
-(cat! "org-roam")
+;; (cat! "org")
+(cat! "+org-roam")
 
 ;;; input
-(cat! "rime")
+(cat! "+rime")
 
 ;;; app
-(cat! "telega")
-(cat! "pdf")
-(cat! "elfeed")
+(cat! "+telega")
+(cat! "+pdf")
+(cat! "+elfeed")
 
 ;;; keybinding
-(cat! "map")
+(cat! "+map")

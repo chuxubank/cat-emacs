@@ -1,5 +1,0 @@
-(use-package selectrum)
-(selectrum-mode)
-(setq selectrum-refine-candidates-function #'orderless-filter)
-(setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
-(savehist-mode)

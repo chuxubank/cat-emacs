@@ -1,6 +1,7 @@
 # emacs
 auto-save-list
 server
+bookmarks
 
 # backup
 *.*~
