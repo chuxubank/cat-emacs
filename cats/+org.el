@@ -1,5 +1,5 @@
-;;; startup
-(setq org-startup-indented t
+(setq org-agenda-files (list "~/org")
+      org-startup-indented t
       org-link-abbrev-alist
       (list
        '("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
@@ -43,6 +43,3 @@
         ("PROJ" . +org-todo-project)
         ("NO"   . +org-todo-cancel)
         ("KILL" . +org-todo-cancel)))
-
-(with-eval-after-load 'org
-  (setq org-agenda-files (list org-directory)))

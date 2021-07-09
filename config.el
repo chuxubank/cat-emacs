@@ -13,7 +13,7 @@
 (cat! "+magit")
 
 ;;; org
-;; (cat! "org")
+(cat! "+org")
 (cat! "+org-roam")
 
 ;;; input
