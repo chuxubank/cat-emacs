@@ -32,7 +32,7 @@
  default-input-method "rime"
  rime-cursor "|")
 
-(with-eval-after-load "rime"
+(with-eval-after-load 'rime
   (define-key rime-active-mode-map [tab] 'rime-inline-ascii)
   (define-key rime-mode-map (kbd "C-`") 'rime-send-keybinding)
   (define-key rime-mode-map (kbd "M-j") 'rime-force-enable))
