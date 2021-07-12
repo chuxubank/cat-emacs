@@ -14,7 +14,13 @@
    '("7" . meow-digit-argument)
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
-   '("0" . meow-digit-argument))
+   '("0" . meow-digit-argument)
+   ;; toggle
+   '("a" . org-agenda)
+   '("l" . display-line-numbers-mode)
+   '("r" . rg-project)
+   '("R" . org-roam-mode)
+   '("t" . telega))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
