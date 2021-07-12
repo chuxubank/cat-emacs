@@ -6,6 +6,7 @@
 
 ;;; completion
 (cat! "+company")
+(cat! "+rg")
 (cat! "+orderless")
 (cat! "+selectrum")
 
@@ -24,5 +25,6 @@
 (cat! "+pdf")
 (cat! "+elfeed")
 
-;;; keybinding
+;;; defaults
+(cat! "+util")
 (cat! "+map")
