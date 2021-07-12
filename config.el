@@ -26,5 +26,5 @@
 (cat! "+elfeed")
 
 ;;; defaults
-(cat! "+util")
+(cat! "+project")
 (cat! "+map")
