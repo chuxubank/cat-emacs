@@ -23,3 +23,6 @@
 
 ;;; minibuffer
 (fset #'yes-or-no-p #'y-or-n-p)
+
+;;; default
+(set-language-environment "UTF-8")
