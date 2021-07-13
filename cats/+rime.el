@@ -28,7 +28,7 @@
    rime-predicate-current-uppercase-letter-p)
  rime-translate-keybindings
  '("<C-delete>" "C-f" "C-b" "C-n" "C-p" "C-g")
- rime-show-candidate 'sidewindow
+ rime-show-candidate 'minibuffer
  default-input-method "rime"
  rime-cursor "|")
 
