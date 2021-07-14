@@ -1,3 +1,9 @@
+(cat! "+default")
+
+;;; package
+(cat! "+straight")
+(cat! "+package")
+
 ;;; theme
 (cat! "+nano")
 
