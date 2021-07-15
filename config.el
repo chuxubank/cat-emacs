@@ -5,7 +5,8 @@
 (cat! "+package")
 
 ;;; theme
-(cat! "+nano")
+(when (featurep 'straight)
+  (cat! "+nano"))
 
 ;;; edit
 (cat! "+meow")
