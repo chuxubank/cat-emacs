@@ -1,9 +1,39 @@
 (setq org-agenda-files (list "~/org")
       org-startup-indented t
       org-link-abbrev-alist
-      (list
-       '("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
-       '("wiki-en" . "https://en.wikipedia.org/wiki/%s")))
+      '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
+	("wiki-en" . "https://en.wikipedia.org/wiki/%s")))
+
+;;; latex
+(setq org-latex-compiler "xelatex"
+      org-latex-image-default-width ".6\\linewidth"
+      org-latex-packages-alist
+      '(("" "ctex" t ("xelatex"))
+	("" "booktabs" nil)
+	("" "enumitem" nil)
+	("" "fontspec" nil)
+	("" "pgfplots" t)
+	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
+
+;;; preview
+(setq org-preview-latex-default-process 'dvisvgm
+      org-preview-latex-process-alist
+      '((dvisvgm :programs ("xelatex" "dvisvgm")
+                 :description "xdv > svg"
+                 :message "you need to install the programs: xelatex and dvisvgm."
+                 :image-input-type "xdv"
+                 :image-output-type "svg"
+                 :image-size-adjust (1.7 . 1.5)
+                 :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                 :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))
+        (imagemagick :programs("xelatex" "convert")
+                     :description "pdf > png"
+                     :message "you need to install the programs: xelatex and imagemagick."
+                     :image-input-type "pdf"
+                     :image-output-type "png"
+                     :image-size-adjust (1.0 . 1.0)
+                     :latex-compiler ("xelatex -interaction nonstopmode -output-directory %o %f")
+                     :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O"))))
 
 ;;; ui
 (with-no-warnings
