@@ -1,3 +1,7 @@
+;;; custom
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
 ;;; modules
 (defmacro cat! (filename &optional path noerror)
   "Load a module in cats by default"
