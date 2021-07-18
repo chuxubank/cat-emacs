@@ -1,4 +1,5 @@
 (cat! "+default")
+(cat! "+font")
 
 ;;; package
 (cat! "+straight")
