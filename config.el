@@ -1,11 +1,11 @@
 (cat! "+default")
-(cat! "+font")
 
 ;;; package
 (cat! "+straight")
 (cat! "+package")
 
 ;;; theme
+(cat! "+font")
 (when (featurep 'straight)
   (cat! "+nano"))
 

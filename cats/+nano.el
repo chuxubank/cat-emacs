@@ -1,9 +1,11 @@
 (use-package nano-theme
   :straight (nano-theme :type git :host github :repo "rougier/nano-theme")
   :config
-  (setq default-frame-alist (append (list '(internal-border-width . 24)
-					  '(left-fringe . 0)
-					  '(right-fringe . 0))))
+  (setq
+   default-frame-alist (append (list '(internal-border-width . 24)
+				     '(left-fringe . 0)
+				     '(right-fringe . 0)
+				     '(vertical-scroll-bars . nil))))
   ;; Nicer glyphs for continuation and wrap
   (set-display-table-slot standard-display-table
 			  'truncation (make-glyph-code ?… 'nano-faded))
