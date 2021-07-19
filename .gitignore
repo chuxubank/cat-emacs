@@ -15,6 +15,7 @@ elpa
 straight
 
 # org
+.org-id-locations
 org-roam.db
 
 # magit

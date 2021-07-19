@@ -1,11 +1,11 @@
+(setq org-roam-v2-ack t
+      org-roam-directory (file-truename "~/org-roam")
+      org-roam-link-auto-replace nil)
+
 (use-package org-roam
-  :custom
-  (org-roam-directory (file-truename "~/org-roam"))
-  (org-roam-link-auto-replace nil)
-  :bind (("C-c n r f" . org-roam-find-file)
-	 :map org-roam-mode-map
-         ("C-c n r r" . org-roam)
-         ("C-c n r g" . org-roam-graph)
+  :bind (("C-c r f" . org-roam-node-find)
+         ("C-c r g" . org-roam-graph)
+         ("C-c r c" . org-roam-capture)
          :map org-mode-map
-         ("C-c n r i" . org-roam-insert)
-         ("C-c n r I" . org-roam-insert-immediate)))
+         ("C-c r r" . org-roam-buffer-toggle)
+         ("C-c r i" . org-roam-node-insert)))
