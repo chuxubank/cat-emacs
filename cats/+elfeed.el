@@ -1,5 +1,5 @@
 (use-package elfeed
-  :commands #'elfeed
+  :defer t
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy "))
 
@@ -8,3 +8,5 @@
   :config
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory)))
   (elfeed-org))
+
+(define-key global-map (kbd "C-c a r") #'elfeed)

@@ -35,4 +35,3 @@
 
 ;;; defaults
 (cat! "+project")
-(cat! "+map")

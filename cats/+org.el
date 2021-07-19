@@ -73,3 +73,5 @@
         ("PROJ" . +org-todo-project)
         ("NO"   . +org-todo-cancel)
         ("KILL" . +org-todo-cancel)))
+
+(define-key global-map (kbd "C-c n a") #'org-agenda)
