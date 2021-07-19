@@ -1,6 +1,7 @@
 (setq org-roam-v2-ack t
       org-roam-directory (file-truename "~/org-roam")
-      org-roam-link-auto-replace nil)
+      org-roam-link-auto-replace nil
+      org-agenda-text-search-extra-files (directory-files-recursively org-roam-directory "\\.org$"))
 
 (use-package org-roam
   :bind (("C-c r f" . org-roam-node-find)
