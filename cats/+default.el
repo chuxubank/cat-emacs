@@ -21,6 +21,9 @@
 (setq frame-title-format '("%b – Cat Emacs")
       icon-title-format frame-title-format)
 
+;;; sound
+(setq ring-bell-function #'ignore)
+
 ;;; minibuffer
 (fset #'yes-or-no-p #'y-or-n-p)
 

@@ -33,5 +33,5 @@
 (cat! "+pdf")
 (cat! "+elfeed")
 
-;;; defaults
+;;; util
 (cat! "+project")
