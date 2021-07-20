@@ -4,10 +4,11 @@
 (cat! "+straight")
 (cat! "+package")
 
-;;; theme
+;;; ui
 (cat! "+font")
 (when (featurep 'straight)
   (cat! "+nano"))
+(cat! "+valign")
 
 ;;; edit
 (cat! "+meow")
