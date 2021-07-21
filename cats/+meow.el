@@ -16,7 +16,8 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    ;; toggle
-   '("l" . display-line-numbers-mode))
+   '("l" . display-line-numbers-mode)
+   '("d" . toggle-debug-on-error))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
