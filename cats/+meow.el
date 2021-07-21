@@ -16,8 +16,9 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    ;; toggle
+   '("d" . toggle-debug-on-error)
    '("l" . display-line-numbers-mode)
-   '("d" . toggle-debug-on-error))
+   '("r" . org-roam-buffer-toggle))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)

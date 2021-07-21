@@ -2,7 +2,8 @@
       org-startup-indented t
       org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
-	("wiki-en" . "https://en.wikipedia.org/wiki/%s")))
+	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
+	("github" . "https://github.com/%s")))
 
 ;;; latex
 (setq org-latex-compiler "xelatex"
