@@ -8,4 +8,4 @@
   (setq telega-completing-read-function #'selectrum-completing-read))
 
 
-(define-key global-map (kbd "C-c a t") #'telega)
+(define-key global-map (kbd "C-c a t") telega-prefix-map)
