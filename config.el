@@ -28,6 +28,7 @@
 
 ;;; input
 (cat! "+rime")
+(cat! "+pangu")
 
 ;;; app
 (cat! "+telega")
