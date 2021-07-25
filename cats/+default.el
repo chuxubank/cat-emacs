@@ -29,7 +29,3 @@
 
 ;;; coding
 (set-language-environment "UTF-8")
-
-;;; shell
-(when IS-MINGW64
-  (setq-default shell-file-name "c:/msys64/usr/bin/bash.exe"))
