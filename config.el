@@ -12,6 +12,7 @@
 
 ;;; edit
 (cat! "+meow")
+(cat! "+ctrlf")
 
 ;;; completion
 (cat! "+company")
