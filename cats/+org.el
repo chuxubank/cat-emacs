@@ -1,5 +1,12 @@
 (setq org-agenda-files (list "~/org")
       org-startup-indented t
+      org-return-follows-link t
+      org-tags-column 0
+      org-outline-path-complete-in-steps nil
+      org-goto-interface 'outline-path-completion
+      org-refile-use-outline-path t
+      org-refile-targets
+      '((nil :maxlevel . 3))
       org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
 	("wiki-en" . "https://en.wikipedia.org/wiki/%s")

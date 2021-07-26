@@ -1,7 +1,7 @@
 (use-package elfeed
   :defer t
   :config
-  (setq elfeed-search-filter "@2-week-ago -nsfw -buy ")
+  (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news ")
   (when (featurep 'valign)
     (defun elfeed-search-print-valigned-entry (entry)
       "Print valign-ed ENTRY to the buffer."

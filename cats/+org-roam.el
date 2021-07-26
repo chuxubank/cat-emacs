@@ -9,11 +9,13 @@
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
               #'org-roam-unlinked-references-section))
-  :bind (("C-c r f" . org-roam-node-find)
-         ("C-c r g" . org-roam-graph)
-         ("C-c r i" . org-roam-node-insert)
-         ("C-c r c" . org-roam-capture)
+  :bind (("C-c r f" . #'org-roam-node-find)
+         ("C-c r g" . #'org-roam-graph)
+         ("C-c r i" . #'org-roam-node-insert)
+         ("C-c r c" . #'org-roam-capture)
          ;; Dailies
-         ("C-c r t" . org-roam-dailies-capture-today))
+         ("C-c r t" . #'org-roam-dailies-capture-today)
+	 ("C-c r a a" . #'org-roam-alias-add)
+	 ("C-c r a r" . #'org-roam-alias-remove))
   :config
   (org-roam-setup))
