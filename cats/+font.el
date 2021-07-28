@@ -12,7 +12,7 @@
   (setq
    cat-symbol-font "Segoe UI Symbol"
    cat-cjk-font "DengXian"
-   cat-emoji-font "Segoe UI Emoji"))
+   cat-unicode-fonts '("Segoe UI Emoji" "Cambria Math" "Mongolian Baiti")))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
@@ -22,9 +22,10 @@
   (message "Set CJK font %s" cat-cjk-font))
 
 ;; 😺
-(when cat-emoji-font
-  (set-fontset-font t 'unicode (font-spec :family cat-emoji-font) nil 'append)
-  (message "Set Emoji font %s" cat-emoji-font))
+(when cat-unicode-fonts
+  (dolist (font cat-unicode-fonts)
+    (set-fontset-font t 'unicode (font-spec :family font) nil 'append))
+  (message "Set Unicode font %s" cat-unicode-fonts))
 
 (when cat-symbol-font
   (set-fontset-font t 'symbol (font-spec :family cat-symbol-font) nil 'append)
