@@ -11,7 +11,7 @@
 (when IS-WINDOWS
   (setq
    cat-symbol-font "Segoe UI Symbol"
-   cat-cjk-font "DengXian"
+   cat-cjk-font "LXGW WenKai"
    cat-unicode-fonts '("Segoe UI Emoji" "Cambria Math" "Mongolian Baiti")))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
