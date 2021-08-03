@@ -10,7 +10,8 @@
       org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
 	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
-	("github" . "https://github.com/%s")))
+	("github" . "https://github.com/%s")
+	("bili". "https://bilibili.com/bangumi/media/%s")))
 
 ;;; latex
 (setq org-latex-compiler "xelatex"

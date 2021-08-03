@@ -10,6 +10,10 @@
 (defconst IS-WSL2    (and IS-LINUX (string-match "-microsoft" operating-system-release)))
 (defconst IS-WSL     (or IS-WSL1 IS-WSL2))
 
+;;; directory
+(defconst cat-local-dir (concat user-emacs-directory ".local/"))
+(defconst cat-cache-dir (concat user-emacs-directory "cache/"))
+
 ;;; ui
 (blink-cursor-mode 0)
 (scroll-bar-mode 0)
@@ -17,6 +21,7 @@
 (tool-bar-mode 0)
 (setq inhibit-startup-screen t
       initial-scratch-message nil)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (setq frame-title-format '("%b – Cat Emacs")
       icon-title-format frame-title-format)
@@ -29,3 +34,18 @@
 
 ;;; coding
 (set-language-environment "UTF-8")
+
+;;; backup
+(setq create-lockfiles nil
+      make-backup-files nil)
+
+;;; autosave
+(setq auto-save-default t
+      auto-save-include-big-deletions t
+      auto-save-list-file-prefix (concat cat-cache-dir "autosave/")
+      tramp-auto-save-directory  (concat cat-cache-dir "tramp-autosave/")
+      auto-save-file-name-transforms
+      (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+                  ;; Prefix tramp autosaves to prevent conflicts with local ones
+                  (concat auto-save-list-file-prefix "tramp-\\2") t)
+            (list ".*" auto-save-list-file-prefix t)))

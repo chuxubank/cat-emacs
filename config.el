@@ -1,7 +1,7 @@
 (cat! "+default")
 
 ;;; package
-(cat! "+straight")
+;; (cat! "+straight")
 (cat! "+package")
 
 ;;; ui
