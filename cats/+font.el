@@ -6,7 +6,7 @@
 (when IS-LINUX
   (setq
    cat-cjk-font "Noto Sans CJK SC"
-   cat-emoji-font "Noto Color Emoji"))
+   cat-unicode-fonts '("Noto Color Emoji")))
 
 (when IS-WINDOWS
   (setq
