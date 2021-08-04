@@ -1,13 +1,11 @@
 (cat! "+default")
 
 ;;; package
-;; (cat! "+straight")
 (cat! "+package")
 
 ;;; ui
 (cat! "+font")
-(when (featurep 'straight)
-  (cat! "+nano"))
+(cat! "+nord")
 (cat! "+valign")
 
 ;;; edit
