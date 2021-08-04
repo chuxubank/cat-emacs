@@ -5,8 +5,11 @@
 
 ;;; ui
 (cat! "+font")
-(cat! "+nord")
 (cat! "+valign")
+
+;;; theme
+(cat! "+nord")
+(cat! "+autodark")
 
 ;;; edit
 (cat! "+meow")
