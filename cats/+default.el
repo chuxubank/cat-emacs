@@ -12,7 +12,7 @@
 
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
-(defconst cat-cache-dir (concat user-emacs-directory "cache/"))
+(defconst cat-cache-dir (concat cat-local-dir "cache/"))
 
 ;;; ui
 (blink-cursor-mode 0)
