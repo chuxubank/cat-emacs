@@ -26,6 +26,8 @@
 (setq frame-title-format '("%b – Cat Emacs")
       icon-title-format frame-title-format)
 
+(setq custom-safe-themes t)
+
 ;;; sound
 (setq ring-bell-function #'ignore)
 
