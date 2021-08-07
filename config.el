@@ -28,6 +28,9 @@
 (cat! "+org")
 (cat! "+org-roam")
 
+;;; latex
+(cat! "+cdlatex")
+
 ;;; input
 (cat! "+rime")
 (cat! "+pangu")
