@@ -32,6 +32,7 @@
 (setq ring-bell-function #'ignore)
 
 ;;; minibuffer
+(setq confirm-kill-emacs #'yes-or-no-p)
 (fset #'yes-or-no-p #'y-or-n-p)
 
 ;;; coding
