@@ -17,9 +17,9 @@
 
 ;;; completion
 (cat! "+company")
-(cat! "+rg")
-(cat! "+orderless")
 (cat! "+selectrum")
+(cat! "+prescient")
+(cat! "+rg")
 
 ;;; git
 (cat! "+magit")
