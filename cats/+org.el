@@ -84,3 +84,7 @@
         ("KILL" . +org-todo-cancel)))
 
 (define-key global-map (kbd "C-c n a") #'org-agenda)
+
+;;; habit
+(with-eval-after-load 'org
+  (add-to-list 'org-modules 'org-habit))
