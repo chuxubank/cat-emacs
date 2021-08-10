@@ -19,3 +19,6 @@
 	       (if branch (concat ", " (propertize branch 'face 'italic)))
 	       ")" )
        page-number))))
+
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
