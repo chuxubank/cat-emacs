@@ -28,6 +28,9 @@
 
 (setq custom-safe-themes t)
 
+(setq column-number-indicator-zero-based nil)
+(column-number-mode 1)
+
 ;;; sound
 (setq ring-bell-function #'ignore)
 
