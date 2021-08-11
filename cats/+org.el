@@ -85,6 +85,22 @@
 
 (define-key global-map (kbd "C-c n a") #'org-agenda)
 
+;;; capture
+(with-eval-after-load 'org
+  (setq org-default-notes-file
+	(expand-file-name "notes.org" org-directory)
+	org-capture-templates
+        '(("t" "Personal todo" entry
+           (file+headline "inbox.org" "Inbox")
+           "* [ ] %?\n%i\n%a" :prepend t)
+          ("n" "Personal notes" entry
+           (file+headline "notes.org" "Inbox")
+           "* %u %?\n%i\n%a" :prepend t)
+          ("j" "Journal" entry
+           (file+olp+datetree "journal.org")
+           "* %U %?\n%i\n%a" :prepend t))))
+(define-key global-map (kbd "C-c n n") #'org-capture)
+
 ;;; habit
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit))
