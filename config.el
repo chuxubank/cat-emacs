@@ -42,3 +42,4 @@
 
 ;;; util
 (cat! "+project")
+(cat! "+diredx")
