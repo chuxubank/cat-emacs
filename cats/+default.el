@@ -13,6 +13,7 @@
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
+(setq find-function-C-source-directory (format "%s/share/emacs/%s/src/" (getenv "emacs_dir") emacs-version))
 
 ;;; ui
 (blink-cursor-mode 0)
@@ -33,6 +34,9 @@
 
 ;;; sound
 (setq ring-bell-function #'ignore)
+
+;;; buffer
+(defalias 'list-buffers 'ibuffer)
 
 ;;; minibuffer
 (setq confirm-kill-emacs #'yes-or-no-p)
