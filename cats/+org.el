@@ -15,6 +15,7 @@
 
 ;;; latex
 (setq org-latex-compiler "xelatex"
+      org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-latex-image-default-width ".6\\linewidth"
       org-latex-packages-alist
       '(("" "ctex" t ("xelatex"))
@@ -22,7 +23,16 @@
 	("" "enumitem" nil)
 	("" "fontspec" nil)
 	("" "pgfplots" t)
-	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
+	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil))
+      org-format-latex-options
+      '(:foreground default
+       		    :background default
+		    :scale 1.5
+       		    :html-foreground "Black"
+       		    :html-background "Transparent"
+       		    :html-scale 1.0
+       		    :matchers
+       		    ("begin" "$1" "$" "$$" "\\(" "\\[")))
 
 ;;; preview
 (setq org-preview-latex-default-process 'dvisvgm

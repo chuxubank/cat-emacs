@@ -13,6 +13,8 @@
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
+(defconst cat-etc-dir (concat cat-local-dir "etc/"))
+
 (setq find-function-C-source-directory (format "%s/share/emacs/%s/src/" (getenv "emacs_dir") emacs-version))
 
 ;;; ui
