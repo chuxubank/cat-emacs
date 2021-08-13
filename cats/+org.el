@@ -7,7 +7,13 @@
       org-refile-use-outline-path t
       org-refile-targets
       '((nil :maxlevel . 3))
-      org-link-abbrev-alist
+      org-list-allow-alphabetical t
+      ;; Sub-lists should have different bullets
+      org-list-demote-modify-bullet
+      '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
+
+;;; link
+(setq org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
 	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
 	("github" . "https://github.com/%s")
