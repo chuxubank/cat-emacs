@@ -1,5 +1,7 @@
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
+  :init
+  (setq pdf-view-use-scaling t)
   :config
   (pdf-tools-install)
   (defun nano-modeline-pdf-view-mode ()
