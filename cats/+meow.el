@@ -18,7 +18,10 @@
    ;; toggle
    '("d" . toggle-debug-on-error)
    '("l" . display-line-numbers-mode)
-   '("r" . org-roam-buffer-toggle))
+   '("r" . org-roam-buffer-toggle)
+   '("v" . visual-line-mode)
+   '("w" . toggle-word-wrap)
+   '("t" . toggle-truncate-lines))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
