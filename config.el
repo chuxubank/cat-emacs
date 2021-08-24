@@ -2,13 +2,14 @@
 
 ;;; package
 (cat! "+package")
+(cat! "+straight")
 
 ;;; ui
 (cat! "+font")
 (cat! "+valign")
 
 ;;; theme
-(cat! "+nord")
+(cat! "+nano")
 (cat! "+autodark")
 
 ;;; edit
@@ -27,6 +28,7 @@
 ;;; org
 (cat! "+org")
 (cat! "+org-roam")
+(cat! "+org-media-note")
 
 ;;; latex
 (cat! "+cdlatex")

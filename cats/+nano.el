@@ -1,5 +1,5 @@
 (use-package nano-theme
-  :straight (nano-theme :type git :host github :repo "rougier/nano-theme")
+  :straight (nano-theme :host github :repo "rougier/nano-theme")
   :config
   (setq
    default-frame-alist (append (list '(internal-border-width . 24)
@@ -15,7 +15,7 @@
   (nano-dark))
 
 (use-package nano-modeline
-  :straight (nano-modeline :type git :host github :repo "rougier/nano-modeline")
+  :straight (nano-modeline :host github :repo "rougier/nano-modeline")
   :config
   (nano-modeline)
   (advice-add #'nano-dark :after #'nano-modeline)
