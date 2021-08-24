@@ -20,7 +20,9 @@
 	("bili". "https://bilibili.com/bangumi/media/%s")
 	("coursera". "https://www.coursera.org/%s")))
 (with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c l") #'org-toggle-link-display))
+  (define-key org-mode-map (kbd "C-c l") #'org-toggle-link-display)
+  (when IS-LINUX
+    (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s"))))
 
 
 ;;; latex
