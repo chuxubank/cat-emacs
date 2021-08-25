@@ -20,8 +20,9 @@
 	       mode-name
 	       (if branch (concat ", " (propertize branch 'face 'italic)))
 	       ")" )
-       page-number)))
-  (pdf-view-themed-minor-mode))
+       page-number))))
+
+(add-hook 'pdf-view-mode-hook (lambda () (pdf-view-themed-minor-mode 1)))
 
 (use-package org-pdftools
   :hook (org-mode . org-pdftools-setup-link))
