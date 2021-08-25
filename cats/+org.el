@@ -105,7 +105,7 @@
         ("NO"   . +org-todo-cancel)
         ("KILL" . +org-todo-cancel)))
 
-(define-key global-map (kbd "C-c n a") #'org-agenda)
+(define-key global-map (kbd "C-c o a") #'org-agenda)
 
 ;;; capture
 (with-eval-after-load 'org
@@ -121,7 +121,7 @@
           ("j" "Journal" entry
            (file+olp+datetree "journal.org")
            "* %U %?\n%i\n%a" :prepend t))))
-(define-key global-map (kbd "C-c n n") #'org-capture)
+(define-key global-map (kbd "C-c o c") #'org-capture)
 
 ;;; habit
 (with-eval-after-load 'org

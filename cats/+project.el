@@ -18,5 +18,5 @@
 
 (define-key global-map (kbd "C-c f e") #'+find-emacs-profile)
 (define-key global-map (kbd "C-c f p") #'+find-pdf-files)
-(define-key global-map (kbd "C-c n f") #'+find-org-files)
+(define-key global-map (kbd "C-c f o") #'+find-org-files)
 (define-key global-map (kbd "C-c p f") #'project-find-file)
