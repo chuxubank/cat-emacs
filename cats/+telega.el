@@ -11,6 +11,6 @@
 (define-key global-map (kbd "C-c a t") telega-prefix-map)
 
 (with-eval-after-load 'telega
-  (set-face-attribute 'telega-entity-type-pre nil :family "Courier Prime")
-  (set-face-attribute 'telega-entity-type-code nil :family "Courier Prime")
-  (set-face-attribute 'telega-webpage-fixed nil :family "Courier Prime"))
+  (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
+  (set-face-attribute 'telega-entity-type-code nil :family 'cat-alt-code-font)
+  (set-face-attribute 'telega-webpage-fixed nil :family 'cat-alt-code-font))

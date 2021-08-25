@@ -1,4 +1,5 @@
 (defvar cat-default-font "Roboto Mono 16")
+(defvar cat-alt-code-font "Cascadia Code")
 (defvar cat-cjk-font "LXGW WenKai")
 (defvar cat-symbol-fonts nil)
 
@@ -11,6 +12,13 @@
   (setq
    cat-symbol-fonts
    '("Segoe UI Emoji" "Cambria Math" "Mongolian Baiti" "Segoe UI Symbol")))
+
+(when IS-MAC
+  (setq
+   cat-default-font "Roboto Mono 18"
+   cat-symbol-fonts
+   '("Apple Color Emoji"))
+  (add-to-list 'face-font-rescale-alist '("-Apple Color Emoji-" . 0.8)))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
