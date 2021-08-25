@@ -14,10 +14,11 @@
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
-;; 猫，狗
+;; 猫，ぁ
 (when cat-cjk-font
   (set-fontset-font t 'han (font-spec :family cat-cjk-font))
   (set-fontset-font t 'cjk-misc (font-spec :family cat-cjk-font))
+  (set-fontset-font t 'kana (font-spec :family cat-cjk-font))
   (message "Set CJK font %s" cat-cjk-font))
 
 ;; 😺
