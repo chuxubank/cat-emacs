@@ -10,8 +10,11 @@
 
 (define-key global-map (kbd "C-c a t") telega-prefix-map)
 
-(when cat-alt-code-font
-  (with-eval-after-load 'telega
+(with-eval-after-load 'telega
+  (when cat-alt-code-font
     (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
     (set-face-attribute 'telega-entity-type-code nil :family cat-alt-code-font)
-    (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font)))
+    (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
+  (add-to-list
+   'telega-filters-custom
+   '("Focus" . (not (folder "NSFW" "Proxy")))))

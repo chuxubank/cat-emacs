@@ -41,7 +41,11 @@
     (set-fontset-font t 'mathematical (font-spec :family font)))
   (message "Set Math font %s" cat-math-fonts))
 
-(add-to-list 'face-font-rescale-alist '("Math" . 0.7))
-(add-to-list 'face-font-rescale-alist '("Apple Color Emoji" . 0.8))
-(add-to-list 'face-font-rescale-alist '("Source Han Sans" . 0.9))
-(add-to-list 'face-font-rescale-alist '("Noto Serif" . 0.9))
+(setq
+ face-font-rescale-alist
+ '(("Math" . 0.7)
+   ("Noto Sans .+" . 0.7)
+   ("Apple Color Emoji" . 0.8)
+   ("Noto Serif .+" . 0.9)
+   ("Source Han Sans" . 0.9)
+   ("-cdac$" . 1.3)))
