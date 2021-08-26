@@ -48,6 +48,9 @@
 ;;; coding
 (set-language-environment "UTF-8")
 
+;;; recentf
+(recentf-mode 1)
+
 ;;; backup
 (setq create-lockfiles nil
       make-backup-files nil)
