@@ -41,6 +41,7 @@
 (defalias 'list-buffers 'ibuffer)
 
 ;;; minibuffer
+(setq enable-recursive-minibuffers t)
 (setq confirm-kill-emacs #'yes-or-no-p)
 (fset #'yes-or-no-p #'y-or-n-p)
 
