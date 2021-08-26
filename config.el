@@ -21,6 +21,7 @@
 (cat! "+selectrum")
 (cat! "+prescient")
 (cat! "+rg")
+(cat! "+which-key")
 
 ;;; git
 (cat! "+magit")
