@@ -32,7 +32,7 @@
 ;; 😺 ↩
 (when cat-symbol-fonts
   (dolist (font cat-symbol-fonts)
-    (set-fontset-font t 'symbol (font-spec :family font)))
+    (set-fontset-font t 'symbol (font-spec :family font) nil 'append))
   (message "Set Symbol font %s" cat-symbol-fonts))
 
 ;; 𝓒𝙖𝕥
@@ -41,5 +41,7 @@
     (set-fontset-font t 'mathematical (font-spec :family font)))
   (message "Set Math font %s" cat-math-fonts))
 
-(add-to-list 'face-font-rescale-alist '("Apple Color Emoji" . 0.8))
 (add-to-list 'face-font-rescale-alist '("Math" . 0.7))
+(add-to-list 'face-font-rescale-alist '("Apple Color Emoji" . 0.8))
+(add-to-list 'face-font-rescale-alist '("Source Han Sans" . 0.9))
+(add-to-list 'face-font-rescale-alist '("Noto Serif" . 0.9))
