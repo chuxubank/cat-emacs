@@ -32,7 +32,7 @@
 ;; 😺 ↩
 (when cat-symbol-fonts
   (dolist (font cat-symbol-fonts)
-    (set-fontset-font t 'symbol (font-spec :family font) nil 'append))
+    (set-fontset-font t 'symbol (font-spec :family font)))
   (message "Set Symbol font %s" cat-symbol-fonts))
 
 ;; 𝓒𝙖𝕥
