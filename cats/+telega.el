@@ -3,7 +3,8 @@
 
 (setq
  telega-symbol-folder "📁"
- telega-symbol-reply "↩")
+ telega-symbol-reply "↩"
+ telega-filter-default '(custom "Focus"))
 
 (when (featurep 'selectrum)
   (setq telega-completing-read-function #'selectrum-completing-read))
