@@ -18,7 +18,7 @@
   (setq
    cat-default-font "Roboto Mono 18"
    cat-symbol-fonts
-   '("Apple Color Emoji" "Arial Unicode MS")))
+   '("Apple Color Emoji" "Apple Symbols")))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
@@ -29,7 +29,7 @@
   (set-fontset-font t 'kana (font-spec :family cat-cjk-font))
   (message "Set CJK font %s" cat-cjk-font))
 
-;; 😺 ↩
+;; 😺 ↩ 🗧
 (when cat-symbol-fonts
   (dolist (font cat-symbol-fonts)
     (set-fontset-font t 'symbol (font-spec :family font)))
@@ -46,6 +46,7 @@
  '(("Math" . 0.7)
    ("Noto Sans .+" . 0.7)
    ("Apple Color Emoji" . 0.8)
+   ("Apple Symbols" . 0.9)
    ("Noto Serif .+" . 0.9)
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
