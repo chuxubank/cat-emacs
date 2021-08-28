@@ -23,7 +23,7 @@
 \\setlength{\\topmargin}{1.5cm}
 \\addtolength{\\topmargin}{-2.54cm}")
  '(package-selected-packages
-   '(selectrum-prescient company-prescient org-pdftools auctex cdlatex websocket valign use-package telega simple-httpd selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit emacsql-sqlite3 elfeed-org ctrlf company)))
+   '(which-key selectrum-prescient company-prescient org-pdftools auctex cdlatex websocket valign use-package telega simple-httpd selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit emacsql-sqlite3 elfeed-org ctrlf company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
