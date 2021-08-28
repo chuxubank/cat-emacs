@@ -16,6 +16,7 @@
 
 (use-package nano-modeline
   :straight (nano-modeline :host github :repo "rougier/nano-modeline")
+  :disabled t
   :config
   (nano-modeline)
   (advice-add #'nano-dark :after #'nano-modeline)
