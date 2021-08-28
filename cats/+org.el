@@ -10,7 +10,8 @@
       org-list-allow-alphabetical t
       ;; Sub-lists should have different bullets
       org-list-demote-modify-bullet
-      '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
+      '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a."))
+      org-display-remote-inline-images 'cache)
 
 ;;; link
 (setq org-link-abbrev-alist
