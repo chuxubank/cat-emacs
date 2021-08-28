@@ -18,7 +18,7 @@
   (setq
    cat-default-font "Roboto Mono 18"
    cat-symbol-fonts
-   '("Apple Symbols" "Arial Unicode MS" "Apple Color Emoji" "Unifont Upper")))
+   '("Cascadia Code" "Apple Symbols" "Arial Unicode MS" "Apple Color Emoji" "Unifont Upper")))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
