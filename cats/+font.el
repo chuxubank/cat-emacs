@@ -18,7 +18,7 @@
   (setq
    cat-default-font "Roboto Mono 18"
    cat-symbol-fonts
-   '("Apple Color Emoji" "Apple Symbols")))
+   '("Apple Symbols" "Arial Unicode MS" "Apple Color Emoji" "Unifont Upper")))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
@@ -31,8 +31,9 @@
 
 ;; 😺 ↩ 🗧
 (when cat-symbol-fonts
+  (set-fontset-font t 'symbol (font-spec :family (car cat-symbol-fonts)))
   (dolist (font cat-symbol-fonts)
-    (set-fontset-font t 'symbol (font-spec :family font)))
+    (set-fontset-font t 'symbol (font-spec :family font) nil 'append))
   (message "Set Symbol font %s" cat-symbol-fonts))
 
 ;; 𝓒𝙖𝕥
