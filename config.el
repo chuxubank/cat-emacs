@@ -29,6 +29,7 @@
 ;;; org
 (cat! "+org")
 (cat! "+org-roam")
+(cat! "+org-roam-ui")
 (cat! "+org-media-note")
 
 ;;; latex
