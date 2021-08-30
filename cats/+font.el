@@ -7,7 +7,7 @@
 (when IS-LINUX
   (setq
    cat-symbol-fonts
-   '("Noto Color Emoji")))
+   '("Cascadia Code" "Inconsolata" "Noto Sans Symbols" "Noto Sans Symbols2" "Noto Color Emoji")))
 
 (when IS-WINDOWS
   (setq
