@@ -7,7 +7,7 @@
 (when IS-LINUX
   (setq
    cat-symbol-fonts
-   '("Cascadia Code" "Inconsolata" "Noto Sans Symbols" "Noto Sans Symbols2" "Noto Color Emoji")))
+   '("Cascadia Code" "Inconsolata" "Noto Color Emoji")))
 
 (when IS-WINDOWS
   (setq
@@ -29,7 +29,7 @@
   (set-fontset-font t 'kana (font-spec :family cat-cjk-font))
   (message "Set CJK font %s" cat-cjk-font))
 
-;; 😺 ↩ 🗧
+;; 😺
 (when cat-symbol-fonts
   (set-fontset-font t 'symbol (font-spec :family (car cat-symbol-fonts)))
   (dolist (font (cdr cat-symbol-fonts))

@@ -3,7 +3,10 @@
 
 (setq
  telega-symbol-folder "📁"
+ telega-symbol-linked "🔗"
+ telega-symbol-keyboard "⌨"
  telega-symbol-reply "↩"
+ telega-symbol-forward "⏩"
  telega-filter-default '(and main (custom "Focus")))
 
 (when (featurep 'selectrum)
