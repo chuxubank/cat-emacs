@@ -51,6 +51,7 @@
 (set-language-environment "UTF-8")
 
 ;;; recentf
+(setq recentf-max-saved-items 100)
 (recentf-mode 1)
 
 ;;; backup

@@ -29,7 +29,6 @@
 ;;; latex
 (setq org-latex-compiler "xelatex"
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
-      org-latex-image-default-width ".6\\linewidth"
       org-latex-packages-alist
       '(("" "ctex" t ("xelatex"))
 	("" "booktabs" nil)
