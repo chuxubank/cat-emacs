@@ -1,4 +1,6 @@
-(setq org-agenda-files (list "~/org")
+(defvar cat-org-directory "~/org")
+
+(setq org-agenda-files (list cat-org-directory)
       org-startup-indented t
       org-return-follows-link t
       org-tags-column 0
@@ -20,7 +22,9 @@
 	("github" . "https://github.com/%s")
 	("bili". "https://bilibili.com/bangumi/media/%s")
 	("coursera". "https://www.coursera.org/%s")))
+
 (with-eval-after-load 'org
+  (setq org-directory cat-org-directory)
   (define-key org-mode-map (kbd "C-c l") #'org-toggle-link-display)
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s"))))
@@ -108,19 +112,18 @@
 (define-key global-map (kbd "C-c o a") #'org-agenda)
 
 ;;; capture
-(with-eval-after-load 'org
-  (setq org-default-notes-file
-	(expand-file-name "notes.org" org-directory)
-	org-capture-templates
-        '(("t" "Personal todo" entry
-           (file+headline "inbox.org" "Inbox")
-           "* [ ] %?\n%i\n%a" :prepend t)
-          ("n" "Personal notes" entry
-           (file+headline "notes.org" "Inbox")
-           "* %u %?\n%i\n%a" :prepend t)
-          ("j" "Journal" entry
-           (file+olp+datetree "journal.org")
-           "* %U %?\n%i\n%a" :prepend t))))
+(setq org-default-notes-file
+      (expand-file-name "notes.org" cat-org-directory)
+      org-capture-templates
+      '(("t" "Personal todo" entry
+         (file+headline "inbox.org" "Inbox")
+         "* [ ] %?\n%i\n%a" :prepend t)
+        ("n" "Personal notes" entry
+         (file+headline "notes.org" "Inbox")
+         "* %u %?\n%i\n%a" :prepend t)
+        ("j" "Journal" entry
+         (file+olp+datetree "journal.org")
+         "* %U %?\n%i\n%a" :prepend t)))
 (define-key global-map (kbd "C-c o c") #'org-capture)
 
 ;;; habit
