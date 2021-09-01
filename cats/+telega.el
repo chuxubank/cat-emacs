@@ -7,6 +7,7 @@
  telega-symbol-keyboard "⌨"
  telega-symbol-reply "↩"
  telega-symbol-forward "⏩"
+ telega-chat-input-markups '("markdown2" nil)
  telega-filter-default '(and main (custom "Focus")))
 
 (when (featurep 'selectrum)
@@ -21,7 +22,7 @@
     (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
   (add-to-list
    'telega-filters-custom
-   '("Focus" . (not (folder "NSFW" "Proxy")))))
+   '("Focus" . (not (folder "NSFW" "Proxy" "Coin")))))
 
 (defun cat-telega-chat-mode ()
   (set (make-local-variable 'company-backends)
