@@ -43,6 +43,7 @@
 (cat! "+telega")
 (cat! "+pdf")
 (cat! "+elfeed")
+(cat! "+dict")
 
 ;;; util
 (cat! "+project")
