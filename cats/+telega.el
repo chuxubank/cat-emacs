@@ -1,6 +1,9 @@
 (use-package telega
   :commands #'telega)
 
+(when IS-LINUX
+  (setq telega-use-docker t))
+
 (setq
  telega-symbol-folder "📁"
  telega-symbol-linked "🔗"
