@@ -27,7 +27,9 @@
   (setq org-directory cat-org-directory)
   (define-key org-mode-map (kbd "C-c l") #'org-toggle-link-display)
   (when IS-LINUX
-    (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s"))))
+    (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
+  (define-key org-mode-map (kbd "M-n") 'org-next-link)
+  (define-key org-mode-map (kbd "M-p") 'org-previous-link))
 
 
 ;;; latex
