@@ -26,4 +26,6 @@
 (define-key global-map (kbd "C-c f p") #'+find-pdf-files)
 (define-key global-map (kbd "C-c f o") #'+find-org-files)
 (define-key global-map (kbd "C-c f r") #'+find-recentf-open-files)
+(define-key global-map (kbd "C-c f l") #'find-library)
+(define-key global-map (kbd "C-c f d") #'delete-file)
 (define-key global-map (kbd "C-c p f") #'project-find-file)
