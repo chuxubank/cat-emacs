@@ -13,6 +13,7 @@
       ;; Sub-lists should have different bullets
       org-list-demote-modify-bullet
       '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a."))
+      org-image-actual-width 500
       org-display-remote-inline-images 'cache)
 
 ;;; link
