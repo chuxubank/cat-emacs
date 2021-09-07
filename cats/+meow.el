@@ -97,4 +97,7 @@
 (with-eval-after-load 'meow
   (meow-setup)
   (meow-setup-line-number)
-  (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit))
+  (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
+  (add-to-list 'meow-mode-state-list '(shell-mode . normal)))
+
+(add-hook 'shell-mode-hook #'meow-insert)
