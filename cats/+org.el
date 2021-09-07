@@ -131,3 +131,6 @@
 ;;; habit
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit))
+
+;;; company
+(add-hook 'org-mode-hook (lambda () (add-to-list 'company-backends #'org-keyword-backend)))
