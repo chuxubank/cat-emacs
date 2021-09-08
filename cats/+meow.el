@@ -20,8 +20,9 @@
    '("l" . display-line-numbers-mode)
    '("r" . org-roam-buffer-toggle)
    '("s" . whitespace-mode)
-   '("vl" . visual-line-mode)
-   '("vf" . visual-fill-column-mode)
+   '("v" . visual-line-mode)
+   '("ff" . visual-fill-column-mode)
+   '("fd" . display-fill-column-indicator-mode)
    '("w" . toggle-word-wrap)
    '("t" . toggle-truncate-lines))
   (meow-normal-define-key
