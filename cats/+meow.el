@@ -19,7 +19,9 @@
    '("d" . toggle-debug-on-error)
    '("l" . display-line-numbers-mode)
    '("r" . org-roam-buffer-toggle)
-   '("v" . visual-line-mode)
+   '("s" . whitespace-mode)
+   '("vl" . visual-line-mode)
+   '("vf" . visual-fill-column-mode)
    '("w" . toggle-word-wrap)
    '("t" . toggle-truncate-lines))
   (meow-normal-define-key

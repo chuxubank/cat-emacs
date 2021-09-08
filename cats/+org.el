@@ -1,14 +1,14 @@
 (defvar cat-org-directory "~/org")
 
 (setq org-agenda-files (list cat-org-directory)
+      org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
       org-startup-indented t
       org-return-follows-link t
       org-tags-column 0
       org-outline-path-complete-in-steps nil
-      org-goto-interface 'outline-path-completion
       org-refile-use-outline-path t
       org-refile-targets
-      '((nil :maxlevel . 3))
+      '((nil :maxlevel . 10))
       org-list-allow-alphabetical t
       ;; Sub-lists should have different bullets
       org-list-demote-modify-bullet

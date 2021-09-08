@@ -33,8 +33,20 @@
 
 (setq column-number-indicator-zero-based nil)
 (column-number-mode 1)
+(size-indication-mode 1)
 
 (global-visual-line-mode 1)
+
+(setq show-paren-when-point-inside-paren t
+      show-paren-when-point-in-periphery t)
+(show-paren-mode 1)
+
+(defun cat-show-trailing-whitespace ()
+  "Set local variable `show-trailing-whitespace' to t."
+  (setq show-trailing-whitespace t))
+
+(add-hook 'text-mode-hook #'cat-show-trailing-whitespace)
+(add-hook 'prog-mode-hook #'cat-show-trailing-whitespace)
 
 ;;; sound
 (setq ring-bell-function #'ignore)
@@ -42,21 +54,33 @@
 ;;; buffer
 (defalias 'list-buffers 'ibuffer)
 
+;;; coding
+(set-language-environment "UTF-8")
+
+;;; bookmarks
+(setq bookmark-default-file (expand-file-name "bookmarks" cat-etc-dir))
+
 ;;; minibuffer
 (setq enable-recursive-minibuffers t
       confirm-kill-emacs #'yes-or-no-p)
 (fset #'yes-or-no-p #'y-or-n-p)
-
-;;; coding
-(set-language-environment "UTF-8")
+(setq savehist-file (expand-file-name "history" cat-cache-dir))
+(savehist-mode)
 
 ;;; recentf
-(setq recentf-max-saved-items 100)
-(recentf-mode 1)
+(setq recentf-max-saved-items 100
+      recentf-save-file (expand-file-name "recentf" cat-cache-dir))
+(add-hook 'after-init-hook #'recentf-mode)
+
+;;; saveplace
+(setq save-place-file (expand-file-name "places" cat-cache-dir))
+(add-hook 'after-init-hook #'save-place-mode)
 
 ;;; backup
 (setq create-lockfiles nil
-      make-backup-files nil)
+      make-backup-files nil
+      backup-directory-alist (list (cons "." (concat cat-cache-dir "backup/")))
+      tramp-backup-directory-alist backup-directory-alist)
 
 ;;; autosave
 (setq auto-save-default t
@@ -65,9 +89,9 @@
       tramp-auto-save-directory  (concat cat-cache-dir "tramp-autosave/")
       auto-save-file-name-transforms
       (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
-                  ;; Prefix tramp autosaves to prevent conflicts with local ones
-                  (concat auto-save-list-file-prefix "tramp-\\2") t)
-            (list ".*" auto-save-list-file-prefix t)))
+		  ;; Prefix tramp autosaves to prevent conflicts with local ones
+		  (concat auto-save-list-file-prefix "tramp-\\2") t)
+	    (list ".*" auto-save-list-file-prefix t)))
 
 ;;; dired
 (setq dired-dwim-target t)
