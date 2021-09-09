@@ -57,6 +57,9 @@
 ;;; coding
 (set-language-environment "UTF-8")
 
+;;; url
+(setq url-configuration-directory (concat cat-etc-dir "url/"))
+
 ;;; bookmarks
 (setq bookmark-default-file (expand-file-name "bookmarks" cat-etc-dir))
 

@@ -6,9 +6,10 @@
       org-return-follows-link t
       org-tags-column 0
       org-outline-path-complete-in-steps nil
-      org-refile-use-outline-path t
+      org-refile-use-outline-path 'file
       org-refile-targets
-      '((nil :maxlevel . 10))
+      '((nil :maxlevel . 10)
+	(org-agenda-files :maxlevel . 3))
       org-list-allow-alphabetical t
       ;; Sub-lists should have different bullets
       org-list-demote-modify-bullet
