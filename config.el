@@ -33,6 +33,7 @@
 (cat! "+org-media-note")
 
 ;;; latex
+(cat! "+latex")
 (cat! "+cdlatex")
 
 ;;; input
