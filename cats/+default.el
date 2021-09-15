@@ -48,6 +48,8 @@
 (add-hook 'text-mode-hook #'cat-show-trailing-whitespace)
 (add-hook 'prog-mode-hook #'cat-show-trailing-whitespace)
 
+(setq isearch-lazy-count t)
+
 ;;; select
 (delete-selection-mode 1)
 
