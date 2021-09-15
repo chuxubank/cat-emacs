@@ -40,6 +40,9 @@
 (cat! "+rime")
 (cat! "+pangu")
 
+;;; language
+(cat! "+yaml")
+
 ;;; app
 (cat! "+telega")
 (cat! "+pdf")
