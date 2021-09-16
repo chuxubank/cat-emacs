@@ -101,6 +101,8 @@
   (meow-setup)
   (meow-setup-line-number)
   (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
-  (add-to-list 'meow-mode-state-list '(shell-mode . normal)))
+  (add-to-list 'meow-mode-state-list '(shell-mode . normal))
+  (add-to-list 'meow-mode-state-list '(comint-mode . normal)))
 
 (add-hook 'shell-mode-hook #'meow-insert)
+(add-hook 'comint-mode-hook #'meow-insert)

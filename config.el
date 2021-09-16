@@ -41,6 +41,7 @@
 
 ;;; language
 (cat! "+yaml")
+(cat! "+kotlin")
 
 ;;; app
 (cat! "+telega")
