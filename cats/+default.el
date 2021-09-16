@@ -52,7 +52,7 @@
 
 ;;; ispell
 (setq ispell-dictionary "en_US"
-      ispell-program-name "hunspell")
+      ispell-program-name (executable-find "aspell"))
 
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
