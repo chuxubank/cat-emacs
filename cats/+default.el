@@ -50,6 +50,13 @@
 
 (setq isearch-lazy-count t)
 
+;;; ispell
+(setq ispell-dictionary "en_US"
+      ispell-program-name "hunspell")
+
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+
 ;;; select
 (delete-selection-mode 1)
 
