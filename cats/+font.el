@@ -44,7 +44,8 @@
 
 (setq
  face-font-rescale-alist
- '(("Math" . 0.7)
+ '(("Noto Naskh Arabic" . 0.4)
+   ("Math" . 0.7)
    ("Noto Sans .+" . 0.7)
    ("Apple Color Emoji" . 0.8)
    ("Apple Symbols" . 0.9)
