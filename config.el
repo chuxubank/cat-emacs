@@ -40,6 +40,7 @@
 (cat! "+pangu")
 
 ;;; language
+(cat! "+lsp")
 (cat! "+yaml")
 (cat! "+kotlin")
 
