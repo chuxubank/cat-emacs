@@ -47,6 +47,7 @@
 ;;; app
 (cat! "+telega")
 (cat! "+pdf")
+(cat! "+toc")
 (cat! "+elfeed")
 (cat! "+dict")
 
