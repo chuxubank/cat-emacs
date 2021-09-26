@@ -1,7 +1,14 @@
 (defvar cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 
+(setq reftex-default-bibliography cat-default-bibliography-files)
+
 (use-package bibtex-completion
-  :defer t)
+  :defer t
+  :config
+  (setq bibtex-completion-additional-search-fields '(keywords)
+        ;; This tell bibtex-completion to look at the File field of the bibtex
+        ;; to figure out which pdf to open
+        bibtex-completion-pdf-field "file"))
 
 (use-package bibtex-actions
   :bind (("C-c b" . bibtex-actions-insert-citation)
