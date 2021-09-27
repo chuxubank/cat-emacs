@@ -22,10 +22,22 @@
   (let ((files (mapcar 'abbreviate-file-name recentf-list)))
     (find-file (completing-read "Find recent file: " files nil t))))
 
+(defun +delete-file-and-buffer ()
+  "Kill the current buffer and deletes the file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if filename
+        (if (y-or-n-p (concat "Do you really want to delete file " filename " ?"))
+            (progn
+              (delete-file filename)
+              (message "Deleted file %s." filename)
+              (kill-buffer)))
+      (message "Not a file visiting buffer!"))))
+
 (define-key global-map (kbd "C-c f e") #'+find-emacs-profile)
 (define-key global-map (kbd "C-c f p") #'+find-pdf-files)
 (define-key global-map (kbd "C-c f o") #'+find-org-files)
 (define-key global-map (kbd "C-c f r") #'+find-recentf-open-files)
 (define-key global-map (kbd "C-c f l") #'find-library)
-(define-key global-map (kbd "C-c f d") #'delete-file)
+(define-key global-map (kbd "C-c f d") #'+delete-file-and-buffer)
 (define-key global-map (kbd "C-c p f") #'project-find-file)

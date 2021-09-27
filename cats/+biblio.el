@@ -9,10 +9,19 @@
         bibtex-completion-pdf-field "file"
 	bibtex-completion-bibliography cat-default-bibliography-files))
 
-(use-package bibtex-actions
-  :bind (("C-c b" . bibtex-actions-insert-citation)
-         :map minibuffer-local-map
-         ("M-b" . bibtex-actions-insert-preset)))
+(use-package citeproc
+  :defer t)
+
+(use-package embark
+  :defer t)
+
+(use-package oc-bibtex-actions
+  :ensure bibtex-actions
+  :after oc
+  :config
+  (setq org-cite-global-bibliography cat-default-bibliography-files
+	org-cite-insert-processor 'oc-bibtex-actions
+        org-cite-follow-processor 'oc-bibtex-actions))
 
 (use-package org-roam-bibtex
   :after org-roam
