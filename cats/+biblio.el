@@ -6,23 +6,20 @@
   :defer t
   :config
   (setq bibtex-completion-additional-search-fields '(keywords)
-        ;; This tell bibtex-completion to look at the File field of the bibtex
-        ;; to figure out which pdf to open
-        bibtex-completion-pdf-field "file"))
+        bibtex-completion-pdf-field "file"
+	bibtex-completion-bibliography cat-default-bibliography-files))
 
 (use-package bibtex-actions
   :bind (("C-c b" . bibtex-actions-insert-citation)
          :map minibuffer-local-map
-         ("M-b" . bibtex-actions-insert-preset))
-  :config
-  (setq bibtex-actions-bibliography cat-default-bibliography-files))
+         ("M-b" . bibtex-actions-insert-preset)))
 
 (use-package org-ref
   :after org
-  :init
   (setq org-ref-completion-library #'org-ref-reftex)
   :config
-  (setq org-ref-default-bibliography cat-default-bibliography-files))
+  (setq org-ref-default-bibliography cat-default-bibliography-files
+	org-ref-open-pdf-function 'org-ref-get-pdf-filename-helm-bibtex))
 
 (use-package org-roam-bibtex
   :after org-roam

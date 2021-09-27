@@ -16,8 +16,8 @@
 (when (featurep 'selectrum)
   (setq telega-completing-read-function #'selectrum-completing-read))
 
-(define-key global-map (kbd "C-c a t") telega-prefix-map)
-(define-key global-map (kbd "C-c a t k") #'telega-kill)
+(define-key global-map (kbd "C-c t") telega-prefix-map)
+(define-key global-map (kbd "C-c t k") #'telega-kill)
 
 (with-eval-after-load 'telega
   (when cat-alt-code-font

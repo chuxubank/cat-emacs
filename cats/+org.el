@@ -27,12 +27,11 @@
 
 (with-eval-after-load 'org
   (setq org-directory cat-org-directory)
-  (define-key org-mode-map (kbd "C-c l") #'org-toggle-link-display)
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
-  (define-key org-mode-map (kbd "M-n") 'org-next-link)
-  (define-key org-mode-map (kbd "M-p") 'org-previous-link))
-
+  (define-key org-mode-map (kbd "M-n") #'org-next-link)
+  (define-key org-mode-map (kbd "M-p") #'org-previous-link))
+(define-key global-map (kbd "C-c l") #'org-store-link)
 
 ;;; latex
 (setq org-latex-compiler "xelatex"
@@ -113,7 +112,7 @@
         ("NO"   . +org-todo-cancel)
         ("KILL" . +org-todo-cancel)))
 
-(define-key global-map (kbd "C-c o a") #'org-agenda)
+(define-key global-map (kbd "C-c a") #'org-agenda)
 
 ;;; capture
 (setq org-default-notes-file
@@ -128,7 +127,7 @@
         ("j" "Journal" entry
          (file+olp+datetree "journal.org")
          "* %U %?\n%i\n%a" :prepend t)))
-(define-key global-map (kbd "C-c o c") #'org-capture)
+(define-key global-map (kbd "C-c c") #'org-capture)
 
 ;;; habit
 (with-eval-after-load 'org

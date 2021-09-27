@@ -42,4 +42,4 @@
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory)))
   (elfeed-org))
 
-(define-key global-map (kbd "C-c a r") #'elfeed)
+(define-key global-map (kbd "C-c e") #'elfeed)
