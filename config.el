@@ -21,6 +21,7 @@
 (cat! "+prescient")
 (cat! "+rg")
 (cat! "+which-key")
+(cat! "+ctrlf")
 
 ;;; git
 (cat! "+magit")
