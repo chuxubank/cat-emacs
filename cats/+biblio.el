@@ -1,7 +1,9 @@
 (defvar cat-default-bibliography-files '("~/Zotero/My Library.bib"))
+(defvar cat-default-csl-styles-dir "~/Zotero/styles")
 
 (setq reftex-default-bibliography cat-default-bibliography-files
-      org-cite-global-bibliography cat-default-bibliography-files)
+      org-cite-global-bibliography cat-default-bibliography-files
+      org-cite-csl-styles-dir cat-default-csl-styles-dir)
 
 (use-package bibtex-completion
   :defer t
