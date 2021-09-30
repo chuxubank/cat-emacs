@@ -1,18 +1,8 @@
 (defvar cat-org-directory "~/org")
 
-(straight-use-package
- '(org :host github
-       :repo "emacs-straight/org"
-       :files (:defaults "etc")
-       :build t
-       :pre-build
-       (with-temp-file "org-version.el"
-         (insert "(defun org-release () \"9.5\")\n"
-                 (format "(defun org-git-version (&rest _) \"9.5-%s\")\n"
-                         (cdr (cat-call-process "git" "rev-parse" "--short" "HEAD")))
-                 "(provide 'org-version)\n"))))
-
-(straight-use-package 'org-contrib)
+(straight-use-package '(org :type built-in))
+(use-package org
+  :defer t)
 
 (setq org-agenda-files (list cat-org-directory)
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
