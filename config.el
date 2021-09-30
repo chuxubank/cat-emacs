@@ -30,7 +30,7 @@
 (cat! "+org")
 (cat! "+org-roam")
 (cat! "+org-roam-ui")
-(cat! "+org-media-note")
+(cat! "+org-notes")
 (cat! "+biblio")
 
 ;;; latex
