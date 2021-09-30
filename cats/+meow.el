@@ -16,6 +16,7 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    ;; toggle
+   '("a" . valign-mode)
    '("d" . toggle-debug-on-error)
    '("l" . display-line-numbers-mode)
    '("s" . whitespace-mode)
