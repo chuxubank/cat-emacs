@@ -38,5 +38,3 @@
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1))
-
-(define-key global-map (kbd "C-c n") #'org-noter)

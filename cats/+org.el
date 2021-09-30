@@ -44,7 +44,9 @@
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
   (define-key org-mode-map (kbd "M-n") #'org-next-link)
-  (define-key org-mode-map (kbd "M-p") #'org-previous-link))
+  (define-key org-mode-map (kbd "M-p") #'org-previous-link)
+  (define-key org-mode-map (kbd "C-c C-x l") #'org-toggle-link-display))
+
 (define-key global-map (kbd "C-c l") #'org-store-link)
 
 ;;; latex
@@ -141,6 +143,7 @@
         ("j" "Journal" entry
          (file+olp+datetree "journal.org")
          "* %U %?\n%i\n%a" :prepend t)))
+
 (define-key global-map (kbd "C-c c") #'org-capture)
 
 ;;; habit

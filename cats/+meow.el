@@ -18,7 +18,6 @@
    ;; toggle
    '("d" . toggle-debug-on-error)
    '("l" . display-line-numbers-mode)
-   '("r" . org-roam-buffer-toggle)
    '("s" . whitespace-mode)
    '("v" . visual-line-mode)
    '("ff" . visual-fill-column-mode)
