@@ -79,8 +79,11 @@
 (setq enable-recursive-minibuffers t
       confirm-kill-emacs #'yes-or-no-p)
 (fset #'yes-or-no-p #'y-or-n-p)
-(setq savehist-file (expand-file-name "history" cat-cache-dir))
+(setq savehist-file (expand-file-name "minibuffer/history" cat-cache-dir))
 (savehist-mode)
+
+;;; eshell
+(setq eshell-history-file-name (expand-file-name "eshell/history" cat-cache-dir))
 
 ;;; recentf
 (setq recentf-max-saved-items 100

@@ -1,8 +1,10 @@
 (defvar cat-org-directory "~/org")
 
 (straight-use-package '(org :type built-in))
-(use-package org
-  :defer t)
+
+(if EMACS28+ nil
+  (use-package org
+    :defer t))
 
 (setq org-agenda-files (list cat-org-directory)
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)

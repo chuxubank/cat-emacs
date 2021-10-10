@@ -3,28 +3,11 @@
 
 # emacs
 auto-save-list
-server
-bookmarks
+eln-cache/
 
 # backup
 *.*~
 
-# history
-history
-places
-recentf
-tramp
-
 # package
 elpa
 straight
-
-# org
-.org-id-locations
-org-roam.db
-
-# magit
-transient
-
-# elfeed
-url
