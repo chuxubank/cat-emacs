@@ -23,18 +23,20 @@
   :after oc
   :config
   (setq bibtex-actions-at-point-function 'embark-act
+	bibtex-actions-notes-paths (list (concat org-roam-directory "/ref/"))
 	org-cite-insert-processor 'oc-bibtex-actions
         org-cite-follow-processor 'oc-bibtex-actions))
 
 (use-package org-roam-bibtex
   :after org-roam
   :config
+  (setq orb-file-field-extensions '("pdf" "docx" "doc"))
   (require 'ox)
   (add-to-list
    'org-roam-capture-templates
    '("r" "bibliography reference" plain
      (file "org-roam-bibtex-template.org")
-     :if-new
+     :target
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1))

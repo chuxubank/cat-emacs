@@ -6,5 +6,6 @@
 
 (setq TeX-auto-save t
       TeX-parse-self t)
+
 (setq-default TeX-master nil
 	      TeX-engine 'xetex)
