@@ -112,7 +112,8 @@
 	    (list ".*" auto-save-list-file-prefix t)))
 
 ;;; dired
-(setq dired-dwim-target t)
+(setq dired-dwim-target t
+      dired-kill-when-opening-new-dired-buffer t)
 
 (let ((args (list "-ahlv" "--group-directories-first")))
   (when IS-BSD
@@ -128,3 +129,9 @@
 ;;; ediff
 (setq ediff-diff-options "-w" ; turn off whitespace checking
       ediff-split-window-function #'split-window-horizontally)
+
+;;; so long
+(global-so-long-mode 1)
+
+;;; repeat
+(repeat-mode 1)
