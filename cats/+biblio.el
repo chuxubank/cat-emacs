@@ -25,7 +25,9 @@
   (setq bibtex-actions-at-point-function 'embark-act
 	bibtex-actions-notes-paths (list (concat org-roam-directory "/ref/"))
 	org-cite-insert-processor 'oc-bibtex-actions
-        org-cite-follow-processor 'oc-bibtex-actions))
+        org-cite-follow-processor 'oc-bibtex-actions
+        org-cite-activate-processor 'oc-bibtex-actions)
+  (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
 
 (use-package org-roam-bibtex
   :after org-roam
