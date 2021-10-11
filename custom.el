@@ -24,7 +24,9 @@
 \\setlength{\\topmargin}{1.5cm}
 \\addtolength{\\topmargin}{-2.54cm}")
  '(package-selected-packages
-   '(elfeed bibtex-completion org-noter bibtex-actions citeproc embark org-roam-bibtex toc-mode yaml-mode lsp-mode kotlin-mode anki-vocabulary bing-dict which-key selectrum-prescient company-prescient org-pdftools auctex cdlatex valign use-package telega selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit elfeed-org ctrlf company)))
+   '(elfeed bibtex-completion org-noter bibtex-actions citeproc embark org-roam-bibtex toc-mode yaml-mode lsp-mode kotlin-mode anki-vocabulary bing-dict which-key selectrum-prescient company-prescient org-pdftools auctex cdlatex valign use-package telega selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit elfeed-org ctrlf company))
+ '(warning-suppress-types '((comp)))
+ '(widget-image-enable nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
