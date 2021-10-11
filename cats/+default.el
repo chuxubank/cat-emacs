@@ -6,9 +6,7 @@
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
-(defconst IS-WSL1    (and IS-LINUX (string-match "-Microsoft" operating-system-release)))
-(defconst IS-WSL2    (and IS-LINUX (string-match "-microsoft" operating-system-release)))
-(defconst IS-WSL     (or IS-WSL1 IS-WSL2))
+(defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
 
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
