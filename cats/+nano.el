@@ -11,15 +11,10 @@
   (set-display-table-slot standard-display-table
 			  'truncation (make-glyph-code ?… 'nano-faded))
   (set-display-table-slot standard-display-table
-			  'wrap (make-glyph-code ?… 'nano-faded))
-  (nano-dark)
-  (add-to-list 'default-frame-alist
-               `(background-color . ,nano-dark-background)))
+			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
   :straight (nano-modeline :host github :repo "rougier/nano-modeline")
   :disabled t
   :config
-  (nano-modeline)
-  (advice-add #'nano-dark :after #'nano-modeline)
-  (advice-add #'nano-light :after #'nano-modeline))
+  (nano-modeline-mode))

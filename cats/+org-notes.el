@@ -3,7 +3,9 @@
   :hook (org-mode .  org-media-note-mode))
 
 (use-package org-noter
-  :defer t)
+  :defer t
+  :config
+  (setq org-noter-always-create-frame nil))
 
 (use-package org-noter-pdftools
   :disabled t
