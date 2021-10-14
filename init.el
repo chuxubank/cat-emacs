@@ -29,3 +29,6 @@ code of the process and OUTPUT is its stdout output."
        (error "Could not load file '%s'" file))))
 
 (load (concat user-emacs-directory "config") nil 'nomessage)
+
+;;; enable
+(put 'downcase-region 'disabled nil)
