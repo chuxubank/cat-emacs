@@ -1,0 +1,13 @@
+* Cat Emacs
+** WSL
+#+begin_src bash
+  export MOZ_ENABLE_WAYLAND=1
+
+  isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
+
+  if [ "${isLight:2:1}" == 1 ]; then
+      export GTK_THEME=Arc
+  else
+      export GTK_THEME=Arc-Darker
+  fi
+#+end_src
