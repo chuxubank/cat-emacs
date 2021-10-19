@@ -15,6 +15,7 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
+   '("o" . other-window)
    ;; toggle
    '("a" . valign-mode)
    '("d" . toggle-debug-on-error)
