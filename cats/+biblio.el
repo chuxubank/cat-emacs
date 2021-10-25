@@ -32,7 +32,7 @@
 (use-package org-roam-bibtex
   :after org-roam
   :config
-  (setq orb-file-field-extensions '("pdf" "docx" "doc"))
+  (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub"))
   (require 'ox)
   (add-to-list
    'org-roam-capture-templates
