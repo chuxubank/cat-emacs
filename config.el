@@ -18,10 +18,14 @@
 ;;; completion
 (cat! "+company")
 (cat! "+selectrum")
+(cat! "+marginalia")
 (cat! "+prescient")
-(cat! "+rg")
 (cat! "+which-key")
+(cat! "+embark")
+
+;;; search
 (cat! "+ctrlf")
+(cat! "+rg")
 
 ;;; git
 (cat! "+magit")
