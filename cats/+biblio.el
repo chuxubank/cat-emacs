@@ -15,9 +15,6 @@
 (use-package citeproc
   :defer t)
 
-(use-package embark
-  :defer t)
-
 (use-package oc-bibtex-actions
   :ensure bibtex-actions
   :after oc

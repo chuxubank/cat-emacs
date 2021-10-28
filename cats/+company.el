@@ -1,5 +1,6 @@
-(use-package company
-  :hook (after-init . global-company-mode))
+(use-package company)
+
+(global-company-mode 1)
 
 (add-hook 'shell-mode-hook (lambda () (company-mode -1)))
 

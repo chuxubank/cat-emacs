@@ -1,2 +1,4 @@
 (use-package selectrum)
-(selectrum-mode)
+
+(selectrum-mode 1)
+

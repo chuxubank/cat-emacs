@@ -1,6 +1,6 @@
 (use-package meow)
 
-(meow-global-mode)
+(meow-global-mode 1)
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -16,14 +16,15 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    '("o" . other-window)
+   '("a" . embark-act)
    ;; toggle
-   '("a" . valign-mode)
-   '("d" . toggle-debug-on-error)
-   '("l" . display-line-numbers-mode)
+   '("dd" . toggle-debug-on-error)
+   '("dl" . display-line-numbers-mode)
+   '("df" . display-fill-column-indicator-mode)
    '("s" . whitespace-mode)
-   '("v" . visual-line-mode)
-   '("ff" . visual-fill-column-mode)
-   '("fd" . display-fill-column-indicator-mode)
+   '("va" . valign-mode)
+   '("vl" . visual-line-mode)
+   '("vf" . visual-fill-column-mode)
    '("w" . toggle-word-wrap)
    '("t" . toggle-truncate-lines))
   (meow-normal-define-key

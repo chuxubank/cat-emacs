@@ -1,2 +1,3 @@
-(use-package which-key
-  :hook (after-init . which-key-mode))
+(use-package which-key)
+
+(which-key-mode 1)
