@@ -20,7 +20,6 @@
 (cat! "+selectrum")
 (cat! "+marginalia")
 (cat! "+prescient")
-(cat! "+which-key")
 (cat! "+embark")
 
 ;;; search

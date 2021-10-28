@@ -16,7 +16,7 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    '("o" . other-window)
-   '("a" . embark-act)
+   '("." . embark-act)
    ;; toggle
    '("dd" . toggle-debug-on-error)
    '("dl" . display-line-numbers-mode)
