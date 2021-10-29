@@ -17,8 +17,7 @@
          ("C-c r g" . #'org-roam-graph)
          ("C-c r i" . #'org-roam-node-insert)
          ("C-c r c" . #'org-roam-capture)
-         ;; Dailies
-         ("C-c r t" . #'org-roam-dailies-capture-today))
+	 ("C-c r d" . 'org-roam-dailies-map))
   :config
   (org-roam-setup))
 
