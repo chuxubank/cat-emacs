@@ -20,7 +20,6 @@
   :after oc
   :config
   (setq bibtex-actions-at-point-function 'embark-act
-	bibtex-actions-notes-paths (list (concat org-roam-directory "/ref/"))
 	org-cite-insert-processor 'oc-bibtex-actions
         org-cite-follow-processor 'oc-bibtex-actions
         org-cite-activate-processor 'oc-bibtex-actions)
@@ -29,7 +28,8 @@
 (use-package org-roam-bibtex
   :after org-roam
   :config
-  (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub"))
+  (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub")
+	bibtex-actions-notes-paths (list (concat org-roam-directory "/ref/")))
   (require 'ox)
   (add-to-list
    'org-roam-capture-templates

@@ -2,27 +2,30 @@
   :defer t
   :init
   (setq org-roam-v2-ack t
-	org-roam-directory (file-truename "~/org-roam")
-	org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
+        org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
 	org-roam-completion-everywhere t
 	org-roam-mode-section-functions
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
               #'org-roam-unlinked-references-section))
-  (add-to-list 'org-agenda-files org-roam-directory)
-  :bind (("C-c r r" . #'org-roam-buffer-toggle)
+    :bind (("C-c r r" . #'org-roam-buffer-toggle)
 	 ("C-c r R" . #'org-roam-buffer-display-dedicated)
 	 ("C-c r f" . #'org-roam-node-find)
 	 ("C-c r F" . #'org-roam-ref-find)
          ("C-c r g" . #'org-roam-graph)
          ("C-c r i" . #'org-roam-node-insert)
-         ("C-c r c" . #'org-roam-capture)
-	 ("C-c r d" . 'org-roam-dailies-map))
+         ("C-c r c" . #'org-roam-capture))
   :config
-  (org-roam-setup))
+  (org-roam-db-autosync-mode)
+  (add-to-list 'org-agenda-files org-roam-directory))
 
-(with-eval-after-load 'org-roam-dailies
-  (add-to-list 'org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory)))
+(use-package org-roam-dailies
+  :ensure org-roam
+  :defer t
+  :bind-keymap
+  ("C-c r d" . org-roam-dailies-map)
+  :config
+  (add-to-list 'org-agenda-files (concat org-roam-directory org-roam-dailies-directory)))
 
 (straight-use-package '(org-roam :type built-in))
 
