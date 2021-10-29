@@ -4,12 +4,12 @@
   (setq org-roam-v2-ack t
 	org-roam-directory (file-truename "~/org-roam")
 	org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
-	org-agenda-text-search-extra-files (directory-files-recursively org-roam-directory "\\.org$")
 	org-roam-completion-everywhere t
 	org-roam-mode-section-functions
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
               #'org-roam-unlinked-references-section))
+  (add-to-list 'org-agenda-files org-roam-directory)
   :bind (("C-c r r" . #'org-roam-buffer-toggle)
 	 ("C-c r R" . #'org-roam-buffer-display-dedicated)
 	 ("C-c r f" . #'org-roam-node-find)
@@ -20,6 +20,9 @@
 	 ("C-c r d" . 'org-roam-dailies-map))
   :config
   (org-roam-setup))
+
+(with-eval-after-load 'org-roam-dailies
+  (add-to-list 'org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory)))
 
 (straight-use-package '(org-roam :type built-in))
 
