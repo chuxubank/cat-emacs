@@ -7,3 +7,8 @@
   :config
   (setq magit-diff-refine-hunk t
 	magit-diff-refine-ignore-whitespace nil))
+
+(use-package forge
+  :after magit
+  :config
+  (setq forge-database-file (concat cat-etc-dir "forge.db")))
