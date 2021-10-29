@@ -148,5 +148,7 @@
 (add-hook 'org-mode-hook (lambda () (add-to-list 'company-backends #'org-keyword-backend)))
 
 ;;; clock
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
+(setq org-clock-persist 'history
+      org-clock-persist-file (expand-file-name "org-clock-save.el" cat-org-directory))
+(with-eval-after-load 'org
+  (org-clock-persistence-insinuate))
