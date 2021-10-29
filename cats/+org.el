@@ -146,3 +146,7 @@
 
 ;;; company
 (add-hook 'org-mode-hook (lambda () (add-to-list 'company-backends #'org-keyword-backend)))
+
+;;; clock
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
