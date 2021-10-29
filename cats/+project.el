@@ -10,7 +10,7 @@
 
 (defun +find-org-files ()
   (interactive)
-  (+project-find-file-in-dir (car org-agenda-files)))
+  (+project-find-file-in-dir cat-org-directory))
 
 (defun +find-pdf-files ()
   (interactive)
