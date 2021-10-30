@@ -1,21 +1,3 @@
-;;; os
-(defconst EMACS27+   (> emacs-major-version 26))
-(defconst EMACS28+   (> emacs-major-version 27))
-(defconst IS-MAC     (eq system-type 'darwin))
-(defconst IS-MACPORT (functionp 'mac-application-state))
-(defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
-(defconst IS-LINUX   (eq system-type 'gnu/linux))
-(defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
-(defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
-(defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
-
-;;; directory
-(defconst cat-local-dir (concat user-emacs-directory ".local/"))
-(defconst cat-cache-dir (concat cat-local-dir "cache/"))
-(defconst cat-etc-dir (concat cat-local-dir "etc/"))
-
-(setq find-function-C-source-directory (format "%s/share/emacs/%s/src/" (getenv "emacs_dir") emacs-version))
-
 ;;; ui
 (blink-cursor-mode 0)
 (scroll-bar-mode 0)
@@ -23,7 +5,6 @@
 (tool-bar-mode 0)
 (setq inhibit-startup-screen t
       initial-scratch-message nil)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (setq frame-title-format '("%b – Cat Emacs")
       icon-title-format frame-title-format)
