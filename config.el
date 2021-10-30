@@ -8,6 +8,10 @@
 (cat! "+font")
 (cat! "+valign")
 
+;;; os
+(when IS-MAC
+  (cat! "+macos"))
+
 ;;; theme
 (cat! "+nano")
 (cat! "+autodark")

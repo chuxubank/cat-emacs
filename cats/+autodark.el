@@ -3,7 +3,8 @@
    (IS-WSL     (string-match-p "-Darker" (getenv "GTK_THEME")))
    (IS-WINDOWS (string= "0" (string-trim (shell-command-to-string "powershell.exe -WindowStyle Hidden -C Get-ItemPropertyValue -Path HKCU://Software/Microsoft/Windows/CurrentVersion/Themes/Personalize -Name AppsUseLightTheme"))))
    (IS-LINUX   (string-match-p "-dark" (shell-command-to-string "gsettings get org.gnome.desktop.interface gtk-theme")))
-   (IS-MAC     (string= (plist-get (mac-application-state) :appearance) "NSAppearanceNameDarkAqua"))))
+   (IS-MACPORT (string= (plist-get (mac-application-state) :appearance) "NSAppearanceNameDarkAqua"))
+   (IS-MAC     (string= "Dark" (string-trim (shell-command-to-string "defaults read -g AppleInterfaceStyle"))))))
 
 (defun cat-load-theme ()
   (interactive)
@@ -13,4 +14,5 @@
 
 (add-hook 'after-init-hook #'cat-load-theme)
 
-(define-key mac-apple-event-map [application-kvo effectiveAppearance] #'cat-load-theme)
+(when IS-MACPORT
+  (define-key mac-apple-event-map [application-kvo effectiveAppearance] #'cat-load-theme))
