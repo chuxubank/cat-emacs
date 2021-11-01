@@ -15,21 +15,22 @@
 (use-package citeproc
   :defer t)
 
-(use-package oc-bibtex-actions
-  :ensure bibtex-actions
+(use-package citar-org
+  :ensure citar
   :after oc
   :config
-  (setq bibtex-actions-at-point-function 'embark-act
-	org-cite-insert-processor 'oc-bibtex-actions
-        org-cite-follow-processor 'oc-bibtex-actions
-        org-cite-activate-processor 'oc-bibtex-actions)
-  (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+  (setq citar-at-point-function 'embark-act
+	citar-bibliography cat-default-bibliography-files
+	org-cite-insert-processor 'citar
+        org-cite-follow-processor 'citar
+        org-cite-activate-processor 'citar)
+  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
 
 (use-package org-roam-bibtex
   :after org-roam
   :config
   (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub")
-	bibtex-actions-notes-paths (list (concat org-roam-directory "/ref/")))
+	citar-notes-paths (list (concat org-roam-directory "ref/")))
   (require 'ox)
   (add-to-list
    'org-roam-capture-templates
@@ -38,4 +39,5 @@
      :target
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
-  (org-roam-bibtex-mode +1))
+  (org-roam-bibtex-mode +1)
+  (setq citar-file-open-note-function 'orb-bibtex-actions-edit-note))
