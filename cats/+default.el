@@ -114,4 +114,5 @@
 (global-so-long-mode 1)
 
 ;;; repeat
-(repeat-mode 1)
+(when EMACS28+
+  (repeat-mode 1))
