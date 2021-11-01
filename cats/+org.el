@@ -1,7 +1,5 @@
 (defvar cat-org-directory "~/org")
 
-(straight-use-package '(org :type built-in))
-
 (if EMACS28+ nil
   (use-package org
     :defer t))
@@ -146,6 +144,10 @@
 
 ;;; clock
 (setq org-clock-persist 'history
-      org-clock-persist-file (expand-file-name "org-clock-save.el" cat-org-directory))
+      org-clock-persist-file (expand-file-name "org-clock-save.el" cat-org-directory)
+      org-clock-clocked-in-display 'frame-title)
 (with-eval-after-load 'org
   (org-clock-persistence-insinuate))
+
+;;; timer
+(setq org-timer-display 'frame-title)
