@@ -7,14 +7,15 @@
 ;;; ui
 (cat! "+font")
 (cat! "+valign")
+(cat! "+transpose-frame")
 
 ;;; os
 (when IS-MAC
   (cat! "+macos"))
 
 ;;; theme
-(cat! "+nano")
-(cat! "+autodark")
+;; (cat! "+nano")
+;; (cat! "+autodark")
 
 ;;; edit
 (cat! "+meow")

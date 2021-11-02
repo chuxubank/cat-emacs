@@ -40,4 +40,5 @@
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1)
-  (setq citar-file-open-note-function 'orb-bibtex-actions-edit-note))
+  (setq citar-file-open-note-function 'orb-bibtex-actions-edit-note
+	citar-file-note-org-include '(org-id org-roam-ref)))
