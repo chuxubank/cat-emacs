@@ -32,6 +32,7 @@
 	     :branch "main"
 	     :files ("*.el" "out"))
   :after org-roam
+  :bind ("C-c r u" . #'org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
