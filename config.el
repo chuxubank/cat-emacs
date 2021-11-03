@@ -38,6 +38,7 @@
 (cat! "+org")
 (cat! "+org-roam")
 (cat! "+org-notes")
+(cat! "+org-srs")
 (cat! "+biblio")
 
 ;;; latex

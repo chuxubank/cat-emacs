@@ -12,3 +12,6 @@ eln-cache/
 # package
 elpa
 straight
+
+# org-drill
+persist
