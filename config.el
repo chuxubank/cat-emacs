@@ -14,8 +14,8 @@
   (cat! "+macos"))
 
 ;;; theme
-;; (cat! "+nano")
-;; (cat! "+autodark")
+(cat! "+nano")
+(cat! "+autodark")
 
 ;;; edit
 (cat! "+meow")

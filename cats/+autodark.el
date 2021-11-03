@@ -9,8 +9,10 @@
 (defun cat-load-theme ()
   (interactive)
   (if (cat-dark-mode-p)
-      (nano-dark)
-    (nano-light)))
+      (progn (nano-dark)
+	     (nano-dark))
+    (progn (nano-light)
+	   (nano-light))))
 
 (add-hook 'after-init-hook #'cat-load-theme)
 

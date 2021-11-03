@@ -1,5 +1,5 @@
 (use-package nano-theme
-  :straight (nano-theme :host github :repo "rougier/nano-theme")
+  :straight t
   :config
   (setq
    default-frame-alist (list '(internal-border-width . 24)
@@ -14,7 +14,11 @@
 			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
-  :straight (nano-modeline :host github :repo "rougier/nano-modeline")
+  :straight t
   :disabled t
   :config
   (nano-modeline-mode))
+
+(use-package nano-agenda
+  :straight t
+  :disabled t)
