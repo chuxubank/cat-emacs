@@ -32,14 +32,14 @@
   :after org-roam
   :config
   (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub")
-	citar-notes-paths (list (concat org-roam-directory "ref/")))
+	citar-notes-paths (list cat-org-roam-references-dir))
   (require 'ox)
   (add-to-list
    'org-roam-capture-templates
    '("r" "bibliography reference" plain
      (file "org-roam-bibtex-template.org")
      :target
-     (file+head "ref/${citekey}.org" "#+title: ${title}\n")
+     (file+head (concat cat-org-roam-references-directory "${citekey}.org") "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1)
   (setq citar-file-open-note-function 'orb-bibtex-actions-edit-note

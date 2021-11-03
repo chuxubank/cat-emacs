@@ -17,6 +17,7 @@
    '("0" . meow-digit-argument)
    '("o" . other-window)
    '("." . embark-act)
+   '("a" . org-agenda)
    ;; toggle
    '("td" . toggle-debug-on-error)
    '("dl" . display-line-numbers-mode)

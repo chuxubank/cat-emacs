@@ -1,7 +1,18 @@
+(defvar cat-org-roam-directory "~/org-roam/" "See `org-roam-directory'.")
+(defvar cat-org-roam-dailies-directory "daily/" "See `org-roam-dailies-directory'.")
+(defvar cat-org-roam-references-directory "ref/")
+(defvar cat-org-roam-dailies-dir
+  (concat cat-org-roam-directory cat-org-roam-dailies-directory)
+  "Full path for org roam daily files.")
+(defvar cat-org-roam-references-dir
+  (concat cat-org-roam-directory cat-org-roam-references-directory)
+  "Full path for org roam reference files.")
+
 (use-package org-roam
   :defer t
   :init
   (setq org-roam-v2-ack t
+	org-roam-directory cat-org-roam-directory
         org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
 	org-roam-completion-everywhere t
 	org-roam-mode-section-functions
@@ -17,11 +28,10 @@
          ("C-c r c" . #'org-roam-capture))
   :bind-keymap
   ("C-c r d" . org-roam-dailies-map)
+  :custom
+  (org-roam-dailies-directory cat-org-roam-dailies-directory)
   :config
-  (org-roam-db-autosync-mode)
-  (add-to-list 'org-agenda-files org-roam-directory)
-  (with-eval-after-load 'org-roam-dailies
-    (add-to-list 'org-agenda-files (concat org-roam-directory org-roam-dailies-directory))))
+  (org-roam-db-autosync-mode))
 
 (straight-use-package '(org-roam :type built-in))
 
