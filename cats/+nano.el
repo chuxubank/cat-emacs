@@ -14,11 +14,11 @@
 			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
+  :disabled
   :straight t
-  :disabled t
   :config
   (nano-modeline-mode))
 
 (use-package nano-agenda
-  :straight t
-  :disabled t)
+  :disabled
+  :straight t)

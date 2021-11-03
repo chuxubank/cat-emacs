@@ -3,10 +3,12 @@
   :hook (org-mode .  org-media-note-mode))
 
 (use-package org-noter
-  :defer t)
+  :defer t
+  :custom
+  (org-noter-always-create-frame nil))
 
 (use-package org-noter-pdftools
-  :disabled t
+  :disabled
   :after org-noter
   :config
   ;; Add a function to ensure precise note is inserted
