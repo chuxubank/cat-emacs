@@ -50,16 +50,7 @@
 	("" "enumitem" nil)
 	("" "fontspec" nil)
 	("" "pgfplots" t)
-	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil))
-      org-format-latex-options
-      '(:foreground default
-       		    :background default
-		    :scale 1.5
-       		    :html-foreground "Black"
-       		    :html-background "Transparent"
-       		    :html-scale 1.0
-       		    :matchers
-       		    ("begin" "$1" "$" "$$" "\\(" "\\[")))
+	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
 
 ;;; preview
 (setq org-preview-latex-default-process 'dvisvgm
@@ -69,7 +60,7 @@
                  :message "you need to install the programs: xelatex and dvisvgm."
                  :image-input-type "xdv"
                  :image-output-type "svg"
-                 :image-size-adjust (1.7 . 1.5)
+                 :image-size-adjust (2.5 . 1.5)
                  :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
                  :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))
         (imagemagick :programs("xelatex" "convert")
