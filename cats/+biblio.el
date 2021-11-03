@@ -24,7 +24,9 @@
 	org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
+  (define-key citar-org-citation-map (kbd "C-p") nil)
+  (define-key citar-org-citation-map (kbd "C-c C-l") #'citar-org-update-pre-suffix))
 
 (use-package org-roam-bibtex
   :after org-roam
