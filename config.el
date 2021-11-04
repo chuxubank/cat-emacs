@@ -61,6 +61,7 @@
 (cat! "+toc")
 (cat! "+elfeed")
 (cat! "+dict")
+(cat! "+ncm")
 
 ;;; util
 (cat! "+project")

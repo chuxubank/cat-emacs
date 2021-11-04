@@ -1,4 +1,6 @@
-(setq straight-vc-git-default-clone-depth 1)
+(setq straight-vc-git-default-clone-depth 1
+      straight-host-usernames '((github . "chuxubank")
+				(gitlab . "chuxubank")))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file

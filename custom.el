@@ -24,7 +24,7 @@
 \\setlength{\\topmargin}{1.5cm}
 \\addtolength{\\topmargin}{-2.54cm}")
  '(package-selected-packages
-   '(org-drill org-anki transpose-frame ns-auto-titlebar forge vertico marginalia nov elfeed bibtex-completion org-noter citar citeproc embark org-roam-bibtex toc-mode yaml-mode lsp-mode kotlin-mode anki-vocabulary bing-dict which-key selectrum-prescient company-prescient org-pdftools auctex cdlatex valign use-package telega selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit elfeed-org ctrlf company))
+   '(promise org-drill org-anki transpose-frame ns-auto-titlebar forge vertico marginalia nov elfeed bibtex-completion org-noter citar citeproc embark org-roam-bibtex toc-mode yaml-mode lsp-mode kotlin-mode anki-vocabulary bing-dict which-key selectrum-prescient company-prescient org-pdftools auctex cdlatex valign use-package telega selectrum rime rg pdf-tools pangu-spacing org-roam orderless nord-theme meow magit elfeed-org ctrlf company))
  '(warning-suppress-types '((comp) (comp) (comp)))
  '(widget-image-enable nil))
 (custom-set-faces
