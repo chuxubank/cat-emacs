@@ -12,3 +12,9 @@
 		       cat-org-directory
 		       (substring cat-org-roam-directory 0 -1)))
   (org-fc-review-history-file (concat cat-etc-dir "org-fc-reviews.tsv")))
+
+(use-package promise
+  :after org-anki)
+
+(use-package org-anki
+  :after org)
