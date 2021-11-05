@@ -7,6 +7,8 @@
 (straight-use-package '(org :type built-in))
 
 (setq org-agenda-files (list cat-org-directory)
+      diary-file (expand-file-name "diary" cat-org-directory)
+      ;; org-agenda-include-diary t
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
       org-startup-indented t
       org-return-follows-link t
