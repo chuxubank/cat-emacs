@@ -31,7 +31,8 @@
   :custom
   (org-roam-dailies-directory cat-org-roam-dailies-directory)
   :config
-  (org-roam-db-autosync-mode))
+  (org-roam-db-autosync-mode)
+  (org-roam-update-org-id-locations))
 
 (straight-use-package '(org-roam :type built-in))
 
