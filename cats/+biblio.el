@@ -22,6 +22,7 @@
   (setq citar-at-point-function 'embark-act
 	citar-bibliography cat-default-bibliography-files
 	citar-file-note-org-include '(org-id org-roam-ref)
+	citar-notes-paths (list cat-org-roam-references-dir)
 	org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
@@ -29,12 +30,14 @@
   (define-key citar-org-citation-map (kbd "C-p") nil)
   (define-key citar-org-citation-map (kbd "C-c C-l") #'citar-org-update-pre-suffix))
 
+(straight-use-package '(org-roam :type built-in))
+(straight-use-package '(bibtex-completion :type built-in))
 (use-package org-roam-bibtex
+  :straight (org-roam-bibtex :fork t)
   :after org-roam
   :config
   (setq orb-citekey-format "@%s"
-	orb-file-field-extensions '("pdf" "docx" "doc" "epub")
-	citar-notes-paths (list cat-org-roam-references-dir))
+	orb-file-field-extensions '("pdf" "docx" "doc" "epub"))
   (require 'ox)
   (add-to-list 'orb-preformat-keywords "title")
   (add-to-list
@@ -44,5 +47,4 @@
      :target
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
-  (org-roam-bibtex-mode +1)
-  (setq citar-open-note-function 'orb-bibtex-actions-edit-note))
+  (org-roam-bibtex-mode +1))
