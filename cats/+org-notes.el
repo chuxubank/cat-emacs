@@ -4,8 +4,8 @@
 
 (use-package org-noter
   :defer t
-  :custom
-  (org-noter-always-create-frame nil))
+  :config
+  (setq org-noter-always-create-frame nil))
 
 (use-package org-noter-pdftools
   :disabled

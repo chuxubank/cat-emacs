@@ -21,6 +21,7 @@
   :config
   (setq citar-at-point-function 'embark-act
 	citar-bibliography cat-default-bibliography-files
+	citar-file-note-org-include '(org-id org-roam-ref)
 	org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
@@ -31,16 +32,17 @@
 (use-package org-roam-bibtex
   :after org-roam
   :config
-  (setq orb-file-field-extensions '("pdf" "docx" "doc" "epub")
+  (setq orb-citekey-format "@%s"
+	orb-file-field-extensions '("pdf" "docx" "doc" "epub")
 	citar-notes-paths (list cat-org-roam-references-dir))
   (require 'ox)
+  (add-to-list 'orb-preformat-keywords "title")
   (add-to-list
    'org-roam-capture-templates
    '("r" "bibliography reference" plain
      (file "org-roam-bibtex-template.org")
      :target
-     (file+head (concat cat-org-roam-references-directory "${citekey}.org") "#+title: ${title}\n")
+     (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1)
-  (setq citar-file-open-note-function 'orb-bibtex-actions-edit-note
-	citar-file-note-org-include '(org-id org-roam-ref)))
+  (setq citar-open-note-function 'orb-bibtex-actions-edit-note))
