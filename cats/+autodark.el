@@ -17,4 +17,4 @@
 (add-hook 'after-init-hook #'cat-load-theme)
 
 (when IS-MACPORT
-  (define-key mac-apple-event-map [application-kvo effectiveAppearance] #'cat-load-theme))
+  (add-hook 'mac-effective-appearance-change-hook #'cat-load-theme))
