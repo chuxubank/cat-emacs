@@ -137,7 +137,7 @@
 
 ;;; clock
 (setq org-clock-persist 'history
-      org-clock-persist-file (expand-file-name "org-clock-save.el" cat-org-directory)
+      org-clock-persist-file (expand-file-name "org-clock-save.el" cat-etc-dir)
       org-clock-clocked-in-display 'frame-title)
 (with-eval-after-load 'org
   (org-clock-persistence-insinuate))
