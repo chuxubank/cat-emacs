@@ -5,25 +5,14 @@
 (use-package org-noter
   :defer t
   :config
-  (setq org-noter-always-create-frame nil))
-
-(use-package org-noter-pdftools
-  :disabled
-  :after org-noter
-  :config
-  ;; Add a function to ensure precise note is inserted
-  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
-    (interactive "P")
-    (org-noter--with-valid-session
-     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
-                                                   (not org-noter-insert-note-no-questions)
-                                                 org-noter-insert-note-no-questions))
-           (org-pdftools-use-isearch-link t)
-           (org-pdftools-use-freestyle-annot t))
-       (org-noter-insert-note (org-noter--get-precise-info)))))
-
-  (with-eval-after-load 'pdf-annot
-    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+  (setq org-noter-always-create-frame nil)
+  (defun org-noter-update-precise-page-info ()
+    (interactive)
+    (org-entry-put nil
+     org-noter-property-note-location
+     (org-noter--pretty-print-location
+      (org-noter--doc-approx-location (org-noter--get-precise-info)))))
+  (define-key org-noter-notes-mode-map (kbd "M-i") #'org-noter-update-precise-page-info))
 
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c n m") #'org-media-note-hydra/body)
