@@ -18,3 +18,7 @@
 
 (use-package org-anki
   :after org)
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c n a s") #'org-anki-sync-entry)
+  (define-key org-mode-map (kbd "C-c n a c") #'org-anki-cloze-dwim))
