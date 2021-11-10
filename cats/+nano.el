@@ -1,5 +1,5 @@
 (use-package nano-theme
-  :straight t
+  :straight (nano-theme :host github :repo "rougier/nano-theme")
   :config
   (setq
    default-frame-alist (list '(internal-border-width . 24)
@@ -15,7 +15,7 @@
 
 (use-package nano-modeline
   :disabled
-  :straight t
+  :straight (nano-modeline :host github :repo "rougier/nano-modeline")
   :config
   (nano-modeline-mode))
 
