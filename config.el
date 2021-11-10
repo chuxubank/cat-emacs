@@ -19,6 +19,7 @@
 
 ;;; edit
 (cat! "+meow")
+(cat! "+smartparens")
 
 ;;; completion
 (cat! "+company")
