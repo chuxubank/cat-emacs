@@ -144,3 +144,6 @@
 
 ;;; timer
 (setq org-timer-display 'frame-title)
+
+;;; archive
+(setq org-archive-location (concat cat-org-directory "/archive.org::* From %s"))
