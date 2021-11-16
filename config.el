@@ -54,6 +54,7 @@
 (cat! "+lsp")
 (cat! "+yaml")
 (cat! "+kotlin")
+(cat! "+python")
 
 ;;; app
 (cat! "+telega")
