@@ -15,14 +15,14 @@
 (use-package citeproc
   :defer t)
 
-(use-package citar-org
-  :ensure citar
-  :after oc
+(use-package citar
+  :defer t
   :config
   (setq citar-at-point-function 'embark-act
 	citar-bibliography cat-default-bibliography-files
 	citar-file-note-org-include '(org-id org-roam-ref)
 	citar-notes-paths (list cat-org-roam-references-dir)
+	citar-file-open-function #'org-open-file
 	org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
