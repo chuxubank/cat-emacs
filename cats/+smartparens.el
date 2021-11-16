@@ -6,5 +6,5 @@
 (dolist (h '(c-mode-hook org-mode-hook))
   (add-hook h 'smartparens-mode))
 
-(dolist (h '(lisp-mode-hook lisp-interaction-mode-hook emacs-lisp-mode-hook))
+(dolist (h '(lisp-mode-hook lisp-interaction-mode-hook emacs-lisp-mode-hook js-mode-hook))
   (add-hook h 'smartparens-strict-mode))
