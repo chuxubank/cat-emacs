@@ -147,3 +147,12 @@
 
 ;;; archive
 (setq org-archive-location (concat cat-org-directory "/archive.org::* From %s"))
+
+;;; babel
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (R . t)
+     (shell . t)
+     (C . t))))
