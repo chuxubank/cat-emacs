@@ -50,19 +50,19 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(straight-use-package '(bibtex-completion :type built-in))
+(straight-use-package '(org-ref :type built-in))
 (use-package org-roam-bibtex
-  :straight (org-roam-bibtex :fork t)
+  :straight t
   :after org-roam
   :config
-  (setq orb-citekey-format "@%s"
+  (setq orb-roam-ref-format 'org-cite
 	orb-file-field-extensions '("pdf" "docx" "doc" "epub"))
   (require 'ox)
   (add-to-list 'orb-preformat-keywords "title")
   (add-to-list
    'org-roam-capture-templates
    '("r" "bibliography reference" plain
-     (file "org-roam-bibtex-template.org")
+     (file "templates/reference.org")
      :target
      (file+head "ref/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))

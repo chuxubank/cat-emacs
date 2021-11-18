@@ -11,6 +11,7 @@
   (setq bibtex-completion-additional-search-fields '(keywords)
         bibtex-completion-pdf-field "file"
 	bibtex-completion-bibliography cat-default-bibliography-files))
+(straight-use-package '(bibtex-completion :type built-in))
 
 (use-package citeproc
   :defer t)
@@ -26,6 +27,8 @@
 	org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
+  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+
+(with-eval-after-load 'citar-org
   (define-key citar-org-citation-map (kbd "C-p") nil)
   (define-key citar-org-citation-map (kbd "C-c C-l") #'citar-org-update-pre-suffix))

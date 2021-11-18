@@ -37,10 +37,10 @@
 
 ;;; org
 (cat! "+org")
+(cat! "+citar")
 (cat! "+org-roam")
 (cat! "+org-notes")
 (cat! "+org-srs")
-(cat! "+citar")
 
 ;;; latex
 (cat! "+latex")
