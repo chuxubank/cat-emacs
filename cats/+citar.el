@@ -16,8 +16,9 @@
 (use-package citeproc
   :defer t)
 
-(use-package citar
-  :defer t
+(use-package citar-org
+  :ensure citar
+  :after org
   :config
   (setq citar-at-point-function 'embark-act
 	citar-bibliography cat-default-bibliography-files
@@ -28,7 +29,3 @@
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar)
   (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
-
-(with-eval-after-load 'citar-org
-  (define-key citar-org-citation-map (kbd "C-p") nil)
-  (define-key citar-org-citation-map (kbd "C-c C-l") #'citar-org-update-pre-suffix))
