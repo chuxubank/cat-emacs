@@ -7,7 +7,6 @@
 (use-package org-noter
   :defer t
   :config
-  (setq org-noter-always-create-frame nil)
   (defun org-noter-update-precise-page-info ()
     (interactive)
     (org-entry-put nil
