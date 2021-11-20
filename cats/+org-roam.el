@@ -1,13 +1,3 @@
-(defvar cat-org-roam-directory "~/org-roam/" "See `org-roam-directory'.")
-(defvar cat-org-roam-dailies-directory "daily/" "See `org-roam-dailies-directory'.")
-(defvar cat-org-roam-references-directory "ref/")
-(defvar cat-org-roam-dailies-dir
-  (concat cat-org-roam-directory cat-org-roam-dailies-directory)
-  "Full path for org roam daily files.")
-(defvar cat-org-roam-references-dir
-  (concat cat-org-roam-directory cat-org-roam-references-directory)
-  "Full path for org roam reference files.")
-
 (use-package org-roam
   :defer t
   :init
@@ -49,6 +39,15 @@
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
+
+;;; bibtex
+(use-package bibtex-completion
+  :defer t
+  :config
+  (setq bibtex-completion-additional-search-fields '(keywords)
+        bibtex-completion-pdf-field "file"
+	bibtex-completion-bibliography cat-default-bibliography-files))
+(straight-use-package '(bibtex-completion :type built-in))
 
 (straight-use-package '(org-ref :type built-in))
 (use-package org-roam-bibtex

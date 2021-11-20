@@ -1,5 +1,3 @@
-(defvar cat-org-directory "~/org" "See `org-directory'")
-
 (if EMACS28+ nil
   (use-package org
     :defer t))
