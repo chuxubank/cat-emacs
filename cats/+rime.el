@@ -21,6 +21,7 @@
    rime-predicate-org-in-src-block-p
    rime-predicate-after-ascii-char-p
    rime-predicate-tex-math-or-command-p
+   rime-predicate-punctuation-line-begin-p
    rime-predicate-punctuation-after-space-cc-p)
  rime-inline-predicates
  '(rime-predicate-space-after-cc-p

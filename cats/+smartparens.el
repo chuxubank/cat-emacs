@@ -1,7 +1,10 @@
 (use-package smartparens
   :defer t
   :config
-  (require 'smartparens-config))
+  (require 'smartparens-config)
+  (sp-with-modes '(org-mode)
+    (sp-local-pair "$" "$")
+    (sp-local-pair "\\[" "\\]")))
 
 (dolist (h '(c-mode-hook org-mode-hook))
   (add-hook h 'smartparens-mode))
