@@ -16,13 +16,6 @@
 (defconst cat-org-directory "~/org" "See `org-directory'")
 (defconst cat-org-roam-directory "~/org-roam/" "See `org-roam-directory'.")
 (defconst cat-org-roam-dailies-directory "daily/" "See `org-roam-dailies-directory'.")
-(defconst cat-org-roam-references-directory "ref/")
-(defconst cat-org-roam-dailies-dir
-  (concat cat-org-roam-directory cat-org-roam-dailies-directory)
-  "Full path for org roam daily files.")
-(defconst cat-org-roam-references-dir
-  (concat cat-org-roam-directory cat-org-roam-references-directory)
-  "Full path for org roam reference files.")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 (defconst cat-default-csl-styles-dir "~/Zotero/styles")
 

@@ -33,6 +33,8 @@
 
 (with-eval-after-load 'org
   (setq org-directory cat-org-directory)
+  (require 'server)
+  (require 'org-protocol)
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
   (define-key org-mode-map (kbd "M-n") #'org-next-link)

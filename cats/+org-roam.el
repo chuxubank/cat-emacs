@@ -22,7 +22,14 @@
   (org-roam-dailies-directory cat-org-roam-dailies-directory)
   :config
   (org-roam-db-autosync-mode)
-  (org-roam-update-org-id-locations))
+  (org-roam-update-org-id-locations)
+  (require 'org-roam-protocol)
+  (setq org-roam-capture-ref-templates
+	'(("r" "Protocol Capture Reference" plain "${body}%?"
+	   :target (file+head "capture/${slug}.org" "#+title: ${title}\n")
+	   :unnarrowed t))
+	org-roam-node-display-template
+	"${tags:10} ${title:*}"))
 
 (straight-use-package '(org-roam :type built-in))
 
@@ -38,7 +45,9 @@
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+        org-roam-ui-open-on-start t
+	org-roam-ui-ref-title-template
+	"%^{author-abbrev} (%^{date}) %^{title}"))
 
 ;;; bibtex
 (use-package bibtex-completion
@@ -60,9 +69,7 @@
   (add-to-list 'orb-preformat-keywords "title")
   (add-to-list
    'org-roam-capture-templates
-   '("r" "bibliography reference" plain
-     (file "templates/reference.org")
-     :target
-     (file+head "ref/${citekey}.org" "#+title: ${title}\n")
+   '("r" "Bibliography Reference" plain (file "templates/reference.org")
+     :target (file+head "reference/${citekey}.org" "#+title: ${title}\n")
      :unnarrowed t))
   (org-roam-bibtex-mode +1))
