@@ -116,3 +116,9 @@
 ;;; repeat
 (when EMACS28+
   (repeat-mode 1))
+
+;;; help
+(use-package help-at-pt
+  :defer t
+  :custom
+  (help-at-pt-display-when-idle t))
