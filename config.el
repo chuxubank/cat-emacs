@@ -45,6 +45,7 @@
 ;;; latex
 (cat! "+latex")
 (cat! "+cdlatex")
+(cat! "+zotero")
 
 ;;; input
 (cat! "+rime")
