@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package pangu-spacing
   :hook (text-mode . pangu-spacing-mode)
   :config

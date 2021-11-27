@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (add-hook 'dired-load-hook
           (lambda ()
 	    ;; Bind dired-x-find-file.

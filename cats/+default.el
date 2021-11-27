@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; ui
 (blink-cursor-mode 0)
 (scroll-bar-mode 0)

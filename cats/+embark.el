@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package embark
   :bind
   ("C->" . embark-act)

@@ -1,3 +1,5 @@
+;; -*- citar-notes-paths: t; -*-
+
 (setq reftex-default-bibliography cat-default-bibliography-files
       org-cite-global-bibliography cat-default-bibliography-files
       org-cite-csl-styles-dir cat-default-csl-styles-dir

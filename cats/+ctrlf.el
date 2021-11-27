@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package ctrlf)
 
 (ctrlf-mode 1)

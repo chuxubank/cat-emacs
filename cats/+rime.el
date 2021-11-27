@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package rime
   :commands #'toggle-input-method)
 

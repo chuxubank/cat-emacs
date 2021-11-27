@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package zotero
   :defer t
   :config

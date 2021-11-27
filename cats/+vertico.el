@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package vertico)
 
 (vertico-mode 1)

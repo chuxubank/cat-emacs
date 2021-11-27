@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package ns-auto-titlebar
   :config
   (and (or (daemonp)

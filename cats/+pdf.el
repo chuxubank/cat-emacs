@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
   :init

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package org-drill
   :defer t
   :custom

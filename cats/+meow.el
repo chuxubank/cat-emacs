@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package meow)
 
 (meow-global-mode 1)

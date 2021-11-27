@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun cat-dark-mode-p ()
   (cond
    (IS-WSL     (string-match-p "-Darker" (getenv "GTK_THEME")))

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (if EMACS28+ nil
   (use-package org
     :defer t))

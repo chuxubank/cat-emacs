@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (when (featurep 'company)
   (use-package company-prescient)
   (company-prescient-mode 1))

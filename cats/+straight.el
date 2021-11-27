@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq straight-vc-git-default-clone-depth 1
       straight-host-usernames '((github . "chuxubank")
 				(gitlab . "chuxubank")))

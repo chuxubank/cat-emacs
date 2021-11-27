@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun +project-find-file-in-dir (dir)
   (let* ((pr (or (project--find-in-directory dir)
 		 (cons 'transient dir)))

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (straight-use-package '(request :type built-in))
 
 (use-package netease-cloud-music

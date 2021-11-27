@@ -1,3 +1,5 @@
+;; -*- lexical-binding: nil; -*-
+
 ;;; os
 (defconst EMACS27+   (> emacs-major-version 26))
 (defconst EMACS28+   (> emacs-major-version 27))

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package bing-dict
   :commands #'bing-dict-brief
   :config

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defvar cat-default-font "Roboto Mono 16")
 (defvar cat-alt-code-font "Cascadia Code")
 (defvar cat-cjk-font "LXGW WenKai")

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package nano-theme
   :straight (nano-theme :host github :repo "rougier/nano-theme")
   :config
