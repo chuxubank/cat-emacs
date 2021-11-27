@@ -31,7 +31,7 @@
     (if filename
         (if (y-or-n-p (concat "Do you really want to delete file " filename " ?"))
             (progn
-              (delete-file filename)
+              (move-file-to-trash filename)
               (message "Deleted file %s." filename)
               (kill-buffer)))
       (message "Not a file visiting buffer!"))))

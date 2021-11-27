@@ -95,7 +95,8 @@
 
 ;;; dired
 (setq dired-dwim-target t
-      dired-kill-when-opening-new-dired-buffer t)
+      dired-kill-when-opening-new-dired-buffer t
+      delete-by-moving-to-trash t)
 
 (let ((args (list "-ahlv" "--group-directories-first")))
   (when IS-BSD
