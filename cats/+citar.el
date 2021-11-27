@@ -5,7 +5,7 @@
       org-cite-follow-processor 'citar
       org-cite-activate-processor 'citar
       citar-bibliography cat-default-bibliography-files
-      citar-notes-paths (list cat-org-roam-references-dir))
+      citar-notes-paths (list (concat cat-org-roam-directory cat-org-roam-reference-directory)))
 
 (use-package citeproc
   :defer t)
