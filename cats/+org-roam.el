@@ -64,12 +64,19 @@
   :after org-roam
   :config
   (setq orb-roam-ref-format 'org-cite
-	orb-file-field-extensions '("pdf" "docx" "doc" "epub"))
-  (require 'ox)
-  (add-to-list 'orb-preformat-keywords "title")
-  (add-to-list
-   'org-roam-capture-templates
-   '("r" "Bibliography Reference" plain (file "templates/reference.org")
-     :target (file+head "reference/${citekey}.org" "#+title: ${title}\n")
-     :unnarrowed t))
+	orb-note-actions-interface #'citar-run-default-action
+	orb-file-field-extensions '("pdf" "docx" "doc" "epub")
+	orb-preformat-keywords
+	'("title" "url" "citekey" "entry-type" "date" "pdf?" "note?" "file" "author" "editor" "author-abbrev" "editor-abbrev" "author-or-editor-abbrev")
+	org-roam-capture-templates
+	'(("d" "default" plain "%?" :target
+	   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+	   :unnarrowed t)
+	  ("n" "Bibliography reference with org-noter"
+	   plain (file "templates/org-noter.org") :target
+	   (file+head "reference/${citekey}.org" "#+title: ${title}")
+	   :unnarrowed t)
+	  ("l" "Bibliography reference with link"
+	   plain "eww:%^{url}" :target
+	   (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))))
   (org-roam-bibtex-mode +1))
