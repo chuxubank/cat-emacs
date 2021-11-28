@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(defun +project-root ()
+  (when-let (project (project-current))
+    (car (project-roots project))))
+
 (defun +project-find-file-in-dir (dir)
   (let* ((pr (or (project--find-in-directory dir)
 		 (cons 'transient dir)))

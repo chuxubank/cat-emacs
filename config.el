@@ -27,6 +27,7 @@
 (cat! "+marginalia")
 (cat! "+prescient")
 (cat! "+embark")
+(cat! "+consult")
 
 ;;; search
 (cat! "+ctrlf")
