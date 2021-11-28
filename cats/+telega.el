@@ -34,7 +34,7 @@
    'telega-filters-custom
    '("Focus" . (not (folder "NSFW" "Proxy" "Coin")))))
 
-(defun cat-telega-chat-mode ()
+(defun +telega-chat-mode ()
   (set (make-local-variable 'company-backends)
        (append (list telega-emoji-company-backend
                      'telega-company-username
@@ -43,4 +43,4 @@
 		 '(telega-company-botcmd))))
   (company-mode 1))
 
-(add-hook 'telega-chat-mode-hook #'cat-telega-chat-mode)
+(add-hook 'telega-chat-mode-hook #'+telega-chat-mode)

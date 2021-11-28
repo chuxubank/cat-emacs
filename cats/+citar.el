@@ -1,4 +1,4 @@
-;; -*- citar-notes-paths: t; -*-
+;; -*- lexical-binding: t; -*-
 
 (setq reftex-default-bibliography cat-default-bibliography-files
       org-cite-global-bibliography cat-default-bibliography-files
