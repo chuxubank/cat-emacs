@@ -65,6 +65,7 @@
   :straight t
   :after org-roam
   :config
+  (require 'ox)
   (setq orb-roam-ref-format 'org-cite
 	orb-note-actions-interface #'citar-run-default-action
 	orb-file-field-extensions '("pdf" "docx" "doc" "epub")
