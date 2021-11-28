@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(setq mac-system-move-file-to-trash-use-finder t)
+
 (use-package ns-auto-titlebar
   :config
   (and (or (daemonp)
