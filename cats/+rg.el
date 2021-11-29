@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package rg
-  :commands #'rg-project)
+  :defer t)
 
-(define-key global-map (kbd "C-c p s") #'rg-project)
+(define-key global-map (kbd "C-c s") #'rg-menu)
