@@ -6,7 +6,8 @@
   (require 'smartparens-config)
   (sp-with-modes '(org-mode)
     (sp-local-pair "$" "$")
-    (sp-local-pair "\\[" "\\]")))
+    (sp-local-pair "\\[" "\\]"))
+  (sp-pair "（" "）"))
 
 (dolist (h '(c-mode-hook org-mode-hook))
   (add-hook h 'smartparens-mode))
