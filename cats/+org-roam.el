@@ -28,7 +28,7 @@
   (require 'org-roam-protocol)
   (setq org-roam-capture-ref-templates
 	'(("r" "Protocol Capture Reference" plain "${body}%?"
-	   :target (file+head "capture/${slug}.org" "#+title: ${title}\n")
+	   :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
 	   :unnarrowed t))
 	org-roam-node-display-template
 	"${tags:10} ${title:*}"))
@@ -78,18 +78,21 @@
 	  ("b" "bibliography")
 	  ("bn" "Bibliography reference with org-noter"
 	   plain (file "templates/org-noter.org") :target
-	   (file+head "reference/${citekey}.org" "#+title: ${title}")
+	   (file "reference/${citekey}.org")
 	   :unnarrowed t)
 	  ("bl" "Bibliography reference with link"
 	   plain "eww:%^{url}" :target
 	   (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
-	  ("s" "SCSEE")
-	  ("sx" "SCSEE XingCe"
+	  ("bx" "SCSEE XingCe"
 	   plain (file "templates/xingce.org") :target
-	   (file "scsee/${citekey}.org")
+	   (file "reference/${citekey}.org")
 	   :unnarrowed t)
-	  ("ss" "SCSEE ShenLun"
+	  ("bs" "SCSEE ShenLun"
 	   plain (file "templates/shenlun.org") :target
-	   (file "scsee/${citekey}.org")
+	   (file "reference/${citekey}.org")
+	   :unnarrowed t)
+	  ("c" "Course"
+	   plain (file "templates/course.org") :target
+	   (file "course/${SOURCE|cmu}/${COURSE-ID}.org")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
