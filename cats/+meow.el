@@ -6,7 +6,8 @@
 (meow-global-mode 1)
 
 (defun meow-setup ()
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
+	meow-expand-exclude-mode-list nil)
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
