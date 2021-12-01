@@ -20,20 +20,6 @@
 (when (featurep 'selectrum)
   (setq telega-completing-read-function #'selectrum-completing-read))
 
-(define-key global-map (kbd "C-c t") telega-prefix-map)
-(define-key global-map (kbd "C-c t k") #'telega-kill)
-
-(with-eval-after-load 'telega
-  (require 'telega-mnz)
-  (global-telega-mnz-mode)
-  (when cat-alt-code-font
-    (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
-    (set-face-attribute 'telega-entity-type-code nil :family cat-alt-code-font)
-    (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
-  (add-to-list
-   'telega-filters-custom
-   '("Focus" . (not (folder "NSFW" "Proxy" "Coin")))))
-
 (defun +telega-chat-mode ()
   (set (make-local-variable 'company-backends)
        (append (list telega-emoji-company-backend
@@ -44,3 +30,19 @@
   (company-mode 1))
 
 (add-hook 'telega-chat-mode-hook #'+telega-chat-mode)
+
+(with-eval-after-load 'telega
+  (require 'telega-mnz)
+  (global-telega-mnz-mode)
+  (when cat-alt-code-font
+    (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
+    (set-face-attribute 'telega-entity-type-code nil :family cat-alt-code-font)
+    (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
+  (add-to-list
+   'telega-filters-custom
+   '("Focus" . (not (folder "NSFW" "Proxy" "Coin"))))
+  ;; consistency with meow
+  (define-key telega-msg-button-map (kbd "SPC") nil))
+
+(define-key global-map (kbd "C-c t") telega-prefix-map)
+(define-key global-map (kbd "C-c t k") #'telega-kill)
