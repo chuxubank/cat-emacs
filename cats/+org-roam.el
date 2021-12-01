@@ -7,6 +7,7 @@
 	org-roam-directory cat-org-roam-directory
         org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
 	org-roam-completion-everywhere t
+	org-roam-node-display-template "${tags:10} ${title:*}"
 	org-roam-mode-section-functions
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
@@ -29,9 +30,7 @@
   (setq org-roam-capture-ref-templates
 	'(("r" "Protocol Capture Reference" plain "${body}%?"
 	   :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
-	   :unnarrowed t))
-	org-roam-node-display-template
-	"${tags:10} ${title:*}"))
+	   :unnarrowed t))))
 
 (straight-use-package '(org-roam :type built-in))
 
