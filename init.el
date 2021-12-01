@@ -4,6 +4,9 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
+;;; packages
+(add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
+
 ;;; modules
 (defmacro cat! (filename &optional path noerror)
   "Load a module in cats by default"
