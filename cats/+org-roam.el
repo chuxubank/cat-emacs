@@ -28,8 +28,13 @@
   (org-roam-update-org-id-locations)
   (require 'org-roam-protocol)
   (setq org-roam-capture-ref-templates
-	'(("r" "Protocol Capture Reference" plain "${body}%?"
-	   :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
+	'(("r" "Protocol Capture Reference"
+	   plain "${body}%?" :target
+	   (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
+	   :unnarrowed t)
+	  ("c" "Course"
+	   plain (file "templates/course.org") :target
+	   (file "course/${SOURCE|cmu}/${COURSE-ID}.org")
 	   :unnarrowed t))))
 
 (straight-use-package '(org-roam :type built-in))
@@ -82,6 +87,9 @@
 	  ("bl" "Bibliography reference with link"
 	   plain "eww:%^{url}" :target
 	   (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
+	  ("bv" "Bibliography reference with video"
+	   plain "[[video:$^{url}#]]" :target
+	   (file+head "reference/${citekey}.org" "#+title: ${title}\n"))
 	  ("bx" "SCSEE XingCe"
 	   plain (file "templates/xingce.org") :target
 	   (file "reference/${citekey}.org")
@@ -89,9 +97,5 @@
 	  ("bs" "SCSEE ShenLun"
 	   plain (file "templates/shenlun.org") :target
 	   (file "reference/${citekey}.org")
-	   :unnarrowed t)
-	  ("c" "Course"
-	   plain (file "templates/course.org") :target
-	   (file "course/${SOURCE|cmu}/${COURSE-ID}.org")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
