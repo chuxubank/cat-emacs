@@ -9,8 +9,6 @@
 (use-package org-noter
   :defer t
   :config
-  (require 'scroll-other-window)
-  (add-hook 'org-noter-notes-mode-hook #'sow-mode)
   (setq org-noter--inhibit-location-change-handler t))
 
 (defun +org-noter-update-precise-page-info ()

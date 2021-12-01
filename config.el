@@ -71,3 +71,4 @@
 ;;; util
 (cat! "+project")
 (cat! "+diredx")
+(cat! "+sow")
