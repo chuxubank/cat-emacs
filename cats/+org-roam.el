@@ -80,6 +80,10 @@
 	   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
 	   :unnarrowed t)
 	  ("b" "bibliography")
+	  ("bd" "Bibliography reference default"
+	   plain "%?" :target
+	   (file+head "reference/${citekey}.org" "#+title: ${title}")
+	   :unnarrowed t)
 	  ("bn" "Bibliography reference with org-noter"
 	   plain (file "templates/org-noter.org") :target
 	   (file "reference/${citekey}.org")
