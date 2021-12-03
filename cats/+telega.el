@@ -15,7 +15,8 @@
  telega-symbol-reply "↩"
  telega-symbol-forward "⏩"
  telega-chat-input-markups '("markdown2" nil)
- telega-filter-default '(and main (custom "Focus")))
+ telega-filter-default '(and main (custom "Focus"))
+ telega-video-player-command "mpv")
 
 (when (featurep 'selectrum)
   (setq telega-completing-read-function #'selectrum-completing-read))
