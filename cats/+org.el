@@ -14,6 +14,7 @@
       org-return-follows-link t
       org-tags-column 0
       org-outline-path-complete-in-steps nil
+      org-goto-auto-isearch nil
       org-refile-use-outline-path 'file
       org-refile-targets
       '((nil :maxlevel . 10)
