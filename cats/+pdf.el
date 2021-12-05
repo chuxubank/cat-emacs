@@ -14,18 +14,21 @@
   (org-pdftools-use-isearch-link t))
 
 (defun +pdf-keyboard-select-region (&optional all-pages-p)
-  "Ref: https://github.com/dalanicolai/dala-emacs-lisp/blob/9662aa2ab993157e6e7587385d27c48ed50a1a50/pdf-keyboard-highlight.el#L79
-TODO: Fix all-pages search"
+  "Ref: https://github.com/dalanicolai/dala-emacs-lisp/blob/9662aa2ab993157e6e7587385d27c48ed50a1a50/pdf-keyboard-highlight.el#L79"
   (interactive "P")
   (pdf-view-deactivate-region)
   (let* ((pages (if all-pages-p nil (pdf-view-current-page)))
 	 (candidates (mapcar (lambda (x)
-                               (cons (cdar (cdr x))
+                               (list (cdar (cdr x))
+				     (cdar x)
                                      (cdar (cddr x))))
 			     (pdf-info-search-regexp (read-string "Regexp: ") pages)))
-         (edges-list (alist-get (completing-read "Select correct context: " candidates)
-                                candidates nil nil 'equal))
-         (edges (append (cl-subseq (car edges-list) 0 2) (cl-subseq (car (last edges-list)) 2 4))))
+         (page-edges-list (alist-get (completing-read "Select correct context: " candidates)
+                                     candidates nil nil 'equal))
+	 (edges-list (cadr page-edges-list))
+         (edges (append (cl-subseq (car edges-list) 0 2) (cl-subseq (car (last edges-list)) 2 4)))
+	 )
+    (pdf-view-goto-page (car page-edges-list))
     (setq pdf-view-active-region (list edges))
     (pdf-view--push-mark)
     (pdf-view-display-region)))
