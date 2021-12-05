@@ -1,9 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-;;; custom
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
-
 ;;; packages
 (add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
 
@@ -24,5 +20,10 @@
 
 (load (concat user-emacs-directory "config") nil 'nomessage)
 
+;;; custom
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
 ;;; enable
 (put 'downcase-region 'disabled nil)
+(put 'list-threads 'disabled nil)
