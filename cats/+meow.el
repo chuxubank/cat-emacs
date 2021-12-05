@@ -111,3 +111,7 @@
 
 (add-hook 'shell-mode-hook #'meow-insert)
 (add-hook 'comint-mode-hook #'meow-insert)
+
+(defun cat-manual-motion-mode ()
+  (meow-normal-mode -1)
+  (meow-motion-mode 1))
