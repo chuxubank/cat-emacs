@@ -67,7 +67,7 @@
 (cat! "+elfeed")
 (cat! "+dict")
 (cat! "+ncm")
-(cat! "+wanderlust")
+(cat! "+mu4e")
 
 ;;; util
 (cat! "+project")
