@@ -72,7 +72,7 @@
   (require 'ox)
   (setq orb-roam-ref-format 'org-cite
 	orb-note-actions-interface #'citar-run-default-action
-	orb-file-field-extensions '("pdf" "docx" "doc" "epub")
+	orb-attached-file-extensions '("pdf" "docx" "doc" "epub")
 	orb-preformat-keywords
 	'("title" "url" "citekey" "entry-type" "date" "pdf?" "note?" "file" "author" "editor" "author-abbrev" "editor-abbrev" "author-or-editor-abbrev")
 	org-roam-capture-templates
