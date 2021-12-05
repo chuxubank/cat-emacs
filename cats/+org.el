@@ -13,18 +13,23 @@
       org-startup-indented t
       org-return-follows-link t
       org-tags-column 0
+      org-image-actual-width 500
+      org-display-remote-inline-images 'cache
       org-outline-path-complete-in-steps nil
+      ;; org-goto
       org-goto-auto-isearch nil
+      ;; org-refile
       org-refile-use-outline-path 'file
       org-refile-targets
       '((nil :maxlevel . 10)
 	(org-agenda-files :maxlevel . 3))
+      ;; org-list
       org-list-allow-alphabetical t
-      ;; Sub-lists should have different bullets
       org-list-demote-modify-bullet
       '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a."))
-      org-image-actual-width 500
-      org-display-remote-inline-images 'cache)
+      ;; org-export
+      org-export-backends
+      '(ascii beamer html icalendar latex md odt))
 
 ;;; link
 (setq org-link-abbrev-alist
@@ -55,26 +60,12 @@
 	("" "enumitem" nil)
 	("" "fontspec" nil)
 	("" "pgfplots" t)
-	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil))
-      org-format-latex-header
-      "\\documentclass[dvisvgm]{article}
-\\usepackage[usenames]{color}
-\[PACKAGES]
-\[DEFAULT-PACKAGES]
-\\pagestyle{empty}             % do not remove
-% The settings below are copied from fullpage.sty
-\\setlength{\\textwidth}{\\paperwidth}
-\\addtolength{\\textwidth}{-3cm}
-\\setlength{\\oddsidemargin}{1.5cm}
-\\addtolength{\\oddsidemargin}{-2.54cm}
-\\setlength{\\evensidemargin}{\\oddsidemargin}
-\\setlength{\\textheight}{\\paperheight}
-\\addtolength{\\textheight}{-\\headheight}
-\\addtolength{\\textheight}{-\\headsep}
-\\addtolength{\\textheight}{-\\footskip}
-\\addtolength{\\textheight}{-3cm}
-\\setlength{\\topmargin}{1.5cm}
-\\addtolength{\\topmargin}{-2.54cm}")
+	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
+(with-eval-after-load 'org
+  (setq org-format-latex-header
+	(replace-regexp-in-string (regexp-quote "\\documentclass")
+				  "\\documentclass[dvisvgm]"
+				  org-format-latex-header t t)))
 
 ;;; preview
 (setq org-preview-latex-default-process 'dvisvgm
