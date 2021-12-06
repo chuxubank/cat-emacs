@@ -16,6 +16,7 @@
 ;;; theme
 (cat! "+nano")
 (cat! "+autodark")
+(cat! "+beacon")
 
 ;;; edit
 (cat! "+meow")

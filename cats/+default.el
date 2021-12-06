@@ -125,3 +125,7 @@
   :defer t
   :custom
   (help-at-pt-display-when-idle t))
+
+;;; scroll
+(define-key ctl-x-4-map "v" 'view-file-other-window)
+(define-key ctl-x-5-map "v" 'view-file-other-frame)
