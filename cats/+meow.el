@@ -110,9 +110,12 @@
   (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
   (add-to-list 'meow-mode-state-list '(diary-mode . normal)))
 
+(defun cat-manual-motion-mode ()
+  (meow-motion-mode 'toggle)
+  (meow-normal-mode 'toggle)
+  (message "Toggled the meow motion mode"))
+
 (add-hook 'shell-mode-hook #'meow-insert)
 (add-hook 'comint-mode-hook #'meow-insert)
 
-(defun cat-manual-motion-mode ()
-  (meow-normal-mode -1)
-  (meow-motion-mode 1))
+(add-hook 'view-mode-hook #'cat-manual-motion-mode)
