@@ -19,6 +19,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ("<help> a" . consult-apropos)            ;; orig. apropos-command
          ;; M-g bindings (goto-map)
+	 ("M-g a" . consult-org-agenda)
          ("M-g e" . consult-compile-error)
          ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
@@ -62,3 +63,6 @@
 (use-package embark-consult
   :if (featurep 'embark)
   :after consult)
+
+(with-eval-after-load 'org
+  (define-key org-mode-map [remap org-goto] #'consult-org-heading))
