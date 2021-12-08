@@ -26,4 +26,5 @@
 
 ;;; enable
 (put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 (put 'list-threads 'disabled nil)
