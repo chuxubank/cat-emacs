@@ -19,7 +19,7 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
-   '("o" . other-window)
+   '("o" . cat-other-window-frame)
    '("." . embark-act)
    '("a" . org-agenda)
    ;; toggle
@@ -114,6 +114,12 @@
   (meow-motion-mode 'toggle)
   (meow-normal-mode 'toggle)
   (message "Toggled the meow motion mode"))
+
+(defun cat-other-window-frame ()
+  (interactive)
+  (if (one-window-p)
+      (call-interactively #'other-frame)
+    (call-interactively #'other-window)))
 
 (add-hook 'shell-mode-hook #'meow-insert)
 (add-hook 'comint-mode-hook #'meow-insert)
