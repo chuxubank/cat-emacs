@@ -161,6 +161,10 @@
 ;;; archive
 (setq org-archive-location (concat cat-org-directory "/archive.org::* From %s"))
 
+;;; table
+(with-eval-after-load 'org
+  (set-face-font 'org-table cat-mono-font))
+
 ;;; babel
 (with-eval-after-load 'org
   (org-babel-do-load-languages
