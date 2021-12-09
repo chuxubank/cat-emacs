@@ -115,12 +115,6 @@
   (meow-normal-mode 'toggle)
   (message "Toggled the meow motion mode"))
 
-(defun cat-other-window-frame ()
-  (interactive)
-  (if (one-window-p)
-      (call-interactively #'other-frame)
-    (call-interactively #'other-window)))
-
 (add-hook 'shell-mode-hook #'meow-insert)
 (add-hook 'comint-mode-hook #'meow-insert)
 
