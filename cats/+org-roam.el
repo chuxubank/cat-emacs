@@ -92,7 +92,7 @@
 	   plain "eww:%^{url}" :target
 	   (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
 	  ("bv" "Bibliography reference with video"
-	   plain "[[video:$^{url}#]]" :target
+	   plain "[[video:%^{url}#]]" :target
 	   (file+head "reference/${citekey}.org" "#+title: ${title}\n"))
 	  ("bx" "SCSEE XingCe"
 	   plain (file "templates/xingce.org") :target
