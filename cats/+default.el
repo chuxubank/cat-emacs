@@ -137,3 +137,6 @@
       (call-interactively #'other-frame)
     (call-interactively #'other-window)))
 (define-key global-map (kbd "C-x o") #'cat-other-window-frame)
+
+;;; gnus
+(setq gnus-select-method '(nntp "news.gmane.io"))

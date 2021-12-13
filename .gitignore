@@ -21,3 +21,6 @@ request
 
 # custom
 custom.el
+
+# gnus
+network-security.data
