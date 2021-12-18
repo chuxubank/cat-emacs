@@ -40,11 +40,7 @@
 (straight-use-package '(org-roam :type built-in))
 
 (use-package org-roam-ui
-  :straight (org-roam-ui
-	     :host github
-	     :repo "org-roam/org-roam-ui"
-	     :branch "main"
-	     :files ("*.el" "out"))
+  :straight t
   :after org-roam
   :bind ("C-c r u" . #'org-roam-ui-mode)
   :config
