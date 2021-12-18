@@ -133,8 +133,8 @@
       (expand-file-name "notes.org" cat-org-directory)
       org-capture-templates
       '(("t" "Personal todo" entry
-         (file+headline "inbox.org" "Inbox")
-         "* [ ] %?\n%i\n%a" :prepend t)
+         (file "inbox.org")
+         "* [ ] %?\n%i\n" :prepend t)
         ("n" "Personal notes" entry
          (file+headline "notes.org" "Inbox")
          "* %u %?\n%i\n%a" :prepend t)
