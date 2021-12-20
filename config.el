@@ -44,6 +44,7 @@
 (cat! "+org-roam")
 (cat! "+org-notes")
 (cat! "+org-srs")
+(cat! "+org-cv")
 
 ;;; latex
 (cat! "+latex")

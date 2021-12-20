@@ -2,9 +2,8 @@
 
 (use-package tex
   :ensure auctex
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :defer t)
-
-(add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
 
 (setq TeX-auto-save t
       TeX-parse-self t)
