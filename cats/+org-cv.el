@@ -3,4 +3,5 @@
   :defer t
   :after org
   :config
-  (require 'ox-moderncv))
+  (require 'ox-moderncv)
+  (require 'ox-awesomecv))

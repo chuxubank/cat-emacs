@@ -34,7 +34,7 @@
 	   :unnarrowed t)
 	  ("c" "Course"
 	   plain (file "templates/course.org") :target
-	   (file "course/${SOURCE|cmu}/${COURSE-ID}.org")
+	   (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
 	   :unnarrowed t))))
 
 (straight-use-package '(org-roam :type built-in))

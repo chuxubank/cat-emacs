@@ -60,6 +60,7 @@
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+python")
+(cat! "+dart")
 
 ;;; app
 (cat! "+telega")
