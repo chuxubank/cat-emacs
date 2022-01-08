@@ -37,10 +37,7 @@
 	   (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
 	   :unnarrowed t))))
 
-(straight-use-package '(org-roam :type built-in))
-
 (use-package org-roam-ui
-  :straight t
   :after org-roam
   :bind ("C-c r u" . #'org-roam-ui-mode)
   :config
@@ -58,11 +55,8 @@
   (setq bibtex-completion-additional-search-fields '(keywords)
         bibtex-completion-pdf-field "file"
 	bibtex-completion-bibliography cat-default-bibliography-files))
-(straight-use-package '(bibtex-completion :type built-in))
 
-(straight-use-package '(org-ref :type built-in))
 (use-package org-roam-bibtex
-  :straight t
   :after org-roam
   :config
   (require 'ox)
