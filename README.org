@@ -1,4 +1,17 @@
 * Cat Emacs
+** Rime
+#+begin_src sh :var librime_version="1.7.3"
+  cd ~/Downloads
+  wget -N https://github.com/rime/librime/releases/download/${librime_version}/rime-${librime_version}-osx.zip
+  unzip -o rime-${librime_version}-osx.zip -d ~/librime
+  rm -rf rime-${librime_version}-osx.zip
+#+end_src
+
+#+RESULTS:
+
+*** Sync
+https://github.com/rime/home/wiki/UserGuide#同步用戶資料
+
 ** WSL
 #+begin_src bash
   export MOZ_ENABLE_WAYLAND=1
