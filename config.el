@@ -61,6 +61,7 @@
 (cat! "+kotlin")
 (cat! "+python")
 (cat! "+dart")
+(cat! "+mermaid")
 
 ;;; app
 (cat! "+telega")
