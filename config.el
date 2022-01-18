@@ -72,6 +72,7 @@
 (cat! "+dict")
 (cat! "+ncm")
 (cat! "+mu4e")
+(cat! "+pass")
 
 ;;; util
 (cat! "+project")
