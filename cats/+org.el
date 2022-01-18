@@ -134,13 +134,13 @@
       org-capture-templates
       '(("t" "Personal todo" entry
          (file "inbox.org")
-         "* [ ] %?\n%i\n" :prepend t)
+         "* [ ] %?\n%i" :prepend t)
         ("n" "Personal notes" entry
          (file+headline "notes.org" "Inbox")
          "* %u %?\n%i\n%a" :prepend t)
         ("j" "Journal" entry
          (file+olp+datetree "journal.org")
-         "* %U %?\n%i\n%a" :prepend t)))
+         "* %U %?")))
 
 (define-key global-map (kbd "C-c c") #'org-capture)
 
