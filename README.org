@@ -12,6 +12,13 @@
 *** Sync
 https://github.com/rime/home/wiki/UserGuide#同步用戶資料
 
+** Pass
+~$HOME/.gnupg/gpg-agent.conf~
+#+begin_example
+allow-emacs-pinentry
+allow-loopback-pinentry
+#+end_example
+
 ** WSL
 #+begin_src bash
   export MOZ_ENABLE_WAYLAND=1
