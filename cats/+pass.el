@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package pass
   :bind
   ("C-c p p" . #'pass))
