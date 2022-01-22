@@ -61,6 +61,7 @@
 (cat! "+kotlin")
 (cat! "+python")
 (cat! "+dart")
+(cat! "+plantuml")
 (cat! "+mermaid")
 
 ;;; app
