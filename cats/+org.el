@@ -172,4 +172,5 @@
    '((emacs-lisp . t)
      (R . t)
      (shell . t)
-     (C . t))))
+     (C . t)
+     (plantuml . t))))
