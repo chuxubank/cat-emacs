@@ -59,6 +59,7 @@
 	("" "booktabs" nil)
 	("" "enumitem" nil)
 	("" "fontspec" nil)
+	("" "svg" nil)
 	("" "pgfplots" t)
 	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
 (with-eval-after-load 'org
