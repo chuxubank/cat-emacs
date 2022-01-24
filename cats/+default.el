@@ -140,3 +140,6 @@
 
 ;;; gnus
 (setq gnus-select-method '(nntp "news.gmane.io"))
+
+;;; image
+(setq image-use-external-converter t)
