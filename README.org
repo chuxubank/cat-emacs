@@ -19,6 +19,13 @@ allow-emacs-pinentry
 allow-loopback-pinentry
 #+end_example
 
+** Org
+
+*** Latex
+If you want to include svg file in latex file and generate the pdf file you need to
+- Add ~set_tex_cmds( '--shell-escape %O %S' );~ to ~$HOME/.latexmkrc~
+- Install =inkscape=
+
 ** WSL
 #+begin_src bash
   export MOZ_ENABLE_WAYLAND=1
