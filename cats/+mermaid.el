@@ -4,5 +4,5 @@
   :mode "\\.mmd\\'"
   :config
   (setq mermaid-tmp-dir (concat cat-cache-dir "mermaid/")
-        mermaid-output-format ".svg"
-        mermaid-flags "-b transparent -t dark"))
+        mermaid-output-format ".pdf"
+        mermaid-flags "-b transparent -t dark -f"))
