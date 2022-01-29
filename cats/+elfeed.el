@@ -2,6 +2,8 @@
 
 (use-package elfeed
   :defer t
+  :bind
+  ("C-c e e" . #'elfeed)
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news ")
   (when (functionp #'valign--put-overlay)
@@ -43,5 +45,3 @@
   :config
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory)))
   (elfeed-org))
-
-(define-key global-map (kbd "C-c e") #'elfeed)
