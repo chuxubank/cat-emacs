@@ -3,6 +3,7 @@
 ;;; package
 (cat! "+package")
 (cat! "+straight")
+(cat! "+benchmark")
 
 ;;; ui
 (cat! "+font")
