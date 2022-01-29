@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package deft
-  :defer t
+  :bind
+  ("C-c d d" . #'deft)
   :config
   (setq deft-directory cat-org-roam-directory
 	deft-recursive t
@@ -22,5 +23,3 @@
 	(deft-base-filename file))))
 
   (advice-add 'deft-parse-title :override #'cat-deft-parse-title))
-
-(define-key global-map (kbd "C-c d d") #'deft)

@@ -2,6 +2,11 @@
 
 (use-package org-drill
   :defer t
+  :bind
+  (:map org-mode-map
+	("C-c n d d" . #'org-drill)
+	("C-c n d a" . #'org-drill-again)
+	("C-c n d c" . #'org-drill-cram))
   :custom
   (org-drill-scope 'directory)
   (org-drill-spaced-repetition-algorithm 'simple8)
@@ -18,15 +23,14 @@
 		       (substring cat-org-roam-directory 0 -1)))
   (org-fc-review-history-file (concat cat-etc-dir "org-fc-reviews.tsv")))
 
-(use-package promise
-  :after org-anki)
-
 (use-package org-anki
-  :after org)
+  :disabled
+  :after org
+  :bind
+  (:map org-mode-map
+	("C-c n a s" . #'org-anki-sync-entry)
+	("C-c n a c" . #'org-anki-cloze-dwim)))
 
-(with-eval-after-load 'org
-  (define-key org-mode-map (kbd "C-c n d d") #'org-drill)
-  (define-key org-mode-map (kbd "C-c n d a") #'org-drill-again)
-  (define-key org-mode-map (kbd "C-c n d c") #'org-drill-cram)
-  (define-key org-mode-map (kbd "C-c n a s") #'org-anki-sync-entry)
-  (define-key org-mode-map (kbd "C-c n a c") #'org-anki-cloze-dwim))
+(use-package promise
+  :disabled
+  :after org-anki)

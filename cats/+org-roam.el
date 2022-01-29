@@ -12,13 +12,14 @@
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
               #'org-roam-unlinked-references-section))
-  :bind (("C-c r r" . #'org-roam-buffer-toggle)
-	 ("C-c r R" . #'org-roam-buffer-display-dedicated)
-	 ("C-c r f" . #'org-roam-node-find)
-	 ("C-c r F" . #'org-roam-ref-find)
-         ("C-c r g" . #'org-roam-graph)
-         ("C-c r i" . #'org-roam-node-insert)
-         ("C-c r c" . #'org-roam-capture))
+  :bind
+  ("C-c r r" . #'org-roam-buffer-toggle)
+  ("C-c r R" . #'org-roam-buffer-display-dedicated)
+  ("C-c r f" . #'org-roam-node-find)
+  ("C-c r F" . #'org-roam-ref-find)
+  ("C-c r g" . #'org-roam-graph)
+  ("C-c r i" . #'org-roam-node-insert)
+  ("C-c r c" . #'org-roam-capture)
   :bind-keymap
   ("C-c r d" . org-roam-dailies-map)
   :custom
@@ -39,7 +40,8 @@
 
 (use-package org-roam-ui
   :after org-roam
-  :bind ("C-c r u" . #'org-roam-ui-mode)
+  :bind
+  ("C-c r u" . #'org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
