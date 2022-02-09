@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package telega
-  :commands #'telega)
+  :defer t)
 
 (when IS-LINUX
   (setq telega-use-docker t)
