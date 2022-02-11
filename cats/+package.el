@@ -30,10 +30,15 @@
      ("melpa-stable"	. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa-stable/")
      ("marmalade"	. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/marmalade/")
      ("sunrise"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/sunrise-commander/")
-     ("user42"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/user42/"))))
+     ("user42"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/user42/"))
+    (custom
+     ("gnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+     ("nongnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+     ("melpa"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+     ("melpa-stable"	. "https://stable.melpa.org/packages/"))))
 
 (setq package-check-signature nil
-      package-archives (assoc-default 'sjtu package-mirror-alist))
+      package-archives (assoc-default 'custom package-mirror-alist))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -51,7 +56,7 @@
           (begin-time (float-time (current-time)))
           (request-backend (car '(curl url-retrieve))))
       (request (concat url "archive-contents")
-        :timeout 10
+        :timeout 30
         :complete
         (cl-function
          (lambda (&key response symbol-status &allow-other-keys)
