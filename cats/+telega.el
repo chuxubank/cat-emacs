@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package telega
+  :pin melpa-stable
   :defer t)
 
 (when IS-LINUX
