@@ -5,4 +5,4 @@
   :config
   (setq mermaid-tmp-dir (concat cat-cache-dir "mermaid/")
         mermaid-output-format ".pdf"
-        mermaid-flags "-b transparent -t dark -f"))
+        mermaid-flags "-b transparent -f"))
