@@ -13,8 +13,6 @@
       org-startup-indented t
       org-return-follows-link t
       org-tags-column 0
-      org-image-actual-width 500
-      org-display-remote-inline-images 'cache
       org-outline-path-complete-in-steps nil
       ;; org-goto
       org-goto-auto-isearch nil
@@ -30,6 +28,25 @@
       ;; org-export
       org-export-backends
       '(ascii beamer html icalendar latex md odt))
+
+;;; image
+(setq org-image-actual-width 500
+      org-display-remote-inline-images 'cache)
+
+(defun +org-redisplay-inline-images-in-babel-result-h ()
+  (unless (or
+           ;; ...but not while Emacs is exporting an org buffer (where
+           ;; `org-display-inline-images' can be awfully slow).
+           (bound-and-true-p org-export-current-backend)
+           ;; ...and not while tangling org buffers (which happens in a temp
+           ;; buffer where `buffer-file-name' is nil).
+           (string-match-p "^ \\*temp" (buffer-name)))
+    (save-excursion
+      (when-let ((beg (org-babel-where-is-src-block-result))
+                 (end (progn (goto-char beg) (forward-line) (org-babel-result-end))))
+        (org-display-inline-images nil nil (min beg end) (max beg end))))))
+
+(add-hook 'org-babel-after-execute-hook #'+org-redisplay-inline-images-in-babel-result-h)
 
 ;;; link
 (setq org-link-abbrev-alist
