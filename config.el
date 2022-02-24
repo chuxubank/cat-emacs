@@ -46,6 +46,7 @@
 (cat! "+org-notes")
 (cat! "+org-srs")
 (cat! "+org-cv")
+(cat! "+org-yt")
 
 ;;; latex
 (cat! "+latex")
