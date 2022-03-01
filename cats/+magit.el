@@ -8,7 +8,8 @@
         transient-history-file (concat cat-etc-dir "transient/history"))
   :config
   (setq magit-diff-refine-hunk t
-	magit-diff-refine-ignore-whitespace nil))
+	magit-diff-refine-ignore-whitespace nil
+	magit-repository-directories '(("~/Developer/" . 3))))
 
 (use-package forge
   :after magit
