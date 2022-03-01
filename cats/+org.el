@@ -183,6 +183,85 @@
 (with-eval-after-load 'org
   (set-face-font 'org-table cat-mono-font))
 
+;;; column
+(with-eval-after-load 'org-colview
+  (set-face-font 'org-column-title cat-mono-font)
+  (defun org-columns--display-here (columns &optional dateline)
+    "Overlay the current line with column display.
+COLUMNS is an alist (SPEC VALUE DISPLAYED).  Optional argument
+DATELINE is non-nil when the face used should be
+`org-agenda-column-dateline'."
+    (when (ignore-errors (require 'face-remap))
+      (setq org-columns-header-line-remap
+	    (face-remap-add-relative 'header-line '(:inherit default))))
+    (save-excursion
+      (beginning-of-line)
+      (let* ((level-face (and (looking-at "\\(\\**\\)\\(\\* \\)")
+			      (org-get-level-face 2)))
+	     (ref-face (or level-face
+			   (and (eq major-mode 'org-agenda-mode)
+				(org-get-at-bol 'face))
+			   'default))
+	     (color (list :foreground (face-attribute ref-face :foreground)))
+	     (font (list :family cat-mono-font))
+	     (face (list color font 'org-column ref-face))
+	     (face1 (list color font 'org-agenda-column-dateline ref-face)))
+	;; Each column is an overlay on top of a character.  So there has
+	;; to be at least as many characters available on the line as
+	;; columns to display.
+	(let ((columns (length org-columns-current-fmt-compiled))
+	      (chars (- (line-end-position) (line-beginning-position))))
+	  (when (> columns chars)
+	    (save-excursion
+	      (end-of-line)
+	      (let ((inhibit-read-only t))
+		(insert (make-string (- columns chars) ?\s))))))
+	;; Display columns.  Create and install the overlay for the
+	;; current column on the next character.
+	(let ((i 0)
+	      (last (1- (length columns))))
+	  (dolist (column columns)
+	    (pcase column
+	      (`(,spec ,original ,value)
+	       (let* ((property (car spec))
+		      (width (aref org-columns-current-maxwidths i))
+		      (fmt (format (if (= i last) "%%-%d.%ds |"
+				     "%%-%d.%ds | ")
+				   width width))
+		      (ov (org-columns--new-overlay
+			   (point) (1+ (point))
+			   (org-columns--overlay-text
+			    value fmt width property original)
+			   (if dateline face1 face))))
+		 (overlay-put ov 'keymap org-columns-map)
+		 (overlay-put ov 'org-columns-key property)
+		 (overlay-put ov 'org-columns-value original)
+		 (overlay-put ov 'org-columns-value-modified value)
+		 (overlay-put ov 'org-columns-format fmt)
+		 (overlay-put ov 'line-prefix "")
+		 (overlay-put ov 'wrap-prefix "")
+		 (forward-char))))
+	    (cl-incf i)))
+	;; Make the rest of the line disappear.
+	(let ((ov (org-columns--new-overlay (point) (line-end-position))))
+	  (overlay-put ov 'invisible t)
+	  (overlay-put ov 'keymap org-columns-map)
+	  (overlay-put ov 'line-prefix "")
+	  (overlay-put ov 'wrap-prefix ""))
+	(let ((ov (make-overlay (1- (line-end-position))
+				(line-beginning-position 2))))
+	  (overlay-put ov 'keymap org-columns-map)
+	  (push ov org-columns-overlays))
+	(with-silent-modifications
+	  (let ((inhibit-read-only t))
+	    (put-text-property
+	     (line-end-position 0)
+	     (line-beginning-position 2)
+	     'read-only
+	     (substitute-command-keys
+	      "Type \\<org-columns-map>`\\[org-columns-edit-value]' \
+to edit property"))))))))
+
 ;;; babel
 (with-eval-after-load 'org
   (org-babel-do-load-languages
