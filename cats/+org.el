@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(if EMACS28+ nil
+(if EMACS28+
+    nil
   (use-package org
     :defer t))
 
@@ -11,7 +12,6 @@
       ;; org-agenda-include-diary t
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
       org-startup-indented t
-      org-return-follows-link t
       org-tags-column 0
       org-outline-path-complete-in-steps nil
       ;; org-goto
@@ -49,7 +49,8 @@
 (add-hook 'org-babel-after-execute-hook #'+org-redisplay-inline-images-in-babel-result-h)
 
 ;;; link
-(setq org-link-abbrev-alist
+(setq org-return-follows-link t
+      org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
 	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
 	("github" . "https://github.com/%s")
@@ -66,6 +67,7 @@
   (define-key org-mode-map (kbd "M-p") #'org-previous-link)
   (define-key org-mode-map (kbd "C-c C-x l") #'org-toggle-link-display))
 
+(autoload #'org-store-link "ol" nil t)
 (define-key global-map (kbd "C-c l") #'org-store-link)
 
 ;;; latex
