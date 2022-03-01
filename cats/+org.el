@@ -153,6 +153,9 @@
       '(("t" "Personal todo" entry
          (file "inbox.org")
          "* [ ] %?\n%i" :prepend t)
+	("b" "Shopping list" entry
+         (file "buy.org")
+         "* TODO %?\n%i" :prepend t)
         ("n" "Personal notes" entry
          (file+headline "notes.org" "Inbox")
          "* %u %?\n%i\n%a" :prepend t)
