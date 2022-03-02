@@ -61,6 +61,7 @@
 (cat! "+lsp")
 (cat! "+yaml")
 (cat! "+kotlin")
+(cat! "+gradle")
 (cat! "+python")
 (cat! "+dart")
 (cat! "+plantuml")
