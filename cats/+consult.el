@@ -65,5 +65,7 @@
   :if (featurep 'embark)
   :after consult)
 
+(define-key global-map [remap recentf-open-files] #'consult-recent-file)
+
 (with-eval-after-load 'org
   (define-key org-mode-map [remap org-goto] #'consult-org-heading))
