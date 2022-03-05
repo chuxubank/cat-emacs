@@ -143,3 +143,6 @@
 
 ;;; image
 (setq image-use-external-converter t)
+
+;;; revert
+(global-auto-revert-mode 1)
