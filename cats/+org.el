@@ -184,13 +184,8 @@
 ;;; archive
 (setq org-archive-location (concat cat-org-directory "/archive.org::* From %s"))
 
-;;; table
-(with-eval-after-load 'org
-  (set-face-font 'org-table cat-mono-font))
-
 ;;; column
 (with-eval-after-load 'org-colview
-  (set-face-font 'org-column-title cat-mono-font)
   (defun org-columns--display-here (columns &optional dateline)
     "Overlay the current line with column display.
 COLUMNS is an alist (SPEC VALUE DISPLAYED).  Optional argument
@@ -276,3 +271,10 @@ to edit property"))))))))
      (shell . t)
      (C . t)
      (plantuml . t))))
+
+;;; font
+(defun cat-setup-org-font ()
+  (set-face-font 'org-table cat-mono-font)
+  (set-face-font 'org-column-title cat-mono-font))
+
+(add-hook 'org-mode-hook #'cat-setup-org-font)
