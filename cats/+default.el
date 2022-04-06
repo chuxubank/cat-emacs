@@ -48,9 +48,6 @@
 ;;; buffer
 (defalias 'list-buffers 'ibuffer)
 
-;;; coding
-(set-language-environment "UTF-8")
-
 ;;; url
 (setq url-configuration-directory (concat cat-etc-dir "url/"))
 
