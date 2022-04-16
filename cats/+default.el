@@ -143,3 +143,6 @@
 
 ;;; revert
 (global-auto-revert-mode 1)
+
+;;; project
+(setq project-list-file (concat cat-cache-dir "projects"))
