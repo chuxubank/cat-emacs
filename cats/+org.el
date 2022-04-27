@@ -54,6 +54,7 @@
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
 	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
 	("github" . "https://github.com/%s")
+	("bitbucket" . "https://bitbucket.org/%s")
 	("bili". "https://bilibili.com/video/%s")
 	("coursera". "https://www.coursera.org/%s")))
 
