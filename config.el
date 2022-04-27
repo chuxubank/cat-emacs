@@ -31,6 +31,7 @@
 (cat! "+which-key")
 (cat! "+embark")
 (cat! "+consult")
+(cat! "+yasnippet")
 
 ;;; search
 (cat! "+ctrlf")
