@@ -19,7 +19,6 @@
 
 (when IS-MAC
   (setq
-   cat-default-font "Roboto Mono 18"
    cat-symbol-fonts
    '("Cascadia Code" "Apple Symbols" "Arial Unicode MS" "Apple Color Emoji" "Unifont Upper")))
 
