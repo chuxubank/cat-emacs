@@ -22,7 +22,6 @@
 ;;; edit
 (cat! "+meow")
 (cat! "+smartparens")
-(cat! "+format-all")
 
 ;;; completion
 (cat! "+company")
@@ -60,7 +59,9 @@
 (cat! "+pangu")
 
 ;;; language
+(cat! "+format-all")
 (cat! "+lsp")
+(cat! "+flycheck")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+gradle")
