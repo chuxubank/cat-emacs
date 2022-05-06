@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package nano-theme
-  :straight (nano-theme :host github :repo "rougier/nano-theme")
   :config
   (setq
    default-frame-alist (list '(internal-border-width . 24)
@@ -16,8 +15,6 @@
 			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
-  :disabled
-  :straight (nano-modeline :host github :repo "rougier/nano-modeline")
   :config
   (nano-modeline-mode))
 
