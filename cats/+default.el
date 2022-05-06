@@ -6,7 +6,8 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (setq inhibit-startup-screen t
-      initial-scratch-message nil)
+      initial-scratch-message nil
+      frame-resize-pixelwise t)
 
 (setq frame-title-format '("%b – Cat Emacs")
       icon-title-format frame-title-format)
