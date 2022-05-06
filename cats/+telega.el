@@ -15,6 +15,8 @@
  telega-symbol-keyboard "⌨"
  telega-symbol-reply "↩"
  telega-symbol-forward "⏩"
+ telega-symbol-video-chat-active nil
+ telega-symbol-video-chat-passive nil
  telega-chat-input-markups '("markdown2" nil)
  telega-filter-default '(and main (custom "Focus"))
  telega-video-player-command "mpv")
