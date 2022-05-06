@@ -26,6 +26,7 @@
    '("df" . display-fill-column-indicator-mode)
    '("dl" . display-line-numbers-mode)
    '("td" . toggle-debug-on-error)
+   '("tf" . transpose-frame)
    '("tt" . toggle-truncate-lines)
    '("tw" . toggle-word-wrap)
    '("va" . valign-mode)
