@@ -34,9 +34,6 @@
 (setq isearch-lazy-count t)
 
 ;;; ispell
-(setq ispell-dictionary "en_US"
-      ispell-program-name (executable-find "aspell"))
-
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
