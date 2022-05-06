@@ -126,25 +126,12 @@
          "|"
          "DONE(d)"  ; Task successfully completed
          "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
-        (sequence
-         "[ ](T)"   ; A task that needs doing
-         "[-](S)"   ; Task is in progress
-         "[?](W)"   ; Task is being held up or paused
-         "|"
-         "[X](D)")  ; Task was completed
-        (sequence
-         "|"
-         "OKAY(o)"
-         "YES(y)"
-         "NO(n)"))
+	)
       org-todo-keyword-faces
-      '(("[-]"  . +org-todo-active)
-        ("STRT" . +org-todo-active)
-        ("[?]"  . +org-todo-onhold)
+      '(("STRT" . +org-todo-active)
         ("WAIT" . +org-todo-onhold)
         ("HOLD" . +org-todo-onhold)
         ("PROJ" . +org-todo-project)
-        ("NO"   . +org-todo-cancel)
         ("KILL" . +org-todo-cancel)))
 
 (define-key global-map (kbd "C-c a") #'org-agenda)
@@ -155,7 +142,7 @@
       org-capture-templates
       '(("t" "Personal todo" entry
          (file "inbox.org")
-         "* [ ] %?\n%i" :prepend t)
+         "* TODO %?\n%i" :prepend t)
 	("b" "Shopping list" entry
          (file "buy.org")
          "* TODO %?\n%i" :prepend t)
