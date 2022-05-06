@@ -67,6 +67,7 @@
 (cat! "+dart")
 (cat! "+plantuml")
 (cat! "+mermaid")
+(cat! "+json")
 
 ;;; app
 (cat! "+telega")
