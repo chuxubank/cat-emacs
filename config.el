@@ -22,6 +22,7 @@
 ;;; edit
 (cat! "+meow")
 (cat! "+smartparens")
+(cat! "+format-all")
 
 ;;; completion
 (cat! "+company")
