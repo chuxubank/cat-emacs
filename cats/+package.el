@@ -4,10 +4,10 @@
 
 (defconst package-mirror-alist
   '((default
-     ("gnu"		. "https://elpa.gnu.org/packages/")
-     ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
-     ("melpa"		. "https://melpa.org/packages/")
-     ("melpa-stable"	. "https://stable.melpa.org/packages/"))
+      ("gnu"		. "https://elpa.gnu.org/packages/")
+      ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
+      ("melpa"		. "https://melpa.org/packages/")
+      ("melpa-stable"	. "https://stable.melpa.org/packages/"))
     (emacs-china
      ("gnu"		. "http://elpa.zilongshanren.com/gnu/")
      ("nongnu"		. "http://elpa.zilongshanren.com/nongnu/")
@@ -59,16 +59,16 @@
         :timeout 30
         :complete
         (cl-function
-         (lambda (&key response symbol-status &allow-other-keys)
-           (with-current-buffer "*Elpa mirror test*"
-             (goto-char (point-max))
-             (let ((inhibit-read-only t))
-               (insert (format "%11s  %-29s [%s]\n"
-                               (if (eq symbol-status 'success)
-                                   (format
-                                    "%6fs"
-                                    (- (float-time (current-time)) begin-time))
-                                 symbol-status)
-                               (url-host (url-generic-parse-url url))
-                               (if (eq symbol-status 'success)
-                                   (request-response-header response "Last-Modified"))))))))))))
+	 (lambda (&key response symbol-status &allow-other-keys)
+	   (with-current-buffer "*Elpa mirror test*"
+	     (goto-char (point-max))
+	     (let ((inhibit-read-only t))
+	       (insert (format "%11s  %-29s [%s]\n"
+			       (if (eq symbol-status 'success)
+				   (format
+				    "%6fs"
+				    (- (float-time (current-time)) begin-time))
+				 symbol-status)
+			       (url-host (url-generic-parse-url url))
+			       (if (eq symbol-status 'success)
+				   (request-response-header response "Last-Modified"))))))))))))
