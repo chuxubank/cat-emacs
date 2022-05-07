@@ -155,3 +155,12 @@
 
 ;;; project
 (setq project-list-file (concat cat-cache-dir "projects"))
+
+;;; hideshow
+(dolist (h '(c-mode-hook
+	     lisp-mode-hook
+	     lisp-interaction-mode-hook
+	     emacs-lisp-mode-hook
+	     js-mode-hook
+	     bibtex-mode-hook))
+  (add-hook h 'hs-minor-mode))
