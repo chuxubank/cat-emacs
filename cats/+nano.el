@@ -17,7 +17,3 @@
 (use-package nano-modeline
   :config
   (nano-modeline-mode))
-
-(use-package nano-agenda
-  :disabled
-  :straight t)
