@@ -70,6 +70,7 @@
 (cat! "+plantuml")
 (cat! "+mermaid")
 (cat! "+js")
+(cat! "+caddy")
 
 ;;; app
 (cat! "+telega")
