@@ -18,10 +18,6 @@
   (interactive)
   (+project-find-file-in-dir cat-org-directory))
 
-(defun +find-pdf-files ()
-  (interactive)
-  (+project-find-file-in-dir "~/PDFs"))
-
 (defun +delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
@@ -35,9 +31,7 @@
       (message "Not a file visiting buffer!"))))
 
 (define-key global-map (kbd "C-c f e") #'+find-emacs-profile)
-(define-key global-map (kbd "C-c f p") #'+find-pdf-files)
 (define-key global-map (kbd "C-c f o") #'+find-org-files)
 (define-key global-map (kbd "C-c f r") #'recentf-open-files)
 (define-key global-map (kbd "C-c f l") #'find-library)
 (define-key global-map (kbd "C-c f d") #'+delete-file-and-buffer)
-(define-key global-map (kbd "C-c p f") #'project-find-file)
