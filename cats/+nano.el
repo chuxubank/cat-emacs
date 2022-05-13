@@ -15,5 +15,7 @@
 			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
+  :custom
+  (nano-modeline-prefix-padding t)
   :config
   (nano-modeline-mode))
