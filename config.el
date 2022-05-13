@@ -70,7 +70,7 @@
 (cat! "+dart")
 (cat! "+plantuml")
 (cat! "+mermaid")
-(cat! "+js")
+(cat! "+json")
 (cat! "+caddy")
 
 ;;; app

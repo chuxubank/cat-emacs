@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq js-indent-level 2)
-
 (use-package json-mode
   :defer t)
 
