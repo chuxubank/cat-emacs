@@ -48,6 +48,7 @@
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-yt")
+(cat! "+org-jira")
 
 ;;; latex
 (cat! "+latex")
