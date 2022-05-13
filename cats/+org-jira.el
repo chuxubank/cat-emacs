@@ -4,6 +4,4 @@
   :after org)
 
 (use-package org-jira
-  :after org
-  :config
-  (make-directory org-jira-working-dir))
+  :after org)
