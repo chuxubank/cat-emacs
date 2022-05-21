@@ -56,7 +56,7 @@
 ;;; minibuffer
 (setq enable-recursive-minibuffers t
       confirm-kill-emacs #'yes-or-no-p)
-(fset #'yes-or-no-p #'y-or-n-p)
+
 (setq savehist-file (expand-file-name "minibuffer/history" cat-cache-dir))
 (savehist-mode)
 
@@ -152,6 +152,7 @@
 
 ;;; revert
 (global-auto-revert-mode 1)
+(setq revert-buffer-quick-short-answers t)
 
 ;;; project
 (setq project-list-file (concat cat-cache-dir "projects"))
