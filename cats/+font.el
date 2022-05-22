@@ -4,24 +4,11 @@
 (defvar cat-alt-code-font "Cascadia Code")
 (defvar cat-cjk-font "LXGW WenKai")
 (defvar cat-mono-font "LXGW WenKai Mono")
-(defvar cat-symbol-fonts nil)
 (defvar cat-math-fonts '("Noto Sans Math"))
-
-(when IS-LINUX
-  (setq
-   cat-symbol-fonts
-   '("Cascadia Code" "Inconsolata" "Noto Color Emoji")))
-
-(when IS-WINDOWS
-  (setq
-   cat-symbol-fonts
-   '("Segoe UI Emoji" "Cambria Math" "Mongolian Baiti" "Segoe UI Symbol")))
 
 (when IS-MAC
   (setq
-   cat-default-font "Roboto Mono 18"
-   cat-symbol-fonts
-   '("Cascadia Code" "Apple Symbols" "Arial Unicode MS" "Apple Color Emoji" "Unifont Upper")))
+   cat-default-font "Roboto Mono 18"))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
@@ -31,13 +18,6 @@
   (set-fontset-font t 'cjk-misc (font-spec :family cat-cjk-font))
   (set-fontset-font t 'kana (font-spec :family cat-cjk-font))
   (message "Set CJK font %s" cat-cjk-font))
-
-;; 😺
-(when cat-symbol-fonts
-  (set-fontset-font t 'symbol (font-spec :family (car cat-symbol-fonts)))
-  (dolist (font (cdr cat-symbol-fonts))
-    (set-fontset-font t 'symbol (font-spec :family font) nil 'append))
-  (message "Set Symbol font %s" cat-symbol-fonts))
 
 ;; 𝓒𝙖𝕥
 (when cat-math-fonts
