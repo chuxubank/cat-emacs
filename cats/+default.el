@@ -127,10 +127,7 @@
   (repeat-mode 1))
 
 ;;; help
-(use-package help-at-pt
-  :defer t
-  :custom
-  (help-at-pt-display-when-idle t))
+(setq help-at-pt-display-when-idle t)
 
 ;;; scroll
 (define-key ctl-x-4-map "v" 'view-file-other-window)
