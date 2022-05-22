@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package telega
-  :pin melpa-stable
   :defer t)
 
 (when IS-LINUX
@@ -15,10 +14,7 @@
  telega-symbol-keyboard "⌨"
  telega-symbol-reply "↩"
  telega-symbol-forward "⏩"
- telega-symbol-video-chat-active nil
- telega-symbol-video-chat-passive nil
  telega-chat-input-markups '("markdown2" nil)
- telega-filter-default '(and main (custom "Focus"))
  telega-video-player-command "mpv")
 
 (when (featurep 'selectrum)
@@ -42,10 +38,6 @@
     (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
     (set-face-attribute 'telega-entity-type-code nil :family cat-alt-code-font)
     (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
-  (add-to-list
-   'telega-filters-custom
-   '("Focus" . (not (folder "NSFW" "Proxy" "Coin"))))
-  ;; consistency with meow
   (define-key telega-msg-button-map (kbd "SPC") nil))
 
 (define-key global-map (kbd "C-c t") telega-prefix-map)
