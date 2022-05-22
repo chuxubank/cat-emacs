@@ -9,13 +9,11 @@
     (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i")))
 
 (setq
- telega-symbol-folder "📁"
- telega-symbol-linked "🔗"
- telega-symbol-keyboard "⌨"
- telega-symbol-reply "↩"
- telega-symbol-forward "⏩"
- telega-chat-input-markups '("markdown2" nil)
- telega-video-player-command "mpv")
+ telega-emoji-use-images nil
+ telega-symbol-video-chat-active "🔊"
+ telega-symbol-video-chat-passive "🔈"
+ telega-video-player-command "mpv"
+ telega-chat-input-markups '("markdown2" nil))
 
 (when (featurep 'selectrum)
   (setq telega-completing-read-function #'selectrum-completing-read))
