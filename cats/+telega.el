@@ -3,12 +3,11 @@
 (use-package telega
   :defer t)
 
-(when IS-LINUX
-  (setq telega-use-docker t)
-  (when IS-WSL
-    (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i")))
+(when IS-WSL
+  (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
 
 (setq
+ telega-use-docker t
  telega-emoji-use-images nil
  telega-symbol-video-chat-active "🔊"
  telega-symbol-video-chat-passive "🔈"
