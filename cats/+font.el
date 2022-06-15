@@ -7,8 +7,10 @@
 (defvar cat-math-fonts '("Noto Sans Math"))
 
 (when IS-MAC
-  (setq
-   cat-default-font "Roboto Mono 18"))
+  (setq cat-default-font "Roboto Mono 18"))
+
+(when IS-WINDOWS
+  (setq cat-default-font "RobotoMono NF 14"))
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
