@@ -6,7 +6,13 @@
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-	meow-expand-exclude-mode-list nil)
+	meow-expand-exclude-mode-list nil
+	meow-replace-state-name-list
+	'((normal . "🅝")
+          (beacon . "🅑")
+          (insert . "🅘")
+          (motion . "🅜")
+          (keypad . "🅚")))
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -18,21 +24,8 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
-   '("o" . cat-other-window-frame)
-   '("." . embark-act)
-   '("a" . org-agenda)
-   ;; toggle
-   '("df" . display-fill-column-indicator-mode)
-   '("dl" . display-line-numbers-mode)
-   '("td" . toggle-debug-on-error)
-   '("tf" . transpose-frame)
-   '("tt" . toggle-truncate-lines)
-   '("tw" . toggle-word-wrap)
-   '("va" . valign-mode)
-   '("vf" . visual-fill-column-mode)
-   '("vl" . visual-line-mode)
-   '("vv" . view-mode)
-   '("ws" . whitespace-mode))
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -108,7 +101,8 @@
   (meow-setup-line-number)
   (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
   (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
-  (add-to-list 'meow-mode-state-list '(diary-mode . normal)))
+  (add-to-list 'meow-mode-state-list '(diary-mode . normal))
+  (add-to-list 'meow-mode-state-list '(telega-root-mode . motion)))
 
 (defun cat-manual-motion-mode ()
   (meow-motion-mode 'toggle)

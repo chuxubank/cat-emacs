@@ -30,8 +30,12 @@
               (kill-buffer)))
       (message "Not a file visiting buffer!"))))
 
-(define-key global-map (kbd "C-c f e") #'+find-emacs-profile)
-(define-key global-map (kbd "C-c f o") #'+find-org-files)
-(define-key global-map (kbd "C-c f r") #'recentf-open-files)
-(define-key global-map (kbd "C-c f l") #'find-library)
-(define-key global-map (kbd "C-c f d") #'+delete-file-and-buffer)
+(defvar cat-file-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "e" #'+find-emacs-profile)
+    (define-key map "o" #'+find-org-files)
+    (define-key map "r" #'recentf-open-files)
+    (define-key map "l" #'find-library)
+    (define-key map "d" #'+delete-file-and-buffer)
+    map)
+  "Keymap for file commands.")

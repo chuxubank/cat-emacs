@@ -37,5 +37,4 @@
     (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
   (define-key telega-msg-button-map (kbd "SPC") nil))
 
-(define-key global-map (kbd "C-c t") telega-prefix-map)
-(define-key global-map (kbd "C-c t k") #'telega-kill)
+(define-key telega-prefix-map "k" #'telega-kill)

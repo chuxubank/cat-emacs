@@ -18,5 +18,3 @@
 (when (featurep 'meow)
   (add-hook 'wl-folder-mode-hook #'cat-manual-motion-mode)
   (add-hook 'mime-view-mode-hook #'cat-manual-motion-mode))
-
-(define-key global-map (kbd "C-c w") #'wl)

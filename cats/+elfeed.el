@@ -2,8 +2,6 @@
 
 (use-package elfeed
   :defer t
-  :bind
-  ("C-c e e" . #'elfeed)
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news ")
   (when (functionp #'valign--put-overlay)

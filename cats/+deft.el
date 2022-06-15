@@ -1,8 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package deft
-  :bind
-  ("C-c d d" . #'deft)
   :config
   (setq deft-directory cat-org-roam-directory
 	deft-recursive t
