@@ -2,8 +2,6 @@
 
 (use-package pass
   :defer t
-  :bind
-  ("C-c p p" . #'pass)
   :custom
   (password-store-password-length 16))
 

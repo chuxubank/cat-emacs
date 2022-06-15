@@ -2,8 +2,6 @@
 
 (use-package bing-dict
   :defer t
-  :bind
-  ("C-c d b" . #'bing-dict-brief)
   :config
   (setq bing-dict-vocabulary-save t
         bing-dict-show-thesaurus 'both
@@ -11,8 +9,6 @@
 
 (use-package anki-vocabulary
   :defer t
-  :bind
-  ("C-c d a" . #'anki-vocabulary)
   :custom
   (anki-vocabulary-deck-name "Inbox")
   (anki-vocabulary-model-name "AutoCopy")

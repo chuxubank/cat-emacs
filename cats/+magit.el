@@ -2,8 +2,6 @@
 
 (use-package magit
   :defer t
-  :bind
-  ("C-c p l" . #'magit-list-repositories)
   :init
   (setq transient-levels-file (concat cat-etc-dir "transient/levels")
         transient-values-file (concat cat-etc-dir "transient/values")

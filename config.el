@@ -88,3 +88,5 @@
 (cat! "+project")
 (cat! "+diredx")
 (cat! "+sow")
+
+(cat! "+keymap")

@@ -3,8 +3,6 @@
 (use-package mu4e
   :defer t
   :ensure nil
-  :bind
-  ("C-c u" . #'mu4e)
   :custom
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-use-fancy-chars t)
