@@ -48,7 +48,7 @@
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-yt")
-(cat! "+org-jira")
+;; (cat! "+org-jira")
 
 ;;; latex
 (cat! "+latex")
@@ -73,7 +73,7 @@
 (cat! "+json")
 (cat! "+caddy")
 
-;;; app
+;;; plugins
 (cat! "+telega")
 (cat! "+pdf")
 (cat! "+nov")
