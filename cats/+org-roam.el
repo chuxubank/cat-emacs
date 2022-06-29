@@ -28,6 +28,11 @@
 	   (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
 	   :unnarrowed t))))
 
+(use-package org-roam-dailies
+  :ensure org-roam
+  :bind-keymap
+  ("C-c d" . org-roam-dailies-map))
+
 (use-package org-roam-ui
   :defer t
   :config
@@ -83,3 +88,22 @@
 	   (file "reference/${citekey}.org")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
+
+(defvar cat-org-roam-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "c" #'org-roam-capture)
+    (define-key map "d" (cons "org-roam-dailies"
+			      #'(lambda ()
+				  (interactive)
+				  (use-package-autoload-keymap
+				   'org-roam-dailies-map
+				   'org-roam-dailies
+				   nil))))
+    (define-key map "f" #'org-roam-node-find)
+    (define-key map "F" #'org-roam-ref-find)
+    (define-key map "g" #'org-roam-graph)
+    (define-key map "i" #'org-roam-node-insert)
+    (define-key map "R" #'org-roam-buffer-display-dedicated)
+    (define-key map "u" #'org-roam-ui-mode)
+    map)
+  "Keymap for org-roam commands.")
