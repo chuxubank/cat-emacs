@@ -32,10 +32,11 @@
 
 (defvar cat-file-map
   (let ((map (make-sparse-keymap)))
+    (define-key map "d" #'+delete-file-and-buffer)
     (define-key map "e" #'+find-emacs-profile)
+    (define-key map "f" #'find-function)
+    (define-key map "l" #'find-library)
     (define-key map "o" #'+find-org-files)
     (define-key map "r" #'recentf-open-files)
-    (define-key map "l" #'find-library)
-    (define-key map "d" #'+delete-file-and-buffer)
     map)
   "Keymap for file commands.")
