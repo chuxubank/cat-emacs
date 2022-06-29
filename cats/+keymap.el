@@ -36,6 +36,20 @@
     map)
   "Keymap for plugins.")
 
+(defvar cat-org-roam-map
+  (let ((map (make-sparse-keymap)))
+    (cat-define-key map "c" #'org-roam-capture)
+    (cat-define-key map "d" #'org-roam-dailies-map)
+    (cat-define-key map "f" #'org-roam-node-find)
+    (cat-define-key map "F" #'org-roam-ref-find)
+    (cat-define-key map "g" #'org-roam-graph)
+    (cat-define-key map "i" #'org-roam-node-insert)
+    (cat-define-key map "R" #'org-roam-buffer-display-dedicated)
+    (cat-define-key map "u" #'org-roam-ui-mode)
+    map)
+  "Keymap for org-roam commands.")
+
 (cat-define-key mode-specific-map "f" cat-file-map "cat-file-map")
 (cat-define-key mode-specific-map "p" cat-plugin-map "cat-plugin-map")
 (cat-define-key mode-specific-map "t" cat-toggle-map "cat-toggle-map")
+(cat-define-key mode-specific-map "r" cat-org-roam-map "cat-org-roam-map")
