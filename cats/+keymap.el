@@ -43,4 +43,5 @@
 (cat-define-map mode-specific-map "f" cat-file-map "cat-file-map")
 (cat-define-map mode-specific-map "p" cat-plugin-map "cat-plugin-map")
 (cat-define-map mode-specific-map "r" cat-org-roam-map "cat-org-roam-map")
+(cat-define-map mode-specific-map "j" cat-org-jira-map "cat-org-jira-map")
 (cat-define-map mode-specific-map "t" cat-toggle-map "cat-toggle-map")
