@@ -19,5 +19,4 @@
   (setq citar-at-point-function 'embark-act
         citar-file-note-org-include '(org-id org-roam-ref)
 	citar-file-open-function #'org-open-file)
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
   (set-face-font 'citar-highlight cat-mono-font))

@@ -55,7 +55,6 @@
 	xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   :config
   (setq consult-narrow-key "<"
 	consult-project-root-function #'+project-root)
