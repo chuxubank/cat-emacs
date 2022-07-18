@@ -146,6 +146,11 @@
 	("b" "Shopping list" entry
          (file "buy.org")
          "* TODO %?\n%i" :prepend t)
+	("p" "Place" entry
+         (file "place.org")
+         (file "templates/place.org")
+	 :prepend t
+	 :empty-lines 1)
         ("n" "Personal notes" entry
          (file+headline "notes.org" "Inbox")
          "* %u %?\n%i\n%a" :prepend t)
