@@ -143,6 +143,9 @@
       '(("t" "Personal todo" entry
          (file "inbox.org")
          "* TODO %?\n%i" :prepend t)
+	("w" "Work todo" entry
+         (file+headline "work.org" "Inbox")
+         "* TODO %?\n%i" :prepend nil)
 	("b" "Shopping list" entry
          (file "buy.org")
          "* TODO %?\n%i" :prepend t)
