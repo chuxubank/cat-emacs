@@ -60,10 +60,11 @@
 (cat! "+rime")
 (cat! "+pangu")
 
-;;; language
+;;; program
 (cat! "+format-all")
 (cat! "+lsp")
 (cat! "+flycheck")
+(cat! "+copilot")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+gradle")
