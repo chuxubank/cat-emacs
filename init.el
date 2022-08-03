@@ -11,8 +11,8 @@
                    (error "Could not detect path to look for '%s' in"
                           filename)))
          (file (if path
-                  `(expand-file-name ,filename ,path)
-                filename)))
+		   `(expand-file-name ,filename ,path)
+                 filename)))
     `(condition-case-unless-debug e
          (let (file-name-handler-alist)
            (load ,file ,noerror 'nomessage))
@@ -28,3 +28,4 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'list-threads 'disabled nil)
+(put 'magit-clean 'disabled nil)
