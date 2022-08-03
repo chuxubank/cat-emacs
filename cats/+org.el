@@ -150,7 +150,7 @@
          (file "buy.org")
          "* TODO %?\n%i" :prepend t)
 	("p" "Place" entry
-         (file "place.org")
+         (file+headline "place.org" "Inbox")
          (file "templates/place.org")
 	 :prepend t
 	 :empty-lines 1)
