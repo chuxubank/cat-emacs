@@ -8,6 +8,8 @@
 (straight-use-package '(org :type built-in))
 
 (setq org-agenda-files (list cat-org-directory)
+      org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
       diary-file (expand-file-name "diary" cat-org-directory)
       ;; org-agenda-include-diary t
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
