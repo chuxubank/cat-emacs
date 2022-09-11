@@ -56,19 +56,19 @@
           (begin-time (float-time (current-time)))
           (request-backend (car '(curl url-retrieve))))
       (request (concat url "archive-contents")
-        :timeout 30
-        :complete
-        (cl-function
-	 (lambda (&key response symbol-status &allow-other-keys)
-	   (with-current-buffer "*Elpa mirror test*"
-	     (goto-char (point-max))
-	     (let ((inhibit-read-only t))
-	       (insert (format "%11s  %-29s [%s]\n"
-			       (if (eq symbol-status 'success)
-				   (format
-				    "%6fs"
-				    (- (float-time (current-time)) begin-time))
-				 symbol-status)
-			       (url-host (url-generic-parse-url url))
-			       (if (eq symbol-status 'success)
-				   (request-response-header response "Last-Modified"))))))))))))
+	       :timeout 30
+               :complete
+               (cl-function
+		(lambda (&key response symbol-status &allow-other-keys)
+		  (with-current-buffer "*Elpa mirror test*"
+		    (goto-char (point-max))
+		    (let ((inhibit-read-only t))
+		      (insert (format "%11s  %-29s [%s]\n"
+				      (if (eq symbol-status 'success)
+					  (format
+					   "%6fs"
+					   (- (float-time (current-time)) begin-time))
+					symbol-status)
+				      (url-host (url-generic-parse-url url))
+				      (if (eq symbol-status 'success)
+					  (request-response-header response "Last-Modified"))))))))))))
