@@ -104,7 +104,8 @@
   (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
   (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
   (add-to-list 'meow-mode-state-list '(diary-mode . normal))
-  (add-to-list 'meow-mode-state-list '(telega-root-mode . motion)))
+  (add-to-list 'meow-mode-state-list '(telega-root-mode . motion))
+  (setcdr (assq 'meow-cancel-selection meow-selection-command-fallback) #'revert-buffer-quick))
 
 (defun cat-manual-motion-mode ()
   (meow-motion-mode 'toggle)
