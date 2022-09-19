@@ -7,7 +7,7 @@
 	org-roam-directory cat-org-roam-directory
         org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
 	org-roam-completion-everywhere t
-	org-roam-node-display-template "${tags:10} ${title:*}"
+	org-roam-node-display-template (concat (propertize "${tags:10} " 'face 'org-tag) "${title:*} ")
 	org-roam-mode-section-functions
 	(list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
