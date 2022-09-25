@@ -24,6 +24,7 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
+   '("-" . negative-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
    '("u" . meow-universal-argument)
