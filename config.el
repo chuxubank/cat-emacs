@@ -25,7 +25,9 @@
 
 ;;; completion
 (cat! "+company")
-(cat! "+selectrum")
+;; (cat! "+selectrum")
+(cat! "+vertico")
+(cat! "+orderless")
 (cat! "+marginalia")
 (cat! "+prescient")
 (cat! "+which-key")
