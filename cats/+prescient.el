@@ -10,7 +10,8 @@
 
 (when (featurep 'vertico)
   ;; Enable the completion style.
-  (setq completion-styles '(prescient basic))
+  (setq completion-styles '(prescient basic)
+	completion-category-overrides '((file (styles basic-remote partial-completion))))
 
   ;; Use `prescient-completion-sort' after filtering.
   (setq vertico-sort-function #'prescient-completion-sort)
