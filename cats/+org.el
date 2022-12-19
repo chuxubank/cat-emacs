@@ -156,7 +156,10 @@
          "* %u %?\n%i\n%a" :prepend t)
         ("j" "Journal" entry
          (file+olp+datetree "journal.org")
-         "* %U %?")))
+         "* %U %?")
+	("c" "ChatGPT" entry
+         (file+olp+datetree "ChatGPT.org")
+         "* %?")))
 
 (define-key global-map (kbd "C-c c") #'org-capture)
 
