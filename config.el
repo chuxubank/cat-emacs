@@ -15,7 +15,7 @@
   (cat! "+macos"))
 
 ;;; theme
-(cat! "+nano")
+;; (cat! "+nano")
 (cat! "+autodark")
 (cat! "+beacon")
 
