@@ -45,6 +45,13 @@
 
 (add-hook 'org-babel-after-execute-hook #'+org-redisplay-inline-images-in-babel-result-h)
 
+(defun +org-redisplay-latex-preview ()
+  (when (eq major-mode 'latex-mode)
+    (with-current-buffer (org-src-source-buffer)
+      (org-latex-preview))))
+
+(advice-add #'org-edit-src-save :after #'+org-redisplay-latex-preview)
+
 ;;; link
 (setq org-return-follows-link t
       org-link-abbrev-alist
