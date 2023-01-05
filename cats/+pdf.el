@@ -5,8 +5,7 @@
   :init
   (setq pdf-view-use-scaling t)
   :config
-  (add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
-  (pdf-tools-install))
+  (add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode))
 
 (use-package org-pdftools
   :hook (org-mode . org-pdftools-setup-link)
