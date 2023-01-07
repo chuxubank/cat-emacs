@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package nano
+  :disabled
+  :straight (nano-emacs :host github :repo "rougier/nano-emacs"))
+
 (use-package nano-theme
   :config
   (setq
@@ -19,3 +23,9 @@
   (nano-modeline-prefix-padding t)
   :config
   (nano-modeline-mode))
+
+(use-package nano-minibuffer
+  :disabled
+  :straight (nano-minibuffer :host github :repo "rougier/nano-minibuffer")
+  :config
+  (nano-minibuffer-mode))

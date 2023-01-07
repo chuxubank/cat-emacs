@@ -1,5 +1,18 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar cat-dark-mode-hook nil)
+(defvar cat-light-mode-hook nil)
+(defvar cat-theme-refresh-hook nil)
+
+(cond
+ ((featurep 'nano)
+  (add-hook 'cat-dark-mode-hook #'nano-theme-set-dark)
+  (add-hook 'cat-light-mode-hook #'nano-theme-set-light)
+  (add-hook 'cat-theme-refresh-hook #'nano-refresh-theme))
+ ((featurep 'nano-theme)
+  (add-hook 'cat-dark-mode-hook #'nano-dark)
+  (add-hook 'cat-light-mode-hook #'nano-light)))
+
 (defun cat-dark-mode-p ()
   (cond
    (IS-WSL     (string-match-p "-Darker" (getenv "GTK_THEME")))
@@ -12,11 +25,11 @@
 (defun cat-load-theme (&optional color)
   (interactive)
   (mapc 'disable-theme custom-enabled-themes)
-  (when (and (display-graphic-p)
-	     (featurep 'nano-theme))
+  (when (and (display-graphic-p))
     (if (cat-dark-mode-p)
-	(nano-dark)
-      (nano-light))))
+	    (run-hooks 'cat-dark-mode-hook)
+	  (run-hooks 'cat-light-mode-hook))
+    (run-hooks 'cat-theme-refresh-hook)))
 
 (add-hook 'after-init-hook #'cat-load-theme)
 
