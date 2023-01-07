@@ -36,3 +36,4 @@
     (define-key map (kbd "wu") 'org-jira-update-worklogs-from-org-clocks)
     (define-key map (kbd "tj") 'org-jira-todo-to-jira)
     map))
+(defalias 'cat-org-jira-prefix cat-org-jira-map)

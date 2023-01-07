@@ -40,3 +40,4 @@
     (define-key map "r" #'recentf-open-files)
     map)
   "Keymap for file commands.")
+(defalias 'cat-file-prefix cat-file-map)

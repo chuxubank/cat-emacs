@@ -38,3 +38,4 @@
   (define-key telega-msg-button-map (kbd "SPC") nil))
 
 (define-key telega-prefix-map "k" #'telega-kill)
+(defalias 'telega-prefix telega-prefix-map)

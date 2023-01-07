@@ -28,11 +28,6 @@
 	   (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
 	   :unnarrowed t))))
 
-(use-package org-roam-dailies
-  :ensure org-roam
-  :bind-keymap
-  ("C-c d" . org-roam-dailies-map))
-
 (use-package org-roam-ui
   :defer t
   :config
@@ -92,13 +87,6 @@
 (defvar cat-org-roam-map
   (let ((map (make-sparse-keymap)))
     (define-key map "c" #'org-roam-capture)
-    (define-key map "d" (cons "org-roam-dailies"
-			      #'(lambda ()
-				  (interactive)
-				  (use-package-autoload-keymap
-				   'org-roam-dailies-map
-				   'org-roam-dailies
-				   nil))))
     (define-key map "f" #'org-roam-node-find)
     (define-key map "F" #'org-roam-ref-find)
     (define-key map "g" #'org-roam-graph)
@@ -106,4 +94,20 @@
     (define-key map "R" #'org-roam-buffer-display-dedicated)
     (define-key map "u" #'org-roam-ui-mode)
     map)
-  "Keymap for org-roam commands.")
+  "Keymap for `org-roam' commands.")
+(defalias 'cat-org-roam-prefix cat-org-roam-map)
+
+(defvar cat-org-roam-dailies-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "." #'org-roam-dailies-goto-today)
+    (define-key map "/" #'org-roam-dailies-find-directory)
+    (define-key map "b" #'org-roam-dailies-goto-previous-note)
+    (define-key map "c" #'org-roam-dailies-capture-today)
+    (define-key map "C" #'org-roam-dailies-capture-date)
+    (define-key map "d" #'org-roam-dailies-goto-date)
+    (define-key map "f" #'org-roam-dailies-goto-next-note)
+    (define-key map "t" #'org-roam-dailies-goto-tomorrow)
+    (define-key map "y" #'org-roam-dailies-goto-yesterday)
+    map)
+  "Keymap for `org-roam-dailies' commands.")
+(defalias 'cat-org-roam-dailies-prefix cat-org-roam-dailies-map)
