@@ -9,10 +9,7 @@
 (setq
  rime-user-data-dir "~/rime"
  rime-disable-predicates
- '(meow-normal-mode-p
-   meow-motion-mode-p
-   meow-keypad-mode-p
-   rime-predicate-hydra-p
+ '(rime-predicate-hydra-p
    rime-predicate-ace-window-p
    rime-predicate-prog-in-code-p
    rime-predicate-org-latex-mode-p
@@ -35,11 +32,17 @@
   (define-key rime-mode-map (kbd "C-`") 'rime-send-keybinding)
   (define-key rime-mode-map (kbd "M-j") 'rime-force-enable))
 
+(when (featurep 'meow)
+  (dolist (p '(meow-normal-mode-p
+	       meow-motion-mode-p
+	       meow-keypad-mode-p))
+    (add-to-list 'rime-disable-predicates p)))
+
 (when (featurep 'nano-modeline)
   (defun +nano-modeline-rime-indicator (args)
-    (cl-destructuring-bind (status name primary secondary) args
-      (list status
+    (cl-destructuring-bind (icon name primary secondary) args
+      (list icon
 	    name
 	    (concat primary " " (rime-lighter))
 	    secondary)))
-  (advice-add #'nano-modeline-compose :filter-args #'+nano-modeline-rime-indicator))
+  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-rime-indicator))
