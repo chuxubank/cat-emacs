@@ -45,13 +45,6 @@
 
 (add-hook 'org-babel-after-execute-hook #'+org-redisplay-inline-images-in-babel-result-h)
 
-(defun +org-redisplay-latex-preview ()
-  (when (eq major-mode 'latex-mode)
-    (with-current-buffer (org-src-source-buffer)
-      (org-latex-preview))))
-
-(advice-add #'org-edit-src-save :after #'+org-redisplay-latex-preview)
-
 ;;; link
 (setq org-return-follows-link t
       org-link-abbrev-alist
@@ -74,43 +67,6 @@
 
 (autoload #'org-store-link "ol" nil t)
 (define-key global-map (kbd "C-c l") #'org-store-link)
-
-;;; latex
-(setq org-latex-compiler "xelatex"
-      org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
-      org-latex-packages-alist
-      '(("" "ctex" t ("xelatex"))
-	("" "booktabs" nil)
-	("" "enumitem" nil)
-	("" "fontspec" nil)
-	("" "svg" nil)
-	("" "pgfplots" t)
-	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil)))
-(with-eval-after-load 'org
-  (setq org-format-latex-header
-	(replace-regexp-in-string (regexp-quote "\\documentclass")
-				  "\\documentclass[dvisvgm]"
-				  org-format-latex-header t t)))
-
-;;; preview
-(setq org-preview-latex-default-process 'dvisvgm
-      org-preview-latex-process-alist
-      '((dvisvgm :programs ("xelatex" "dvisvgm")
-                 :description "xdv > svg"
-                 :message "you need to install the programs: xelatex and dvisvgm."
-                 :image-input-type "xdv"
-                 :image-output-type "svg"
-                 :image-size-adjust (2.5 . 1.5)
-                 :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
-                 :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))
-        (imagemagick :programs("xelatex" "convert")
-                     :description "pdf > png"
-                     :message "you need to install the programs: xelatex and imagemagick."
-                     :image-input-type "pdf"
-                     :image-output-type "png"
-                     :image-size-adjust (1.0 . 1.0)
-                     :latex-compiler ("xelatex -interaction nonstopmode -output-directory %o %f")
-                     :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O"))))
 
 ;;; ui
 (with-no-warnings
