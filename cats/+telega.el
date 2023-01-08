@@ -14,8 +14,9 @@
  telega-video-player-command "mpv"
  telega-chat-input-markups '("markdown2" nil))
 
-(when (featurep 'selectrum)
-  (setq telega-completing-read-function #'selectrum-completing-read))
+(if (featurep 'selectrum)
+    (setq telega-completing-read-function #'selectrum-completing-read)
+  (add-to-list 'completion-styles 'flex))
 
 (defun +telega-chat-mode ()
   (set (make-local-variable 'company-backends)
