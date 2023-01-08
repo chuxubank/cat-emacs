@@ -116,3 +116,12 @@
 (add-hook 'comint-mode-hook #'meow-insert)
 
 (add-hook 'view-mode-hook #'cat-manual-motion-mode)
+
+(when (featurep 'nano-modeline)
+  (defun +nano-modeline-meow-indicator (args)
+    (cl-destructuring-bind (icon name primary secondary) args
+      (list icon
+	    name
+	    (concat primary (meow-indicator))
+	    secondary)))
+  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-meow-indicator))
