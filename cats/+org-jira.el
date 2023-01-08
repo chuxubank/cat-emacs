@@ -4,36 +4,51 @@
   :after org)
 
 (use-package org-jira
-  :defer t)
-
-(setq org-jira-entry-mode-map nil)
-
-(defvar cat-org-jira-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "p") 'org-jira-get-projects)
-    (define-key map (kbd "b") 'org-jira-get-boards)
-    (define-key map (kbd "ii") 'org-jira-get-issues)
-    (define-key map (kbd "ib") 'org-jira-get-issues-by-board)
-    (define-key map (kbd "ij") 'org-jira-get-issues-from-custom-jql)
-    (define-key map (kbd "iv") 'org-jira-get-issues-by-fixversion)
-    (define-key map (kbd "ih") 'org-jira-get-issues-headonly)
-    (define-key map (kbd "if") 'org-jira-get-issues-from-filter-headonly)
-    (define-key map (kbd "iF") 'org-jira-get-issues-from-filter)
-    (define-key map (kbd "io") 'org-jira-browse-issue)
-    (define-key map (kbd "iu") 'org-jira-update-issue)
-    (define-key map (kbd "iw") 'org-jira-progress-issue)
-    (define-key map (kbd "in") 'org-jira-progress-issue-next)
-    (define-key map (kbd "ia") 'org-jira-assign-issue)
-    (define-key map (kbd "is") 'org-jira-set-issue-reporter)
-    (define-key map (kbd "ir") 'org-jira-refresh-issue)
-    (define-key map (kbd "iR") 'org-jira-refresh-issues-in-buffer)
-    (define-key map (kbd "ic") 'org-jira-create-issue)
-    (define-key map (kbd "ik") 'org-jira-copy-current-issue-key)
-    (define-key map (kbd "sc") 'org-jira-create-subtask)
-    (define-key map (kbd "sg") 'org-jira-get-subtasks)
-    (define-key map (kbd "cc") 'org-jira-add-comment)
-    (define-key map (kbd "cu") 'org-jira-update-comment)
-    (define-key map (kbd "wu") 'org-jira-update-worklogs-from-org-clocks)
-    (define-key map (kbd "tj") 'org-jira-todo-to-jira)
-    map))
-(defalias 'cat-org-jira-prefix cat-org-jira-map)
+  :defer t
+  :init
+  ;; prevent `org-jira-mode' load keymap
+  (setq org-jira-entry-mode-map nil)
+  (defvar cat-jira-map (make-sparse-keymap)
+    "Keymap for `org-jira' commands.")
+  (defalias 'cat-jira-prefix cat-jira-map)
+  :bind
+  (:map cat-jira-map
+	("b" . org-jira-get-boards)
+	("p" . org-jira-get-projects)
+	("t" . org-jira-todo-to-jira)
+	:prefix "i"
+	:prefix-map cat-jira-issue-map
+	:prefix-docstring "Keymap for `org-jira' issue commands."
+	("a" . org-jira-assign-issue)
+	("b" . org-jira-browse-issue)
+	("c" . org-jira-create-issue)
+	("g" . org-jira-get-issue)
+	("k" . org-jira-copy-current-issue-key)
+	("n" . org-jira-progress-issue-next)
+	("p" . org-jira-progress-issue)
+	("r" . org-jira-refresh-issue)
+	("R" . org-jira-refresh-issues-in-buffer)
+	("s" . org-jira-set-issue-reporter)
+	("u" . org-jira-update-issue)
+	("w" . org-jira-update-worklogs-from-org-clocks)
+	:prefix "s"
+	:prefix-map cat-jira-issue-subtask-map
+	:prefix-docstring "Keymap for `org-jira' issue subtask commands."
+	("c" . org-jira-create-subtask)
+	("g" . org-jira-get-subtasks)
+	:prefix "c"
+	:prefix-map cat-jira-issue-comment-map
+	:prefix-docstring "Keymap for `org-jira' issue comment commands."
+	("c" . org-jira-add-comment)
+	("u" . org-jira-update-comment))
+  (:map cat-jira-issue-map
+	:prefix "g"
+	:prefix-map cat-jira-issues-get-map
+	:prefix-docstring "Keymap for `org-jira' issue get commands."
+	("b" . org-jira-get-issues-by-board)
+	;; ("f" . org-jira-get-issues-from-filter-headonly)
+	;; ("F" . org-jira-get-issues-from-filter)
+	("g" . org-jira-get-issues)
+	("h" . org-jira-get-issues-headonly)
+	("j" . org-jira-get-issues-from-custom-jql)
+	("v" . org-jira-get-issues-by-fixversion)))

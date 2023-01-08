@@ -52,7 +52,7 @@
 (cat! "+org-cv")
 (cat! "+org-yt")
 (cat! "+org-dial")
-;; (cat! "+org-jira")
+(cat! "+org-jira")
 
 ;;; latex
 (cat! "+latex")

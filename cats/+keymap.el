@@ -41,7 +41,7 @@
 
 (cat-define-key mode-specific-map "d" 'cat-org-roam-dailies-prefix)
 (cat-define-key mode-specific-map "f" 'cat-file-prefix)
-(cat-define-key mode-specific-map "j" 'cat-org-jira-prefix)
+(cat-define-key mode-specific-map "j" 'cat-jira-prefix)
 (cat-define-key mode-specific-map "p" 'cat-plugin-prefix)
 (cat-define-key mode-specific-map "r" 'cat-org-roam-prefix)
 (cat-define-key mode-specific-map "t" 'cat-toggle-prefix)
