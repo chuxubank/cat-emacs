@@ -6,9 +6,20 @@
   ("C-M->" . embark-dwim)
   ("C-h B" . embark-bindings)
   :init
-  (setq prefix-help-command #'embark-prefix-help-command))
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (when (featurep 'which-key)
+  (setq which-key--prefix-help-cmd-backup #'embark-prefix-help-command)
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the

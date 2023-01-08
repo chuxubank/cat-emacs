@@ -31,8 +31,8 @@
 (cat! "+prescient")
 (cat! "+marginalia")
 (cat! "+which-key")
-(cat! "+embark")
 (cat! "+consult")
+(cat! "+embark")
 (cat! "+yasnippet")
 
 ;;; search

@@ -60,10 +60,6 @@
 	consult-project-root-function #'+project-root)
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
-(use-package embark-consult
-  :if (featurep 'embark)
-  :after consult)
-
 (define-key global-map [remap recentf-open-files] #'consult-recent-file)
 
 (with-eval-after-load 'org
