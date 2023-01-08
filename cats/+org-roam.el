@@ -84,7 +84,7 @@
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
 
-(defvar cat-org-roam-map
+(defvar org-roam-map
   (let ((map (make-sparse-keymap)))
     (define-key map "c" #'org-roam-capture)
     (define-key map "f" #'org-roam-node-find)
@@ -95,9 +95,9 @@
     (define-key map "u" #'org-roam-ui-mode)
     map)
   "Keymap for `org-roam' commands.")
-(defalias 'cat-org-roam-prefix cat-org-roam-map)
+(defalias 'org-roam-prefix org-roam-map)
 
-(defvar cat-org-roam-dailies-map
+(defvar org-roam-dailies-prefix
   (let ((map (make-sparse-keymap)))
     (define-key map "." #'org-roam-dailies-goto-today)
     (define-key map "/" #'org-roam-dailies-find-directory)
@@ -109,5 +109,7 @@
     (define-key map "t" #'org-roam-dailies-goto-tomorrow)
     (define-key map "y" #'org-roam-dailies-goto-yesterday)
     map)
-  "Keymap for `org-roam-dailies' commands.")
-(defalias 'cat-org-roam-dailies-prefix cat-org-roam-dailies-map)
+  "Keymap for `org-roam-dailies' commands.
+
+Distinguish with original `org-roam-dailies-map'.")
+(defalias 'org-roam-dailies-prefix org-roam-dailies-prefix)

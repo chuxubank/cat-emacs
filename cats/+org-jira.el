@@ -8,16 +8,16 @@
   :init
   ;; prevent `org-jira-mode' load keymap
   (setq org-jira-entry-mode-map nil)
-  (defvar cat-jira-map (make-sparse-keymap)
+  (defvar org-jira-map (make-sparse-keymap)
     "Keymap for `org-jira' commands.")
-  (defalias 'cat-jira-prefix cat-jira-map)
+  (defalias 'org-jira-prefix org-jira-map)
   :bind
-  (:map cat-jira-map
+  (:map org-jira-map
 	("b" . org-jira-get-boards)
 	("p" . org-jira-get-projects)
 	("t" . org-jira-todo-to-jira)
 	:prefix "i"
-	:prefix-map cat-jira-issue-map
+	:prefix-map org-jira-issue-map
 	:prefix-docstring "Keymap for `org-jira' issue commands."
 	("a" . org-jira-assign-issue)
 	("b" . org-jira-browse-issue)
@@ -32,18 +32,18 @@
 	("u" . org-jira-update-issue)
 	("w" . org-jira-update-worklogs-from-org-clocks)
 	:prefix "s"
-	:prefix-map cat-jira-issue-subtask-map
+	:prefix-map org-jira-issue-subtask-map
 	:prefix-docstring "Keymap for `org-jira' issue subtask commands."
 	("c" . org-jira-create-subtask)
 	("g" . org-jira-get-subtasks)
 	:prefix "c"
-	:prefix-map cat-jira-issue-comment-map
+	:prefix-map org-jira-issue-comment-map
 	:prefix-docstring "Keymap for `org-jira' issue comment commands."
 	("c" . org-jira-add-comment)
 	("u" . org-jira-update-comment))
-  (:map cat-jira-issue-map
+  (:map org-jira-issue-map
 	:prefix "g"
-	:prefix-map cat-jira-issues-get-map
+	:prefix-map org-jira-issues-get-map
 	:prefix-docstring "Keymap for `org-jira' issue get commands."
 	("b" . org-jira-get-issues-by-board)
 	;; ("f" . org-jira-get-issues-from-filter-headonly)
