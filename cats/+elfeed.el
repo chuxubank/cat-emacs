@@ -3,7 +3,8 @@
 (use-package elfeed
   :defer t
   :config
-  (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news ")
+  (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news "
+	elfeed-curl-timeout 10)
   (when (functionp #'valign--put-overlay)
     (defun elfeed-search-print-valigned-entry (entry)
       "Print valign-ed ENTRY to the buffer."
@@ -36,7 +37,12 @@
         (when tags
           (insert "(" tags-str ")"))))
 
-    (setq elfeed-search-print-entry-function #'elfeed-search-print-valigned-entry)))
+    (setq elfeed-search-print-entry-function #'elfeed-search-print-valigned-entry))
+
+  (defun cat-elfeed-clear-cache ()
+    (interactive)
+    (elfeed-db-unload)
+    (delete-directory elfeed-db-directory t)))
 
 (use-package elfeed-org
   :after elfeed
