@@ -43,6 +43,8 @@
     (cl-destructuring-bind (icon name primary secondary) args
       (list icon
 	    name
-	    (concat primary " " (rime-lighter))
+	    (concat primary
+		    (if (string-empty-p (rime-lighter)) "" " ")
+		    (rime-lighter))
 	    secondary)))
   (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-rime-indicator))

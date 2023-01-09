@@ -2,8 +2,6 @@
 
 (use-package meow)
 
-(meow-global-mode 1)
-
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
 	meow-expand-exclude-mode-list nil
@@ -118,10 +116,28 @@
 (add-hook 'view-mode-hook #'cat-manual-motion-mode)
 
 (when (featurep 'nano-modeline)
+  (defun meow--render-indicator ()
+  "Renders a short indicator based on the current state."
+  (when (bound-and-true-p meow-global-mode)
+    (let* ((state (meow--current-state))
+           (state-name (meow--get-state-name state))
+           (indicator-face (alist-get state meow-indicator-face-alist)))
+      (if state-name
+          (propertize
+           (format " %s" state-name)
+           'face indicator-face)
+        ""))))
   (defun +nano-modeline-meow-indicator (args)
     (cl-destructuring-bind (icon name primary secondary) args
       (list icon
 	    name
 	    (concat primary (meow-indicator))
 	    secondary)))
-  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-meow-indicator))
+  (add-hook 'meow-global-mode-hook
+	    (lambda ()
+	      "Toggle meow-indicator for all buffers"
+	      (if meow-mode
+		  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-meow-indicator)
+		(advice-remove #'nano-modeline-render #'+nano-modeline-meow-indicator)))))
+
+(meow-global-mode 1)
