@@ -89,6 +89,7 @@
 (cat! "+ncm")
 (cat! "+mu4e")
 (cat! "+pass")
+(cat! "+gist")
 
 ;;; util
 (cat! "+project")
