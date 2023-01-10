@@ -11,7 +11,9 @@
   (add-hook 'cat-theme-refresh-hook #'nano-refresh-theme))
  ((featurep 'nano-theme)
   (add-hook 'cat-dark-mode-hook #'nano-dark)
-  (add-hook 'cat-light-mode-hook #'nano-light)))
+  (add-hook 'cat-light-mode-hook #'nano-light)
+  (with-eval-after-load 'org
+    (add-hook 'cat-theme-refresh-hook #'org-revert-all-org-buffers))))
 
 (defun cat-dark-mode-p ()
   (cond
