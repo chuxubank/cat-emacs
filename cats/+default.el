@@ -162,3 +162,6 @@
 	     js-mode-hook
 	     bibtex-mode-hook))
   (add-hook h 'hs-minor-mode))
+
+;;; pcache
+(setq pcache-directory (concat cat-cache-dir "pcache/"))

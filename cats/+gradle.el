@@ -12,7 +12,5 @@
   :bind
   (:map groovy-mode-map
 	("M-I" . #'groovy-imports-add-import-dwim))
-  :init
-  (setq pcache-directory (concat cat-cache-dir "pcache/"))
   :config
   (add-hook 'groovy-mode-hook 'groovy-imports-scan-file))
