@@ -16,3 +16,7 @@
               (setq calendar-latitude osx-location-latitude
                     calendar-longitude osx-location-longitude
                     calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude)))))
+
+(when IS-MACPORT
+  (menu-bar-mode 1))
+(define-key global-map [(meta f11)] #'toggle-frame-fullscreen)
