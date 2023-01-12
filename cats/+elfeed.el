@@ -40,6 +40,7 @@
     (setq elfeed-search-print-entry-function #'elfeed-search-print-valigned-entry))
 
   (defun cat-elfeed-clear-cache ()
+    "Clear the elfeed cache."
     (interactive)
     (elfeed-db-unload)
     (delete-directory elfeed-db-directory t)))
@@ -49,3 +50,8 @@
   :config
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory)))
   (elfeed-org))
+
+(use-package elfeed-protocol
+  :after elfeed-org
+  :config
+  (elfeed-protocol-enable))
