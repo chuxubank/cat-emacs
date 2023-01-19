@@ -23,13 +23,8 @@
   :config
   (mac-pseudo-daemon-mode))
 
-(defun cat-mac-fullscreen-setup ()
-  "Enable the Mac specific configuration.
-
-See Info node `(emacs) Mac Fullscreen' for more information."
-  (menu-bar-mode 1))
-
 (when IS-MACPORT
-  (cat-mac-fullscreen-setup))
+  ;; See Info node `(emacs) Mac Fullscreen' for more information.
+  (menu-bar-mode 1))
 
 (define-key global-map [(meta f11)] #'toggle-frame-fullscreen)

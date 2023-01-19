@@ -24,8 +24,6 @@
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 (defconst cat-default-csl-styles-dir "~/Zotero/styles")
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;;; modifier-key
 (cond
  (IS-MACPORT
