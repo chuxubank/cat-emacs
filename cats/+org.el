@@ -237,3 +237,10 @@ to edit property"))))))))
   (set-face-font 'org-column-title cat-mono-font))
 
 (add-hook 'org-mode-hook #'cat-setup-org-font)
+
+;;; refresh
+(defun +org-buffers-refresh ()
+  "Save and revert all org buffers without confirm."
+  (interactive)
+  (org-save-all-org-buffers)
+  (+no-confirm #'org-revert-all-org-buffers))

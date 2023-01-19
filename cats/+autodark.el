@@ -13,7 +13,7 @@
   (add-hook 'cat-dark-mode-hook #'nano-dark)
   (add-hook 'cat-light-mode-hook #'nano-light)
   (with-eval-after-load 'org
-    (add-hook 'cat-theme-refresh-hook #'org-revert-all-org-buffers))))
+    (add-hook 'cat-theme-refresh-hook #'+org-buffers-refresh))))
 
 (defun cat-dark-mode-p ()
   (cond

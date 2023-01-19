@@ -10,3 +10,11 @@
       (if (string-match (format "\\(%s=\\).*?\\(&\\)" key) query)
           (setq value (substring query (match-end 1) (match-beginning 2)))))
     (decode-coding-string (url-unhex-string value) 'utf-8)))
+
+
+(cl-flet ((always-yes (&rest _) t))
+  (defun +no-confirm (fun &rest args)
+    "Apply FUN to ARGS, skipping user confirmations."
+    (cl-letf (((symbol-function 'y-or-n-p) #'always-yes)
+              ((symbol-function 'yes-or-no-p) #'always-yes))
+      (apply fun args))))
