@@ -27,4 +27,9 @@
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
   (menu-bar-mode 1))
 
+(use-package exec-path-from-shell
+  :when (daemonp)
+  :config
+  (exec-path-from-shell-initialize))
+
 (define-key global-map [(meta f11)] #'toggle-frame-fullscreen)

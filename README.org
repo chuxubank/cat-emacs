@@ -38,3 +38,11 @@ If you want to include svg file in latex file and generate the pdf file you need
       export GTK_THEME=Arc-Darker
   fi
 #+end_src
+
+** Daemon
+emacs-mac do not support raise a GUI frame from a background emacs daemon, see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
+
+To change focus on the newly created emacsclient frame, you may need to userguide
+#+begin_src bash
+  emacsclient -cn -e "(select-frame-set-input-focus (selected-frame))"
+#+end_src
