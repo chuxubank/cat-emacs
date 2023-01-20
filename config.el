@@ -14,6 +14,10 @@
 (when IS-MAC
   (cat! "+macos"))
 
+;;; daemon
+(when (daemonp)
+  (cat! "+daemon"))
+
 ;;; theme
 (cat! "+nano")
 (cat! "+autodark")
