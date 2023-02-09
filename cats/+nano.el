@@ -21,6 +21,7 @@
 (use-package nano-modeline
   :custom
   (nano-modeline-prefix-padding t)
+  (nano-modeline-position 'bottom)
   :config
   (nano-modeline-mode))
 
