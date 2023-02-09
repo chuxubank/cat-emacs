@@ -97,6 +97,9 @@
   "Keymap for `org-roam' commands.")
 (defalias 'org-roam-prefix org-roam-map)
 
+(with-eval-after-load 'org-roam
+  (define-key org-roam-map "r" #'org-roam-buffer-toggle))
+
 (defvar org-roam-dailies-prefix
   (let ((map (make-sparse-keymap)))
     (define-key map "." #'org-roam-dailies-goto-today)
