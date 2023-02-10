@@ -8,22 +8,22 @@
       ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
       ("melpa"		. "https://melpa.org/packages/")
       ("melpa-stable"	. "https://stable.melpa.org/packages/"))
-    (emacs-china
-     ("gnu"		. "http://elpa.zilongshanren.com/gnu/")
-     ("nongnu"		. "http://elpa.zilongshanren.com/nongnu/")
-     ("melpa"		. "http://elpa.zilongshanren.com/melpa/")
-     ("melpa-stable"	. "http://elpa.zilongshanren.com/stable-melpa/"))
-    (tsinghua
+    (emacs-china ; https://elpamirror.emacs-china.org
+     ("gnu"		. "http://1.15.88.122/gnu/")
+     ("nongnu"		. "http://1.15.88.122/nongnu/")
+     ("melpa"		. "http://1.15.88.122/melpa/")
+     ("melpa-stable"	. "http://1.15.88.122/stable-melpa/"))
+    (tsinghua ; https://mirrors.tuna.tsinghua.edu.cn/help/elpa/
      ("gnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
      ("nongnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
      ("melpa"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
      ("melpa-stable"	. "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/"))
-    (ustc
+    (ustc ; https://mirrors.ustc.edu.cn/help/elpa.html
      ("gnu"		. "https://mirrors.ustc.edu.cn/elpa/gnu/")
      ("nongnu"		. "https://mirrors.ustc.edu.cn/elpa/nongnu/")
      ("melpa"		. "https://mirrors.ustc.edu.cn/elpa/melpa/")
      ("melpa-stable"	. "https://mirrors.ustc.edu.cn/elpa/melpa-stable/"))
-    (sjtu
+    (sjtu ; https://mirrors.sjtug.sjtu.edu.cn/docs/emacs-elpa
      ("gnu"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/gnu/")
      ("nongnu"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/nongnu/")
      ("melpa"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
@@ -31,14 +31,10 @@
      ("marmalade"	. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/marmalade/")
      ("sunrise"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/sunrise-commander/")
      ("user42"		. "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/user42/"))
-    (custom
-     ("gnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-     ("nongnu"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-     ("melpa"		. "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-     ("melpa-stable"	. "https://stable.melpa.org/packages/"))))
+    ))
 
 (setq package-check-signature nil
-      package-archives (assoc-default 'custom package-mirror-alist))
+      package-archives (assoc-default 'tsinghua package-mirror-alist))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
