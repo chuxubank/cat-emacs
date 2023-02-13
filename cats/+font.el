@@ -5,6 +5,13 @@
 (defvar cat-cjk-font "LXGW WenKai")
 (defvar cat-mono-font "LXGW WenKai Mono")
 (defvar cat-math-fonts '("Noto Sans Math"))
+(defvar cat-unicode-fonts '("Fira Code"))
+
+(defun +safe-set-fonts (fontset characters font-name-list &optional frame add)
+  (dolist (font (ensure-list font-name-list))
+    (when (member font (font-family-list))
+      (set-fontset-font fontset characters font frame add)
+      (message "Set %s font to %s" characters font-name-list))))
 
 (when IS-MAC
   (setq cat-default-font "Roboto Mono 18"))
@@ -14,18 +21,16 @@
 
 (set-face-attribute 'default nil :font cat-default-font :weight 'light)
 
+;; ←─
+(+safe-set-fonts t 'unicode cat-unicode-fonts)
+
 ;; 猫，ねこ
-(when cat-cjk-font
-  (set-fontset-font t 'han (font-spec :family cat-cjk-font))
-  (set-fontset-font t 'cjk-misc (font-spec :family cat-cjk-font))
-  (set-fontset-font t 'kana (font-spec :family cat-cjk-font))
-  (message "Set CJK font %s" cat-cjk-font))
+(+safe-set-fonts t 'han cat-cjk-font)
+(+safe-set-fonts t 'cjk-misc cat-cjk-font)
+(+safe-set-fonts t 'kana cat-cjk-font)
 
 ;; 𝓒𝙖𝕥
-(when cat-math-fonts
-  (dolist (font cat-math-fonts)
-    (set-fontset-font t 'mathematical (font-spec :family font)))
-  (message "Set Math font %s" cat-math-fonts))
+(+safe-set-fonts t 'mathematical cat-math-fonts)
 
 (setq
  face-font-rescale-alist
