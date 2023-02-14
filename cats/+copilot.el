@@ -2,7 +2,7 @@
 
 (use-package copilot
   :defer t
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :straight (copilot :host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
   :config
   (with-eval-after-load 'company
     ;; disable inline previews
