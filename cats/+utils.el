@@ -18,3 +18,7 @@
     (cl-letf (((symbol-function 'y-or-n-p) #'always-yes)
               ((symbol-function 'yes-or-no-p) #'always-yes))
       (apply fun args))))
+
+
+(defun +dark-mode-p ()
+  (eq (frame-parameter nil 'background-mode) 'dark))
