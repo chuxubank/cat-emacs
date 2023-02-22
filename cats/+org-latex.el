@@ -8,7 +8,7 @@
 	("" "fontspec" nil)
 	("" "svg" nil)
 	("" "pgfplots" t)
-	("left=2.5cm, right=2.5cm, top=2cm, bottom=2cm" "geometry" nil))
+	("" "geometry" nil))
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm
       org-preview-latex-process-alist
