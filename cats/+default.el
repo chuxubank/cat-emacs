@@ -92,7 +92,11 @@
 ;;; dired
 (setq dired-dwim-target t
       dired-kill-when-opening-new-dired-buffer t
-      delete-by-moving-to-trash t)
+      delete-by-moving-to-trash t
+      dired-guess-shell-alist-user
+      '(("\\.zip\\'"
+	 (concat "7z x" " -o" (file-name-sans-extension file))
+	 (concat "7z x" " -o" (file-name-sans-extension file) " -p"))))
 
 (let ((args (list "-ahlv" "--group-directories-first")))
   (when IS-BSD
