@@ -32,8 +32,8 @@
 (with-eval-after-load 'org
   (setq org-format-latex-header
 	(replace-regexp-in-string
-	 (regexp-quote "\\documentclass")
-	 "\\documentclass[dvisvgm]"
+	 (regexp-quote "\\documentclass{article}")
+	 "\\documentclass[dvisvgm]{article}"
 	 org-format-latex-header t t)))
 
 (defun +org-redisplay-latex-preview ()
