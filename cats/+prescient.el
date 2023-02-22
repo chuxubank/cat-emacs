@@ -1,17 +1,17 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package company-prescient
-  :if (featurep 'company)
+  :when (featurep 'company)
   :config
   (company-prescient-mode 1))
 
 (use-package selectrum-prescient
-  :if (featurep 'selectrum)
+  :when (featurep 'selectrum)
   :config
   (selectrum-prescient-mode 1))
 
 (use-package vertico-prescient
-  :if (featurep 'vertico)
+  :when (featurep 'vertico)
   :config
   (vertico-prescient-mode 1))
 
