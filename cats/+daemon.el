@@ -12,7 +12,6 @@
   (exec-path-from-shell-initialize))
 
 (defun cat-client-frame-config ()
-  (select-frame-set-input-focus (selected-frame))
-  (cat! "+font"))
+  (select-frame-set-input-focus (selected-frame)))
 
 (add-hook 'server-after-make-frame-hook #'cat-client-frame-config)
