@@ -33,10 +33,10 @@
   (define-key rime-mode-map (kbd "M-j") 'rime-force-enable))
 
 (when (featurep 'meow)
-  (dolist (p '(meow-normal-mode-p
-	       meow-motion-mode-p
-	       meow-keypad-mode-p))
-    (add-to-list 'rime-disable-predicates p)))
+  (+add-to-list-multi 'rime-disable-predicates
+		      #'meow-normal-mode-p
+		      #'meow-motion-mode-p
+		      #'meow-keypad-mode-p))
 
 (when (featurep 'nano-modeline)
   (defun +nano-modeline-rime-indicator (args)

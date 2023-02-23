@@ -1,37 +1,40 @@
 ;; -*- lexical-binding: t; -*-
 
+(defun cat-orb-file ()
+  "Return the path to the `org-roam-bibtex' note file"
+  (concat cat-org-roam-reference-directory "${citekey}.org"))
+
 (setq bibtex-completion-additional-search-fields '(keywords)
       bibtex-completion-pdf-field "file"
       bibtex-completion-bibliography cat-default-bibliography-files)
 
 (use-package org-roam-bibtex
   :after org-roam
+  :custom
+  (orb-roam-ref-format 'org-cite)
   :config
-  (require 'ox)
-  (setq orb-roam-ref-format 'org-cite
-	orb-attached-file-extensions '("pdf" "docx" "doc" "epub")
-	orb-preformat-keywords
-	'("title" "url" "citekey" "entry-type" "date" "pdf?" "note?" "file" "author" "editor" "author-abbrev" "editor-abbrev" "author-or-editor-abbrev")
-	org-roam-capture-templates
+  (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
+  (+add-to-list-multi 'orb-preformat-keywords "title" "url")
+  (setq org-roam-capture-templates
 	'(("d" "default" plain "%?"
 	   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
 	   :unnarrowed t)
-	  ("r" "bibliography")
+	  ("r" "bibliography reference")
 	  ("rd" "Bibliography reference default" plain "%?"
-	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}")
+	   :target (file+head "%(cat-orb-file)" "#+title: ${title}")
 	   :unnarrowed t)
 	  ("rn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
-	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
+	   :target (file "%(cat-orb-file)")
 	   :unnarrowed t)
 	  ("rl" "Bibliography reference with link" plain "eww:%^{url}"
-	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n#+date: ${date}"))
+	   :target (file+head "%(cat-orb-file)" "#+title: ${title}\n#+date: ${date}"))
 	  ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
-	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n"))
+	   :target (file+head "%(cat-orb-file)" "#+title: ${title}\n"))
 	  ("rx" "SCSEE XingCe" plain (file "templates/xingce.org")
-	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
+	   :target (file "%(cat-orb-file)")
 	   :unnarrowed t)
 	  ("rs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
-	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
+	   :target (file "%(cat-orb-file)")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
 

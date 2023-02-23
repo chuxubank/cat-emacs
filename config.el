@@ -1,3 +1,4 @@
+(cat! "+utils")
 (cat! "+default")
 
 ;;; package
@@ -95,11 +96,11 @@
 (cat! "+mu4e")
 (cat! "+pass")
 (cat! "+gist")
+(cat! "+beancount")
 
 ;;; util
 (cat! "+project")
 (cat! "+diredx")
 (cat! "+sow")
-(cat! "+utils")
 
 (cat! "+keymap")

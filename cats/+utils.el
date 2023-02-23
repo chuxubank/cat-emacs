@@ -1,5 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
+(defun +add-to-list-multi (list &rest args)
+  "Add ARGS to LIST, but only if they are not already in LIST."
+  (dolist (arg args)
+    (add-to-list list arg)))
+
 (defun +url-get-query-content (key &optional url)
   "Get query value from key in url or clipboard."
   (when (null url)
