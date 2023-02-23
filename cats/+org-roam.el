@@ -38,14 +38,6 @@
 	org-roam-ui-ref-title-template
 	"%^{author-abbrev} (%^{date}) %^{title}"))
 
-;;; bibtex
-(use-package bibtex-completion
-  :defer t
-  :config
-  (setq bibtex-completion-additional-search-fields '(keywords)
-        bibtex-completion-pdf-field "file"
-	bibtex-completion-bibliography cat-default-bibliography-files))
-
 (use-package org-roam-bibtex
   :after org-roam
   :config
@@ -56,31 +48,25 @@
 	orb-preformat-keywords
 	'("title" "url" "citekey" "entry-type" "date" "pdf?" "note?" "file" "author" "editor" "author-abbrev" "editor-abbrev" "author-or-editor-abbrev")
 	org-roam-capture-templates
-	'(("d" "default" plain "%?" :target
-	   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+	'(("d" "default" plain "%?"
+	   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
 	   :unnarrowed t)
 	  ("b" "bibliography")
-	  ("bd" "Bibliography reference default"
-	   plain "%?" :target
-	   (file+head "reference/${citekey}.org" "#+title: ${title}")
+	  ("bd" "Bibliography reference default" plain "%?"
+	   :target (file+head "reference/${citekey}.org" "#+title: ${title}")
 	   :unnarrowed t)
-	  ("bn" "Bibliography reference with org-noter"
-	   plain (file "templates/org-noter.org") :target
-	   (file "reference/${citekey}.org")
+	  ("bn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
+	   :target (file "reference/${citekey}.org")
 	   :unnarrowed t)
-	  ("bl" "Bibliography reference with link"
-	   plain "eww:%^{url}" :target
-	   (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
-	  ("bv" "Bibliography reference with video"
-	   plain "[[video:%^{url}#]]" :target
-	   (file+head "reference/${citekey}.org" "#+title: ${title}\n"))
-	  ("bx" "SCSEE XingCe"
-	   plain (file "templates/xingce.org") :target
-	   (file "reference/${citekey}.org")
+	  ("bl" "Bibliography reference with link" plain "eww:%^{url}"
+	   :target (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
+	  ("bv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
+	   :target (file+head "reference/${citekey}.org" "#+title: ${title}\n"))
+	  ("bx" "SCSEE XingCe" plain (file "templates/xingce.org")
+	   :target (file "reference/${citekey}.org")
 	   :unnarrowed t)
-	  ("bs" "SCSEE ShenLun"
-	   plain (file "templates/shenlun.org") :target
-	   (file "reference/${citekey}.org")
+	  ("bs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
+	   :target (file "reference/${citekey}.org")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
 
