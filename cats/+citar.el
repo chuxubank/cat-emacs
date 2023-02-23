@@ -9,19 +9,8 @@
 
 (use-package citar
   :defer t
-  :init
-  (setq citar-bibliography cat-default-bibliography-files
-	citar-notes-paths (list (concat cat-org-roam-directory cat-org-roam-reference-directory)))
   :custom
-  (citar-at-point-function 'embark-act))
-
-(use-package citar-org-roam
-  :after citar org-roam
-  :custom
-  (citar-org-roam-capture-template-key "bn")
-  (citar-org-roam-subdir cat-org-roam-reference-directory)
-  :config
-  (citar-org-roam-mode))
+  (citar-bibliography cat-default-bibliography-files))
 
 (use-package citar-embark
   :after citar embark

@@ -59,6 +59,7 @@
 
 ;;; latex
 (cat! "+citar")
+(cat! "+bibnotes")
 (cat! "+latex")
 (cat! "+cdlatex")
 ;; (cat! "+zotero")
