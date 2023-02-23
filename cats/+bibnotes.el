@@ -16,22 +16,22 @@
 	'(("d" "default" plain "%?"
 	   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
 	   :unnarrowed t)
-	  ("b" "bibliography")
-	  ("bd" "Bibliography reference default" plain "%?"
-	   :target (file+head "reference/${citekey}.org" "#+title: ${title}")
+	  ("r" "bibliography")
+	  ("rd" "Bibliography reference default" plain "%?"
+	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}")
 	   :unnarrowed t)
-	  ("bn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
-	   :target (file "reference/${citekey}.org")
+	  ("rn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
+	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
 	   :unnarrowed t)
-	  ("bl" "Bibliography reference with link" plain "eww:%^{url}"
-	   :target (file+head "reference/${citekey}.org" "#+title: ${title}\n#+date: ${date}"))
-	  ("bv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
-	   :target (file+head "reference/${citekey}.org" "#+title: ${title}\n"))
-	  ("bx" "SCSEE XingCe" plain (file "templates/xingce.org")
-	   :target (file "reference/${citekey}.org")
+	  ("rl" "Bibliography reference with link" plain "eww:%^{url}"
+	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n#+date: ${date}"))
+	  ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
+	   :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n"))
+	  ("rx" "SCSEE XingCe" plain (file "templates/xingce.org")
+	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
 	   :unnarrowed t)
-	  ("bs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
-	   :target (file "reference/${citekey}.org")
+	  ("rs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
+	   :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
 
