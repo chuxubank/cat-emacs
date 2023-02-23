@@ -103,6 +103,7 @@
   (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
   (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
   (add-to-list 'meow-mode-state-list '(diary-mode . normal))
+  (add-to-list 'meow-mode-state-list '(help-mode . motion))
   (add-to-list 'meow-mode-state-list '(telega-root-mode . motion)))
 
 (defun cat-manual-motion-mode ()
@@ -117,16 +118,16 @@
 
 (when (featurep 'nano-modeline)
   (defun meow--render-indicator ()
-  "Renders a short indicator based on the current state."
-  (when (bound-and-true-p meow-global-mode)
-    (let* ((state (meow--current-state))
-           (state-name (meow--get-state-name state))
-           (indicator-face (alist-get state meow-indicator-face-alist)))
-      (if state-name
-          (propertize
-           (format " %s" state-name)
-           'face indicator-face)
-        ""))))
+    "Renders a short indicator based on the current state."
+    (when (bound-and-true-p meow-global-mode)
+      (let* ((state (meow--current-state))
+             (state-name (meow--get-state-name state))
+             (indicator-face (alist-get state meow-indicator-face-alist)))
+	(if state-name
+            (propertize
+             (format " %s" state-name)
+             'face indicator-face)
+          ""))))
   (defun +nano-modeline-meow-indicator (args)
     (cl-destructuring-bind (icon name primary secondary) args
       (list icon
