@@ -1,12 +1,19 @@
 ;; -*- lexical-binding: t; -*-
 
-(defun cat-orb-file ()
-  "Return the path to the `org-roam-bibtex' note file"
-  (concat cat-org-roam-reference-directory "${citekey}.org"))
-
 (setq bibtex-completion-additional-search-fields '(keywords)
       bibtex-completion-pdf-field "file"
       bibtex-completion-bibliography cat-default-bibliography-files)
+
+(defun cat-orb-note-file ()
+  "Return the path to the `org-roam-bibtex' note file"
+  (concat cat-org-roam-reference-directory "${citekey}.org"))
+
+(defun +orb-note-update-file (citekey)
+  "Update the `org-noter-property-doc-file' property of the CITEKEY"
+  (citar--library-file-action
+   citekey
+   (lambda (file)
+     (org-entry-put nil org-noter-property-doc-file (abbreviate-file-name file)))))
 
 (use-package org-roam-bibtex
   :after org-roam
@@ -15,26 +22,28 @@
   :config
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
   (+add-to-list-multi 'orb-preformat-keywords "title" "url")
+  (add-to-list 'orb-note-actions-user
+	       '("Update org-noter file" . +orb-note-update-file))
   (setq org-roam-capture-templates
 	'(("d" "default" plain "%?"
 	   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
 	   :unnarrowed t)
 	  ("r" "bibliography reference")
 	  ("rd" "Bibliography reference default" plain "%?"
-	   :target (file+head "%(cat-orb-file)" "#+title: ${title}")
+	   :target (file+head "%(cat-orb-note-file)" "#+title: ${title}")
 	   :unnarrowed t)
 	  ("rn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
-	   :target (file "%(cat-orb-file)")
+	   :target (file "%(cat-orb-note-file)")
 	   :unnarrowed t)
 	  ("rl" "Bibliography reference with link" plain "eww:%^{url}"
-	   :target (file+head "%(cat-orb-file)" "#+title: ${title}\n#+date: ${date}"))
+	   :target (file+head "%(cat-orb-note-file)" "#+title: ${title}\n#+date: ${date}"))
 	  ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
-	   :target (file+head "%(cat-orb-file)" "#+title: ${title}\n"))
+	   :target (file+head "%(cat-orb-note-file)" "#+title: ${title}\n"))
 	  ("rx" "SCSEE XingCe" plain (file "templates/xingce.org")
-	   :target (file "%(cat-orb-file)")
+	   :target (file "%(cat-orb-note-file)")
 	   :unnarrowed t)
 	  ("rs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
-	   :target (file "%(cat-orb-file)")
+	   :target (file "%(cat-orb-note-file)")
 	   :unnarrowed t)))
   (org-roam-bibtex-mode +1))
 

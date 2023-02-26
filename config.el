@@ -49,9 +49,11 @@
 
 ;;; org
 (cat! "+org")
+(cat! "+org-notes")
+(cat! "+citar")
 (cat! "+org-latex")
 (cat! "+org-roam")
-(cat! "+org-notes")
+(cat! "+orb-notes")
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-yt")
@@ -59,8 +61,6 @@
 (cat! "+org-jira")
 
 ;;; latex
-(cat! "+citar")
-(cat! "+bibnotes")
 (cat! "+latex")
 (cat! "+cdlatex")
 ;; (cat! "+zotero")
