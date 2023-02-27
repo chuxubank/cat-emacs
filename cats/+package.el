@@ -34,7 +34,7 @@
     ))
 
 (setq package-check-signature nil
-      package-archives (assoc-default 'tsinghua package-mirror-alist))
+      package-archives (assoc-default 'default package-mirror-alist))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
