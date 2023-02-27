@@ -15,6 +15,10 @@
    (lambda (file)
      (org-entry-put nil org-noter-property-doc-file (abbreviate-file-name file)))))
 
+(defun +orb-note-citar (citekey)
+  "Use `citar' to open the CITEKEY note file"
+  (citar-run-default-action (ensure-list citekey)))
+
 (use-package org-roam-bibtex
   :after org-roam
   :custom
@@ -22,8 +26,9 @@
   :config
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
   (+add-to-list-multi 'orb-preformat-keywords "title" "url")
-  (add-to-list 'orb-note-actions-user
-	       '("Update org-noter file" . +orb-note-update-file))
+  (+add-to-list-multi 'orb-note-actions-user
+		      '("Update org-noter file" . +orb-note-update-file)
+		      '("Open with citar" . +orb-note-citar))
   (setq org-roam-capture-templates
 	'(("d" "default" plain "%?"
 	   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
@@ -64,4 +69,5 @@
 			   :annotate #'citar-org-roam--annotate))
   (setq citar-notes-source 'orb-citar-source))
 
-(define-key org-roam-bibtex-mode-map (kbd "C-c n a") #'orb-note-actions)
+(with-eval-after-load 'org-roam-bibtex
+  (define-key org-roam-bibtex-mode-map (kbd "C-c n a") #'orb-note-actions))
