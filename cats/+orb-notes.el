@@ -63,3 +63,5 @@
 			   :create #'orb-citar-edit-note
 			   :annotate #'citar-org-roam--annotate))
   (setq citar-notes-source 'orb-citar-source))
+
+(define-key org-roam-bibtex-mode-map (kbd "C-c n a") #'orb-note-actions)
