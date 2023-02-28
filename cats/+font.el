@@ -10,11 +10,8 @@
 (defun +safe-set-fonts (fontset characters font-name-list &optional frame add)
   (dolist (font (ensure-list font-name-list))
     (when (member font (font-family-list))
-      (set-fontset-font fontset characters font frame add)
+      (set-fontset-font fontset characters font frame (or add 'prepend))
       (message "Set %s font to %s" characters font-name-list))))
-
-(when IS-MAC
-  (setq cat-default-font "Roboto Mono 18"))
 
 (when IS-WINDOWS
   (setq cat-default-font "RobotoMono NF 14"))
