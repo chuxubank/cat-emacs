@@ -97,6 +97,7 @@
 (cat! "+pass")
 (cat! "+gist")
 (cat! "+beancount")
+(cat! "+diagram-preview")
 
 ;;; util
 (cat! "+project")
