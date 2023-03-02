@@ -22,7 +22,7 @@
 ;;; theme
 (cat! "+nano")
 (cat! "+autodark")
-(cat! "+beacon")
+(cat! "+highlight")
 
 ;;; edit
 (cat! "+meow")
