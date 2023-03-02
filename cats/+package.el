@@ -2,6 +2,9 @@
 
 (require 'package)
 
+(defcustom package-mirror 'default
+  "The package mirror to use for package.el.")
+
 (defconst package-mirror-alist
   '((default
       ("gnu"		. "https://elpa.gnu.org/packages/")
@@ -34,7 +37,7 @@
     ))
 
 (setq package-check-signature nil
-      package-archives (assoc-default 'default package-mirror-alist))
+      package-archives (assoc-default package-mirror package-mirror-alist))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
