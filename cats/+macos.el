@@ -17,6 +17,11 @@
                     calendar-longitude osx-location-longitude
                     calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude)))))
 
+(use-package exec-path-from-shell
+  :when (length< (getenv "PATH") 50)
+  :config
+  (exec-path-from-shell-initialize))
+
 (when IS-MACPORT
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
   (menu-bar-mode 1))
