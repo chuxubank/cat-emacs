@@ -7,10 +7,10 @@
 
 (defconst package-mirror-alist
   '((default
-      ("gnu"		. "https://elpa.gnu.org/packages/")
-      ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
-      ("melpa"		. "https://melpa.org/packages/")
-      ("melpa-stable"	. "https://stable.melpa.org/packages/"))
+     ("gnu"		. "https://elpa.gnu.org/packages/")
+     ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
+     ("melpa"		. "https://melpa.org/packages/")
+     ("melpa-stable"	. "https://stable.melpa.org/packages/"))
     (emacs-china ; https://elpamirror.emacs-china.org
      ("gnu"		. "http://1.15.88.122/gnu/")
      ("nongnu"		. "http://1.15.88.122/nongnu/")
@@ -37,7 +37,15 @@
     ))
 
 (setq package-check-signature nil
+      package-quickstart-file (concat cat-etc-dir "package-quickstart.el")
+      package-quickstart t
       package-archives (assoc-default package-mirror package-mirror-alist))
+
+(package-activate-all)
+
+(unless (or EMACS29+ (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -55,19 +63,21 @@
           (begin-time (float-time (current-time)))
           (request-backend (car '(curl url-retrieve))))
       (request (concat url "archive-contents")
-	       :timeout 30
-               :complete
-               (cl-function
-		(lambda (&key response symbol-status &allow-other-keys)
-		  (with-current-buffer "*Elpa mirror test*"
-		    (goto-char (point-max))
-		    (let ((inhibit-read-only t))
-		      (insert (format "%11s  %-29s [%s]\n"
-				      (if (eq symbol-status 'success)
-					  (format
-					   "%6fs"
-					   (- (float-time (current-time)) begin-time))
-					symbol-status)
-				      (url-host (url-generic-parse-url url))
-				      (if (eq symbol-status 'success)
-					  (request-response-header response "Last-Modified"))))))))))))
+	:timeout 30
+        :complete
+        (cl-function
+	 (lambda (&key response symbol-status &allow-other-keys)
+	   (with-current-buffer "*Elpa mirror test*"
+	     (goto-char (point-max))
+	     (let ((inhibit-read-only t))
+	       (insert (format "%11s  %-29s [%s]\n"
+			       (if (eq symbol-status 'success)
+				   (format
+				    "%6fs"
+				    (- (float-time (current-time)) begin-time))
+				 symbol-status)
+			       (url-host (url-generic-parse-url url))
+			       (if (eq symbol-status 'success)
+				   (request-response-header response "Last-Modified"))))))))))))
+
+(cat-benchmark 'end)

@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(cat-benchmark 'beg)
+
 (defvar cat-default-font "Roboto Mono 16")
 (defvar cat-alt-code-font "Cascadia Code")
 (defvar cat-cjk-font "LXGW WenKai")
@@ -40,3 +42,5 @@
    ("Noto Serif .+" . 0.9)
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
+
+(cat-benchmark 'end)

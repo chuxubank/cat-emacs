@@ -2,5 +2,12 @@
 
 (use-package benchmark-init
   :config
-  ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
+(defun cat-init-time ()
+  "Prints the init time."
+  (interactive)
+  (message "%s init within %s" cat-emacs-name (emacs-init-time)))
+
+(defun display-startup-echo-area-message ()
+  (cat-init-time))

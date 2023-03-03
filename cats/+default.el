@@ -10,7 +10,7 @@
       initial-major-mode 'text-mode
       frame-resize-pixelwise t)
 
-(setq frame-title-format '("%b – Cat Emacs")
+(setq frame-title-format '("%b – " cat-emacs-name)
       icon-title-format frame-title-format)
 
 (setq custom-safe-themes t)

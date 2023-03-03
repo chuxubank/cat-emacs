@@ -1,10 +1,15 @@
-(cat! "+utils")
 (cat! "+default")
 
 ;;; package
 (cat! "+package")
-(cat! "+straight")
 (cat! "+benchmark")
+(cat! "+straight")
+
+;;; util
+(cat! "+project")
+(cat! "+diredx")
+(cat! "+sow")
+(cat! "+utils")
 
 ;;; ui
 (cat! "+font")
@@ -74,7 +79,7 @@
 (cat! "+apheleia")
 (cat! "+lsp")
 (cat! "+flycheck")
-(cat! "+copilot")
+;; (cat! "+copilot")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+gradle")
@@ -98,10 +103,5 @@
 (cat! "+gist")
 (cat! "+beancount")
 (cat! "+diagram-preview")
-
-;;; util
-(cat! "+project")
-(cat! "+diredx")
-(cat! "+sow")
 
 (cat! "+keymap")

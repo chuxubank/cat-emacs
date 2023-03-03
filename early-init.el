@@ -12,6 +12,8 @@
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
 (defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
 
+(defconst cat-emacs-name "Cat Emacs")
+
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
@@ -23,6 +25,13 @@
   "Orb notes directory, used by `citar-notes-paths' and `org-roam-capture-templates'")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 (defconst cat-default-csl-styles-dir "~/Zotero/styles")
+
+;;; benchmark
+(defun cat-benchmark (line &optional file)
+  (message "%s This is %s of %s"
+	   (format-time-string "%r %3N")
+	   line
+	   (or file load-file-name buffer-file-name)))
 
 ;;; modifier-key
 (cond
@@ -39,3 +48,8 @@
  (IS-WINDOWS
   (setq w32-lwindow-modifier 'super
         w32-rwindow-modifier 'super)))
+
+;;; package
+(setq package-enable-at-startup nil)
+
+(cat-benchmark 'end)
