@@ -28,9 +28,9 @@
 
 ;;; benchmark
 (defun cat-benchmark (line &optional file)
-  (message "%s This is %s of %s"
+  (message "%s %s of %s"
 	   (format-time-string "%r %3N")
-	   line
+	   (upcase (symbol-name line))
 	   (or file load-file-name buffer-file-name)))
 
 ;;; modifier-key
