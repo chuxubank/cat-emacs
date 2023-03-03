@@ -7,8 +7,11 @@
       org-agenda-skip-deadline-if-done t
       diary-file (expand-file-name "diary" cat-org-directory)
       ;; org-agenda-include-diary t
+      org-auto-align-tags nil
+      org-hide-emphasis-markers t
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)
       org-startup-indented t
+      org-special-ctrl-a/e t
       org-tags-column 0
       org-outline-path-complete-in-steps nil
       ;; org-goto
