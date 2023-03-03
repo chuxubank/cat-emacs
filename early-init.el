@@ -27,10 +27,11 @@
 (defconst cat-default-csl-styles-dir "~/Zotero/styles")
 
 ;;; benchmark
-(defun cat-benchmark (line &optional file)
+(defun cat-benchmark (pos &optional file)
+  "Print the current time of load POS of FILE"
   (message "%s %s of %s"
 	   (format-time-string "%r %3N")
-	   (upcase (symbol-name line))
+	   (upcase (symbol-name pos))
 	   (or file load-file-name buffer-file-name)))
 
 ;;; modifier-key
