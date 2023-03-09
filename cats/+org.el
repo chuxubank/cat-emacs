@@ -232,7 +232,10 @@ to edit property"))))))))
      (R . t)
      (shell . t)
      (C . t)
-     (plantuml . t))))
+     (plantuml . t)
+     (awk . t))))
+(with-eval-after-load 'ob-lob
+  (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
 
 ;;; font
 (defun cat-setup-org-font ()
