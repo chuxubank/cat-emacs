@@ -10,6 +10,7 @@
   (setq-default goggles-pulse t))
 
 (use-package org-modern
+  :disabled
   :after org
   :custom
   (org-modern-table nil)
