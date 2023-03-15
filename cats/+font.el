@@ -15,9 +15,6 @@
       (set-fontset-font fontset characters font frame (or add 'prepend))
       (message "Set %s font to %s" characters font-name-list))))
 
-(when IS-MAC
-  (setq cat-alt-code-font "Iosevka"))
-
 (when IS-WINDOWS
   (setq cat-default-font "RobotoMono NF 14"))
 
