@@ -41,6 +41,9 @@
       package-quickstart t
       package-archives (assoc-default package-mirror package-mirror-alist))
 
+(unless (file-exists-p package-quickstart-file)
+    (package-quickstart-refresh))
+
 (package-activate-all)
 
 (unless (or EMACS29+ (package-installed-p 'use-package))

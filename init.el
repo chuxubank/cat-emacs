@@ -4,7 +4,8 @@
 
 ;;; custom
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;;; packages
 (add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
