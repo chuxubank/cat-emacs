@@ -10,8 +10,8 @@
   (sp-pair "（" "）")
   (sp-pair "“" "”"))
 
-(dolist (h '(org-mode-hook
-	     mermaid-mode-hook))
+(dolist (h '(mermaid-mode-hook
+	     plantuml-mode-hook))
   (add-hook h 'smartparens-mode))
 
 (dolist (h '(c-mode-hook
