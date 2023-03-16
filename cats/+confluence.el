@@ -18,5 +18,5 @@
 	     :host github
 	     :repo "mrkrd/tributary"
 	     :files (:defaults "confluence.rnc"))
-  :defer t)
+  :commands #'tributary-pull-id)
 
