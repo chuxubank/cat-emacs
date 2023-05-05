@@ -8,6 +8,7 @@
 
 (setq
  telega-use-docker t
+ telega-use-images t
  telega-emoji-use-images nil
  telega-symbol-video-chat-active "🔊"
  telega-symbol-video-chat-passive "🔈"
