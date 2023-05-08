@@ -169,3 +169,6 @@
 
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))
+
+;;; indent
+(setq-default indent-tabs-mode nil)
