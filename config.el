@@ -78,7 +78,7 @@
 (cat! "+apheleia")
 (cat! "+lsp")
 (cat! "+flycheck")
-;; (cat! "+copilot")
+(cat! "+copilot")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+gradle")

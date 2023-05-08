@@ -1,14 +1,15 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package copilot
-  :defer t
+  :hook prog-mode
   :straight (copilot :host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :bind
+  (:map copilot-completion-map
+        ("<tab>" . 'copilot-accept-completion)
+        ("TAB" . 'copilot-accept-completion)
+        ("C-TAB" . 'copilot-accept-completion-by-word)
+        ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
   (with-eval-after-load 'company
     ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
-
-  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
-
-(add-hook 'prog-mode-hook 'copilot-mode)
+    (delq 'company-preview-if-just-one-frontend company-frontends)))
