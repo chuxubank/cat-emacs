@@ -2,7 +2,7 @@
 
 (use-package org-media-note
   :straight (org-media-note :host github :repo "yuchen-lea/org-media-note")
-  :hook (org-mode . org-media-note-mode)
+  :hook org-mode
   :config
   (require 'org-attach))
 
