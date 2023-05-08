@@ -37,14 +37,7 @@
     ))
 
 (setq package-check-signature nil
-      package-quickstart-file (concat cat-etc-dir "package-quickstart.el")
-      package-quickstart t
       package-archives (assoc-default package-mirror package-mirror-alist))
-
-(unless (file-exists-p package-quickstart-file)
-    (package-quickstart-refresh))
-
-(package-activate-all)
 
 (unless (or EMACS29+ (package-installed-p 'use-package))
   (package-refresh-contents)

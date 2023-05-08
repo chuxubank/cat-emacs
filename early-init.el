@@ -50,7 +50,4 @@
   (setq w32-lwindow-modifier 'super
         w32-rwindow-modifier 'super)))
 
-;;; package
-(setq package-enable-at-startup nil)
-
 (cat-benchmark 'end)
