@@ -75,7 +75,6 @@
 (cat! "+pangu")
 
 ;;; program
-;; (cat! "+format-all")
 (cat! "+apheleia")
 (cat! "+lsp")
 (cat! "+flycheck")
