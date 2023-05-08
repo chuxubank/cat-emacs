@@ -5,7 +5,9 @@
   :custom
   (mermaid-tmp-dir (concat cat-cache-dir "mermaid/"))
   (mermaid-output-format ".svg")
-  (mermaid-flags "-b transparent -f"))
+  (mermaid-flags "-b transparent -f")
+  :config
+  (mkdir mermaid-tmp-dir t))
 
 (defun +mermaid-mode ()
   (setq-local indent-line-function 'insert-tab)
