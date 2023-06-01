@@ -27,6 +27,7 @@
   (let ((map (make-keymap)))
     (cat-define-key map "a" 'anki-vocabulary)
     (cat-define-key map "b" 'bing-dict-brief)
+    (cat-define-key map "c" 'chezmoi-prefix)
     (cat-define-key map "d" 'deft)
     (cat-define-key map "e" 'elfeed)
     (cat-define-key map "p" 'pass)

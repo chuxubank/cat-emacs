@@ -103,5 +103,6 @@
 (cat! "+beancount")
 (cat! "+diagram-preview")
 (cat! "+confluence")
+(cat! "+chezmoi")
 
 (cat! "+keymap")
