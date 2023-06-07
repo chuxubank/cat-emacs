@@ -1,8 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package chezmoi)
-
-(require 'chezmoi-company)
+(use-package chezmoi
+  :commands #'chezmoi-find
+  :mode ("\\dot_\\'" . chezmoi-mode)
+  :config
+  (require 'chezmoi-company))
 
 (defun +add-or-remove-chezmoi-company-backend ()
   (if chezmoi-mode
