@@ -15,7 +15,6 @@
                  (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :after embark
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
