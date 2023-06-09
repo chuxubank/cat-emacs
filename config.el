@@ -76,6 +76,7 @@
 
 ;;; program
 (cat! "+apheleia")
+(cat! "+doc")
 (cat! "+powershell")
 (cat! "+lsp")
 (cat! "+flycheck")
