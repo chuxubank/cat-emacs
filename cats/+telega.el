@@ -13,11 +13,8 @@
  telega-symbol-video-chat-active "🔊"
  telega-symbol-video-chat-passive "🔈"
  telega-video-player-command "mpv"
- telega-chat-input-markups '("markdown2" nil))
-
-(if (featurep 'selectrum)
-    (setq telega-completing-read-function #'selectrum-completing-read)
-  (add-to-list 'completion-styles 'flex))
+ telega-chat-input-markups '("markdown2" nil)
+ telega-open-file-function #'org-open-file)
 
 (defun +telega-chat-mode ()
   (set (make-local-variable 'company-backends)
