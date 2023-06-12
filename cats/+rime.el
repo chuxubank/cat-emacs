@@ -39,12 +39,12 @@
 		      #'meow-keypad-mode-p))
 
 (when (featurep 'nano-modeline)
+  (defun +rime-ligher-dynamic-spacer ()
+    (unless (string-empty-p (rime-lighter)) " "))
+
   (defun +nano-modeline-rime-indicator (args)
-    (cl-destructuring-bind (icon name primary secondary) args
-      (list icon
-	    name
-	    (concat primary
-		    (if (string-empty-p (rime-lighter)) "" " ")
-		    (rime-lighter))
-	    secondary)))
-  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-rime-indicator))
+    (cl-destructuring-bind (left right face-prefix) args
+      (list (append left '((+rime-ligher-dynamic-spacer) (rime-lighter)))
+	    right
+	    face-prefix)))
+  (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-rime-indicator))

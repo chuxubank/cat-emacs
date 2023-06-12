@@ -117,28 +117,16 @@
 (add-hook 'view-mode-hook #'cat-manual-motion-mode)
 
 (when (featurep 'nano-modeline)
-  (defun meow--render-indicator ()
-    "Renders a short indicator based on the current state."
-    (when (bound-and-true-p meow-global-mode)
-      (let* ((state (meow--current-state))
-             (state-name (meow--get-state-name state))
-             (indicator-face (alist-get state meow-indicator-face-alist)))
-	(if state-name
-            (propertize
-             (format " %s" state-name)
-             'face indicator-face)
-          ""))))
   (defun +nano-modeline-meow-indicator (args)
-    (cl-destructuring-bind (icon name primary secondary) args
-      (list icon
-	    name
-	    (concat primary (meow-indicator))
-	    secondary)))
+    (cl-destructuring-bind (left right face-prefix) args
+      (list (append left '((meow-indicator)))
+	    right
+	    face-prefix)))
   (add-hook 'meow-global-mode-hook
 	    (lambda ()
 	      "Toggle meow-indicator for all buffers"
 	      (if meow-mode
-		  (advice-add #'nano-modeline-render :filter-args #'+nano-modeline-meow-indicator)
-		(advice-remove #'nano-modeline-render #'+nano-modeline-meow-indicator)))))
+		  (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
+		(advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))))
 
 (meow-global-mode 1)
