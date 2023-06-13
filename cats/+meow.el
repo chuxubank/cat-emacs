@@ -119,14 +119,19 @@
 (when (featurep 'nano-modeline)
   (defun +nano-modeline-meow-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args
-      (list (append left '((meow-indicator)))
-	    right
-	    face-prefix)))
-  (add-hook 'meow-global-mode-hook
-	    (lambda ()
-	      "Toggle meow-indicator for all buffers"
-	      (if meow-mode
-		  (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
-		(advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))))
+      (let* ((face (nano-modeline--base-face face-prefix))
+             (left (append left '((meow-indicator)))))
+        (dolist (meow-face meow-indicator-face-alist)
+          (let ((meow-face (cdr meow-face)))
+            (eval `(face-spec-set ',meow-face '((t (:inherit ,face)))))))
+        (list left right face-prefix))))
+
+  (defun +meow-setup-nano-modeline ()
+    "Toggle meow-indicator for all buffers"
+    (if meow-mode
+	(advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
+      (advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))
+
+  (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
 
 (meow-global-mode 1)

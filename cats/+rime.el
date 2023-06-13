@@ -39,12 +39,14 @@
 		      #'meow-keypad-mode-p))
 
 (when (featurep 'nano-modeline)
-  (defun +rime-ligher-dynamic-spacer ()
-    (unless (string-empty-p (rime-lighter)) " "))
-
+  (setq rime-title " ㄓ")
   (defun +nano-modeline-rime-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args
-      (list (append left '((+rime-ligher-dynamic-spacer) (rime-lighter)))
-	    right
-	    face-prefix)))
+      (let* ((face (nano-modeline--base-face face-prefix))
+             (left (append left '((rime-lighter)))))
+        (dolist (rime-face '(rime-indicator-face
+                             rime-indicator-dim-face))
+          (eval `(face-spec-set ',rime-face '((t (:inherit ,face))))))
+        (list left right face-prefix))))
+
   (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-rime-indicator))
