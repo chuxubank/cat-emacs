@@ -19,6 +19,7 @@
 			  'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
+  :disabled
   :after nano-theme
   :custom
   (nano-modeline-position 'nano-modeline-footer)
