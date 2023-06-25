@@ -1,10 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package company)
+(use-package company
+  :defer t)
 
 (use-package company-box
   :hook company-mode)
 
-(global-company-mode 1)
-
-(add-hook 'shell-mode-hook (lambda () (company-mode -1)))
+(add-hook 'after-init-hook #'global-company-mode)
