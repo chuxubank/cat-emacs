@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(autoload #'project--find-in-directory "project")
+
 (defun +project-root ()
   (when-let (project (project-current))
     (car (project-roots project))))
