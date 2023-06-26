@@ -1,11 +1,22 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package meow)
+(use-package meow-core
+  :ensure meow
+  :hook (after-init . meow-global-mode)
+  :config
+  (require 'meow)
+  (meow-setup)
+  (meow-setup-line-number)
+  (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
+  (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
+  (add-to-list 'meow-mode-state-list '(diary-mode . normal))
+  (add-to-list 'meow-mode-state-list '(help-mode . motion))
+  (add-to-list 'meow-mode-state-list '(telega-root-mode . motion)))
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-	meow-expand-exclude-mode-list nil
-	meow-replace-state-name-list
+        meow-expand-exclude-mode-list nil
+        meow-replace-state-name-list
 	'((normal . "🅝")
           (beacon . "🅑")
           (insert . "🅘")
@@ -97,15 +108,6 @@
    '("%" . meow-query-replace-regexp)
    '("<escape>" . meow-last-buffer)))
 
-(with-eval-after-load 'meow
-  (meow-setup)
-  (meow-setup-line-number)
-  (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
-  (add-to-list 'meow-mode-state-list '(bibtex-mode . normal))
-  (add-to-list 'meow-mode-state-list '(diary-mode . normal))
-  (add-to-list 'meow-mode-state-list '(help-mode . motion))
-  (add-to-list 'meow-mode-state-list '(telega-root-mode . motion)))
-
 (defun cat-manual-motion-mode ()
   (meow-motion-mode 'toggle)
   (meow-normal-mode 'toggle)
@@ -133,5 +135,3 @@
       (advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))
 
   (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
-
-(meow-global-mode 1)

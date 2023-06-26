@@ -3,10 +3,9 @@
 (setq mac-system-move-file-to-trash-use-finder t)
 
 (use-package ns-auto-titlebar
-  :config
-  (and (or (daemonp)
-           (display-graphic-p))
-       (ns-auto-titlebar-mode +1)))
+  :when (or (daemonp)
+            (display-graphic-p))
+  :hook (after-init . ns-auto-titlebar-mode))
 
 (use-package osx-location
   :defer t
