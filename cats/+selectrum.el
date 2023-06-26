@@ -1,6 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package selectrum)
-
-(selectrum-mode 1)
+(use-package selectrum
+  :hook (after-init . selectrum-mode))
 
