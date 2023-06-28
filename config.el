@@ -25,7 +25,8 @@
   (cat! "+daemon"))
 
 ;;; theme
-(cat! "+nano")
+;; (cat! "+nano")
+(cat! "+doom")
 (cat! "+autodark")
 (cat! "+highlight")
 

@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(cat-benchmark 'beg)
-
 ;;; custom
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -27,10 +25,11 @@
 
 (load (concat user-emacs-directory "config") nil 'nomessage)
 
+;;; ui
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;;; enable
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'list-threads 'disabled nil)
 (put 'magit-clean 'disabled nil)
-
-(cat-benchmark 'end)

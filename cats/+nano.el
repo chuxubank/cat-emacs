@@ -10,8 +10,7 @@
    default-frame-alist (list '(internal-border-width . 24)
 			     '(left-fringe . 0)
 			     '(right-fringe . 0)
-			     '(vertical-scroll-bars . nil)
-			     '(fullscreen . maximized)))
+			     '(vertical-scroll-bars . nil)))
   ;; Nicer glyphs for continuation and wrap
   (set-display-table-slot standard-display-table
 			  'truncation (make-glyph-code ?… 'nano-faded))
