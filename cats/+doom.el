@@ -2,9 +2,6 @@
 
 (use-package doom-themes
   :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t
-        doom-themes-treemacs-theme "doom-atom")
   (doom-themes-neotree-config)
   (doom-themes-treemacs-config)
   (doom-themes-org-config)
