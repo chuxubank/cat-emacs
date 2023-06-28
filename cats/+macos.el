@@ -25,4 +25,4 @@
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
   (menu-bar-mode 1))
 
-(define-key global-map [(meta f11)] #'toggle-frame-fullscreen)
+(define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
