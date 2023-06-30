@@ -25,6 +25,7 @@ Intended for `eldoc-documentation-functions' (which see)."
         (describe-function-1 function)
         (buffer-string)))))
 
-(advice-add 'elisp-eldoc-funcall :before-while #'cat-elisp-eldoc-funcall)
+(when EMACS29+
+  (advice-add 'elisp-eldoc-funcall :before-while #'cat-elisp-eldoc-funcall)
+  (advice-add 'elisp-eldoc-var-docstring :override #'elisp-eldoc-var-docstring-with-value))
 
-(advice-add 'elisp-eldoc-var-docstring :override #'elisp-eldoc-var-docstring-with-value)

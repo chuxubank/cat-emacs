@@ -11,4 +11,4 @@
       (load-theme 'doom-nord-light t)))
 
 (use-package doom-modeline
-  :hook after-init)
+  :hook (after-init . doom-modeline-mode))

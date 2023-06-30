@@ -1,11 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package beacon
-  :config
-  (beacon-mode 1))
+  :hook after-init-hook)
 
 (use-package goggles
-  :hook (prog-mode text-mode)
+  :hook (prog-mode-hook text-mode-hook)
   :config
   (setq-default goggles-pulse t))
 

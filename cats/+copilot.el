@@ -2,7 +2,7 @@
 
 (use-package copilot
   :straight (copilot :host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :hook prog-mode
+  :hook prog-mode-hook
   :bind
   (:map copilot-completion-map
         ("<tab>" . 'copilot-accept-completion)
