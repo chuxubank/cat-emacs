@@ -5,7 +5,7 @@
 (use-package ns-auto-titlebar
   :when (or (daemonp)
             (display-graphic-p))
-  :hook (after-init . ns-auto-titlebar-mode))
+  :hook after-init)
 
 (use-package osx-location
   :defer t
