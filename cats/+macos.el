@@ -16,6 +16,9 @@
                     calendar-longitude osx-location-longitude
                     calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude)))))
 
+(use-package osx-dictionary
+  :defer t)
+
 (use-package exec-path-from-shell
   :when (length< (getenv "PATH") 50)
   :config

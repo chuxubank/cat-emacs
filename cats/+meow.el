@@ -104,7 +104,8 @@
   (+add-to-list-multi 'meow-mode-state-list
                       '(diary-mode . normal)
                       '(help-mode . motion)
-                      '(telega-root-mode . motion)))
+                      '(telega-root-mode . motion)
+                      '(osx-dictionary-mode . motion)))
 
 (defun cat-manual-motion-mode ()
   (meow-motion-mode 'toggle)

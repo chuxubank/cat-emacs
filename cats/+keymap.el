@@ -36,6 +36,8 @@
     (cat-define-key map "t" 'telega-prefix)
     (cat-define-key map "l" 'magit-list-repositories)
     (cat-define-key map "m" 'mu4e)
+    (cat-define-key map "o" 'osx-dictionary-search-pointer)
+    (cat-define-key map "O" 'osx-dictionary-search-input)
     map)
   "Keymap for plugins.")
 (defalias 'cat-plugin-prefix cat-plugin-map)
