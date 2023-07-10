@@ -107,5 +107,6 @@
 (cat! "+diagram-preview")
 (cat! "+confluence")
 (cat! "+chezmoi")
+(cat! "+vundo")
 
 (cat! "+keymap")
