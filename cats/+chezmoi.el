@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi
-  :commands #'chezmoi-find
+  :commands (chezmoi-find chezmoi-dired-add-marked-files)
   :mode ("\\dot_\\'" . chezmoi-mode)
   :config
   (require 'chezmoi-company))
