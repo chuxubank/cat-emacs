@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq mac-system-move-file-to-trash-use-finder t)
-
 (use-package ns-auto-titlebar
   :when (or (daemonp)
             (display-graphic-p))
@@ -26,6 +24,7 @@
 
 (when IS-MACPORT
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
+  (setq mac-system-move-file-to-trash-use-finder t)
   (menu-bar-mode 1))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
