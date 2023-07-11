@@ -8,6 +8,7 @@
 (defconst package-mirror-alist
   '((default
      ("gnu"		. "https://elpa.gnu.org/packages/")
+     ("gnu-devel"	. "https://elpa.gnu.org/devel/")
      ("nongnu"		. "https://elpa.nongnu.org/nongnu/")
      ("melpa"		. "https://melpa.org/packages/")
      ("melpa-stable"	. "https://stable.melpa.org/packages/"))
