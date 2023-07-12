@@ -47,6 +47,9 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(unless EMACS29+
+  (use-package compat))
+
 ;; Ref @twlz0ne https://emacs-china.org/t/elpa/18226
 (defun cat-find-fastest-elpa-mirror ()
   "Find the fatest elpa mirror."
