@@ -107,6 +107,7 @@
 (cat! "+diagram-preview")
 (cat! "+confluence")
 (cat! "+chezmoi")
-(cat! "+vundo")
+(when EMACS28+
+  (cat! "+vundo"))
 
 (cat! "+keymap")
