@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package beacon
+  :when (or (daemonp)
+            (display-graphic-p))
   :hook after-init)
 
 (use-package goggles
