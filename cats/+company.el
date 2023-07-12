@@ -4,4 +4,6 @@
   :hook (after-init . global-company-mode))
 
 (use-package company-box
+  :when (or (daemonp)
+            (display-graphic-p))
   :hook company-mode)
