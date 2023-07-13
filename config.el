@@ -62,8 +62,7 @@
 (cat! "+orb-notes")
 (cat! "+org-srs")
 (cat! "+org-cv")
-(cat! "+org-yt")
-(cat! "+org-dial")
+(cat! "+org-link")
 (cat! "+org-jira")
 
 ;;; latex

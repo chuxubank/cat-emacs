@@ -24,3 +24,15 @@
   (org-link-set-parameters "http"  :image-data-fun #'+org-http-image-data-fn)
   (org-link-set-parameters "https" :image-data-fun #'+org-http-image-data-fn)
   (org-link-set-parameters "img"   :image-data-fun #'+org-inline-image-data-fn))
+
+(use-package org-dial
+  :straight (org-dial :host github :repo "mistrey/org-dial")
+  :after org
+  :config
+  (when IS-MAC
+    (setq org-dial-program "open tel:")))
+
+(use-package org-cliplink
+  :bind
+  (:map org-mode-map
+        ("C-c n l" . org-cliplink)))
