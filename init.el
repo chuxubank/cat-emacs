@@ -20,6 +20,7 @@
                  filename)))
     `(condition-case-unless-debug e
          (let (file-name-handler-alist)
+           (cat-benchmark 'beg ,file)
            (load ,file ,noerror 'nomessage))
        (error "Could not load file '%s'" file))))
 

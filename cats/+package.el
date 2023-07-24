@@ -79,5 +79,3 @@
 			       (url-host (url-generic-parse-url url))
 			       (if (eq symbol-status 'success)
 				   (request-response-header response "Last-Modified"))))))))))))
-
-(cat-benchmark 'end)
