@@ -249,4 +249,5 @@ to edit property"))))))))
   "Save and revert all org buffers without confirm."
   (interactive)
   (org-save-all-org-buffers)
-  (+no-confirm #'org-revert-all-org-buffers))
+  (+no-confirm #'org-revert-all-org-buffers)
+  (org-element-update-syntax))
