@@ -7,7 +7,6 @@
 (tool-bar-mode 0)
 (setq inhibit-startup-screen t
       initial-scratch-message nil
-      initial-major-mode 'text-mode
       frame-resize-pixelwise t)
 
 (setq frame-title-format '("%b – " cat-emacs-name)
