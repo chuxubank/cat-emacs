@@ -39,6 +39,7 @@
     (define-key map "f" #'find-function)
     (define-key map "l" #'find-library)
     (define-key map "o" #'+find-org-files)
+    (define-key map "O" #'consult-org-agenda)
     (define-key map "r" #'recentf-open-files)
     map)
   "Keymap for file commands.")
