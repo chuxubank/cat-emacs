@@ -6,4 +6,4 @@
 (use-package company-box
   :when (or (daemonp)
             (display-graphic-p))
-  :hook company-mode)
+  :hook (company-mode . company-box-mode))

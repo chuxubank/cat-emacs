@@ -16,4 +16,4 @@
   (kaolin-treemacs-theme))
 
 (use-package doom-modeline
-  :hook after-init)
+  :hook (after-init . doom-modeline-mode))

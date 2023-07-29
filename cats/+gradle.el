@@ -1,5 +1,5 @@
 (use-package gradle-mode
-  :hook (kotlin-mode java-mode)
+  :hook ((kotlin-mode java-mode) . gradle-mode)
   :config
   (setq gradle-use-gradlew t
 	gradle-gradlew-executable "./gradlew"))
