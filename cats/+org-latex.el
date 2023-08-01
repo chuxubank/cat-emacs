@@ -9,6 +9,7 @@
 	("" "svg" nil)
 	("" "pgfplots" t)
 	("" "geometry" nil))
+      org-latex-default-table-environment "longtable"
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm
       org-preview-latex-process-alist
