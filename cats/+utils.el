@@ -16,7 +16,6 @@
           (setq value (substring query (match-end 1) (match-beginning 2)))))
     (decode-coding-string (url-unhex-string value) 'utf-8)))
 
-
 (cl-flet ((always-yes (&rest _) t))
   (defun +no-confirm (fun &rest args)
     "Apply FUN to ARGS, skipping user confirmations."
@@ -24,6 +23,16 @@
               ((symbol-function 'yes-or-no-p) #'always-yes))
       (apply fun args))))
 
-
 (defun +dark-mode-p ()
+  "Detect whether current frame is dark mode."
   (eq (frame-parameter nil 'background-mode) 'dark))
+
+(defun +start-process-with-finish-callback (process-name buffer command callback)
+  "Start an asynchronous process with a given CALLBACK function as its finish sentinel."
+  (let ((process (start-process process-name buffer command)))
+    (set-process-sentinel
+     process
+     (lambda ()
+       (when (string-match-p "finished" event)
+         (funcall callback))))
+    process))

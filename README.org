@@ -1,14 +1,5 @@
 * Cat Emacs
 ** Rime
-#+begin_src sh :var librime_version="1.7.3"
-  cd ~/Downloads
-  wget -N https://github.com/rime/librime/releases/download/${librime_version}/rime-${librime_version}-osx.zip
-  unzip -o rime-${librime_version}-osx.zip -d ~/librime
-  rm -rf rime-${librime_version}-osx.zip
-#+end_src
-
-#+RESULTS:
-
 *** Sync
 https://github.com/rime/home/wiki/UserGuide#同步用戶資料
 
@@ -16,15 +7,20 @@ https://github.com/rime/home/wiki/UserGuide#同步用戶資料
 ~$HOME/.gnupg/gpg-agent.conf~
 #+begin_example
 allow-emacs-pinentry
-allow-loopback-pinentry
 #+end_example
 
 ** Org
 
-*** Latex
-If you want to include svg file in latex file and generate the pdf file you need to
+** Latex
+
+*** If you want to include svg file in latex file and generate the pdf file you need to
 - Add ~set_tex_cmds( '--shell-escape %O %S' );~ to ~$HOME/.latexmkrc~
 - Install =inkscape=
+
+*** To indent tex file you need to
+#+begin_src sh
+  sudo cpan -i File::HomeDir
+#+end_src
 
 ** WSL
 #+begin_src bash
