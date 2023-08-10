@@ -29,10 +29,10 @@
 
 (defun +start-process-with-finish-callback (process-name buffer command callback)
   "Start an asynchronous process with a given CALLBACK function as its finish sentinel."
-  (let ((process (start-process process-name buffer command)))
+  (let ((process (apply #'start-process process-name buffer command)))
     (set-process-sentinel
      process
-     (lambda ()
+     (lambda (proc event)
        (when (string-match-p "finished" event)
-         (funcall callback))))
+         (funcall callback (process-exit-status proc)))))
     process))

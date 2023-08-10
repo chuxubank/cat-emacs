@@ -5,36 +5,42 @@
 
 (when IS-MAC
   (setq rime-librime-root (concat cat-rime-dir "dist/"))
+
+  (defun +rime-extract-librime (&optional file keep-after-extract)
+    "Extract the downloaded librime to correct place."
+    (interactive
+     (list (read-file-name "Select the librime file to extract: " "~/Downloads/")
+           current-prefix-arg))
+    (let ((version-file (concat rime-librime-root "version-info.txt")))
+      (when (file-exists-p rime-librime-root)
+        (delete-directory rime-librime-root t))
+      (when (file-exists-p version-file)
+        (delete-file version-file t))
+      (shell-command (format "tar -xjf %s -C %s" file cat-rime-dir))
+      (unless keep-after-extract
+        (delete-file file))
+      (message "Latest librime for macOS has been extracted to %s" cat-rime-dir)))
+
   (defun +rime-librime-download-install ()
-    "Download and install the librime from GitHub"
+    "Download and install the latest librime from GitHub"
     (interactive)
     (let* ((url "https://api.github.com/repos/rime/librime/releases/latest")
            (download-dir (expand-file-name "~/Downloads"))
            (download-url-cmd (concat "curl -s " url " | jq -r '.assets[] | select(.name | contains(\"macOS\") and (test(\"deps\") | not)) | .browser_download_url'"))
            (download-url (string-trim-right (shell-command-to-string download-url-cmd)))
            (downloaded-file (concat download-dir "/" (file-name-nondirectory download-url)))
-           (log-buffer-name "*librime-download-log*")
-           (version-file (concat rime-librime-root "version-info.txt")))
-      (when (file-exists-p rime-librime-root)
-        (delete-directory rime-librime-root t))
-      (when (file-exists-p version-file)
-        (delete-file version-file t))
-      (with-current-buffer (get-buffer-create log-buffer-name)
-        (erase-buffer)
-        (insert (format "Downloading from: %s\n" download-url)))
-      (let ((download-command (format "curl -L -o %s %s" downloaded-file download-url))
-            (extract-command (format "tar -xjf %s -C %s" downloaded-file cat-rime-dir)))
+           (log-buffer-name "*librime-download-log*"))
+      (message "Downloading from: %s" download-url)
+      (let ((download-command (list "curl" "-L" "-o" downloaded-file download-url)))
         (if (file-exists-p downloaded-file)
-            (progn
-              (shell-command extract-command)
-              (message "Latest librime for macOS has been extracted to %s\n" rime-librime-root))
+            (+rime-extract-librime downloaded-file)
           (+start-process-with-finish-callback
            "download-librime"
            log-buffer-name
            download-command
-           (lambda ()
-             (shell-command extract-command)
-             (message "Latest librime for macOS has been downloaded and extracted to %s\n" rime-librime-root))))))))
+           (lambda (_)
+             (message "Downloaded librime to %s" downloaded-file)
+             (+rime-extract-librime downloaded-file))))))))
 
 (setq
  rime-user-data-dir (concat cat-rime-dir "data/")
