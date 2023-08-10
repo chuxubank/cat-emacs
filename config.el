@@ -83,6 +83,7 @@
 (cat! "+copilot")
 (cat! "+yaml")
 (cat! "+kotlin")
+(cat! "+android")
 (cat! "+gradle")
 (cat! "+python")
 (cat! "+dart")

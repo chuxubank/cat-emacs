@@ -114,6 +114,7 @@
 
 (add-hook 'shell-mode-hook #'meow-insert)
 (add-hook 'comint-mode-hook #'meow-insert)
+(add-hook 'elogcat-mode-hook #'meow-insert)
 
 (add-hook 'view-mode-hook #'cat-manual-motion-mode)
 
