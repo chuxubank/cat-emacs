@@ -105,7 +105,8 @@
                       '(diary-mode . normal)
                       '(help-mode . motion)
                       '(telega-root-mode . motion)
-                      '(osx-dictionary-mode . motion)))
+                      '(osx-dictionary-mode . motion)
+                      '(logview-mode . motion)))
 
 (defun cat-manual-motion-mode ()
   (meow-motion-mode 'toggle)
