@@ -18,7 +18,7 @@
       (trace "V"))))
   (logview-additional-submodes
    '(("Luna"
-      (format . "TIMESTAMP IGNORED LEVEL T: THREAD NAME - MESSAGE")
+      (format . "TIMESTAMP IGNORED LEVEL T: <<RX:THREAD:.+?>> NAME - MESSAGE")
       (levels . "Logback"))
      ("LogCat"
       (format . "TIMESTAMP IGNORED THREAD LEVEL NAME: MESSAGE")
