@@ -4,9 +4,9 @@
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-	meow-expand-exclude-mode-list nil
-	meow-replace-state-name-list
-	'((normal . "🅝")
+        meow-expand-exclude-mode-list nil
+        meow-replace-state-name-list
+        '((normal . "🅝")
           (beacon . "🅑")
           (insert . "🅘")
           (motion . "🅜")
@@ -132,7 +132,7 @@
   (defun +meow-setup-nano-modeline ()
     "Toggle meow-indicator for all buffers"
     (if meow-mode
-	(advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
+        (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
       (advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))
 
   (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))

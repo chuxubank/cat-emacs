@@ -1,5 +1,7 @@
-(use-package apheleia)
+;; -*- lexical-binding: t; -*-
 
-(apheleia-global-mode +1)
-
-(setq apheleia-remote-algorithm 'local)
+(use-package apheleia
+  :custom
+  (apheleia-remote-algorithm 'local)
+  :config
+  (apheleia-global-mode +1))

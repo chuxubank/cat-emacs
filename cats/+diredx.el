@@ -15,9 +15,9 @@
 
 (add-hook 'dired-mode-hook
           (lambda ()
-	    (when IS-WINDOWS
-	      (setq dired-omit-files
-		    (concat dired-omit-files "\\|^ntuser\\(\\.dat\\|\\.ini\\).*")))
+            (when IS-WINDOWS
+              (setq dired-omit-files
+                    (concat dired-omit-files "\\|^ntuser\\(\\.dat\\|\\.ini\\).*")))
             (dired-omit-mode 1)
             ))
 

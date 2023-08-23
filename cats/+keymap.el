@@ -2,10 +2,10 @@
 
 (defmacro cat-define-key (keymap key def &optional name)
   `(when (or (keymapp ,def)
-	     (functionp ,def)
-	     (boundp ,def))
+             (functionp ,def)
+             (boundp ,def))
      (if ,name
-	 (define-key ,keymap ,key (cons ,name ,def))
+         (define-key ,keymap ,key (cons ,name ,def))
        (define-key ,keymap ,key ,def))))
 
 (defvar cat-toggle-map

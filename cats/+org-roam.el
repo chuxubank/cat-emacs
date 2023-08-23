@@ -4,12 +4,12 @@
   :defer t
   :init
   (setq org-roam-v2-ack t
-	org-roam-directory cat-org-roam-directory
+        org-roam-directory cat-org-roam-directory
         org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir)
-	org-roam-completion-everywhere t
-	org-roam-node-display-template (concat (propertize "${tags:10} " 'face 'org-tag) "${title:*} ")
-	org-roam-mode-section-functions
-	(list #'org-roam-backlinks-section
+        org-roam-completion-everywhere t
+        org-roam-node-display-template (concat (propertize "${tags:10} " 'face 'org-tag) "${title:*} ")
+        org-roam-mode-section-functions
+        (list #'org-roam-backlinks-section
               #'org-roam-reflinks-section
               #'org-roam-unlinked-references-section))
   :custom
@@ -19,14 +19,14 @@
   (org-roam-update-org-id-locations)
   (require 'org-roam-protocol)
   (setq org-roam-capture-ref-templates
-	'(("r" "Protocol Capture Reference"
-	   plain "${body}%?" :target
-	   (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
-	   :unnarrowed t)
-	  ("c" "Course"
-	   plain (file "templates/course.org") :target
-	   (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
-	   :unnarrowed t))))
+        '(("r" "Protocol Capture Reference"
+           plain "${body}%?" :target
+           (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
+           :unnarrowed t)
+          ("c" "Course"
+           plain (file "templates/course.org") :target
+           (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
+           :unnarrowed t))))
 
 (use-package org-roam-ui
   :defer t
@@ -35,8 +35,8 @@
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t
-	org-roam-ui-ref-title-template
-	"%^{author-abbrev} (%^{date}) %^{title}"))
+        org-roam-ui-ref-title-template
+        "%^{author-abbrev} (%^{date}) %^{title}"))
 
 (defvar org-roam-map
   (let ((map (make-sparse-keymap)))

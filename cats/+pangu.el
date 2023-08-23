@@ -9,21 +9,21 @@
     (interactive)
     (let ((element (org-element-at-point)))
       (when (or (member (org-element-type element)
-			'(src-block
-			  keyword
-			  example-block
-			  export-block
-			  latex-environment
-			  planning
-			  node-property
-			  table-row))
-		(member (car (org-element-context element))
-			'(inline-src-block
-			  timestamp
-			  link
-			  code
-			  verbatim)))
-	t))))
+                        '(src-block
+                          keyword
+                          example-block
+                          export-block
+                          latex-environment
+                          planning
+                          node-property
+                          table-row))
+                (member (car (org-element-context element))
+                        '(inline-src-block
+                          timestamp
+                          link
+                          code
+                          verbatim)))
+        t))))
 
 (defun +pangu-spacing-disable ()
   (pangu-spacing-mode -1))

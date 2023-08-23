@@ -31,21 +31,21 @@
 (defun cat-benchmark (pos &optional file)
   "Print the current time of load POS of FILE"
   (message "%s %s of %s"
-	   (format-time-string "%r %3N")
-	   (upcase (symbol-name pos))
-	   (or file load-file-name buffer-file-name)))
+           (format-time-string "%r %3N")
+           (upcase (symbol-name pos))
+           (or file load-file-name buffer-file-name)))
 
 ;;; modifier-key
 (cond
  (IS-MACPORT
   (setq mac-command-modifier 'meta
-	mac-option-modifier 'meta
-	mac-right-command-modifier 'super
-	mac-right-option-modifier 'none))
+        mac-option-modifier 'meta
+        mac-right-command-modifier 'super
+        mac-right-option-modifier 'none))
  (IS-MAC
   (setq ns-command-modifier 'meta
         ns-option-modifier 'meta
-	ns-right-command-modifier 'super
+        ns-right-command-modifier 'super
         ns-right-option-modifier 'none))
  (IS-WINDOWS
   (setq w32-lwindow-modifier 'super

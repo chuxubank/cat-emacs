@@ -2,7 +2,7 @@
   :hook ((kotlin-mode java-mode) . gradle-mode)
   :config
   (setq gradle-use-gradlew t
-	gradle-gradlew-executable "./gradlew"))
+        gradle-gradlew-executable "./gradlew"))
 
 (use-package groovy-mode
   :mode "\\.gradle\\'")
@@ -11,6 +11,6 @@
   :after groovy-mode
   :bind
   (:map groovy-mode-map
-	("M-I" . #'groovy-imports-add-import-dwim))
+        ("M-I" . #'groovy-imports-add-import-dwim))
   :config
   (add-hook 'groovy-mode-hook 'groovy-imports-scan-file))

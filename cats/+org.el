@@ -20,7 +20,7 @@
       org-refile-use-outline-path 'file
       org-refile-targets
       '((nil :maxlevel . 10)
-	(org-agenda-files :maxlevel . 3))
+        (org-agenda-files :maxlevel . 3))
       ;; org-list
       org-list-allow-alphabetical t
       org-list-demote-modify-bullet
@@ -52,11 +52,11 @@
 (setq org-return-follows-link t
       org-link-abbrev-alist
       '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
-	("wiki-en" . "https://en.wikipedia.org/wiki/%s")
-	("github" . "https://github.com/%s")
-	("bitbucket" . "https://bitbucket.org/%s")
-	("bili". "https://bilibili.com/video/%s")
-	("coursera". "https://www.coursera.org/%s")))
+        ("wiki-en" . "https://en.wikipedia.org/wiki/%s")
+        ("github" . "https://github.com/%s")
+        ("bitbucket" . "https://bitbucket.org/%s")
+        ("bili". "https://bilibili.com/video/%s")
+        ("coursera". "https://www.coursera.org/%s")))
 
 (with-eval-after-load 'org
   (setq org-directory cat-org-directory)
@@ -89,7 +89,7 @@
          "|"
          "DONE(d)"  ; Task successfully completed
          "KILL(k)") ; Task was cancelled, aborted or is no longer applicable
-	)
+        )
       org-todo-keyword-faces
       '(("STRT" . +org-todo-active)
         ("WAIT" . +org-todo-onhold)
@@ -106,24 +106,24 @@
       '(("t" "Personal todo" entry
          (file "inbox.org")
          "* TODO %?\n%i" :prepend t)
-	("w" "Work todo" entry
+        ("w" "Work todo" entry
          (file+headline "work.org" "Inbox")
          "* TODO %?\n%i" :prepend nil)
-	("b" "Shopping list" entry
+        ("b" "Shopping list" entry
          (file "buy.org")
          "* TODO %?\n%i" :prepend t)
-	("p" "Place" entry
+        ("p" "Place" entry
          (file+headline "place.org" "Inbox")
          (file "templates/place.org")
-	 :prepend t
-	 :empty-lines 1)
+         :prepend t
+         :empty-lines 1)
         ("n" "Personal notes" entry
          (file+headline "notes.org" "Inbox")
          "* %u %?\n%i\n%a" :prepend t)
         ("j" "Journal" entry
          (file+olp+datetree "journal.org")
          "* %U %?")
-	("c" "ChatGPT" entry
+        ("c" "ChatGPT" entry
          (file+olp+datetree "ChatGPT.org")
          "* %?")))
 

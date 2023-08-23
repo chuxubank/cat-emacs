@@ -22,7 +22,7 @@
                      'telega-company-username
                      'telega-company-hashtag)
                (when (telega-chat-bot-p telega-chatbuf--chat)
-		 '(telega-company-botcmd))))
+                 '(telega-company-botcmd))))
   (company-mode 1))
 
 (add-hook 'telega-chat-mode-hook #'+telega-chat-mode)

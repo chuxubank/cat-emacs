@@ -17,7 +17,7 @@
 Default PASSWORD-LENGTH is `password-store-password-length'."
     (interactive (list (password-store--completing-read)
                        (when current-prefix-arg
-			 (abs (prefix-numeric-value current-prefix-arg)))))
+                         (abs (prefix-numeric-value current-prefix-arg)))))
     (unless password-length (setq password-length password-store-password-length))
     ;; A message with the output of the command is not printed because
     ;; the output contains the password.
@@ -26,8 +26,8 @@ Default PASSWORD-LENGTH is `password-store-password-length'."
     nil)
   (defun password-store--run-generate (entry password-length &optional in-place no-symbols)
     (password-store--run "generate"
-			 (if in-place "--in-place"
-			   "--force")
-			 (if no-symbols "--no-symbols")
-			 entry
-			 (number-to-string password-length))))
+                         (if in-place "--in-place"
+                           "--force")
+                         (if no-symbols "--no-symbols")
+                         entry
+                         (number-to-string password-length))))

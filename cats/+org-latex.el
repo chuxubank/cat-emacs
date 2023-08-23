@@ -3,12 +3,12 @@
 (setq org-latex-compiler "xelatex"
       org-latex-packages-alist
       '(("" "ctex" t ("xelatex"))
-	("" "booktabs" nil)
-	("" "enumitem" nil)
-	("" "fontspec" nil)
-	("" "svg" nil)
-	("" "pgfplots" t)
-	("" "geometry" nil))
+        ("" "booktabs" nil)
+        ("" "enumitem" nil)
+        ("" "fontspec" nil)
+        ("" "svg" nil)
+        ("" "pgfplots" t)
+        ("" "geometry" nil))
       org-latex-default-table-environment "longtable"
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm
@@ -32,10 +32,10 @@
 
 (with-eval-after-load 'org
   (setq org-format-latex-header
-	(replace-regexp-in-string
-	 (regexp-quote "\\documentclass{article}")
-	 "\\documentclass[dvisvgm]{article}"
-	 org-format-latex-header t t)))
+        (replace-regexp-in-string
+         (regexp-quote "\\documentclass{article}")
+         "\\documentclass[dvisvgm]{article}"
+         org-format-latex-header t t)))
 
 (defun +org-redisplay-latex-preview ()
   (when (eq major-mode 'latex-mode)

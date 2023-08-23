@@ -56,12 +56,12 @@
   :init
   (setq register-preview-delay 0
         register-preview-function #'consult-register-format
-	xref-show-xrefs-function #'consult-xref
+        xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
   (setq consult-narrow-key "<"
-	consult-project-root-function #'+project-root)
+        consult-project-root-function #'+project-root)
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
 
 (define-key global-map [remap recentf-open-files] #'consult-recent-file)

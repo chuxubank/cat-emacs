@@ -70,9 +70,9 @@
 
 (when (featurep 'meow)
   (+add-to-list-multi 'rime-disable-predicates
-		      #'meow-normal-mode-p
-		      #'meow-motion-mode-p
-		      #'meow-keypad-mode-p))
+                      #'meow-normal-mode-p
+                      #'meow-motion-mode-p
+                      #'meow-keypad-mode-p))
 
 (when (featurep 'nano-modeline)
   (setq rime-title " ㄓ")

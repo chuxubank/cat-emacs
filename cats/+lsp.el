@@ -3,7 +3,7 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c C-l"
-	lsp-session-file (concat cat-etc-dir "lsp-session"))
+        lsp-session-file (concat cat-etc-dir "lsp-session"))
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
   :commands lsp)

@@ -11,14 +11,14 @@
   (sp-pair "“" "”"))
 
 (dolist (h '(mermaid-mode-hook
-	     plantuml-mode-hook))
+             plantuml-mode-hook))
   (add-hook h 'smartparens-mode))
 
 (dolist (h '(c-mode-hook
              kotlin-mode-hook
-	     lisp-mode-hook
-	     lisp-interaction-mode-hook
-	     emacs-lisp-mode-hook
-	     js-mode-hook
-	     bibtex-mode-hook))
+             lisp-mode-hook
+             lisp-interaction-mode-hook
+             emacs-lisp-mode-hook
+             js-mode-hook
+             bibtex-mode-hook))
   (add-hook h 'smartparens-strict-mode))

@@ -8,8 +8,8 @@
 
 (defun +project-find-file-in-dir (dir)
   (let* ((pr (or (project--find-in-directory dir)
-		 (cons 'transient dir)))
-	 (dirs (project-roots pr)))
+                 (cons 'transient dir)))
+         (dirs (project-roots pr)))
     (project-find-file-in nil dirs pr)))
 
 (defun +find-emacs-profile ()

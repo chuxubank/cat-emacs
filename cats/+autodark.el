@@ -31,10 +31,10 @@
   (interactive)
   (mapc 'disable-theme custom-enabled-themes)
   (when (or (display-graphic-p)
-	    (daemonp))
+            (daemonp))
     (if (or (and color (eq color 'dark))
             (cat-dark-mode-p))
-	(run-hooks 'cat-dark-mode-hook)
+        (run-hooks 'cat-dark-mode-hook)
       (run-hooks 'cat-light-mode-hook))
     (run-hooks 'cat-theme-refresh-hook)))
 

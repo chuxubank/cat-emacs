@@ -52,9 +52,9 @@
 (defun sow--scroll (n &optional down-p)
   (let* ((win (other-window-for-scrolling))
          (cmd (with-current-buffer (window-buffer win)
-		(if down-p
-		    (or sow-scroll-down-command #'scroll-down-command)
-		  (or sow-scroll-up-command #'scroll-up-command)))))
+                (if down-p
+                    (or sow-scroll-down-command #'scroll-down-command)
+                  (or sow-scroll-up-command #'scroll-up-command)))))
     (with-current-buffer (window-buffer win)
       (save-excursion
         (goto-char (window-point win))
@@ -63,11 +63,11 @@
         (set-window-point win (point))))))
 
 (add-hook 'Info-mode-hook
-	  (lambda nil
-	    (setq sow-scroll-up-command
+          (lambda nil
+            (setq sow-scroll-up-command
                   (lambda (_) (Info-scroll-up))
-		  sow-scroll-down-command
-		  (lambda (_) (Info-scroll-down)))))
+                  sow-scroll-down-command
+                  (lambda (_) (Info-scroll-down)))))
 
 (add-hook 'doc-view-mode-hook
           (lambda nil

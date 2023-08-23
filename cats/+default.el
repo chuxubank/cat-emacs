@@ -84,9 +84,9 @@
       tramp-auto-save-directory  (concat cat-cache-dir "tramp-autosave/")
       auto-save-file-name-transforms
       (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
-		  ;; Prefix tramp autosaves to prevent conflicts with local ones
-		  (concat auto-save-list-file-prefix "tramp-\\2") t)
-	    (list ".*" auto-save-list-file-prefix t)))
+                  ;; Prefix tramp autosaves to prevent conflicts with local ones
+                  (concat auto-save-list-file-prefix "tramp-\\2") t)
+            (list ".*" auto-save-list-file-prefix t)))
 
 ;;; dired
 (setq dired-dwim-target t
@@ -94,8 +94,8 @@
       delete-by-moving-to-trash t
       dired-guess-shell-alist-user
       '(("\\.zip\\'"
-	 (concat "7z x" " -o" (file-name-sans-extension file))
-	 (concat "7z x" " -o" (file-name-sans-extension file) " -p"))))
+         (concat "7z x" " -o" (file-name-sans-extension file))
+         (concat "7z x" " -o" (file-name-sans-extension file) " -p"))))
 
 (let ((args (list "-ahlv" "--group-directories-first")))
   (when IS-BSD
@@ -103,7 +103,7 @@
     ;; dired-use-ls-dired nil)' to your config to suppress the Dired warning
     ;; when not using GNU ls.
     (if-let (gls (executable-find "gls"))
-	(setq insert-directory-program gls)
+        (setq insert-directory-program gls)
       ;; BSD ls doesn't support --group-directories-first
       (setq args (list (car args)))))
   (setq dired-listing-switches (string-join args " ")))
@@ -159,15 +159,16 @@
 
 ;;; hideshow
 (dolist (h '(c-mode-hook
-	     lisp-mode-hook
-	     lisp-interaction-mode-hook
-	     emacs-lisp-mode-hook
-	     js-mode-hook
-	     bibtex-mode-hook))
+             lisp-mode-hook
+             lisp-interaction-mode-hook
+             emacs-lisp-mode-hook
+             js-mode-hook
+             bibtex-mode-hook))
   (add-hook h 'hs-minor-mode))
 
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))
 
 ;;; indent
-(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4
+              indent-tabs-mode nil)

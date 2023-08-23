@@ -4,4 +4,4 @@
   :after org
   :custom
   (org-transclusion-extensions '(org-transclusion-src-lines
-				 org-transclusion-indent-mode)))
+                                 org-transclusion-indent-mode)))

@@ -4,7 +4,7 @@
   :defer t
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news "
-	elfeed-curl-timeout 10)
+        elfeed-curl-timeout 10)
   (when (functionp #'valign--put-overlay)
     (defun elfeed-search-print-valigned-entry (entry)
       "Print valign-ed ENTRY to the buffer."

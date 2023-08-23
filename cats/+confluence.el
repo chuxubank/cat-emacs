@@ -8,15 +8,15 @@
 (use-package confluence
   :disabled
   :straight (confluence
-	     :host github
-	     :repo "jahlborn/confluence-el"
-	     :files (:defaults "confluence.dtd" "confluence2wiki.xsl"))
+             :host github
+             :repo "jahlborn/confluence-el"
+             :files (:defaults "confluence.dtd" "confluence2wiki.xsl"))
   :defer t)
 
 (use-package tributary
   :straight (tributary
-	     :host github
-	     :repo "mrkrd/tributary"
-	     :files (:defaults "confluence.rnc"))
+             :host github
+             :repo "mrkrd/tributary"
+             :files (:defaults "confluence.rnc"))
   :commands #'tributary-pull-id)
 

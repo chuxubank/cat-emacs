@@ -14,7 +14,7 @@
            "PLANTUML" buf plantuml-executable-path
            `(,@plantuml-executable-args
              ,(plantuml-jar-output-type-opt plantuml-output-type)
-	     ,(if (+dark-mode-p) plantuml-dark-arg "")
+             ,(if (+dark-mode-p) plantuml-dark-arg "")
              "-p")))
 
   (defun hex-encode (str)
@@ -29,12 +29,12 @@
     "Compute the PlantUML server URL for the current buffer or FILE."
     (interactive)
     (let* ((string (buffer-string))
-	   (in-file (or file (buffer-file-name)
-			(make-temp-file "plantuml-" nil ".puml"
-					(if (string-prefix-p "@start" string t) string
-					  (format "@startuml\n%s\n@enduml" string)))))
-	   (data (string-trim (shell-command-to-string (format "%s -computeurl %s" plantuml-executable-path in-file))))
-	   (url (concat plantuml-server-url "/" plantuml-output-type "/" data)))
+           (in-file (or file (buffer-file-name)
+                        (make-temp-file "plantuml-" nil ".puml"
+                                        (if (string-prefix-p "@start" string t) string
+                                          (format "@startuml\n%s\n@enduml" string)))))
+           (data (string-trim (shell-command-to-string (format "%s -computeurl %s" plantuml-executable-path in-file))))
+           (url (concat plantuml-server-url "/" plantuml-output-type "/" data)))
       (when (string-empty-p data) (error "Failed to compute URL"))
       (kill-new url)
       (message "Copied PlantUML server URL to kill ring")
