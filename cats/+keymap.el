@@ -29,6 +29,7 @@
     (cat-define-key map "b" 'bing-dict-brief)
     (cat-define-key map "c" 'chezmoi-prefix)
     (cat-define-key map "d" 'deft)
+    (cat-define-key map "g" 'igist-dispatch)
     (cat-define-key map "l" 'elogcat) ; logcat
     (cat-define-key map "m" 'mu4e)
     (cat-define-key map "o" 'osx-dictionary-search-pointer)
