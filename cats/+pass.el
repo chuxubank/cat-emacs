@@ -3,12 +3,8 @@
 (use-package pass
   :defer t
   :custom
-  (password-store-password-length 16))
-
-(use-package pinentry
-  :after pass
-  :config
-  (pinentry-start))
+  (password-store-password-length 16)
+  (epg-pinentry-mode 'loopback))
 
 (with-eval-after-load 'password-store
   (defun password-store-generate (entry &optional password-length)
