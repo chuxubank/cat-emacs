@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package magit
+  :straight t
   :defer t
   :init
   (setq transient-levels-file (concat cat-etc-dir "transient/levels")

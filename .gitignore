@@ -11,7 +11,12 @@ eln-cache/
 
 # package
 elpa
-straight
+
+# straight
+straight/repos
+straight/build
+straight/build-cache.el
+straight/modified
 
 # org-drill
 persist

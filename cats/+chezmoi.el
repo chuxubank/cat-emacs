@@ -2,9 +2,23 @@
 
 (use-package chezmoi
   :commands (chezmoi-find chezmoi-dired-add-marked-files)
-  :mode ("\\dot_\\'" . chezmoi-mode)
-  :config
-  (require 'chezmoi-company))
+  :mode ("\\dot_\\'" . chezmoi-mode))
+
+(use-package chezmoi-company
+  :after chezmoi
+  :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el")))
+
+(use-package chezmoi-dired
+  :after chezmoi
+  :straight (chezmoi-dired :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-dired.el")))
+
+(use-package chezmoi-ediff
+  :after chezmoi
+  :straight (chezmoi-ediff :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-ediff.el")))
+
+(use-package chezmoi-magit
+  :after chezmoi
+  :straight (chezmoi-magit :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-magit.el")))
 
 (defun +add-or-remove-chezmoi-company-backend ()
   (if chezmoi-mode
