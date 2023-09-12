@@ -35,7 +35,8 @@
 (cat! "+smartparens")
 
 ;;; completion
-(cat! "+company")
+;; (cat! "+company")
+(cat! "+corfu")
 ;; (cat! "+selectrum")
 (cat! "+vertico")
 ;; (cat! "+orderless")
