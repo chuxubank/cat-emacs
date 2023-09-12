@@ -1,4 +1,5 @@
 (("beancount-mode" . "0f1e33067e5032382f425b5280169f50aa7dd497")
+ ("cape" . "9d4249527820bd009293c9724998f66f37a048c2")
  ("chezmoi.el" . "1389782f8c0780c7e66f8e77b10345ba1f4eabae")
  ("codeium.el" . "255c6dd46b1cdf41383a6add221bbbd9f3a0c484")
  ("company-mode" . "7c24dc8668af5aea8a5d07aeceda5fac7a2a85b5")

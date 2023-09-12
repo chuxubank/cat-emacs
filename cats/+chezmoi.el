@@ -5,27 +5,32 @@
   :mode ("\\dot_\\'" . chezmoi-mode))
 
 (use-package chezmoi-company
-  :after chezmoi
-  :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el")))
+  :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el"))
+  :after (chezmoi company)
+  :config
+  (defun +add-or-remove-chezmoi-company-backend ()
+    (if chezmoi-mode
+        (add-to-list 'company-backends 'chezmoi-company-backend)
+      (setq company-backends (delete 'chezmoi-company-backend company-backends))))
+  (add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend))
 
 (use-package chezmoi-dired
-  :after chezmoi
-  :straight (chezmoi-dired :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-dired.el")))
+  :straight (chezmoi-dired :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-dired.el"))
+  :after chezmoi)
 
 (use-package chezmoi-ediff
-  :after chezmoi
-  :straight (chezmoi-ediff :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-ediff.el")))
+  :straight (chezmoi-ediff :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-ediff.el"))
+  :after chezmoi)
 
 (use-package chezmoi-magit
-  :after chezmoi
-  :straight (chezmoi-magit :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-magit.el")))
+  :straight (chezmoi-magit :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-magit.el"))
+  :after (chezmoi magit))
 
-(defun +add-or-remove-chezmoi-company-backend ()
-  (if chezmoi-mode
-      (add-to-list 'company-backends 'chezmoi-company-backend)
-    (setq company-backends (delete 'chezmoi-company-backend company-backends))))
-
-(add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend)
+(use-package chezmoi-cape
+  :straight (chezmoi-cape :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-cape.el"))
+  :after (chezmoi cape)
+  :config
+  (add-to-list 'completion-at-point-functions #'chezmoi-capf))
 
 (defvar chezmoi-map
   (let ((map (make-sparse-keymap)))
