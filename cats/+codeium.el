@@ -6,7 +6,6 @@
   :init
   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
   :config
-  (setq use-dialog-box nil) ;; do not use popup boxes
   ;; get codeium status in the modeline
   (setq codeium-mode-line-enable
         (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
