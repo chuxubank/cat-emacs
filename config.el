@@ -81,7 +81,7 @@
 (cat! "+powershell")
 (cat! "+lsp")
 (cat! "+flycheck")
-(cat! "+copilot")
+(cat! "+codeium")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+android")
