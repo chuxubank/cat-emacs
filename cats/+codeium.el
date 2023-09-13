@@ -9,7 +9,7 @@
   ;; get codeium status in the modeline
   (setq codeium-mode-line-enable
         (lambda (api) (not (memq api '(CancelRequest Heartbeat AcceptCompletion)))))
-  (add-to-list 'mode-line-format '(:eval (car-safe codeium-mode-line)) t)
+  (add-to-list 'global-mode-string '(:eval (car-safe codeium-mode-line)) t)
   ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
   (setq codeium-api-enabled
         (lambda (api)
