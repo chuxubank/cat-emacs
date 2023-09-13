@@ -171,8 +171,8 @@
 
 ;;; indent
 (setq-default tab-width 4
-              indent-tabs-mode nil
-              tab-always-indent 'complete)
+              indent-tabs-mode nil)
 
 ;;; completion
-(setq read-extended-command-predicate #'command-completion-default-include-p)
+(setq tab-always-indent 'complete
+      read-extended-command-predicate #'command-completion-default-include-p)
