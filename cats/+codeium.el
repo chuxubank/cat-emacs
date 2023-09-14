@@ -13,4 +13,9 @@
   ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
   (setq codeium-api-enabled
         (lambda (api)
-          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion)))))
+          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
+
+  (defun cat-disable-codeium ()
+    (setq-local completion-at-point-functions (delq 'codeium-completion-at-point completion-at-point-functions)))
+
+  (add-hook 'pass-view-mode-hook #'cat-disable-codeium))
