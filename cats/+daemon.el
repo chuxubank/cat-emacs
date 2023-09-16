@@ -3,12 +3,6 @@
 (defvar cat-font-load nil
   "Whether cat font has been loaded.")
 
-;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
-(use-package mac-pseudo-daemon
-  :when IS-MACPORT
-  :config
-  (mac-pseudo-daemon-mode))
-
 (defun cat-client-frame-config ()
   (select-frame-set-input-focus (selected-frame))
   (when (not cat-font-load)

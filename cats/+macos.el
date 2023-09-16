@@ -22,6 +22,12 @@
   :config
   (exec-path-from-shell-initialize))
 
+;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
+(use-package mac-pseudo-daemon
+  :when IS-MACPORT
+  :config
+  (mac-pseudo-daemon-mode))
+
 (when IS-MACPORT
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
   (setq mac-system-move-file-to-trash-use-finder t)
