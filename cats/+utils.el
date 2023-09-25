@@ -36,3 +36,14 @@
        (when (string-match-p "finished" event)
          (funcall callback (process-exit-status proc)))))
     process))
+
+(defun +change-lighter (&rest list)
+  "Change a modeline lighter for given minor modes.
+List contains pairs mode lighter, see `minor-mode-alist'"
+  (let (output)
+    (while list
+      (let ((mode (car list))
+	        (newlighter (nth 1 list)))
+        (setcar (cdr (assq mode minor-mode-alist)) newlighter))
+      (setq list (nthcdr 2 list)))
+    (reverse output)))

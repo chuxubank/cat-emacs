@@ -137,4 +137,20 @@
 
   (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
 
+(when (featurep 'doom-modeline)
+  (defun +meow-setup-doom-modeline ()
+    "Toggle meow minor mode indicator"
+    (if doom-modeline-mode
+        (+change-lighter 'meow-beacon-mode ""
+                         'meow-keypad-mode ""
+                         'meow-motion-mode ""
+                         'meow-normal-mode ""
+                         'meow-insert-mode "")
+      (+change-lighter 'meow-beacon-mode " [B]"
+                       'meow-keypad-mode " [K]"
+                       'meow-motion-mode " [M]"
+                       'meow-normal-mode " [N]"
+                       'meow-insert-mode " [I]")))
+  (add-hook 'doom-modeline-mode-hook #'+meow-setup-doom-modeline))
+
 (meow-global-mode 1)
