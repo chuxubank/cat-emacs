@@ -5,8 +5,8 @@
   :custom
   (eldoc-box-lighter nil)
   (eldoc-minor-mode-string
-   '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/bhp")
-                           (eldoc-box-hover-mode "/bh")
+   '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/p")
+                           (eldoc-box-hover-mode "/h")
                            (t nil)))))
   :config
   (put 'eldoc-minor-mode-string 'risky-local-variable t))

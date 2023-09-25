@@ -137,7 +137,7 @@
 
   (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
 
-(when (featurep 'doom-modeline)
+(with-eval-after-load 'doom-modeline
   (defun +meow-setup-doom-modeline ()
     "Toggle meow minor mode indicator"
     (if doom-modeline-mode

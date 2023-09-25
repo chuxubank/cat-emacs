@@ -38,7 +38,8 @@
 
 (define-minor-mode sow-mode
   "In this mode we can scroll the other window."
-  nil " sow" sow-mode-map
+  :lighter " SoW"
+  :keymap sow-mode-map
   :global t)
 
 (defun sow-scroll-other-window (&optional arg)
