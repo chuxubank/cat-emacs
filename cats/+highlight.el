@@ -13,6 +13,36 @@
   (setq-default goggles-pulse t)
   (+change-lighter 'goggles-mode nil))
 
+(use-package pangu-spacing
+  :hook (text-mode . pangu-spacing-mode)
+  :custom
+  (pangu-spacing-real-insert-separtor t)
+  :config
+  ;; Add `note-property' and `table-row'
+  (defun pangu-spacing-org-mode-at-special-region ()
+    (interactive)
+    (let ((element (org-element-at-point)))
+      (when (or (member (org-element-type element)
+                        '(src-block
+                          keyword
+                          example-block
+                          export-block
+                          latex-environment
+                          planning
+                          node-property
+                          table-row))
+                (member (car (org-element-context element))
+                        '(inline-src-block
+                          timestamp
+                          link
+                          code
+                          verbatim)))
+        t)))
+  (defun +pangu-spacing-disable ()
+    (pangu-spacing-mode -1))
+  (add-hook 'nxml-mode-hook #'+pangu-spacing-disable)
+  (+change-lighter 'pangu-spacing-mode nil))
+
 (use-package org-modern
   :disabled
   :after org
@@ -27,6 +57,7 @@
   :lighter (" ("
             (:eval (if beacon-mode "B" ""))
             (:eval (if goggles-mode "G" ""))
+            (:eval (if pangu-spacing-mode "P" ""))
             ")"))
 
 (highlight-mode)

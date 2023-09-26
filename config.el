@@ -73,7 +73,6 @@
 
 ;;; input
 (cat! "+rime")
-(cat! "+pangu")
 
 ;;; program
 (cat! "+apheleia")
