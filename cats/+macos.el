@@ -24,6 +24,7 @@
 
 ;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
 (use-package mac-pseudo-daemon
+  :disabled
   :when IS-MACPORT
   :config
   (mac-pseudo-daemon-mode))
