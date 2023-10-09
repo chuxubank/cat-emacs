@@ -8,7 +8,9 @@
   (logview-views-file (concat cat-etc-dir "logview.views"))
   (logview-additional-timestamp-formats
    '(("LogCat"
-      (java-pattern . "MM-dd HH:mm:ss.SSS"))))
+      (java-pattern . "MM-dd HH:mm:ss.SSS"))
+     ("LogUtil"
+      (java-pattern . "HH:mm:ss.SSS"))))
   (logview-additional-level-mappings
    '(("LogCat"
       (error "E" "F" "S")
@@ -23,4 +25,8 @@
      ("LogCat"
       (format . "TIMESTAMP IGNORED THREAD LEVEL NAME: MESSAGE")
       (levels . "LogCat")
-      (timestamp "LogCat")))))
+      (timestamp "LogCat"))
+     ("LogUtil"
+      (format . "TIMESTAMP LEVEL/NAME [THREAD, IGNORED]: MESSAGE")
+      (levels . "LogCat")
+      (timestamp "LogUtil")))))
