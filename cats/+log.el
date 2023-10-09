@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package logview
-  :mode ("/log\\b" . logview-mode)
+  :mode ("\\<log\\>.*\\.\\(txt\\|gz\\)" . logview-mode)
   :custom
   (datetime-timezone 'Asia/Shanghai)
   (logview-cache-filename (concat cat-cache-dir "logview-cache.extmap"))
