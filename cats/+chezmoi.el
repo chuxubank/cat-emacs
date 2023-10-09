@@ -6,6 +6,7 @@
 
 (use-package chezmoi-company
   :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el"))
+  :when (featurep 'company)
   :after (chezmoi company)
   :config
   (defun +add-or-remove-chezmoi-company-backend ()
@@ -28,6 +29,7 @@
 
 (use-package chezmoi-cape
   :straight (chezmoi-cape :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-cape.el"))
+  :when (featurep 'cape)
   :after (chezmoi cape)
   :config
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
