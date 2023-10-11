@@ -49,7 +49,6 @@
 (cat! "+yasnippet")
 
 ;;; search
-(cat! "+ctrlf")
 (cat! "+rg")
 
 ;;; git
