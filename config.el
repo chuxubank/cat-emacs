@@ -50,6 +50,7 @@
 
 ;;; search
 (cat! "+rg")
+(cat! "+pinyin")
 
 ;;; git
 (cat! "+magit")
