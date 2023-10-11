@@ -17,6 +17,8 @@
   :hook (text-mode . pangu-spacing-mode)
   :custom
   (pangu-spacing-real-insert-separtor t)
+  :init
+  (setq pangu-spacing-mode nil)
   :config
   ;; Add `note-property' and `table-row'
   (defun pangu-spacing-org-mode-at-special-region ()
