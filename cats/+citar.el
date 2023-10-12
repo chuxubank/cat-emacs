@@ -15,4 +15,5 @@
 (use-package citar-embark
   :after citar embark
   :config
-  (citar-embark-mode))
+  (citar-embark-mode)
+  (+change-lighter 'citar-embark-mode nil))
