@@ -2,8 +2,7 @@
 
 (use-package windmove
   :custom
-  (windmove-wrap-around nil)
-  (windmove-create-window t)
+  (windmove-wrap-around t)
   :config
   (windmove-default-keybindings)
   (windmove-display-default-keybindings))
