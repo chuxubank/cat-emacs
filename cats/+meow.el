@@ -26,7 +26,8 @@
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
    '("u" . meow-universal-argument)
-   '("o" . cat-other-window-frame))
+   (when (package-installed-p 'ace-window)
+     '("o" . ace-window)))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)

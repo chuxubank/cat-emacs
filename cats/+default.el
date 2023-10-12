@@ -136,14 +136,6 @@
 (define-key ctl-x-4-map "v" 'view-file-other-window)
 (define-key ctl-x-5-map "v" 'view-file-other-frame)
 
-;;; frame
-(defun cat-other-window-frame ()
-  (interactive)
-  (if (one-window-p)
-      (call-interactively #'other-frame)
-    (call-interactively #'other-window)))
-(define-key global-map (kbd "C-x o") #'cat-other-window-frame)
-
 ;;; gnus
 (setq gnus-select-method '(nntp "news.gmane.io"))
 

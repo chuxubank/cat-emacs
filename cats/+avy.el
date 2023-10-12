@@ -18,10 +18,3 @@
          (cdr (ring-ref avy-ring 0))))
       t)
     (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)))
-
-(use-package ace-window
-  :hook (after-init . ace-window-display-mode)
-  :bind
-  ("M-o" . ace-window)
-  :custom
-  (aw-background nil))

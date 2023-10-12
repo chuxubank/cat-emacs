@@ -15,7 +15,7 @@
 ;;; ui
 (cat! "+font")
 (cat! "+valign")
-(cat! "+transpose-frame")
+(cat! "+windows")
 
 ;;; os
 (when IS-MAC
