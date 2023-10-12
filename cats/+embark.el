@@ -25,6 +25,14 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package avy-embark-collect
+  :when (package-installed-p 'avy)
+  :after embark
+  :bind
+  (:map embark-collect-mode-map
+        ("C-'" . avy-embark-collect-choose)
+        ("C-\"" . avy-embark-collect-act)))
+
 (when (package-installed-p 'which-key)
   (setq which-key--prefix-help-cmd-backup #'embark-prefix-help-command)
   (defun embark-which-key-indicator ()
