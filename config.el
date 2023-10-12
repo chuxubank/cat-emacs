@@ -33,6 +33,7 @@
 
 ;;; edit
 (cat! "+meow")
+(cat! "+avy")
 (cat! "+smartparens")
 
 ;;; completion
