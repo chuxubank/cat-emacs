@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package which-key
+  :hook (after-init . which-key-mode)
   :custom
-  (which-key-use-C-h-commands . nil)
-  :config
-  (which-key-mode 1))
+  (which-key-use-C-h-commands . nil))

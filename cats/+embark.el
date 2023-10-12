@@ -5,6 +5,8 @@
   ("C->" . embark-act)
   ("C-M->" . embark-dwim)
   ("C-h B" . embark-bindings)
+  (:map embark-general-map
+        ("G" . +embark-google-search))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -12,13 +14,18 @@
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none)))))
+                 (window-parameters (mode-line-format . none))))
+  (defun +embark-google-search (term)
+    (interactive "sSearch Term: ")
+    (browse-url
+     (format "http://google.com/search?q=%s" term))))
 
 (use-package embark-consult
+  :when (package-installed-p 'consult)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(when (featurep 'which-key)
+(when (package-installed-p 'which-key)
   (setq which-key--prefix-help-cmd-backup #'embark-prefix-help-command)
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
