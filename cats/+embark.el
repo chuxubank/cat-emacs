@@ -7,6 +7,10 @@
   ("C-h B" . embark-bindings)
   (:map embark-general-map
         ("G" . +embark-google-search))
+  (:map embark-variable-map
+        (":" . +embark-act-with-eval))
+  (:map embark-expression-map
+        (":" . +embark-act-with-eval))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -18,7 +22,27 @@
   (defun +embark-google-search (term)
     (interactive "sSearch Term: ")
     (browse-url
-     (format "http://google.com/search?q=%s" term))))
+     (format "http://google.com/search?q=%s" term)))
+  (defun +embark-act-with-eval (expression)
+    "Evaluate EXPRESSION and call `embark-act' on the result."
+    (interactive "sExpression: ")
+    (with-temp-buffer
+      (insert (eval (read expression)))
+      (embark-act)))
+  (when (package-installed-p 'password-store)
+    (defvar-keymap embark-password-store-actions
+      :doc "Keymap for actions for password-store."
+      "c" #'password-store-copy
+      "f" #'password-store-copy-field
+      "i" #'password-store-insert
+      "I" #'password-store-generate
+      "r" #'password-store-rename
+      "e" #'password-store-edit
+      "k" #'password-store-remove
+      "U" #'password-store-url)
+
+    (add-to-list 'embark-keymap-alist '(password-store . embark-password-store-actions))
+    (add-to-list 'marginalia-prompt-categories '("Password entry" . password-store))))
 
 (use-package embark-consult
   :when (package-installed-p 'consult)
