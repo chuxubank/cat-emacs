@@ -8,9 +8,10 @@
   :init
   ;; prevent `org-jira-mode' load keymap
   (setq org-jira-entry-mode-map nil)
-  (defvar org-jira-map (make-sparse-keymap)
-    "Keymap for `org-jira' commands.")
-  (defalias 'org-jira-prefix org-jira-map)
+  (defvar-keymap org-jira-map
+    :doc "Keymap for `org-jira' commands."
+    :name "Org Jira"
+    :prefix 'org-jira-prefix)
   :bind
   (:map org-jira-map
         ("b" . org-jira-get-boards)

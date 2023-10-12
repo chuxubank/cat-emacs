@@ -34,17 +34,16 @@
   :config
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
 
-(defvar chezmoi-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "a" #'chezmoi-dired-add-marked-files)
-    (define-key map "c" #'chezmoi-mode)
-    (define-key map "d" #'chezmoi-diff)
-    (define-key map "e" #'chezmoi-ediff)
-    (define-key map "f" #'chezmoi-find)
-    (define-key map "g" #'chezmoi-magit-status)
-    (define-key map "o" #'chezmoi-open-other)
-    (define-key map "s" #'chezmoi-write)
-    (define-key map "t" #'chezmoi-template-buffer-display)
-    map)
-  "Keymap for `chezmoi' commands.")
-(defalias 'chezmoi-prefix chezmoi-map)
+(defvar-keymap chezmoi-map
+  :doc "Keymap for `chezmoi' commands."
+  :name "Chezmoi"
+  :prefix 'chezmoi-prefix
+  "a" #'chezmoi-dired-add-marked-files
+  "c" #'chezmoi-mode
+  "d" #'chezmoi-diff
+  "e" #'chezmoi-ediff
+  "f" #'chezmoi-find
+  "g" #'chezmoi-magit-status
+  "o" #'chezmoi-open-other
+  "s" #'chezmoi-write
+  "t" #'chezmoi-template-buffer-display)

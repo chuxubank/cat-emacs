@@ -28,15 +28,14 @@
               (kill-buffer)))
       (message "Not a file visiting buffer!"))))
 
-(defvar cat-file-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "d" #'+delete-file-and-buffer)
-    (define-key map "e" #'+find-emacs-profile)
-    (define-key map "f" #'find-function)
-    (define-key map "l" #'find-library)
-    (define-key map "o" #'+find-org-files)
-    (define-key map "O" #'consult-org-agenda)
-    (define-key map "r" #'recentf-open-files)
-    map)
-  "Keymap for file commands.")
-(defalias 'cat-file-prefix cat-file-map)
+(defvar-keymap cat-file-map
+  :doc "Keymap for file commands."
+  :name "Cat File"
+  :prefix 'cat-file-prefix
+  "d" #'+delete-file-and-buffer
+  "e" #'+find-emacs-profile
+  "f" #'find-function
+  "l" #'find-library
+  "o" #'+find-org-files
+  "O" #'consult-org-agenda
+  "r" #'recentf-open-files)
