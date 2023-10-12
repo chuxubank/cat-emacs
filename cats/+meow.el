@@ -51,6 +51,7 @@
    '("c" . meow-change)
    '("C" . meow-change-save)
    '("d" . meow-delete)
+   '("D" . meow-backward-delete)
    '("e" . meow-line)
    '("f" . meow-find)
    '("F" . meow-find-expand)
@@ -95,7 +96,11 @@
    '("Z" . meow-pop-all-selection)
    '("&" . meow-query-replace)
    '("%" . meow-query-replace-regexp)
-   '("<escape>" . meow-last-buffer)))
+   '("<escape>" . meow-last-buffer)
+   (when (package-installed-p 'embark)
+     '(">" . embark-act))
+   (when (package-installed-p 'avy)
+     '(":" . avy-goto-char-timer))))
 
 (with-eval-after-load 'meow
   (meow-setup)
