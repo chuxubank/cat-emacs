@@ -13,8 +13,7 @@
   :bind
   ([remap other-window] . ace-window)
   :custom
-  (aw-background nil)
-  (aw-dispatch-always t))
+  (aw-background nil))
 
 (use-package transpose-frame
   :defer t)
