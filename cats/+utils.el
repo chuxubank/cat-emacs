@@ -47,3 +47,8 @@ List contains pairs mode lighter, see `minor-mode-alist'"
         (setcar (cdr (assq mode minor-mode-alist)) newlighter))
       (setq list (nthcdr 2 list)))
     (reverse output)))
+
+(defun +emacs-debug-init ()
+  "Start Emacs in debug mode."
+  (interactive)
+  (async-shell-command "emacs --debug"))
