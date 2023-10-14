@@ -1,6 +1,11 @@
 ;; -*- lexical-binding: t; -*-
-
-(setq bibtex-completion-additional-search-fields '(keywords)
+(setq reftex-default-bibliography cat-default-bibliography-files
+      org-cite-global-bibliography cat-default-bibliography-files
+      org-cite-csl-styles-dir cat-default-csl-styles-dir
+      org-cite-insert-processor 'citar
+      org-cite-follow-processor 'citar
+      org-cite-activate-processor 'citar
+      bibtex-completion-additional-search-fields '(keywords)
       bibtex-completion-pdf-field "file"
       bibtex-completion-bibliography cat-default-bibliography-files)
 
@@ -20,7 +25,10 @@
   (citar-run-default-action (ensure-list citekey)))
 
 (use-package org-roam-bibtex
-  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :bind
+  (:map org-roam-bibtex-mode-map
+        ("C-c n a" . orb-note-actions))
   :custom
   (orb-roam-ref-format 'org-cite)
   :config
@@ -49,11 +57,10 @@
            :unnarrowed t)
           ("rs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
            :target (file "%(cat-orb-note-file)")
-           :unnarrowed t)))
-  (org-roam-bibtex-mode +1))
+           :unnarrowed t))))
 
 (use-package citar-org-roam
-  :after citar org-roam-bibtex
+  :hook (org-roam-mode . citar-org-roam-mode)
   :custom
   (citar-org-roam-capture-template-key "bn")
   (citar-org-roam-subdir cat-org-roam-reference-directory)
@@ -67,7 +74,16 @@
                            :open #'citar-org-roam-open-note
                            :create #'orb-citar-edit-note
                            :annotate #'citar-org-roam--annotate))
-  (setq citar-notes-source 'orb-citar-source))
+  (setq citar-notes-source 'orb-citar-source)
+  (+change-lighter 'citar-org-roam-mode nil))
 
-(with-eval-after-load 'org-roam-bibtex
-  (define-key org-roam-bibtex-mode-map (kbd "C-c n a") #'orb-note-actions))
+(use-package citar
+  :defer t
+  :custom
+  (citar-bibliography cat-default-bibliography-files))
+
+(use-package citar-embark
+  :after citar embark
+  :config
+  (citar-embark-mode)
+  (+change-lighter 'citar-embark-mode nil))

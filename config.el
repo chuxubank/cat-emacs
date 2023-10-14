@@ -60,16 +60,15 @@
 (cat! "+org")
 (cat! "+org-todo")
 (cat! "+org-notes")
-(cat! "+citar")
 (cat! "+org-latex")
 (cat! "+org-roam")
-(cat! "+orb-notes")
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-link")
 (cat! "+org-jira")
 
 ;;; latex
+(cat! "+bibcite")
 (cat! "+latex")
 (cat! "+cdlatex")
 ;; (cat! "+zotero")
