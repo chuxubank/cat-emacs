@@ -26,9 +26,6 @@
 
 (use-package org-roam-bibtex
   :hook (org-roam-mode . org-roam-bibtex-mode)
-  :bind
-  (:map org-roam-bibtex-mode-map
-        ("C-c n a" . orb-note-actions))
   :custom
   (orb-roam-ref-format 'org-cite)
   :config

@@ -64,9 +64,6 @@
   (define-key org-mode-map (kbd "M-p") #'org-previous-link)
   (define-key org-mode-map (kbd "C-c C-x l") #'org-toggle-link-display))
 
-(autoload #'org-store-link "ol" nil t)
-(define-key global-map (kbd "C-c l") #'org-store-link)
-
 ;;; clock
 (setq org-clock-persist 'history
       org-clock-persist-file (expand-file-name "org-clock-save.el" cat-etc-dir)

@@ -4,52 +4,42 @@
   :after org)
 
 (use-package org-jira
-  :defer t
+  :bind
+  (:map org-jira-entry-mode-map
+        ("C-c n j" . cat-org-jira-issue-prefix))
   :init
   ;; prevent `org-jira-mode' load keymap
-  (setq org-jira-entry-mode-map nil)
-  (defvar-keymap org-jira-map
-    :doc "Keymap for `org-jira' commands."
-    :name "Org Jira"
-    :prefix 'org-jira-prefix)
-  :bind
-  (:map org-jira-map
-        ("b" . org-jira-get-boards)
-        ("p" . org-jira-get-projects)
-        ("t" . org-jira-todo-to-jira)
-        :prefix "i"
-        :prefix-map org-jira-issue-map
-        :prefix-docstring "Keymap for `org-jira' issue commands."
-        ("a" . org-jira-assign-issue)
-        ("b" . org-jira-browse-issue)
-        ("c" . org-jira-create-issue)
-        ("g" . org-jira-get-issue)
-        ("k" . org-jira-copy-current-issue-key)
-        ("n" . org-jira-progress-issue-next)
-        ("p" . org-jira-progress-issue)
-        ("r" . org-jira-refresh-issue)
-        ("R" . org-jira-refresh-issues-in-buffer)
-        ("s" . org-jira-set-issue-reporter)
-        ("u" . org-jira-update-issue)
-        ("w" . org-jira-update-worklogs-from-org-clocks)
-        :prefix "s"
-        :prefix-map org-jira-issue-subtask-map
-        :prefix-docstring "Keymap for `org-jira' issue subtask commands."
-        ("c" . org-jira-create-subtask)
-        ("g" . org-jira-get-subtasks)
-        :prefix "c"
-        :prefix-map org-jira-issue-comment-map
-        :prefix-docstring "Keymap for `org-jira' issue comment commands."
-        ("c" . org-jira-add-comment)
-        ("u" . org-jira-update-comment))
-  (:map org-jira-issue-map
-        :prefix "g"
-        :prefix-map org-jira-issues-get-map
-        :prefix-docstring "Keymap for `org-jira' issue get commands."
-        ("b" . org-jira-get-issues-by-board)
-        ;; ("f" . org-jira-get-issues-from-filter-headonly)
-        ;; ("F" . org-jira-get-issues-from-filter)
-        ("g" . org-jira-get-issues)
-        ("h" . org-jira-get-issues-headonly)
-        ("j" . org-jira-get-issues-from-custom-jql)
-        ("v" . org-jira-get-issues-by-fixversion)))
+  (setq org-jira-entry-mode-map (make-sparse-keymap)))
+
+(defvar-keymap org-jira-global-map
+  :doc "Keymap for `org-jira' global commands."
+  :name "Org Jira"
+  :prefix 'cat-org-jira-prefix
+  "b" #'org-jira-get-boards
+  "c" #'org-jira-create-issue
+  "h" #'org-jira-get-issues-headonly
+  "i" #'org-jira-get-issue
+  "I" #'org-jira-get-issues
+  "j" #'org-jira-get-issues-from-custom-jql
+  "p" #'org-jira-get-projects
+  "v" #'org-jira-get-issues-by-fixversion)
+
+(defvar-keymap org-jira-issue-map
+  :doc "Keymap for `org-jira' issue commands."
+  :name "Org Jira Issue"
+  :prefix 'cat-org-jira-issue-prefix
+  "a" #'org-jira-assign-issue
+  "b" #'org-jira-browse-issue
+  "c" #'org-jira-update-comment
+  "C" #'org-jira-add-comment
+  "g" #'org-jira-refresh-issue
+  "G" #'org-jira-refresh-issues-in-buffer
+  "j" #'org-jira-todo-to-jira
+  "k" #'org-jira-copy-current-issue-key
+  "n" #'org-jira-progress-issue-next
+  "p" #'org-jira-progress-issue
+  "r" #'org-jira-set-issue-reporter
+  "t" #'org-jira-get-subtasks
+  "T" #'org-jira-create-subtask
+  "u" #'org-jira-update-issue
+  "w" #'org-jira-update-worklogs-from-org-clocks)

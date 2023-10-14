@@ -2,6 +2,9 @@
 
 (use-package org-roam
   :defer t
+  :bind
+  (:map org-roam-map
+        ("r" . org-roam-buffer-toggle))
   :init
   (setq org-roam-v2-ack t
         org-roam-directory cat-org-roam-directory
@@ -41,7 +44,7 @@
 (defvar-keymap org-roam-map
   :doc "Keymap for `org-roam' commands."
   :name "Org-roam"
-  :prefix 'org-roam-prefix
+  :prefix 'cat-org-roam-prefix
   "c" #'org-roam-capture
   "f" #'org-roam-node-find
   "F" #'org-roam-ref-find
@@ -50,14 +53,11 @@
   "R" #'org-roam-buffer-display-dedicated
   "u" #'org-roam-ui-mode)
 
-(with-eval-after-load 'org-roam
-  (define-key org-roam-map "r" #'org-roam-buffer-toggle))
-
 (defvar-keymap org-roam-dailies-map
   :doc "Keymap for `org-roam-dailies' commands.
 Distinguish with original `org-roam-dailies-map'."
   :name "Org-roam Dailies"
-  :prefix 'org-roam-dailies-prefix
+  :prefix 'cat-org-roam-dailies-prefix
   "." #'org-roam-dailies-goto-today
   "/" #'org-roam-dailies-find-directory
   "b" #'org-roam-dailies-goto-previous-note

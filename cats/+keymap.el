@@ -4,41 +4,60 @@
   :doc "Keymap for toggle commands."
   :name "Cat Toggle"
   :prefix 'cat-toggle-prefix
-  "d" 'toggle-debug-on-error
-  "f" 'display-fill-column-indicator-mode
-  "l" 'display-line-numbers-mode
-  "s" 'whitespace-mode
-  "t" 'toggle-truncate-lines
-  "v" 'visual-line-mode
-  "V" 'view-mode
-  "w" 'toggle-word-wrap)
+  "d" #'toggle-debug-on-error
+  "f" #'display-fill-column-indicator-mode
+  "l" #'display-line-numbers-mode
+  "s" #'whitespace-mode
+  "t" #'toggle-truncate-lines
+  "v" #'visual-line-mode
+  "V" #'view-mode
+  "w" #'toggle-word-wrap)
 
 (defvar-keymap cat-plugin-map
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "a" 'anki-vocabulary
-  "b" 'bing-dict-brief
-  "c" 'chezmoi-prefix
-  "d" 'deft
-  "g" 'igist-dispatch
-  "l" 'elogcat
-  "m" 'mu4e
-  "o" 'osx-dictionary-search-pointer
-  "O" 'osx-dictionary-search-input
-  "p" 'pass
-  "s" 'rg-menu
-  "r" 'elfeed
-  "R" 'magit-list-repositories
+  "a" #'anki-vocabulary
+  "b" #'bing-dict-brief
+  "c" #'chezmoi-prefix
+  "d" #'deft
+  "g" #'igist-dispatch
+  "l" #'elogcat
+  "m" #'mu4e
+  "o" #'osx-dictionary-search-pointer
+  "O" #'osx-dictionary-search-input
+  "p" #'pass
+  "s" #'rg-menu
+  "r" #'elfeed
+  "R" #'magit-list-repositories
   "t" 'telega-prefix
-  "w" 'wl
-  "v" 'vundo)
+  "w" #'wl
+  "v" #'vundo)
+
+(defvar-keymap cat-org-plugin-map
+  :doc "Keymap for `org' plugins."
+  :name "Cat Org Plugin"
+  :prefix 'cat-org-plugin-prefix
+  "b" #'orb-note-actions
+  "m" #'org-media-note-hydra/body
+  "n" #'org-noter
+  "j" #'org-jira-todo-to-jira
+  "l" #'org-cliplink
+  "s" 'org-srs-prefix)
+
+(with-eval-after-load 'org
+  (defvar-keymap cat-org-map
+    :keymap org-mode-map
+    "C-c n" 'cat-org-plugin-prefix))
 
 (defvar-keymap cat-map
   :keymap mode-specific-map
-  "d" org-roam-dailies-prefix
-  "f" cat-file-prefix
-  "j" org-jira-prefix
-  "p" cat-plugin-prefix
-  "r" org-roam-prefix
-  "t" cat-toggle-prefix)
+  "a" #'org-agenda
+  "c" #'org-capture
+  "d" 'cat-org-roam-dailies-prefix
+  "f" 'cat-file-prefix
+  "j" 'cat-org-jira-prefix
+  "l" #'org-store-link
+  "p" 'cat-plugin-prefix
+  "r" 'cat-org-roam-prefix
+  "t" 'cat-toggle-prefix)

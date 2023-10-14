@@ -60,13 +60,9 @@
          (file+olp+datetree "ChatGPT.org")
          "* %?")))
 
-(define-key global-map (kbd "C-c c") #'org-capture)
-
 ;;; habit
 (with-eval-after-load 'org
   (add-to-list 'org-modules 'org-habit))
-
-(define-key global-map (kbd "C-c a") #'org-agenda)
 
 (use-package org-agenda-count
   :straight (org-agenda-count :host github :repo "sid-kurias/org-agenda-count")

@@ -33,7 +33,4 @@
     (setq org-dial-program "open tel:")))
 
 (use-package org-cliplink
-  :after org
-  :bind
-  (:map org-mode-map
-        ("C-c n l" . org-cliplink)))
+  :defer t)

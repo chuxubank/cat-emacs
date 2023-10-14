@@ -2,11 +2,6 @@
 
 (use-package org-drill
   :defer t
-  :bind
-  (:map org-mode-map
-        ("C-c n d d" . #'org-drill)
-        ("C-c n d a" . #'org-drill-again)
-        ("C-c n d c" . #'org-drill-cram))
   :custom
   (org-drill-scope 'directory)
   (org-drill-spaced-repetition-algorithm 'simple8)
@@ -25,12 +20,16 @@
 
 (use-package org-anki
   :disabled
-  :after org
-  :bind
-  (:map org-mode-map
-        ("C-c n a s" . #'org-anki-sync-entry)
-        ("C-c n a c" . #'org-anki-cloze-dwim)))
+  :after org)
 
 (use-package promise
   :disabled
   :after org-anki)
+
+(defvar-keymap org-srs-map
+  :doc "Keymap for `org' srs packages."
+  :name "Org SRS"
+  :prefix 'org-srs-prefix
+  "d" #'org-drill
+  "a" #'org-drill-again
+  "c" #'org-drill-cram)
