@@ -16,6 +16,7 @@
 (cat! "+font")
 (cat! "+valign")
 (cat! "+windows")
+(cat! "+local")
 
 ;;; os
 (when IS-MAC
@@ -51,7 +52,6 @@
 
 ;;; search
 (cat! "+rg")
-(cat! "+pinyin")
 
 ;;; git
 (cat! "+magit")
