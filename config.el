@@ -110,7 +110,6 @@
 (cat! "+diagram-preview")
 (cat! "+confluence")
 (cat! "+chezmoi")
-(when EMACS28+
-  (cat! "+vundo"))
+(cat! "+undo")
 
 (cat! "+keymap")
