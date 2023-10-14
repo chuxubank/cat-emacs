@@ -28,6 +28,8 @@
    '("u" . meow-universal-argument)
    (when (package-installed-p 'ace-window)
      '("o" . ace-window)))
+  (meow-motion-overwrite-define-key
+   '("<escape>" . ignore))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -95,8 +97,9 @@
    '("Y" . meow-yank-pop)
    '("z" . meow-pop-selection)
    '("Z" . meow-pop-all-selection)
-   '("&" . meow-query-replace)
-   '("%" . meow-query-replace-regexp)
+   '("%" . meow-query-replace)
+   '("C-%" . meow-query-replace-regexp)
+   '("'" . repeat)
    '("<escape>" . meow-last-buffer)
    (when (package-installed-p 'embark)
      '(">" . embark-act))
