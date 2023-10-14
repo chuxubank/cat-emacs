@@ -177,3 +177,10 @@
 ;;; completion
 (setq tab-always-indent 'complete
       read-extended-command-predicate #'command-completion-default-include-p)
+
+;;; health
+(setq type-break-file-name (concat cat-etc-dir "type-break"))
+(add-hook 'after-init-hook #'type-break-mode)
+
+;;; time
+(setq timeclock-file (concat cat-etc-dir "timelog"))
