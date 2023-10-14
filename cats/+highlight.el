@@ -9,6 +9,8 @@
 
 (use-package goggles
   :hook ((prog-mode text-mode) . goggles-mode)
+  :init
+  (setq goggles-mode nil)
   :config
   (setq-default goggles-pulse t)
   (+change-lighter 'goggles-mode nil))
