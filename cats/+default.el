@@ -18,7 +18,8 @@
 (column-number-mode 1)
 (size-indication-mode 1)
 
-(global-visual-line-mode 1)
+(add-hook 'after-init-hook #'global-hl-line-mode)
+(add-hook 'after-init-hook #'global-visual-line-mode)
 
 (setq show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t)
@@ -31,6 +32,7 @@
 (add-hook 'text-mode-hook #'cat-show-trailing-whitespace)
 (add-hook 'prog-mode-hook #'cat-show-trailing-whitespace)
 
+;;; isearch
 (setq isearch-lazy-count t)
 
 ;;; ispell
@@ -157,6 +159,13 @@
              js-mode-hook
              bibtex-mode-hook))
   (add-hook h 'hs-minor-mode))
+(defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
+(defun hideshow-folded-overlay-fn (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+             (info (format " ... #%d " nlines)))
+        (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
+(setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
 
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))

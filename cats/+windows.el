@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package winner
+  :hook (after-init . winner-mode))
+
 (use-package windmove
   :custom
   (windmove-wrap-around t)
