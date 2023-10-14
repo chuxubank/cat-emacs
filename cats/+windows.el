@@ -4,8 +4,7 @@
   :custom
   (windmove-wrap-around t)
   :config
-  (windmove-default-keybindings)
-  (windmove-display-default-keybindings))
+  (windmove-default-keybindings 'super))
 
 (use-package ace-window
   :hook (after-init . ace-window-display-mode)
