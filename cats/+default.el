@@ -181,6 +181,8 @@
 ;;; health
 (setq type-break-file-name (concat cat-etc-dir "type-break"))
 (add-hook 'after-init-hook #'type-break-mode)
+(add-hook 'type-break-mode-hook #'type-break-mode-line-message-mode)
+(add-hook 'type-break-mode-hook #'type-break-query-mode)
 
 ;;; time
 (setq timeclock-file (concat cat-etc-dir "timelog"))
