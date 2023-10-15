@@ -25,10 +25,7 @@
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
-   '("u" . meow-universal-argument)
-   '("w" . webjump)
-   (when (package-installed-p 'ace-window)
-     '("o" . ace-window)))
+   '("u" . meow-universal-argument))
   (meow-motion-overwrite-define-key
    '("<escape>" . ESC-prefix))
   (meow-normal-define-key

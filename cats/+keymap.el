@@ -27,12 +27,10 @@
   "o" #'osx-dictionary-search-pointer
   "O" #'osx-dictionary-search-input
   "p" #'pass
-  "s" #'rg-menu
   "r" #'elfeed
   "R" #'magit-list-repositories
   "t" 'telega-prefix
-  "w" #'wl
-  "v" #'vundo)
+  "w" #'wl)
 
 (defvar-keymap cat-org-plugin-map
   :doc "Keymap for `org' plugins."
@@ -60,4 +58,6 @@
   "l" #'org-store-link
   "p" 'cat-plugin-prefix
   "r" 'cat-org-roam-prefix
-  "t" 'cat-toggle-prefix)
+  "s" #'rg-menu
+  "t" 'cat-toggle-prefix
+  "w" #'webjump)

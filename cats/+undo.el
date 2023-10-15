@@ -7,4 +7,8 @@
 
 (use-package vundo
   :defer t
-  :custom (vundo-glyph-alist vundo-unicode-symbols))
+  :bind
+  (:map ctl-x-map
+        ([remap undo] . vundo))
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols))
