@@ -4,6 +4,7 @@
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
+        meow-keypad-leader-dispatch "C-c"
         meow-expand-exclude-mode-list nil
         meow-replace-state-name-list
         '((normal . "🅝")
@@ -22,14 +23,14 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
-   '("-" . negative-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
    '("u" . meow-universal-argument)
+   '("w" . webjump)
    (when (package-installed-p 'ace-window)
      '("o" . ace-window)))
   (meow-motion-overwrite-define-key
-   '("<escape>" . ignore))
+   '("<escape>" . ESC-prefix))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -100,33 +101,27 @@
    '("%" . meow-query-replace)
    '("C-%" . meow-query-replace-regexp)
    '("'" . repeat)
-   '("<escape>" . meow-last-buffer)
+   '("<escape>" . ESC-prefix)
    (when (package-installed-p 'embark)
      '(">" . embark-act))
    (when (package-installed-p 'avy)
-     '(":" . avy-goto-char-timer))))
+     '(":" . avy-goto-char-timer)))
+  (define-keymap
+    :keymap meow-insert-state-keymap
+    "C-g" #'meow-insert-exit
+    "<escape>" #'ESC-prefix))
 
-(with-eval-after-load 'meow
-  (meow-setup)
-  (meow-setup-line-number)
-  (define-key meow-insert-state-keymap (kbd "C-g") #'meow-insert-exit)
-  (+add-to-list-multi 'meow-mode-state-list
-                      '(diary-mode . normal)
-                      '(help-mode . motion)
-                      '(telega-root-mode . motion)
-                      '(osx-dictionary-mode . motion)
-                      '(logview-mode . motion)))
-
-(defun cat-manual-motion-mode ()
-  (meow-motion-mode 'toggle)
-  (meow-normal-mode 'toggle)
-  (message "Toggled the meow motion mode"))
-
-(add-hook 'shell-mode-hook #'meow-insert)
-(add-hook 'comint-mode-hook #'meow-insert)
-(add-hook 'elogcat-mode-hook #'meow-insert)
-
-(add-hook 'view-mode-hook #'cat-manual-motion-mode)
+(meow-setup)
+(meow-setup-line-number)
+(+add-to-list-multi 'meow-mode-state-list
+                    '(diary-mode . normal)
+                    '(help-mode . motion)
+                    '(telega-root-mode . motion)
+                    '(osx-dictionary-mode . motion)
+                    '(elogcat-mode . insert)
+                    '(eshell-mode . insert)
+                    '(term-mode . insert)
+                    '(comint-mode . insert))
 
 (when (featurep 'nano-modeline)
   (defun +nano-modeline-meow-indicator (args)
