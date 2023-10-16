@@ -6,9 +6,8 @@
   :hook (after-init . undo-fu-session-global-mode))
 
 (use-package vundo
-  :defer t
   :bind
   (:map ctl-x-map
-        ([remap undo] . vundo))
+        ("u" . vundo))
   :custom
   (vundo-glyph-alist vundo-unicode-symbols))
