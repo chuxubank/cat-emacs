@@ -111,3 +111,6 @@
   (org-save-all-org-buffers)
   (+no-confirm #'org-revert-all-org-buffers)
   (org-element-update-syntax))
+
+(autoload 'org-store-link "ol"
+  "Jump to Dired buffer corresponding to current buffer." t)
