@@ -17,6 +17,7 @@
 (cat! "+valign")
 (cat! "+windows")
 (cat! "+local")
+(cat! "+treemacs")
 
 ;;; os
 (when IS-MAC
