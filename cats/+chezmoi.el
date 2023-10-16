@@ -4,9 +4,11 @@
   :commands (chezmoi-find chezmoi-dired-add-marked-files)
   :mode ("\\dot_\\'" . chezmoi-mode))
 
+(straight-use-package '(company :type built-in))
+
 (use-package chezmoi-company
   :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el"))
-  :when (featurep 'company)
+  :when (package-installed-p 'company)
   :after (chezmoi company)
   :config
   (defun +add-or-remove-chezmoi-company-backend ()
@@ -29,7 +31,7 @@
 
 (use-package chezmoi-cape
   :straight (chezmoi-cape :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-cape.el"))
-  :when (featurep 'cape)
+  :when (package-installed-p 'cape)
   :after (chezmoi cape)
   :config
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
