@@ -4,10 +4,11 @@
   :custom
   (lsp-session-file (concat cat-etc-dir "lsp-session"))
   :hook
+  (kotlin-mode . lsp-mode)
   (lsp-mode . lsp-enable-which-key-integration)
   :commands lsp)
 
 (use-package lsp-ui
-  :commands lsp-ui-mode
+  :hook lsp-mode
   :custom
   (lsp-headerline-breadcrumb-icons-enable nil))
