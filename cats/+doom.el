@@ -14,7 +14,8 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :custom
-  (doom-modeline-minor-modes t))
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-enable-word-count t))
 
 (use-package nerd-icons-dired
   :hook
