@@ -1,12 +1,17 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package treemacs
-  :defer t
+  :bind
+  ("M-0" . treemacs-select-window)
   :custom
-  (treemacs-persist-file (concat cat-cache-dir "treemacs")))
+  (treemacs-persist-file (concat cat-cache-dir "treemacs"))
+  (treemacs-is-never-other-window t)
+  (treemacs-select-when-already-in-treemacs 'close))
 
 (use-package treemacs-magit
   :after treemacs magit)
 
 (use-package treemacs-tab-bar
-  :after treemacs tab-bar)
+  :after treemacs
+  :config
+  (treemacs-set-scope-type 'Tabs))
