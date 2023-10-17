@@ -5,7 +5,7 @@
       org-agenda-skip-deadline-if-done t
       diary-file (expand-file-name "diary" cat-org-directory)
       org-agenda-include-diary t
-      org-archive-location (concat cat-org-directory "/archive.org::* From %s"))
+      org-archive-location (concat cat-org-directory "archive.org::* From %s"))
 
 (with-no-warnings
   (custom-declare-face '+org-todo-active  '((t (:inherit (bold font-lock-constant-face org-todo)))) "")

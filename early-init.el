@@ -19,13 +19,15 @@
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
 (defconst cat-etc-dir (concat cat-local-dir "etc/"))
 (defconst cat-rime-dir (concat cat-etc-dir "rime/"))
-(defconst cat-org-directory "~/org" "See `org-directory'")
+(defconst cat-org-directory "~/org/" "See `org-directory'")
 (defconst cat-org-roam-directory "~/org-roam/" "See `org-roam-directory'.")
 (defconst cat-org-roam-dailies-directory "daily/" "See `org-roam-dailies-directory'.")
 (defconst cat-org-roam-reference-directory "reference/"
   "Orb notes directory, used by `citar-notes-paths' and `org-roam-capture-templates'")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
-(defconst cat-default-csl-styles-dir "~/Zotero/styles")
+(defconst cat-default-csl-styles-dir "~/Zotero/styles/")
+(defconst cat-codeium-dir "~/.codeium/")
+(defconst cat-codeium-api-key-file (expand-file-name "api_key" cat-codeium-dir))
 
 ;;; benchmark
 (defun cat-benchmark (pos &optional file)
