@@ -47,6 +47,14 @@
   (add-hook 'nxml-mode-hook #'+pangu-spacing-disable)
   (+change-lighter 'pangu-spacing-mode nil))
 
+(use-package diff-hl
+  :hook (after-init . global-diff-hl-mode)
+  :hook ((text-mode prog-mode) . diff-hl-flydiff-mode)
+  :hook (dired-mode . diff-hl-dired-mode)
+  :config
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
 (use-package org-modern
   :disabled
   :after org
