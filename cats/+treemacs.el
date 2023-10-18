@@ -5,8 +5,7 @@
   ("M-0" . treemacs-select-window)
   :custom
   (treemacs-persist-file (concat cat-cache-dir "treemacs"))
-  (treemacs-is-never-other-window t)
-  (treemacs-select-when-already-in-treemacs 'close))
+  (treemacs-is-never-other-window t))
 
 (use-package treemacs-magit
   :after treemacs magit)
