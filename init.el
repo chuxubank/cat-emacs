@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(cat-benchmark 'beg)
+
 ;;; custom
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -34,3 +36,5 @@
 (put 'upcase-region 'disabled nil)
 (put 'list-threads 'disabled nil)
 (put 'magit-clean 'disabled nil)
+
+(cat-benchmark 'end)
