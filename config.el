@@ -78,7 +78,7 @@
 (cat! "+rime")
 
 ;;; program
-(cat! "+apheleia")
+(cat! "+format")
 (cat! "+doc")
 (cat! "+log")
 (cat! "+powershell")
