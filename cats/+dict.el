@@ -15,3 +15,16 @@
   (anki-vocabulary-field-alist '(("expression" . "${expression:单词}")
                                  ("glossary" . "${glossary:释义}")
                                  ("sentence" . "${sentence_bold:标粗的原文例句}"))))
+
+(use-package osx-dictionary
+  :when IS-MAC
+  :defer t)
+
+(defvar-keymap cat-dict-map
+  :doc "Keymap for cat dict commands."
+  :name "Dictionary"
+  :prefix 'cat-dict-prefix
+  "a" #'anki-vocabulary
+  "b" #'bing-dict-brief
+  "o" #'osx-dictionary-search-pointer
+  "O" #'osx-dictionary-search-input)

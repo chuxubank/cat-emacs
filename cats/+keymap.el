@@ -17,15 +17,12 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "a" #'anki-vocabulary
-  "b" #'bing-dict-brief
-  "c" #'chezmoi-prefix
+  "b" #'bbdb
+  "c" 'chezmoi-prefix
   "d" #'deft
   "g" #'igist-dispatch
   "l" #'elogcat
   "m" #'mu4e
-  "o" #'osx-dictionary-search-pointer
-  "O" #'osx-dictionary-search-input
   "p" #'pass
   "r" #'elfeed
   "R" #'magit-list-repositories
@@ -61,4 +58,5 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
-  "w" #'webjump)
+  "w" #'webjump
+  "." 'cat-dict-prefix)
