@@ -8,7 +8,7 @@
 ;;; util
 (cat! "+project")
 (cat! "+diredx")
-(cat! "+bbdb")
+(cat! "+eudc")
 (cat! "+sow")
 (cat! "+utils")
 
