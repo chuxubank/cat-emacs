@@ -12,7 +12,11 @@
   (add-hook 'groovy-mode-hook 'groovy-imports-scan-file))
 
 (use-package flymake-gradle
-  :hook ((java-mode kotlin-mode) . flymake-gradle-add-hook))
+  :after flymake
+  :config
+  (flymake-gradle-add-hook))
 
 (use-package flycheck-gradle
-  :hook ((java-mode kotlin-mode) . flycheck-gradle-setup))
+  :after flycheck
+  :config
+  (flycheck-gradle-setup))

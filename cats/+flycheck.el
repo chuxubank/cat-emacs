@@ -1,11 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package flycheck
-  :defer t
-  :config
-  (setq flycheck-emacs-lisp-load-path 'inherit))
+  :hook (after-init . global-flycheck-mode)
+  :custom
+  (flycheck-emacs-lisp-load-path 'inherit))
 
 (use-package flycheck-pos-tip
+  :disabled
   :after flycheck
   :hook (flycheck-mode . flycheck-pos-tip-mode))
 
