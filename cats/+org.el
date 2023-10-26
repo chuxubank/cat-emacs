@@ -75,16 +75,6 @@
 (setq org-timer-display 'frame-title)
 
 ;;; babel
-(defun +org-edit-src-eval ()
-  "Evaluate the org-mode source block from the org-edit-special buffer and then re-enter the edit buffer."
-  (interactive)
-  (let ((current-point (point)))
-    (org-edit-src-exit)
-    (org-ctrl-c-ctrl-c)
-    (org-edit-special)
-    (goto-char current-point)))
-(with-eval-after-load 'org-src
-  (define-key org-src-mode-map (kbd "C-c C-c") #'+org-edit-src-eval))
 (with-eval-after-load 'org
   (org-babel-do-load-languages
    'org-babel-load-languages
