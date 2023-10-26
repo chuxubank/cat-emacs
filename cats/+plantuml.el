@@ -3,7 +3,7 @@
 (defconst plantuml-dark-arg "-darkmode")
 
 (use-package plantuml-mode
-  :defer t
+  :mode ("\\.puml\\'" . plantuml-mode)
   :custom
   (plantuml-default-exec-mode 'executable)
   (plantuml-indent-level 4)
@@ -41,8 +41,16 @@
       url)))
 
 (use-package flycheck-plantuml
-  :after plantuml-mode
+  :after flycheck
   :config
+  (flycheck-define-checker plantuml
+    "A checker using plantuml.
+
+See `http://plantuml.com"
+    :command ("plantuml" "-syntax")
+    :standard-input t
+    :error-patterns ((error line-start "ERROR" "\n" line "\n" (message) line-end))
+    :modes plantuml-mode)
   (flycheck-plantuml-setup))
 
 (with-eval-after-load 'ob-plantuml
