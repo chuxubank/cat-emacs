@@ -1,17 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package eldoc-box
-  :hook (eldoc-mode . eldoc-box-hover-at-point-mode)
-  :custom
-  (eldoc-box-lighter nil)
-  (eldoc-minor-mode-string
-   '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/p")
-                           (eldoc-box-hover-mode "/h")
-                           (t nil)))))
-  :config
-  (put 'eldoc-minor-mode-string 'risky-local-variable t))
-
 (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+(put 'eldoc-minor-mode-string 'risky-local-variable t)
 
 (defun cat-elisp-eldoc-funcall (callback &rest _)
   "Document function call at point by calling CALLBACK.
@@ -37,3 +27,11 @@ Intended for `eldoc-documentation-functions' (which see)."
   ;; (advice-add 'elisp-eldoc-funcall :before-while #'cat-elisp-eldoc-funcall)
   (advice-add 'elisp-eldoc-var-docstring :override #'elisp-eldoc-var-docstring-with-value))
 
+(use-package eldoc-box
+  :hook (eldoc-mode . eldoc-box-hover-at-point-mode)
+  :custom
+  (eldoc-box-lighter nil)
+  (eldoc-minor-mode-string
+   '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/p")
+                           (eldoc-box-hover-mode "/h")
+                           (t nil))))))

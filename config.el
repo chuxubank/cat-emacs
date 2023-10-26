@@ -77,15 +77,17 @@
 ;;; input
 (cat! "+rime")
 
-;;; program
+;;; code
 (cat! "+format")
+(cat! "+flycheck")
 (cat! "+doc")
-(cat! "+log")
-(cat! "+powershell")
+(cat! "+sideline")
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
-(cat! "+flycheck")
 (cat! "+codeium")
+
+;;; language
+(cat! "+powershell")
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+android")
@@ -98,6 +100,7 @@
 (cat! "+caddy")
 
 ;;; plugins
+(cat! "+log")
 (cat! "+telega")
 (cat! "+pdf")
 (cat! "+nov")
