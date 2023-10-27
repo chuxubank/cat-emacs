@@ -9,7 +9,11 @@
         ("C-c n j" . cat-org-jira-issue-prefix))
   :init
   ;; prevent `org-jira-mode' load keymap
-  (setq org-jira-entry-mode-map (make-sparse-keymap)))
+  (setq org-jira-entry-mode-map (make-sparse-keymap))
+  :custom
+  (org-jira-done-states '("Closed" "Resolved" "Done" "Cancelled"))
+  :config
+  (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace))
 
 (defvar-keymap org-jira-global-map
   :doc "Keymap for `org-jira' global commands."

@@ -29,6 +29,10 @@
   "Set local variable `show-trailing-whitespace' to t."
   (setq show-trailing-whitespace t))
 
+(defun cat-hide-trailing-whitespace ()
+  "Set local variable `show-trailing-whitespace' to nil."
+  (setq show-trailing-whitespace nil))
+
 (add-hook 'text-mode-hook #'cat-show-trailing-whitespace)
 (add-hook 'prog-mode-hook #'cat-show-trailing-whitespace)
 
@@ -161,10 +165,10 @@
   (add-hook h 'hs-minor-mode))
 (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
 (defun hideshow-folded-overlay-fn (ov)
-    (when (eq 'code (overlay-get ov 'hs))
-      (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
-             (info (format " ... #%d " nlines)))
-        (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
+  (when (eq 'code (overlay-get ov 'hs))
+    (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+           (info (format " ... #%d " nlines)))
+      (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
 (setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
 
 ;;; pcache
