@@ -41,12 +41,10 @@
       url)))
 
 (use-package flycheck-plantuml
-  :after flycheck
+  :after flycheck plantuml-mode
   :config
   (flycheck-define-checker plantuml
-    "A checker using plantuml.
-
-See `http://plantuml.com"
+    "A checker using plantuml."
     :command ("plantuml" "-syntax")
     :standard-input t
     :error-patterns ((error line-start "ERROR" "\n" line "\n" (message) line-end))

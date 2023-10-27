@@ -4,6 +4,6 @@
   :defer t)
 
 (use-package flycheck-kotlin
-  :after flycheck
+  :after flycheck kotlin-mode
   :config
   (flycheck-kotlin-setup))

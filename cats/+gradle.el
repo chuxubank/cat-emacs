@@ -14,9 +14,9 @@
 (use-package flymake-gradle
   :after flymake
   :config
-  (flymake-gradle-add-hook))
+  (flymake-gradle-setup))
 
 (use-package flycheck-gradle
-  :after flycheck
+  :after (:all flycheck (:any kotlin-mode java-mode))
   :config
   (flycheck-gradle-setup))
