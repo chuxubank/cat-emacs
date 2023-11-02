@@ -25,3 +25,6 @@
   :after treemacs
   :config
   (treemacs-load-theme "nerd-icons"))
+
+(defun cat-enable-doom-modeline-minor-modes ()
+  (setq-local doom-modeline-minor-modes t))

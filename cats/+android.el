@@ -6,14 +6,18 @@
   (defvar +elogcat-logcat-package nil)
   :bind
   (:map elogcat-mode-map
-        ("p" . #'+elogcat-toggle-package))
+        ("n" . #'next-line)
+        ("p" . #'previous-line)
+        ("P" . #'+elogcat-toggle-package))
   :config
   (defun elogcat-make-status (&optional status)
     "Get a log buffer STATUS for use in the mode line."
     (format " elogcat[%s](%s)"
             (mapconcat (lambda (args) (elogcat-get-log-buffer-status args))
                        '("main" "system" "radio" "events" "crash" "kernel") "")
-            +elogcat-logcat-package)))
+            +elogcat-logcat-package))
+  (add-hook 'elogcat-mode-hook #'meow-motion-mode)
+  (add-hook 'elogcat-mode-hook #'cat-enable-doom-modeline-minor-modes))
 
 (defun +elogcat-toggle-package (pkg)
   "Toggle package filter."

@@ -115,7 +115,6 @@
                     '(help-mode . motion)
                     '(telega-root-mode . motion)
                     '(osx-dictionary-mode . motion)
-                    '(elogcat-mode . insert)
                     '(eshell-mode . insert)
                     '(term-mode . insert)
                     '(comint-mode . insert))
