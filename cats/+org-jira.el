@@ -11,9 +11,25 @@
   ;; prevent `org-jira-mode' load keymap
   (setq org-jira-entry-mode-map (make-sparse-keymap))
   :custom
-  (org-jira-done-states '("Closed" "Resolved" "Done" "Cancelled"))
+  (org-jira-done-states
+   '("Closed" "Resolved" "Done" "Cancelled"))
+  (org-jira-jira-status-to-org-keyword-alist
+   '(("In Progress" . "STRT")
+     ("Code Review" . "WAIT")
+     ("QA Ready" . "LOOP")))
+  (org-jira-custom-jqls
+   '((:jql "assignee in (EMPTY) AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY created DESC"
+           :limit 10
+           :filename "backlog")
+     (:jql "assignee = currentUser() AND Sprint in openSprints() AND resolution = Unresolved order by created DESC"
+           :limit 50
+           :filename "cur-sprint")))
+  (org-jira-progress-issue-flow
+   '(("In Progress" . "PR is created")
+     ("Code Review" . "Ready for testing")))
   :config
-  (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace))
+  (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
+  (add-to-list 'org-agenda-files (expand-file-name "cur-sprint.org" org-jira-working-dir)))
 
 (defvar-keymap org-jira-global-map
   :doc "Keymap for `org-jira' global commands."
