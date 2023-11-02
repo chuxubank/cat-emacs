@@ -17,6 +17,7 @@
    '(("In Progress" . "STRT")
      ("Code Review" . "WAIT")
      ("QA Ready" . "LOOP")))
+  (org-jira-default-jql "assignee = currentUser() AND resolution = Unresolved AND statusCategory in (2, 4) order by updated DESC")
   (org-jira-custom-jqls
    '((:jql "assignee in (EMPTY) AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY created DESC"
            :limit 10
