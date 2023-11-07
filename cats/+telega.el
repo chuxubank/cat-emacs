@@ -25,7 +25,8 @@
                  '(telega-company-botcmd))))
   (company-mode 1))
 
-(add-hook 'telega-chat-mode-hook #'+telega-chat-mode)
+(when (featurep 'company)
+  (add-hook 'telega-chat-mode-hook #'+telega-chat-mode))
 
 (with-eval-after-load 'telega
   (require 'telega-mnz)
