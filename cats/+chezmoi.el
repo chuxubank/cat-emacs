@@ -4,10 +4,10 @@
   :commands (chezmoi-find chezmoi-dired-add-marked-files)
   :mode ("\\dot_\\'" . chezmoi-mode))
 
-(straight-use-package '(company :type built-in))
-
 (use-package chezmoi-company
-  :straight (chezmoi-company :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-company.el"))
+  :vc (:url "https://github.com/tuh8888/chezmoi.el"
+            :main-file "extensions/chezmoi-company.el"
+            :rev :newests)
   :when (package-installed-p 'company)
   :after (chezmoi company)
   :config
@@ -18,19 +18,23 @@
   (add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend))
 
 (use-package chezmoi-dired
-  :straight (chezmoi-dired :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-dired.el"))
+  :vc (:url "https://github.com/tuh8888/chezmoi.el"
+            :lisp-dir "extensions/")
   :after chezmoi)
 
 (use-package chezmoi-ediff
-  :straight (chezmoi-ediff :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-ediff.el"))
+  :vc (:url "https://github.com/tuh8888/chezmoi.el"
+            :lisp-dir "extensions/")
   :after chezmoi)
 
 (use-package chezmoi-magit
-  :straight (chezmoi-magit :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-magit.el"))
+  :vc (:url "https://github.com/tuh8888/chezmoi.el"
+            :lisp-dir "extensions/")
   :after (chezmoi magit))
 
 (use-package chezmoi-cape
-  :straight (chezmoi-cape :host github :repo "tuh8888/chezmoi.el" :files ("extensions/chezmoi-cape.el"))
+  :vc (:url "https://github.com/tuh8888/chezmoi.el"
+            :lisp-dir "extensions/")
   :when (package-installed-p 'cape)
   :after (chezmoi cape)
   :config

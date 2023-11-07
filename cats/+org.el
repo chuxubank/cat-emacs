@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(straight-use-package '(org :type built-in))
-
 (setq org-auto-align-tags nil
       org-hide-emphasis-markers t
       org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)

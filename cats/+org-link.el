@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-yt
-  :straight (org-yt :host github :repo "TobiasZawada/org-yt")
+  :vc (:url "https://github.com/TobiasZawada/org-yt" :rev :newest)
   :after org)
 
 (defun +org-inline-image-data-fn (_protocol link _description)
@@ -26,7 +26,7 @@
   (org-link-set-parameters "img"   :image-data-fun #'+org-inline-image-data-fn))
 
 (use-package org-dial
-  :straight (org-dial :host github :repo "mistrey/org-dial")
+  :vc (:url "https://github.com/mistrey/org-dial" :rev :newest)
   :after org
   :config
   (when IS-MAC

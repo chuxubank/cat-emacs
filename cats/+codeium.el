@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package codeium
-  :straight (codeium :type git :host github :repo "Exafunction/codeium.el")
+  :vc (:url "https://github.com/Exafunction/codeium.el" :rev :newest)
   :defer t
   :init
   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)

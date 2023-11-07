@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package copilot
-  :straight (copilot :host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :vc (copilot :host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
   :hook (prog-mode . copilot-mode)
   :bind
   (:map copilot-completion-map

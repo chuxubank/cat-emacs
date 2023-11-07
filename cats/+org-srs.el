@@ -10,7 +10,7 @@
 
 (use-package org-fc
   :disabled
-  :straight (org-fc :host github :repo "l3kn/org-fc" :files (:defaults "awk" "demo.org"))
+  :vc (:url "https://github.com/l3kn/org-fc" :rev :newest)
   :after org
   :custom
   (org-fc-directories (list

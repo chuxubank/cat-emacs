@@ -7,6 +7,6 @@
 
 (use-package meow-vterm
   :when (featurep 'meow)
-  :straight (meow-vterm :host github :repo "accelbread/meow-vterm")
+  :vc (:url "https://github.com/accelbread/meow-vterm" :rev :newest)
   :config
   (meow-vterm-enable))

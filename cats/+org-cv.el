@@ -1,5 +1,5 @@
 (use-package org-cv
-  :straight (org-cv :host gitlab :repo "Titan-C/org-cv")
+  :vc (:url "https://github.com/Titan-C/org-cv" :rev :newest)
   :defer t
   :after org
   :config

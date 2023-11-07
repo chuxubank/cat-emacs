@@ -3,7 +3,7 @@
 ;;; package
 (cat! "+package")
 (cat! "+benchmark")
-(cat! "+straight")
+;; (cat! "+straight")
 
 ;;; util
 (cat! "+project")

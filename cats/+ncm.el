@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(straight-use-package '(request :type built-in))
-
 (use-package netease-cloud-music
-  :straight (netease-cloud-music :fork t)
+  :vc (:url "https://github.com/chuxubank/netease-cloud-music.el" :rev :newest)
   :defer t
   :custom
   (netease-cloud-music-cache-directory (concat cat-cache-dir "ncm"))

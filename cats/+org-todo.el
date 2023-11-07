@@ -65,7 +65,7 @@
   (add-to-list 'org-modules 'org-habit))
 
 (use-package org-agenda-count
-  :straight (org-agenda-count :host github :repo "sid-kurias/org-agenda-count")
+  :vc (:url "https://github.com/sid-kurias/org-agenda-count" :rev :newest)
   :after org
   :custom
   (org-agenda-custom-commands

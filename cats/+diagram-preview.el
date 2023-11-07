@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package diagram-preview
-  :straight (diagram-preview :host github :repo "natrys/diagram-preview")
+  :vc (:url "https://github.com/natrys/diagram-preview" :rev :newest)
   :hook (graphviz-dot-mode
          plantuml-mode
          mermaid-mode
