@@ -116,7 +116,6 @@
                     '(telega-root-mode . motion)
                     '(osx-dictionary-mode . motion)
                     '(eshell-mode . insert)
-                    '(term-mode . insert)
                     '(comint-mode . insert))
 
 (when (featurep 'nano-modeline)

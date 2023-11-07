@@ -85,6 +85,7 @@
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
 (cat! "+codeium")
+(cat! "+tree-sitter")
 
 ;;; language
 (cat! "+cmake")
@@ -101,6 +102,7 @@
 (cat! "+caddy")
 
 ;;; plugins
+(cat! "+term")
 (cat! "+log")
 (cat! "+telega")
 (cat! "+pdf")
