@@ -18,7 +18,5 @@
 (use-package treesit-auto
   :when EMACS29+
   :hook (after-init . global-treesit-auto-mode)
-  :custom
-  (treesit-auto-install 'prompt)
   :config
   (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
