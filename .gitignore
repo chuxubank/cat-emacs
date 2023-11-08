@@ -29,3 +29,6 @@ custom.el
 
 # gnus
 network-security.data
+
+# treesit
+tree-sitter/

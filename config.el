@@ -88,7 +88,6 @@
 (cat! "+tree-sitter")
 
 ;;; language
-(cat! "+cmake")
 (cat! "+powershell")
 (cat! "+yaml")
 (cat! "+kotlin")
