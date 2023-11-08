@@ -19,11 +19,15 @@
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
 (defconst cat-etc-dir (concat cat-local-dir "etc/"))
 (defconst cat-rime-dir (concat cat-etc-dir "rime/"))
-(defconst cat-org-directory "~/org/" "See `org-directory'")
-(defconst cat-org-roam-directory "~/org-roam/" "See `org-roam-directory'.")
-(defconst cat-org-roam-dailies-directory "daily/" "See `org-roam-dailies-directory'.")
+(defconst cat-org-directory "~/org/"
+  "See `org-directory'.")
+(defconst cat-org-roam-directory "~/org-roam/"
+  "See `org-roam-directory'.")
+(defconst cat-org-roam-dailies-directory "daily/"
+  "See `org-roam-dailies-directory'.")
 (defconst cat-org-roam-reference-directory "reference/"
-  "Orb notes directory, used by `citar-notes-paths' and `org-roam-capture-templates'")
+  "Orb notes directory.
+Used by `citar-notes-paths' and `org-roam-capture-templates'.")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 (defconst cat-default-csl-styles-dir "~/Zotero/styles/")
 (defconst cat-codeium-dir "~/.codeium/")
@@ -31,7 +35,7 @@
 
 ;;; benchmark
 (defun cat-benchmark (pos &optional file)
-  "Print the current time of load POS of FILE"
+  "Print the current time of load POS of FILE."
   (message "%s %s of %s"
            (format-time-string "%r %3N")
            (upcase (symbol-name pos))
