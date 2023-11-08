@@ -6,8 +6,7 @@
 
 (use-package chezmoi-company
   :vc (:url "https://github.com/tuh8888/chezmoi.el"
-            :main-file "extensions/chezmoi-company.el"
-            :rev :newests)
+            :lisp-dir "extensions/")
   :when (package-installed-p 'company)
   :after (chezmoi company)
   :config

@@ -1,11 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package company-prescient
-  :ensure nil
+  :disabled
   :when (package-installed-p 'company)
   :hook (company-mode . company-prescient-mode))
 
 (use-package selectrum-prescient
+  :disabled
   :when (package-installed-p 'selectrum)
   :hook (selectrum-mode . selectrum-prescient-mode))
 
