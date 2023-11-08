@@ -8,14 +8,15 @@
   (beacon-lighter nil))
 
 (use-package goggles
+  :delight
   :hook ((prog-mode text-mode) . goggles-mode)
   :init
   (setq goggles-mode nil)
   :config
-  (setq-default goggles-pulse t)
-  (+change-lighter 'goggles-mode nil))
+  (setq-default goggles-pulse t))
 
 (use-package pangu-spacing
+  :delight
   :hook (text-mode . pangu-spacing-mode)
   :custom
   (pangu-spacing-real-insert-separtor t)
@@ -44,8 +45,7 @@
         t)))
   (defun +pangu-spacing-disable ()
     (pangu-spacing-mode -1))
-  (add-hook 'nxml-mode-hook #'+pangu-spacing-disable)
-  (+change-lighter 'pangu-spacing-mode nil))
+  (add-hook 'nxml-mode-hook #'+pangu-spacing-disable))
 
 (use-package diff-hl
   :hook (after-init . global-diff-hl-mode)

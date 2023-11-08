@@ -1,9 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package sideline
+  :delight
+  :hook (after-init . global-sideline-mode)
   :custom
-  (sideline-display-backend-name t)
-  :hook (after-init . global-sideline-mode))
+  (sideline-display-backend-name t))
 
 (use-package sideline-flycheck
   :hook (flycheck-mode . sideline-flycheck-setup)

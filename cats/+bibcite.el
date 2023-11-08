@@ -57,6 +57,7 @@
            :unnarrowed t))))
 
 (use-package citar-org-roam
+  :delight
   :hook (org-roam-mode . citar-org-roam-mode)
   :custom
   (citar-org-roam-capture-template-key "bn")
@@ -71,8 +72,7 @@
                            :open #'citar-org-roam-open-note
                            :create #'orb-citar-edit-note
                            :annotate #'citar-org-roam--annotate))
-  (setq citar-notes-source 'orb-citar-source)
-  (+change-lighter 'citar-org-roam-mode nil))
+  (setq citar-notes-source 'orb-citar-source))
 
 (use-package citar
   :defer t
@@ -80,7 +80,7 @@
   (citar-bibliography cat-default-bibliography-files))
 
 (use-package citar-embark
+  :delight
   :after citar embark
   :config
-  (citar-embark-mode)
-  (+change-lighter 'citar-embark-mode nil))
+  (citar-embark-mode))
