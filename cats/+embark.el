@@ -11,6 +11,9 @@
         (":" . +embark-act-with-eval))
   (:map embark-expression-map
         (":" . +embark-act-with-eval))
+  (:map embark-region-map
+        ("!" . +embark-shell)
+        ("&" . +embark-async-shell))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -29,6 +32,10 @@
     (with-temp-buffer
       (insert (eval (read expression)))
       (embark-act)))
+  (defun +embark-shell (term)
+    (shell-command term))
+  (defun +embark-async-shell (term)
+    (async-shell-command term))
   (when (package-installed-p 'password-store)
     (defvar-keymap embark-password-store-actions
       :doc "Keymap for actions for password-store."
