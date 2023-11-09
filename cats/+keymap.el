@@ -19,7 +19,7 @@
   :prefix 'cat-plugin-prefix
   "b" #'bbdb
   "c" 'chezmoi-prefix
-  "d" #'deft
+  "d" #'devdocs-lookup
   "g" #'igist-dispatch
   "l" #'elogcat
   "m" #'mu4e

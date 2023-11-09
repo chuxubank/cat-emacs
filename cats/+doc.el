@@ -35,3 +35,8 @@ Intended for `eldoc-documentation-functions' (which see)."
    '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/p")
                            (eldoc-box-hover-mode "/h")
                            (t nil))))))
+
+(use-package devdocs
+  :defer t
+  :custom
+  (devdocs-data-dir (concat cat-etc-dir "devdocs")))
