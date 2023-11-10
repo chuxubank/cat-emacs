@@ -4,6 +4,7 @@
   :after org)
 
 (use-package org-jira
+  :commands #'org-jira-id
   :bind
   (:map org-jira-entry-mode-map
         ("C-c n j" . cat-org-jira-issue-prefix))
@@ -21,7 +22,7 @@
   (org-jira-custom-jqls
    '((:jql "assignee in (EMPTY) AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY created DESC"
            :limit 10
-           :filename "backlog")
+           :filename "bug-backlog")
      (:jql "assignee = currentUser() AND Sprint in openSprints() AND resolution = Unresolved order by created DESC"
            :limit 50
            :filename "cur-sprint")))
@@ -31,6 +32,10 @@
   :config
   (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
   (add-to-list 'org-agenda-files (expand-file-name "cur-sprint.org" org-jira-working-dir)))
+
+(defun +org-jira-copy-current-issue-url ()
+  (interactive)
+  (kill-new (concat (replace-regexp-in-string "/*$" "" jiralib-url) "/browse/" (org-jira-id))))
 
 (defvar-keymap org-jira-global-map
   :doc "Keymap for `org-jira' global commands."
@@ -56,11 +61,12 @@
   "g" #'org-jira-refresh-issue
   "G" #'org-jira-refresh-issues-in-buffer
   "j" #'org-jira-todo-to-jira
-  "k" #'org-jira-copy-current-issue-key
+  "l" #'org-jira-update-worklogs-from-org-clocks
   "n" #'org-jira-progress-issue-next
   "p" #'org-jira-progress-issue
   "r" #'org-jira-set-issue-reporter
   "t" #'org-jira-get-subtasks
   "T" #'org-jira-create-subtask
   "u" #'org-jira-update-issue
-  "w" #'org-jira-update-worklogs-from-org-clocks)
+  "w" #'org-jira-copy-current-issue-key
+  "W" #'+org-jira-copy-current-issue-url)

@@ -8,7 +8,7 @@
 (defun +url-get-query-content (key &optional url)
   "Get query value from key in url or clipboard."
   (when (null url)
-    (setq url (with-temp-buffer(clipboard-yank) (buffer-string))))
+    (setq url (with-temp-buffer (clipboard-yank) (buffer-string))))
   (let ((query (cdr (url-path-and-query (url-generic-parse-url url))))
         value)
     (when query
