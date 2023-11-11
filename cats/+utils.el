@@ -51,4 +51,6 @@ List contains pairs mode lighter, see `minor-mode-alist'"
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
   (interactive)
-  (async-shell-command "emacs --debug"))
+  (type-break-mode -1)
+  (shell-command "emacs --debug")
+  (type-break-mode 1))
