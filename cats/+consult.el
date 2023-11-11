@@ -30,6 +30,7 @@
   (:map search-map
         ("d" . consult-find)
         ("D" . consult-locate)
+        ("f" . consult-fd)
         ("g" . consult-grep)
         ("G" . consult-git-grep)
         ("r" . consult-ripgrep)
