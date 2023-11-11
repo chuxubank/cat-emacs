@@ -2,9 +2,10 @@
 
 ;; https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter
 
+(setq treesit-font-lock-level 4)
+
 (unless EMACS29+
   (use-package tree-sitter
-    :ensure EMACS29+
     :hook
     (after-init . global-tree-sitter-mode)
     (tree-sitter-after-on . tree-sitter-hl-mode))
@@ -20,6 +21,9 @@
 (use-package treesit-auto
   :when EMACS29+
   :hook (after-init . global-treesit-auto-mode)
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (setq treesit-font-lock-level 4
-        treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
+  (dolist (lang '(cmake cpp))
+    (setq treesit-auto-langs (delete lang treesit-auto-langs)))
+  (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
