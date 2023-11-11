@@ -1,3 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq python-shell-interpreter "python3")
+(use-package python
+  :ensure-system-package
+  (black . black)
+  (pylsp . "pip install python-lsp-server")
+  :defer t)

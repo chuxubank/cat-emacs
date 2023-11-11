@@ -81,12 +81,13 @@
 ;;; code
 (cat! "+format")
 (cat! "+flycheck")
+(cat! "+tree-sitter")
 (cat! "+doc")
 (cat! "+sideline")
+(cat! "+codeium")
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
-(cat! "+codeium")
-(cat! "+tree-sitter")
+(cat! "+eglot")
 
 ;;; language
 (cat! "+cmake")
