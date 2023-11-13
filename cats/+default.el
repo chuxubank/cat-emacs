@@ -163,10 +163,17 @@
       read-extended-command-predicate #'command-completion-default-include-p)
 
 ;;; health
-(setq type-break-file-name (concat cat-etc-dir "type-break"))
-(add-hook 'after-init-hook #'type-break-mode)
-(add-hook 'type-break-mode-hook #'type-break-mode-line-message-mode)
-(add-hook 'type-break-mode-hook #'type-break-query-mode)
+(use-package type-break
+  :ensure nil
+  :hook
+  (after-init . type-break-mode)
+  (type-break-mode . type-break-query-mode)
+  (type-break-mode . type-break-mode-line-message-mode)
+  :custom
+  (type-break-file-name (concat cat-etc-dir "type-break"))
+  (type-break-query-function #'y-or-n-p)
+  :config
+  (type-break-guesstimate-keystroke-threshold 30))
 
 ;;; time
 (setq timeclock-file (concat cat-etc-dir "timelog"))
