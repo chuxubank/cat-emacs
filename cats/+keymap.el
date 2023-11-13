@@ -7,6 +7,7 @@
   "d" #'toggle-debug-on-error
   "f" #'display-fill-column-indicator-mode
   "l" #'display-line-numbers-mode
+  "m" #'cat-toggle-minor-modes
   "s" #'whitespace-mode
   "t" #'toggle-truncate-lines
   "v" #'visual-line-mode

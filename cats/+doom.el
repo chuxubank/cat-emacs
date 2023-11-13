@@ -28,3 +28,7 @@
 
 (defun cat-enable-doom-modeline-minor-modes ()
   (setq-local doom-modeline-minor-modes t))
+
+(defun cat-toggle-minor-modes ()
+  (interactive)
+  (setq doom-modeline-minor-modes (not doom-modeline-minor-modes)))
