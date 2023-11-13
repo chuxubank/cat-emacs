@@ -27,3 +27,7 @@ Default PASSWORD-LENGTH is `password-store-password-length'."
                          (if no-symbols "--no-symbols")
                          entry
                          (number-to-string password-length))))
+
+(defun cat-kill-gpg-agent ()
+  (interactive)
+  (shell-command "gpgconf --kill gpg-agent"))
