@@ -27,7 +27,8 @@
            :limit 50
            :filename "cur-sprint")))
   (org-jira-progress-issue-flow
-   '(("In Progress" . "PR is created")
+   '(("Open" . "Start Dev Work")
+     ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
   :config
   (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
@@ -36,6 +37,13 @@
 (defun +org-jira-copy-current-issue-url ()
   (interactive)
   (kill-new (concat (replace-regexp-in-string "/*$" "" jiralib-url) "/browse/" (org-jira-id))))
+
+(defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
+  (if (string= action-id (car (rassoc "Start Dev Work" (cdr (assoc "Open" jiralib-available-actions-cache)))))
+      (let* ((pr (project-current t))
+             (root (project-root pr)))
+        (vc-create-branch root (read-string "Branch name: " (concat issue-key "-"))))))
+(advice-add 'jiralib-progress-workflow-action :after #'cat-org-jira-start-dev-work)
 
 (defvar-keymap org-jira-global-map
   :doc "Keymap for `org-jira' global commands."
