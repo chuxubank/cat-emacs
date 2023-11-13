@@ -40,9 +40,13 @@
 
 (defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
   (if (string= action-id (car (rassoc "Start Dev Work" (cdr (assoc "Open" jiralib-available-actions-cache)))))
-      (let* ((pr (project-current t))
-             (root (project-root pr)))
-        (vc-create-branch root (read-string "Branch name: " (concat issue-key "-"))))))
+      (let ((root (magit-read-repository)))
+        (magit-status root)
+        (magit-fetch-refspec "origin" "develop:develop" nil)
+        (magit-branch-create
+         (read-string "Branch name: "
+                      (concat issue-key "-" (downcase (nth 4 (org-heading-components)))))
+         "develop"))))
 (advice-add 'jiralib-progress-workflow-action :after #'cat-org-jira-start-dev-work)
 
 (defvar-keymap org-jira-global-map
