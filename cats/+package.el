@@ -48,6 +48,7 @@
 (setq use-package-always-ensure t)
 
 (use-package system-packages :defer t)
+(use-package delight :defer t)
 
 ;; Ref @twlz0ne https://emacs-china.org/t/elpa/18226
 (defun cat-find-fastest-elpa-mirror ()
