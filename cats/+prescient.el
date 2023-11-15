@@ -1,22 +1,20 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package company-prescient
-  :disabled
-  :when (package-installed-p 'company)
-  :hook (company-mode . company-prescient-mode))
+(when (package-installed-p 'company)
+  (use-package company-prescient
+    :hook (company-mode . company-prescient-mode)))
 
-(use-package selectrum-prescient
-  :disabled
-  :when (package-installed-p 'selectrum)
-  :hook (selectrum-mode . selectrum-prescient-mode))
+(when (package-installed-p 'selectrum)
+  (use-package selectrum-prescient
+    :hook (selectrum-mode . selectrum-prescient-mode)))
 
-(use-package vertico-prescient
-  :when (package-installed-p 'vertico)
-  :hook (vertico-mode . vertico-prescient-mode))
+(when (package-installed-p 'vertico)
+  (use-package vertico-prescient
+    :hook (vertico-mode . vertico-prescient-mode)))
 
-(use-package corfu-prescient
-  :when (package-installed-p 'corfu)
-  :hook (corfu-mode . corfu-prescient-mode))
+(when (package-installed-p 'corfu)
+  (use-package corfu-prescient
+    :hook (corfu-mode . corfu-prescient-mode)))
 
 (setq prescient-save-file (expand-file-name "prescient-save.el" cat-cache-dir))
 (with-eval-after-load 'prescient

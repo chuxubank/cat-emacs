@@ -68,13 +68,13 @@
   (define-key rime-mode-map (kbd "C-`") 'rime-send-keybinding)
   (define-key rime-mode-map (kbd "M-j") 'rime-force-enable))
 
-(when (featurep 'meow)
+(with-eval-after-load 'meow
   (+add-to-list-multi 'rime-disable-predicates
                       #'meow-normal-mode-p
                       #'meow-motion-mode-p
                       #'meow-keypad-mode-p))
 
-(when (featurep 'nano-modeline)
+(with-eval-after-load 'nano-modeline
   (setq rime-title " ㄓ")
   (defun +nano-modeline-rime-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args

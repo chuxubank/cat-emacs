@@ -9,5 +9,5 @@
   (mu4e-sent-messages-behavior 'delete)
   (shr-color-visible-luminance-min 80))
 
-(when (featurep 'selectrum)
+(with-eval-after-load 'selectrum
   (setq mu4e-completing-read-function #'selectrum-completing-read))

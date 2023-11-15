@@ -51,18 +51,18 @@
     (add-to-list 'embark-keymap-alist '(password-store . embark-password-store-actions))
     (add-to-list 'marginalia-prompt-categories '("Password entry" . password-store))))
 
-(use-package embark-consult
-  :when (package-installed-p 'consult)
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+(when (package-installed-p 'consult)
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode)))
 
-(use-package avy-embark-collect
-  :when (package-installed-p 'avy)
-  :after embark
-  :bind
-  (:map embark-collect-mode-map
-        ("C-'" . avy-embark-collect-choose)
-        ("C-\"" . avy-embark-collect-act)))
+(when (package-installed-p 'avy)
+  (use-package avy-embark-collect
+    :after embark
+    :bind
+    (:map embark-collect-mode-map
+          ("C-'" . avy-embark-collect-choose)
+          ("C-\"" . avy-embark-collect-act))))
 
 (when (package-installed-p 'which-key)
   (setq which-key--prefix-help-cmd-backup #'embark-prefix-help-command)
