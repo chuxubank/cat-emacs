@@ -1,17 +1,28 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package meow)
-
-(defun meow-setup ()
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-        meow-keypad-leader-dispatch "C-c"
-        meow-expand-exclude-mode-list nil
-        meow-replace-state-name-list
-        '((normal . "🅝")
-          (beacon . "🅑")
-          (insert . "🅘")
-          (motion . "🅜")
-          (keypad . "🅚")))
+(use-package meow
+  :preface
+  (require 'meow)
+  :hook
+  (after-init . meow-global-mode)
+  ((wl-folder-mode
+    mime-view-mode
+    view-mode
+    magit-blame-mode) . cat-meow-toggle)
+  :custom
+  (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-keypad-leader-dispatch "C-c")
+  (meow-expand-exclude-mode-list nil)
+  (meow-replace-state-name-list '((normal . "🅝")
+                                  (beacon . "🅑")
+                                  (insert . "🅘")
+                                  (motion . "🅜")
+                                  (keypad . "🅚")))
+  :bind
+  (:map meow-insert-state-keymap
+        ("C-g" . meow-insert-exit)
+        ("<escape>" . ESC-prefix))
+  :config
   (meow-leader-define-key
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -103,22 +114,18 @@
      '(">" . embark-act))
    (when (package-installed-p 'avy)
      '(":" . avy-goto-char-timer)))
-  (define-keymap
-    :keymap meow-insert-state-keymap
-    "C-g" #'meow-insert-exit
-    "<escape>" #'ESC-prefix))
+  (meow-setup-line-number)
+  (+add-to-list-multi 'meow-mode-state-list
+                      '(diary-mode . normal)
+                      '(help-mode . motion)
+                      '(telega-root-mode . motion)
+                      '(osx-dictionary-mode . motion)
+                      '(eshell-mode . insert)
+                      '(comint-mode . insert))
+  (defun cat-meow-toggle ()
+    (meow-normal-mode 'toggle)))
 
-(meow-setup)
-(meow-setup-line-number)
-(+add-to-list-multi 'meow-mode-state-list
-                    '(diary-mode . normal)
-                    '(help-mode . motion)
-                    '(telega-root-mode . motion)
-                    '(osx-dictionary-mode . motion)
-                    '(eshell-mode . insert)
-                    '(comint-mode . insert))
-
-(when (featurep 'nano-modeline)
+(with-eval-after-load 'nano-modeline
   (defun +nano-modeline-meow-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args
       (let* ((face (nano-modeline--base-face face-prefix))
@@ -133,7 +140,6 @@
     (if meow-mode
         (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
       (advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))
-
   (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
 
 (with-eval-after-load 'doom-modeline
@@ -151,5 +157,3 @@
                        'meow-normal-mode " [N]"
                        'meow-insert-mode " [I]")))
   (add-hook 'doom-modeline-mode-hook #'+meow-setup-doom-modeline))
-
-(meow-global-mode 1)

@@ -14,7 +14,3 @@
         'wl-draft-send
         'wl-draft-kill
         'mail-send-hook)))
-
-(when (featurep 'meow)
-  (add-hook 'wl-folder-mode-hook #'cat-manual-motion-mode)
-  (add-hook 'mime-view-mode-hook #'cat-manual-motion-mode))
