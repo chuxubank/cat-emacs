@@ -1,6 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package cdlatex
+  :delight
+  (cdlatex-mode " ")
+  (org-cdlatex-mode " ")
   :hook (org-mode . org-cdlatex-mode))
 
 (setq cdlatex-env-alist

@@ -41,3 +41,9 @@
    ("Noto Serif .+" . 0.9)
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
+
+(defun cat-setup-org-font ()
+  (set-face-font 'org-table cat-mono-font)
+  (set-face-font 'org-column-title cat-mono-font))
+
+(add-hook 'org-mode-hook #'cat-setup-org-font)

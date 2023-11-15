@@ -4,7 +4,7 @@
   :hook (after-init . apheleia-global-mode)
   :custom
   (apheleia-remote-algorithm 'local)
-  (apheleia-mode-lighter " ")
+  (apheleia-mode-lighter " 󰿞")
   :config
   (setf (alist-get 'latexindent apheleia-formatters)
         '("latexindent" "-l" "--logfile=/dev/null")))
