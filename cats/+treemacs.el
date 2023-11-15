@@ -14,3 +14,8 @@
   :after treemacs
   :config
   (treemacs-set-scope-type 'Tabs))
+
+(use-package treemacs-nerd-icons
+  :after treemacs
+  :config
+  (treemacs-load-theme "nerd-icons"))

@@ -5,7 +5,7 @@
 (defvar cat-cjk-font "LXGW WenKai")
 (defvar cat-mono-font "LXGW WenKai Mono")
 (defvar cat-math-fonts '("Noto Sans Math"))
-(defvar cat-unicode-fonts '("Fira Code"))
+(defvar cat-unicode-fonts '("Symbols Nerd Font Mono"))
 
 (defun +safe-set-fonts (fontset characters font-name-list &optional frame add)
   (dolist (font (ensure-list font-name-list))

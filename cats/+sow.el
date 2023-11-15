@@ -1,4 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(require 'sow)
-(sow-mode)
+(use-package sow
+  :ensure nil
+  :delight
+  :hook (after-init . sow-mode))

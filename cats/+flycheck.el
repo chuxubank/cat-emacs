@@ -3,7 +3,8 @@
 (use-package flycheck
   :hook (after-init . global-flycheck-mode)
   :custom
-  (flycheck-emacs-lisp-load-path 'inherit))
+  (flycheck-emacs-lisp-load-path 'inherit)
+  (flycheck-mode-line-prefix " "))
 
 (use-package flycheck-pos-tip
   :disabled

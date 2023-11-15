@@ -1,17 +1,14 @@
-(cat! "+default")
-
-;;; package
+(cat! "+utils")
 (cat! "+package")
 (cat! "+benchmark")
-;; (cat! "+straight")
+(cat! "+default")
 
-;;; util
+;;; enhance
 (cat! "+project")
 (cat! "+diredx")
 (cat! "+tramp")
 (cat! "+eudc")
 (cat! "+sow")
-(cat! "+utils")
 
 ;;; ui
 (cat! "+font")

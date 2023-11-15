@@ -14,12 +14,15 @@
 
 (setq custom-safe-themes t)
 
-(setq column-number-indicator-zero-based nil)
-(column-number-mode 1)
-(size-indication-mode 1)
+(use-package simple
+  :ensure nil
+  :delight
+  (visual-line-mode (:eval (if word-wrap " " " 󰖶")))
+  :hook
+  (after-init . column-number-mode)
+  (after-init . size-indication-mode))
 
 (add-hook 'after-init-hook #'global-hl-line-mode)
-(add-hook 'after-init-hook #'global-visual-line-mode)
 
 (setq show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t)
@@ -39,9 +42,13 @@
 ;;; isearch
 (setq isearch-lazy-count t)
 
-;;; ispell
-(add-hook 'text-mode-hook #'flyspell-mode)
-(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+(use-package flyspell
+  :ensure nil
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode)
+  :custom
+  (flyspell-mode-line-string " "))
 
 ;;; select
 (delete-selection-mode 1)
@@ -135,21 +142,19 @@
 ;;; project
 (setq project-list-file (concat cat-cache-dir "projects"))
 
-;;; hideshow
-(dolist (h '(c-mode-hook
-             lisp-mode-hook
-             lisp-interaction-mode-hook
-             emacs-lisp-mode-hook
-             js-mode-hook
-             bibtex-mode-hook))
-  (add-hook h 'hs-minor-mode))
-(defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
-(defun hideshow-folded-overlay-fn (ov)
-  (when (eq 'code (overlay-get ov 'hs))
-    (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
-           (info (format " ... #%d " nlines)))
-      (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
-(setq hs-set-up-overlay 'hideshow-folded-overlay-fn)
+(use-package hideshow
+  :ensure nil
+  :delight (hs-minor-mode " ")
+  :hook (prog-mode . hs-minor-mode)
+  :init
+  (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
+  (defun hideshow-folded-overlay-fn (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+             (info (format " ... #%d " nlines)))
+        (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
+  :custom
+  (hs-set-up-overlay 'hideshow-folded-overlay-fn))
 
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))

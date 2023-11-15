@@ -32,9 +32,9 @@ Intended for `eldoc-documentation-functions' (which see)."
   :custom
   (eldoc-box-lighter nil)
   (eldoc-minor-mode-string
-   '(" Eldoc" (:eval (cond (eldoc-box-hover-at-point-mode "/p")
-                           (eldoc-box-hover-mode "/h")
-                           (t nil))))))
+   '(" " (:eval (cond (eldoc-box-hover-at-point-mode "󰷉")
+                      (eldoc-box-hover-mode "󱔘")
+                      (t "󰧮"))))))
 
 (use-package devdocs
   :defer t

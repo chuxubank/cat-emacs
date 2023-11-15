@@ -14,17 +14,8 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :custom
-  (doom-modeline-minor-modes nil)
+  (doom-modeline-minor-modes t)
   (doom-modeline-enable-word-count t))
-
-(use-package nerd-icons-dired
-  :hook
-  (dired-mode . nerd-icons-dired-mode))
-
-(use-package treemacs-nerd-icons
-  :after treemacs
-  :config
-  (treemacs-load-theme "nerd-icons"))
 
 (defun cat-enable-doom-modeline-minor-modes ()
   (setq-local doom-modeline-minor-modes t))

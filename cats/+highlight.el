@@ -7,6 +7,9 @@
   :custom
   (beacon-lighter nil))
 
+(use-package pulsar
+  :hook (after-init . pulsar-global-mode))
+
 (use-package goggles
   :delight
   :hook ((prog-mode text-mode) . goggles-mode)
@@ -62,14 +65,3 @@
   (org-modern-table nil)
   :config
   (global-org-modern-mode))
-
-(define-minor-mode highlight-mode
-  "Highlight mode."
-  :global t
-  :lighter (" ("
-            (:eval (if beacon-mode "B" ""))
-            (:eval (if goggles-mode "G" ""))
-            (:eval (if pangu-spacing-mode "P" ""))
-            ")"))
-
-(highlight-mode)
