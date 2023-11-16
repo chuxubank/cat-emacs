@@ -17,6 +17,6 @@
   (flymake-gradle-setup))
 
 (use-package flycheck-gradle
-  :after (:all flycheck (:any kotlin-mode java-mode))
+  :after flycheck (:any kotlin-mode java-mode)
   :config
   (flycheck-gradle-setup))
