@@ -16,3 +16,8 @@
   :after flycheck (:any kotlin-mode kotlin-ts-mode)
   :config
   (flycheck-kotlin-setup))
+
+(use-package java-imports
+  :hook ((java-mode kotlin-mode) . java-imports-scan-file)
+  :custom
+  (java-imports-find-block-function 'java-imports-find-place-sorted-block))
