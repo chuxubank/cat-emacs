@@ -81,4 +81,8 @@
         ((org-agenda-overriding-header
           (format "All TODOs [%s]" (org-agenda-count "alltodo"))))))))))
 
-;; (use-package org-edna)
+(use-package org-edna
+  :delight " "
+  :hook (org-mode . org-edna-mode)
+  :custom
+  (org-edna-finder-use-cache t))
