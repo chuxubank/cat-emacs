@@ -4,6 +4,7 @@
   :defer t
   :delight
   (org-indent-mode " 󰉶")
+  (org-cdlatex-mode " ")
   :bind
   (:map org-mode-map
         ("M-n" . org-next-link)
