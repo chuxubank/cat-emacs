@@ -41,9 +41,13 @@
 		                   (:eval (if (eq major-mode 'dired-mode)
 				                      " " ""))))
 		                minor-mode-alist))))
-    (when IS-WINDOWS
-      (setq dired-omit-files
-            (concat dired-omit-files "\\|^ntuser\\(\\.dat\\|\\.ini\\).*"))))
+    (setq dired-omit-files
+          (concat dired-omit-files
+                  (cond
+                   (IS-WINDOWS
+                    "\\|^ntuser\\(\\.dat\\|\\.ini\\).*")
+                   (IS-MAC
+                    "\\|.DS_Store")))))
   :custom
   (dired-x-hands-off-my-keys nil))
 
