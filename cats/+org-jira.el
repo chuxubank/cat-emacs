@@ -4,7 +4,7 @@
   :after org)
 
 (use-package org-jira
-  :commands #'org-jira-id
+  :delight " 󰌃"
   :bind
   (:map org-jira-entry-mode-map
         ("C-c n j" . cat-org-jira-issue-prefix))
