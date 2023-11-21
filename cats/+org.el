@@ -35,6 +35,8 @@
                             ("HOLD" . +org-todo-onhold)
                             ("PROJ" . +org-todo-project)
                             ("KILL" . +org-todo-cancel)))
+  (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
   (org-capture-templates '(("t" "Personal todo" entry
                             (file "inbox.org")
                             "* TODO %?\n%i" :prepend t)
