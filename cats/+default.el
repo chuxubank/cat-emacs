@@ -20,7 +20,12 @@
   (visual-line-mode (:eval (if word-wrap " " " 󰖶")))
   :hook
   (after-init . column-number-mode)
-  (after-init . size-indication-mode))
+  (after-init . size-indication-mode)
+  :custom
+  (tab-width 4)
+  (indent-tabs-mode nil)
+  (tab-always-indent 'complete)
+  (read-extended-command-predicate #'command-completion-default-include-p))
 
 (add-hook 'after-init-hook #'global-hl-line-mode)
 
@@ -158,14 +163,6 @@
 
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))
-
-;;; indent
-(setq-default tab-width 4
-              indent-tabs-mode nil)
-
-;;; completion
-(setq tab-always-indent 'complete
-      read-extended-command-predicate #'command-completion-default-include-p)
 
 ;;; health
 (use-package type-break
