@@ -6,7 +6,7 @@
   :hook (after-init . ns-auto-titlebar-mode))
 
 (use-package osx-location
-  :defer t
+
   :config
   (add-hook 'osx-location-changed-hook
             (lambda ()

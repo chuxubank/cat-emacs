@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package elfeed
-  :defer t
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news "
         elfeed-curl-timeout 10)

@@ -62,6 +62,5 @@
   (fd . fd)
   (ffmpegthumbnailer . ffmpegthumbnailer)
   (mediainfo . mediainfo)
-  :defer t
   :custom
   (dirvish-cache-dir (concat cat-cache-dir "dirvish/")))

@@ -26,10 +26,8 @@
   (winum-auto-setup-mode-line nil))
 
 (use-package ace-window
-  :defer t
   :custom
   (aw-background nil)
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package transpose-frame
-  :defer t)
+(use-package transpose-frame)

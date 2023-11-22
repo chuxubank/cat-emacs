@@ -32,5 +32,4 @@
   (when IS-MAC
     (setq org-dial-program "open tel:")))
 
-(use-package org-cliplink
-  :defer t)
+(use-package org-cliplink)

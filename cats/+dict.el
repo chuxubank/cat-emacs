@@ -1,14 +1,14 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package bing-dict
-  :defer t
+
   :config
   (setq bing-dict-vocabulary-save t
         bing-dict-show-thesaurus 'both
         bing-dict-vocabulary-file (expand-file-name "vocabulary.org" cat-org-directory)))
 
 (use-package anki-vocabulary
-  :defer t
+
   :custom
   (anki-vocabulary-deck-name "Inbox")
   (anki-vocabulary-model-name "AutoCopy")
@@ -17,8 +17,8 @@
                                  ("sentence" . "${sentence_bold:标粗的原文例句}"))))
 
 (use-package osx-dictionary
-  :when IS-MAC
-  :defer t)
+  :when IS-MAC)
+
 
 (defvar-keymap cat-dict-map
   :doc "Keymap for cat dict commands."

@@ -2,7 +2,6 @@
 
 (use-package org-agenda
   :ensure nil
-  :defer t
   :custom
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-deadline-if-done t)
@@ -10,7 +9,6 @@
 
 (use-package calendar
   :ensure nil
-  :defer t
   :custom
   (diary-file (expand-file-name "diary" cat-org-directory)))
 

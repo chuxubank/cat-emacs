@@ -2,7 +2,7 @@
 
 (use-package netease-cloud-music
   :vc (:url "https://github.com/chuxubank/netease-cloud-music.el" :rev :newest)
-  :defer t
+
   :custom
   (netease-cloud-music-cache-directory (concat cat-cache-dir "ncm"))
   :config

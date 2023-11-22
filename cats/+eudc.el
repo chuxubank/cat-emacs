@@ -22,7 +22,6 @@
     (eudc-macos-contacts-set-server "localhost")))
 
 (use-package bbdb
-  :defer t
   :custom
   (bbdb-file (expand-file-name "bbdb" cat-org-directory))
   :config

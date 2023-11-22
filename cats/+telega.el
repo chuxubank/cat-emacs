@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package telega
-  :defer t)
+(use-package telega)
+
 
 (when IS-WSL
   (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))

@@ -7,7 +7,6 @@
   (require 'org-attach))
 
 (use-package org-noter
-  :defer t
   :config
   (setq org-noter--inhibit-location-change-handler t)
 

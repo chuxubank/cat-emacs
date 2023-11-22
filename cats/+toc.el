@@ -1,4 +1,4 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package toc-mode
-  :defer t)
+(use-package toc-mode)
+

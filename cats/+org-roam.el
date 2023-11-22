@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-roam
-  :defer t
   :bind
   (:map org-roam-map
         ("r" . org-roam-buffer-toggle))
@@ -36,7 +35,6 @@
       (error ""))))
 
 (use-package org-roam-ui
-  :defer t
   :delight " 󰴠"
   :custom
   (org-roam-ui-sync-theme t)

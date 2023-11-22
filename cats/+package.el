@@ -45,10 +45,11 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure t
+      use-package-always-defer t)
 
-(use-package system-packages :defer t)
-(use-package delight :defer t)
+(use-package system-packages)
+(use-package delight)
 
 ;; Ref @twlz0ne https://emacs-china.org/t/elpa/18226
 (defun cat-find-fastest-elpa-mirror ()

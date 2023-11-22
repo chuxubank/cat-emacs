@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package mu4e
-  :defer t
+  
   :ensure nil
   :custom
   (mu4e-get-mail-command "mbsync -a")

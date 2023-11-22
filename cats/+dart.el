@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package dart-mode
-  :defer t)
+(use-package dart-mode)
 
-(use-package lsp-dart
-  :defer t)
+(when (package-installed-p 'lsp)
+  (use-package lsp-dart))

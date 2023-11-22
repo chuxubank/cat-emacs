@@ -3,5 +3,5 @@
 (use-package python
   :ensure-system-package
   (black . black)
-  (pylsp . "pip install python-lsp-server")
-  :defer t)
+  (pylsp . "pip install python-lsp-server"))
+

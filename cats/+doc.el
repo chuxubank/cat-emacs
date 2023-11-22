@@ -37,6 +37,5 @@ Intended for `eldoc-documentation-functions' (which see)."
                       (t "󰧮"))))))
 
 (use-package devdocs
-  :defer t
   :custom
   (devdocs-data-dir (concat cat-etc-dir "devdocs")))

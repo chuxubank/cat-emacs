@@ -4,8 +4,6 @@
   :ensure-system-package
   (cmake . cmake)
   (cmake-format . "pip install cmake-format")
-  (cmake-language-server . "pip install cmake-language-server")
-  :defer t)
+  (cmake-language-server . "pip install cmake-language-server"))
 
-(use-package cmake-font-lock
-  :defer t)
+(use-package cmake-font-lock)

@@ -75,7 +75,6 @@
   (setq citar-notes-source 'orb-citar-source))
 
 (use-package citar
-  :defer t
   :custom
   (citar-bibliography cat-default-bibliography-files))
 

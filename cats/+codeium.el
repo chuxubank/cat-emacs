@@ -2,7 +2,6 @@
 
 (use-package codeium
   :vc (:url "https://github.com/Exafunction/codeium.el" :rev :newest)
-  :defer t
   :init
   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
   :custom

@@ -10,8 +10,7 @@
     (after-init . global-tree-sitter-mode)
     (tree-sitter-after-on . tree-sitter-hl-mode))
 
-  (use-package tree-sitter-langs
-    :defer t)
+  (use-package tree-sitter-langs)
 
   (use-package ts-fold
     :vc (:url "https://github.com/emacs-tree-sitter/ts-fold" :rev :newest)

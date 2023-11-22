@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package pass
-  :defer t
   :custom
   (password-store-password-length 16)
   (epg-pinentry-mode 'loopback))

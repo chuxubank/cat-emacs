@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package powershell
-  :defer t)
+(use-package powershell)
 
 (use-package ob-powershell
   :after org)

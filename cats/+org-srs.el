@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-drill
-  :defer t
   :custom
   (org-drill-scope 'directory)
   (org-drill-spaced-repetition-algorithm 'simple8)

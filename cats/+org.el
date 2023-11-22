@@ -2,7 +2,6 @@
 
 (use-package org
   :ensure nil
-  :defer t
   :delight
   (org-cdlatex-mode " ")
   :custom
@@ -18,6 +17,7 @@
   (org-export-backends '(ascii beamer html icalendar latex md odt))
   (org-image-actual-width 500)
   (org-display-remote-inline-images 'cache)
+  (org-insert-heading-respect-content t)
   (org-todo-keywords '((sequence
                         "TODO(t)"  ; A task that needs doing & is ready to do
                         "PROJ(p)"  ; A project, which usually contains other tasks
@@ -83,13 +83,11 @@
 
 (use-package org-goto
   :ensure nil
-  :defer t
   :custom
   (org-goto-auto-isearch nil))
 
 (use-package org-refile
   :ensure nil
-  :defer t
   :custom
   (org-outline-path-complete-in-steps nil)
   (org-refile-use-outline-path 'file)
@@ -98,7 +96,6 @@
 
 (use-package org-list
   :ensure nil
-  :defer t
   :custom
   (org-list-allow-alphabetical t)
   (org-list-demote-modify-bullet '(("+" . "-")
@@ -108,24 +105,20 @@
 
 (use-package org-id
   :ensure nil
-  :defer t
   :custom
   (org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)))
 
 (use-package org-indent
   :ensure nil
-  :defer t
   :delight  " 󰉶")
 
 (use-package org-keys
   :ensure nil
-  :defer t
   :custom
   (org-return-follows-link t))
 
 (use-package org-clock
   :ensure nil
-  :defer t
   :custom
   (org-clock-persist 'history)
   (org-clock-persist-file (expand-file-name "org-clock-save.el" cat-etc-dir))
@@ -133,13 +126,11 @@
 
 (use-package org-timer
   :ensure nil
-  :defer t
   :custom
   (org-timer-display 'frame-title))
 
 (use-package ol
   :ensure nil
-  :defer t
   :bind
   (:map org-mode-map
         ("M-n" . org-next-link)
@@ -156,7 +147,6 @@
 
 (use-package ob-core
   :ensure nil
-  :defer t
   :init
   (defun +org-redisplay-inline-images-in-babel-result-h ()
     (unless (or
@@ -174,7 +164,6 @@
 
 (use-package ob-lob
   :ensure nil
-  :defer t
   :config
   (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
 

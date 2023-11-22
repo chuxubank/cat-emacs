@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package wanderlust
-  :defer t
   :config
   (when EMACS28+
     (setq elmo-passwd-storage-type 'auth-source))
