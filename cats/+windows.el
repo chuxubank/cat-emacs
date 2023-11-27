@@ -4,6 +4,7 @@
   :hook (after-init . winner-mode))
 
 (use-package windmove
+  :hook (after-init . windmove-mode)
   :custom
   (windmove-wrap-around t)
   :config
