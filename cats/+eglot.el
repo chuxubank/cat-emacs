@@ -15,6 +15,4 @@
   (eglot-connect-timeout (* 30 60)))
 
 (use-package flycheck-eglot
-  :after flycheck eglot
-  :config
-  (global-flycheck-eglot-mode 1))
+  :hook (flycheck-mode . global-flycheck-eglot-mode))

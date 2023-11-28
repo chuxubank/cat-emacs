@@ -21,6 +21,7 @@
   (citar-run-default-action (ensure-list citekey)))
 
 (use-package org-roam-bibtex
+  :demand t
   :after org-roam
   :delight " 󱉟"
   :custom
@@ -56,6 +57,7 @@
 
 (use-package citar-org-roam
   :delight
+  :demand t
   :after citar org-roam-bibtex
   :custom
   (citar-org-roam-capture-template-key "rn")
@@ -80,6 +82,7 @@
 
 (use-package citar-embark
   :delight
+  :demand t
   :after citar embark
   :config
   (citar-embark-mode))

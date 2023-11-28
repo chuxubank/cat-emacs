@@ -8,14 +8,17 @@
   (treemacs-is-never-other-window t))
 
 (use-package treemacs-magit
+  :demand t
   :after treemacs magit)
 
 (use-package treemacs-tab-bar
+  :demand t
   :after treemacs
   :config
   (treemacs-set-scope-type 'Tabs))
 
 (use-package treemacs-nerd-icons
+  :demand t
   :after treemacs
   :config
   (treemacs-load-theme "nerd-icons"))

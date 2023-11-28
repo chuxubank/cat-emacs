@@ -8,10 +8,8 @@
 
 (use-package flycheck-pos-tip
   :disabled
-  :after flycheck
   :hook (flycheck-mode . flycheck-pos-tip-mode))
 
 (use-package flycheck-posframe
   :disabled
-  :after flycheck
   :hook (flycheck-mode . flycheck-posframe-mode))

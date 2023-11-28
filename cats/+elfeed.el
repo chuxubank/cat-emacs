@@ -45,12 +45,14 @@
     (delete-directory elfeed-db-directory t)))
 
 (use-package elfeed-org
+  :demand t
   :after elfeed
   :config
   (setq rmh-elfeed-org-files (list (expand-file-name "elfeed.org" org-directory)))
   (elfeed-org))
 
 (use-package elfeed-protocol
+  :demand t
   :after elfeed-org
   :config
   (elfeed-protocol-enable))

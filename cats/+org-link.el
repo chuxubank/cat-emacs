@@ -2,6 +2,7 @@
 
 (use-package org-yt
   :vc (:url "https://github.com/TobiasZawada/org-yt" :rev :newest)
+  :demand t
   :after org)
 
 (defun +org-inline-image-data-fn (_protocol link _description)
@@ -27,6 +28,7 @@
 
 (use-package org-dial
   :vc (:url "https://github.com/mistrey/org-dial" :rev :newest)
+  :demand t
   :after org
   :config
   (when IS-MAC

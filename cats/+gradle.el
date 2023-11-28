@@ -4,11 +4,7 @@
   :mode "\\.gradle\\'")
 
 (use-package flymake-gradle
-  :after flymake
-  :config
-  (flymake-gradle-setup))
+  :hook (flymake-mode . flymake-gradle-setup))
 
 (use-package flycheck-gradle
-  :after flycheck (:any kotlin-mode java-mode)
-  :config
-  (flycheck-gradle-setup))
+  :hook (flycheck-mode . flycheck-gradle-setup))

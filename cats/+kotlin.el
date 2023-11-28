@@ -11,9 +11,7 @@
     (add-to-list 'eglot-server-programs '(kotlin-ts-mode "kotlin-language-server"))))
 
 (use-package flycheck-kotlin
-  :after flycheck (:any kotlin-mode kotlin-ts-mode)
-  :config
-  (flycheck-kotlin-setup))
+  :hook (flycheck-mode . flycheck-kotlin-setup))
 
 (use-package java-imports
   :hook ((java-mode kotlin-mode) . java-imports-scan-file)

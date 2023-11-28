@@ -14,6 +14,7 @@
 
 (use-package org-agenda-count
   :vc (:url "https://github.com/sid-kurias/org-agenda-count" :rev :newest)
+  :demand t
   :after org
   :custom
   (org-agenda-custom-commands

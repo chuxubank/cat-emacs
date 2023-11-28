@@ -41,6 +41,7 @@
       url)))
 
 (use-package flycheck-plantuml
+  :demand t
   :after flycheck plantuml-mode
   :config
   (flycheck-define-checker plantuml

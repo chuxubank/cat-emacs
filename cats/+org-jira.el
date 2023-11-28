@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package ox-jira
+  :demand t
   :after org)
 
 (use-package org-jira

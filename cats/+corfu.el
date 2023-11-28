@@ -46,6 +46,7 @@
   )
 
 (use-package nerd-icons-corfu
+  :demand t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))

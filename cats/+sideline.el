@@ -12,6 +12,7 @@
   (add-to-list 'sideline-backends-right #'sideline-flycheck))
 
 (use-package sideline-flymake
+  :demand t
   :after flymake
   :config
   (add-to-list 'sideline-backends-right #'sideline-flymake))
