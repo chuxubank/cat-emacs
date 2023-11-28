@@ -167,9 +167,14 @@
   :config
   (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
 
-(defun +org-buffers-refresh ()
-  "Save and revert all org buffers without confirm."
-  (interactive)
-  (org-save-all-org-buffers)
-  (+no-confirm #'org-revert-all-org-buffers)
-  (org-element-update-syntax))
+(use-package org-modern
+  :hook
+  (org-mode . org-modern-mode)
+  ;; (org-agenda-finalize . org-modern-agenda)
+  :custom
+  (org-modern-table nil)
+  (org-modern-hide-stars nil))
+
+(use-package org-modern-indent
+  :vc (:url "https://github.com/jdtsmith/org-modern-indent" :rev :newest)
+  :hook (org-mode . org-modern-indent-mode))

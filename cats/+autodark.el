@@ -46,3 +46,10 @@
 
 (when IS-MACPLUS
   (add-hook 'ns-system-appearance-change-functions #'cat-load-theme))
+
+(defun +org-buffers-refresh ()
+  "Save and revert all org buffers without confirm."
+  (interactive)
+  (org-save-all-org-buffers)
+  (+no-confirm #'org-revert-all-org-buffers)
+  (org-element-update-syntax))

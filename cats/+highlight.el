@@ -57,11 +57,3 @@
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-
-(use-package org-modern
-  :disabled
-  :after org
-  :custom
-  (org-modern-table nil)
-  :config
-  (global-org-modern-mode))
