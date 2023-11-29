@@ -8,4 +8,7 @@
 (when (package-installed-p 'meow)
   (use-package meow-vterm
     :vc (:url "https://github.com/accelbread/meow-vterm" :rev :newest)
-    :hook (vterm-mode . meow-vterm-enable)))
+    :demand t
+    :after vterm meow
+    :config
+    (meow-vterm-enable)))
