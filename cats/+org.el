@@ -172,10 +172,15 @@
 (use-package org-modern
   :hook
   (org-mode . org-modern-mode)
-  ;; (org-agenda-finalize . org-modern-agenda)
+  (org-agenda-finalize . org-modern-agenda)
   :custom
   (org-modern-table nil)
-  (org-modern-hide-stars nil))
+  (org-modern-hide-stars nil)
+  (org-modern-todo-faces '(("STRT" :inverse-video t :inherit +org-todo-active)
+                           ("WAIT" :inverse-video t :inherit +org-todo-onhold)
+                           ("HOLD" :inverse-video t :inherit +org-todo-onhold)
+                           ("PROJ" :inverse-video t :inherit +org-todo-project)
+                           ("KILL" :inverse-video t :inherit +org-todo-cancel))))
 
 (use-package org-modern-indent
   :vc (:url "https://github.com/jdtsmith/org-modern-indent" :rev :newest)
