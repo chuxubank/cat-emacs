@@ -130,6 +130,8 @@
   (org-timer-display 'frame-title))
 
 (use-package ol
+  :demand t
+  :after org
   :ensure nil
   :bind
   (:map org-mode-map
