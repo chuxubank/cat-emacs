@@ -10,6 +10,9 @@
 (use-package pulsar
   :hook (after-init . pulsar-global-mode))
 
+(use-package hl-line
+  :hook ((prog-mode text-mode) . hl-line-mode))
+
 (use-package goggles
   :delight
   :hook ((prog-mode text-mode) . goggles-mode)
@@ -52,7 +55,7 @@
 
 (use-package diff-hl
   :hook (after-init . global-diff-hl-mode)
-  :hook ((text-mode prog-mode) . diff-hl-flydiff-mode)
+  :hook ((prog-mode text-mode) . diff-hl-flydiff-mode)
   :hook (dired-mode . diff-hl-dired-mode)
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)

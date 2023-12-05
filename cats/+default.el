@@ -27,8 +27,6 @@
   (tab-always-indent 'complete)
   (read-extended-command-predicate #'command-completion-default-include-p))
 
-(add-hook 'after-init-hook #'global-hl-line-mode)
-
 (setq show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t)
 (show-paren-mode 1)
