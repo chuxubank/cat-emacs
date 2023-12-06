@@ -1,0 +1,34 @@
+# local
+.local
+
+# emacs
+auto-save-list
+tramp
+eln-cache/
+
+# backup
+*.*~
+
+# package
+elpa
+
+# straight
+straight/repos
+straight/build
+straight/build-cache.el
+straight/modified
+
+# org-drill
+persist
+
+# curl
+request
+
+# custom
+custom.el
+
+# gnus
+network-security.data
+
+# treesit
+tree-sitter/

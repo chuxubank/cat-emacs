@@ -99,6 +99,7 @@
 (cat! "+mermaid")
 (cat! "+json")
 (cat! "+caddy")
+(cat! "+docker")
 
 ;;; plugins
 (cat! "+term")
