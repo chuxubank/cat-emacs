@@ -28,6 +28,8 @@ Intended for `eldoc-documentation-functions' (which see)."
   (advice-add 'elisp-eldoc-var-docstring :override #'elisp-eldoc-var-docstring-with-value))
 
 (use-package eldoc-box
+  :when (or (daemonp)
+            (display-graphic-p))
   :hook (eldoc-mode . eldoc-box-hover-at-point-mode)
   :custom
   (eldoc-box-lighter nil)

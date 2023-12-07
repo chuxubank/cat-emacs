@@ -4,11 +4,21 @@
   "Whether cat font has been loaded.")
 
 (defun cat-client-frame-config ()
-  (when (display-graphic-p)
-    (select-frame-set-input-focus (selected-frame))
-    (when (not cat-font-load)
-      (cat! "+font")
-      (setq cat-font-load t))))
+  (message "Start config new frame.")
+  (if (display-graphic-p)
+      (progn
+        (message "In GUI.")
+        (select-frame-set-input-focus (selected-frame))
+        (add-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
+        (unless eldoc-box-hover-at-point-mode
+          (eldoc-box-hover-at-point-mode 1))
+        (unless cat-font-load
+          (cat! "+font")
+          (setq cat-font-load t)))
+    (message "In TUI.")
+    (remove-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
+    (when eldoc-box-hover-at-point-mode
+      (eldoc-box-hover-at-point-mode 0))))
 
 (add-hook 'server-after-make-frame-hook #'cat-client-frame-config)
 
