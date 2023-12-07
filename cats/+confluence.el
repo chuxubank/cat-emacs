@@ -9,7 +9,6 @@
   :disabled
   :vc (:url "https://github.com/jahlborn/confluence-el" :rev :newest))
 
-
 (use-package tributary
   :vc (:url "https://github.com/mrkrd/tributary" :rev :newest)
   :commands #'tributary-pull-id)
