@@ -22,9 +22,11 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     ripgrep \
     emacs-native-comp-pgtk-git
 
+RUN emacs --version
+
 ADD . /root/.emacs.d
 
-RUN echo "(custom-set-variables '(use-short-answers t) '(package-vc-register-as-project nil))" > /root/.emacs.d/custom.el
+RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom.el
 
 RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
     yes | emacs --fg-daemon --debug-init
