@@ -56,11 +56,12 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
-(use-package dirvish
-  :ensure-system-package
-  (gls . coreutils)
-  (fd . fd)
-  (ffmpegthumbnailer . ffmpegthumbnailer)
-  (mediainfo . mediainfo)
-  :custom
-  (dirvish-cache-dir (concat cat-cache-dir "dirvish/")))
+(when IS-MAC
+  (use-package dirvish
+    :ensure-system-package
+    (gls . coreutils)
+    (fd . fd)
+    (ffmpegthumbnailer . ffmpegthumbnailer)
+    (mediainfo . mediainfo)
+    :custom
+    (dirvish-cache-dir (concat cat-cache-dir "dirvish/"))))
