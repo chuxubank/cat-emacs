@@ -9,12 +9,12 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     rm -rf /etc/pacman.d/gnupg && \
     pacman-key --init && \
     pacman-key --populate && \
-    pacman -Syu --noconfirm --needed \
+    pacman -Syyu --noconfirm --needed \
     archlinux-keyring \
     archlinuxcn-keyring
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
-    pacman -Syu --noconfirm --needed \
+    pacman -Syyu --noconfirm --needed \
     aspell-en \
     git \
     github-cli \
@@ -26,7 +26,7 @@ RUN emacs --version
 
 ADD . /root/.emacs.d
 
-RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom.el
+RUN echo "(custom-set-variables '(use-short-answers t) '(package-vc-register-as-project nil))" > /root/.emacs.d/custom.el
 
 RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
     yes | emacs --fg-daemon --debug-init
