@@ -1,6 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
-(autoload #'project--find-in-directory "project")
+(use-package project
+  :commands #'project--find-in-directory
+  :custom
+  (project-list-file (concat cat-cache-dir "projects")))
 
 (defun +project-find-file-in-dir (dir)
   (let* ((pr (or (project--find-in-directory dir)

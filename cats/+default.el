@@ -142,9 +142,6 @@
 (global-auto-revert-mode 1)
 (setq revert-buffer-quick-short-answers t)
 
-;;; project
-(setq project-list-file (concat cat-cache-dir "projects"))
-
 (use-package hideshow
   :ensure nil
   :delight (hs-minor-mode " ")

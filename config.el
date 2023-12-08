@@ -1,10 +1,10 @@
+(cat! "+project")
 (cat! "+package")
 (cat! "+utils")
 (cat! "+benchmark")
 (cat! "+default")
 
 ;;; enhance
-(cat! "+project")
 (cat! "+diredx")
 (cat! "+tramp")
 (cat! "+eudc")
