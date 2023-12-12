@@ -174,3 +174,9 @@
 
 ;;; time
 (setq timeclock-file (concat cat-etc-dir "timelog"))
+
+;;; gpg
+(use-package epg-config
+  :ensure nil
+  :custom
+  (epg-pinentry-mode 'loopback))
