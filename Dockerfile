@@ -1,17 +1,13 @@
 # syntax = docker/dockerfile:1.2
 FROM archlinux
 
-RUN echo -e "[archlinuxcn]\nServer = https://mirrors.cernet.edu.cn/archlinuxcn/\$arch" >> /etc/pacman.conf
-RUN echo "Server = https://mirrors.cernet.edu.cn/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-
 RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     gpgconf --kill gpg-agent && \
     rm -rf /etc/pacman.d/gnupg && \
     pacman-key --init && \
     pacman-key --populate && \
     pacman -Syyu --noconfirm --needed \
-    archlinux-keyring \
-    archlinuxcn-keyring
+    archlinux-keyring
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     pacman -Syyu --noconfirm --needed \
