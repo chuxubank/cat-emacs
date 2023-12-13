@@ -45,11 +45,22 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure t
-      use-package-always-defer t)
+
+(custom-set-variables
+ '(use-package-always-ensure t)
+ '(use-package-always-defer t))
 
 (use-package system-packages)
 (use-package delight)
+
+(use-package project
+  :ensure nil
+  :commands #'project--find-in-directory
+  :custom
+  (project-list-file (concat cat-cache-dir "projects")))
+
+(unless (or EMACS30+ (package-installed-p 'vc-use-package))
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
 
 ;; Ref @twlz0ne https://emacs-china.org/t/elpa/18226
 (defun cat-find-fastest-elpa-mirror ()
