@@ -1,7 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-media-note
-  :vc (:url "https://github.com/yuchen-lea/org-media-note" :rev :newest)
+  :vc (org-media-note
+       :url "https://github.com/yuchen-lea/org-media-note"
+       :rev :newest)
   :hook (org-mode . org-media-note-mode)
   :config
   (require 'org-attach))

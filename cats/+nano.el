@@ -2,7 +2,9 @@
 
 (use-package nano
   :disabled
-  :vc (:url "https://github.com/rougier/nano-emacs" :rev :newest))
+  :vc (nano
+       :url "https://github.com/rougier/nano-emacs"
+       :rev :newest))
 
 (use-package nano-theme
   :config
@@ -40,6 +42,8 @@
 
 (use-package nano-minibuffer
   :disabled
-  :vc (:url "https://github.com/rougier/nano-minibuffer" :rev :newest)
+  :vc (nano-minibuffer
+       :url "https://github.com/rougier/nano-minibuffer"
+       :rev :newest)
   :config
   (nano-minibuffer-mode))

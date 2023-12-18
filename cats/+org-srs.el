@@ -9,7 +9,9 @@
 
 (use-package org-fc
   :disabled
-  :vc (:url "https://github.com/l3kn/org-fc" :rev :newest)
+  :vc (org-fc
+       :url "https://github.com/l3kn/org-fc"
+       :rev :newest)
   :after org
   :custom
   (org-fc-directories (list

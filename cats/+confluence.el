@@ -7,9 +7,13 @@
 
 (use-package confluence
   :disabled
-  :vc (:url "https://github.com/jahlborn/confluence-el" :rev :newest))
+  :vc (confluence
+       :url "https://github.com/jahlborn/confluence-el"
+       :rev :newest))
 
 (use-package tributary
-  :vc (:url "https://github.com/mrkrd/tributary" :rev :newest)
+  :vc (tributary
+       :url "https://github.com/mrkrd/tributary"
+       :rev :newest)
   :commands #'tributary-pull-id)
 

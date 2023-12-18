@@ -13,7 +13,9 @@
   (use-package tree-sitter-langs)
 
   (use-package ts-fold
-    :vc (:url "https://github.com/emacs-tree-sitter/ts-fold" :rev :newest)
+    :vc (ts-fold
+         :url "https://github.com/emacs-tree-sitter/ts-fold"
+         :rev :newest)
     :hook
     (after-init . global-ts-fold-indicators-mode)))
 

@@ -183,5 +183,7 @@
                            ("KILL" :inverse-video t :inherit +org-todo-cancel))))
 
 (use-package org-modern-indent
-  :vc (:url "https://github.com/jdtsmith/org-modern-indent" :rev :newest)
+  :vc (org-modern-indent
+       :url "https://github.com/jdtsmith/org-modern-indent"
+       :rev :newest)
   :hook (org-mode . org-modern-indent-mode))

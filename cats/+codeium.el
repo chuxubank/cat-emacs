@@ -1,7 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package codeium
-  :vc (:url "https://github.com/Exafunction/codeium.el" :rev :newest)
+  :vc (codeium
+       :url "https://github.com/Exafunction/codeium.el"
+       :rev :newest)
   :init
   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
   :custom

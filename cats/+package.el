@@ -47,6 +47,7 @@
 (require 'use-package)
 
 (custom-set-variables
+ '(package-install-upgrade-built-in t)
  '(use-package-always-ensure t)
  '(use-package-always-defer t))
 

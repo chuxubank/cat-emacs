@@ -13,7 +13,9 @@
   (diary-file (expand-file-name "diary" cat-org-directory)))
 
 (use-package org-agenda-count
-  :vc (:url "https://github.com/sid-kurias/org-agenda-count" :rev :newest)
+  :vc (org-agenda-count
+       :url "https://github.com/sid-kurias/org-agenda-count"
+       :rev :newest)
   :demand t
   :after org
   :custom

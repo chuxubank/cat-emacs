@@ -1,7 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package copilot
-  :vc (:url "https://github.com/zerolfx/copilot.el" :rev :newest)
+  :vc (copilot
+       :url "https://github.com/zerolfx/copilot.el"
+       :rev :newest)
   :hook (prog-mode . copilot-mode)
   :bind
   (:map copilot-completion-map

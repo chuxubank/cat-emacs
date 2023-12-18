@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package transient
-
   :custom
   (transient-levels-file (concat cat-etc-dir "transient/levels"))
   (transient-values-file (concat cat-etc-dir "transient/values"))
