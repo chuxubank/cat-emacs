@@ -22,9 +22,9 @@
 ;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
 (use-package mac-pseudo-daemon
   :disabled
-  :when IS-MACPORT
-  :config
-  (mac-pseudo-daemon-mode))
+  :when (and IS-MACPORT
+             (not (daemonp)))
+  :hook (after-init . mac-pseudo-daemon-mode))
 
 (when IS-MACPORT
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
