@@ -16,7 +16,9 @@
 (when IS-WINDOWS
   (setq cat-default-font "RobotoMono NF 14"))
 
-(set-face-attribute 'default nil :font cat-default-font :weight 'light)
+(if IS-MACPORT
+    (set-face-attribute 'default nil :font cat-default-font)
+  (set-face-attribute 'default nil :font cat-default-font :weight 'light))
 (set-face-attribute 'variable-pitch nil :font cat-alt-code-font)
 
 ;; ←─
