@@ -139,12 +139,20 @@
 (setq image-use-external-converter t)
 
 ;;; revert
-(global-auto-revert-mode 1)
-(setq revert-buffer-quick-short-answers t)
+(use-package autorevert
+  :ensure nil
+  :hook (after-init . global-auto-revert-mode)
+  :custom
+  (auto-revert-mode-text " 󰁪"))
+
+(use-package files
+  :ensure nil
+  :custom
+  (revert-buffer-quick-short-answers t))
 
 (use-package hideshow
   :ensure nil
-  :delight (hs-minor-mode " ")
+  :delight (hs-minor-mode " 󰡍")
   :hook (prog-mode . hs-minor-mode)
   :init
   (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
