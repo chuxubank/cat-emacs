@@ -16,6 +16,7 @@
           (cat! "+font")
           (setq cat-font-load t)))
     (message "In TUI.")
+    (cat-load-theme)
     (remove-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
     (when eldoc-box-hover-at-point-mode
       (eldoc-box-hover-at-point-mode 0))))
