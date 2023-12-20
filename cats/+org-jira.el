@@ -19,12 +19,12 @@
    '(("In Progress" . "STRT")
      ("Code Review" . "WAIT")
      ("QA Ready" . "LOOP")))
-  (org-jira-default-jql "assignee = currentUser() AND resolution = Unresolved AND statusCategory in (2, 4) order by updated DESC")
+  (org-jira-default-jql "assignee = currentUser() AND statusCategory in (2, 4) order by updated DESC")
   (org-jira-custom-jqls
-   '((:jql "assignee in (EMPTY) AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY created DESC"
+   '((:jql "assignee = EMPTY AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY updated DESC"
            :limit 10
            :filename "bug-backlog")
-     (:jql "assignee = currentUser() AND Sprint in openSprints() AND resolution = Unresolved order by created DESC"
+     (:jql "assignee = currentUser() AND statusCategory in (2, 4) AND Sprint in openSprints() ORDER BY priority DESC, updated DESC"
            :limit 50
            :filename "cur-sprint")))
   (org-jira-progress-issue-flow
@@ -39,15 +39,27 @@
   (interactive)
   (kill-new (concat (replace-regexp-in-string "/*$" "" jiralib-url) "/browse/" (org-jira-id))))
 
+(defun cat-generate-branch-name (input-string)
+  (replace-regexp-in-string "[^A-Za-z]+" "-" input-string))
+
 (defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
-  (if (string= action-id (car (rassoc "Start Dev Work" (cdr (assoc "Open" jiralib-available-actions-cache)))))
-      (let ((root (magit-read-repository)))
-        (magit-status root)
-        (magit-fetch-refspec "origin" "develop:develop" nil)
-        (magit-branch-create
-         (read-string "Branch name: "
-                      (concat issue-key "-" (downcase (nth 4 (org-heading-components)))))
-         "develop"))))
+  (let* ((open-next (cdr (assoc "Open" jiralib-available-actions-cache)))
+         (start-action '("Start Dev Work" "Work Started"))
+         (start-action-id (mapcar (lambda (pair)
+                                    (when (member (cdr pair) start-action)
+                                      (car pair)))
+                                  open-next))
+         (org-heading (nth 4 (org-heading-components))))
+    (if (member action-id start-action-id)
+        (let ((root (magit-read-repository)))
+          (magit-status root)
+          (if (string= "develop" (magit-get-current-branch))
+              (magit-pull-branch "develop" nil)
+            (magit-fetch-refspec "origin" "develop:develop" nil))
+          (magit-branch-and-checkout
+           (read-string "Branch name: "
+                        (concat issue-key (downcase (cat-generate-branch-name org-heading))))
+           "develop")))))
 (advice-add 'jiralib-progress-workflow-action :after #'cat-org-jira-start-dev-work)
 
 (defvar-keymap org-jira-global-map

@@ -7,6 +7,7 @@
   (transient-history-file (concat cat-etc-dir "transient/history")))
 
 (use-package magit
+  :commands #'magit-read-repository
   :custom
   (magit-blame-mode-lighter " ")
   (magit-repository-directories '(("~/Developer/" . 5)))
