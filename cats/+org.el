@@ -172,7 +172,6 @@
 (use-package org-modern
   :hook
   (org-mode . org-modern-mode)
-  (org-agenda-finalize . org-modern-agenda)
   :custom
   (org-modern-table nil)
   (org-modern-hide-stars nil)
