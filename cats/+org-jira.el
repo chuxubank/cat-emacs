@@ -19,12 +19,12 @@
    '(("In Progress" . "STRT")
      ("Code Review" . "WAIT")
      ("QA Ready" . "LOOP")))
-  (org-jira-default-jql "assignee = currentUser() AND statusCategory in (2, 4) order by updated DESC")
+  (org-jira-default-jql "project != RNA AND assignee = currentUser() AND statusCategory in ('To Do', 'In Progress') order by updated DESC")
   (org-jira-custom-jqls
-   '((:jql "assignee = EMPTY AND project = Android AND issuetype = Bug AND status = Open AND fixVersion in unreleasedVersions() AND Scrubbed = Scrubbed ORDER BY updated DESC"
+   '((:jql "project != RNA AND assignee in (currentUser()) AND statusCategory = 'To Do' AND (Sprint is EMPTY OR Sprint not in openSprints()) ORDER BY priority DESC, updated DESC"
            :limit 10
-           :filename "bug-backlog")
-     (:jql "assignee = currentUser() AND statusCategory in (2, 4) AND Sprint in openSprints() ORDER BY priority DESC, updated DESC"
+           :filename "todo")
+     (:jql "assignee = currentUser() AND statusCategory in ('To Do', 'In Progress') AND Sprint in openSprints() ORDER BY priority DESC, updated DESC"
            :limit 50
            :filename "cur-sprint")))
   (org-jira-progress-issue-flow
