@@ -2,6 +2,8 @@
 
 (use-package dired
   :ensure nil
+  :ensure-system-package
+  (7z . p7zip)
   :bind
   (:map ctl-x-map
         ("C-j" . dired-jump))
@@ -13,8 +15,8 @@
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-guess-shell-alist-user
    '(("\\.zip\\'"
-      (concat "7z x" " -o" (file-name-sans-extension file))
-      (concat "7z x" " -o" (file-name-sans-extension file) " -p"))))
+      (concat "7z x -o\\*")
+      (concat "7z x -o\\* -p"))))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
