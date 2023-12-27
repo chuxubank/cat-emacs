@@ -171,7 +171,7 @@
 
 (use-package org-modern
   :hook
-  (org-mode . org-modern-mode)
+  (org-mode . global-org-modern-mode)
   :custom
   (org-modern-table nil)
   (org-modern-hide-stars nil)
