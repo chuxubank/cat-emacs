@@ -28,7 +28,8 @@
 
 (when IS-MACPORT
   ;; See Info node `(emacs) Mac Fullscreen' for more information.
-  (setq mac-system-move-file-to-trash-use-finder t)
+  (when (display-graphic-p)
+    (setq mac-system-move-file-to-trash-use-finder t))
   (menu-bar-mode 1))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)

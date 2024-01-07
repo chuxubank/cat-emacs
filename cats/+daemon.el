@@ -14,12 +14,16 @@
           (eldoc-box-hover-at-point-mode 1))
         (unless cat-font-load
           (cat! "+font")
-          (setq cat-font-load t)))
+          (setq cat-font-load t))
+        (when IS-MACPORT
+          (setq mac-system-move-file-to-trash-use-finder t)))
     (message "In TUI.")
     (cat-load-theme)
     (remove-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
     (when eldoc-box-hover-at-point-mode
-      (eldoc-box-hover-at-point-mode 0))))
+      (eldoc-box-hover-at-point-mode 0))
+    (when IS-MACPORT
+      (setq mac-system-move-file-to-trash-use-finder nil))))
 
 (add-hook 'server-after-make-frame-hook #'cat-client-frame-config)
 
