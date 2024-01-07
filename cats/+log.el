@@ -2,6 +2,7 @@
 
 (use-package logview
   :mode ("\\<log\\>.*\\.\\(txt\\|gz\\)" . logview-mode)
+  :hook (logview-mode . hl-line-mode)
   :custom
   (datetime-timezone 'Asia/Shanghai)
   (logview-cache-filename (concat cat-cache-dir "logview-cache.extmap"))
