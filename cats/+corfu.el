@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package corfu
-  :pin gnu
   :hook (after-init . global-corfu-mode)
   :custom
   (corfu-cycle t)
