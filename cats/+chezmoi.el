@@ -1,7 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi
-  :commands (chezmoi-find chezmoi-dired-add-marked-files)
+  :commands (chezmoi-dired-add-marked-files
+             chezmoi-diff
+             chezmoi-ediff
+             chezmoi-find
+             chezmoi-sync-files)
   :mode ("\\dot_\\'" . chezmoi-mode))
 
 (when (package-installed-p 'company)
@@ -26,6 +30,9 @@
   :after chezmoi)
 
 (use-package chezmoi-ediff
+  :init
+  (setq age-default-identity nil
+        age-default-recipient nil)
   :vc (chezmoi-ediff
        :url "https://github.com/tuh8888/chezmoi.el"
        :lisp-dir "extensions/")
@@ -62,4 +69,5 @@
   "g" #'chezmoi-magit-status
   "o" #'chezmoi-open-other
   "s" #'chezmoi-write
+  "S" #'chezmoi-sync-files
   "t" #'chezmoi-template-buffer-display)
