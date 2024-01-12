@@ -15,6 +15,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     git \
     github-cli \
     gnupg \
+    p7zip \
     ripgrep \
     emacs-wayland
 
