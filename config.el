@@ -100,6 +100,7 @@
 (cat! "+json")
 (cat! "+caddy")
 (cat! "+docker")
+(cat! "+vb")
 
 ;;; plugins
 (cat! "+term")
