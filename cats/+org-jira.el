@@ -36,8 +36,33 @@
   (add-to-list 'org-agenda-files (expand-file-name "cur-sprint.org" org-jira-working-dir)))
 
 (defun +org-jira-copy-current-issue-url ()
+  "Copy current jira issue url."
   (interactive)
   (kill-new (concat (replace-regexp-in-string "/*$" "" jiralib-url) "/browse/" (org-jira-id))))
+
+(defun +org-jira-delete-custom-jql-files ()
+  "Delete cached custom jql files."
+  (interactive)
+  (dolist (jql org-jira-custom-jqls)
+    (let ((filename (cl-getf jql :filename)))
+      (when filename
+        (delete-file (expand-file-name (concat filename ".org") org-jira-working-dir))))))
+
+(defun +org-jira-save-jql-files ()
+  "Save cached jql files."
+  (interactive)
+  (save-some-buffers t (lambda ()
+                         (and (derived-mode-p 'org-mode)
+                              (string-prefix-p
+                               (expand-file-name org-jira-working-dir)
+                               (file-name-directory (buffer-file-name)))))))
+
+(defun +org-jira-get-issues-from-custom-jql ()
+  "Custom `org-jira-get-issues-from-custom-jql'."
+  (interactive)
+  (require 'org-jira)
+  (+org-jira-delete-custom-jql-files)
+  (org-jira-get-issues-from-custom-jql))
 
 (defun cat-generate-branch-name (input-string)
   (replace-regexp-in-string "[^A-Za-z]+" "-" input-string))
@@ -71,7 +96,7 @@
   "h" #'org-jira-get-issues-headonly
   "i" #'org-jira-get-issue
   "I" #'org-jira-get-issues
-  "j" #'org-jira-get-issues-from-custom-jql
+  "j" #'+org-jira-get-issues-from-custom-jql
   "p" #'org-jira-get-projects
   "v" #'org-jira-get-issues-by-fixversion)
 
