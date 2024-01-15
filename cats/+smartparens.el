@@ -2,7 +2,7 @@
 
 (use-package smartparens
   :delight '(:eval (if smartparens-strict-mode " 󱃗" " 󰅲"))
-  :hook (prog-mode text-mode)
+  :hook ((prog-mode text-mode) . smartparens-mode)
   :config
   (require 'smartparens-config)
   (sp-pair "（" "）")
