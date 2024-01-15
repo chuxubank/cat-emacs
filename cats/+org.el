@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org
-  :ensure nil
+  :pin gnu
   :delight
   (org-cdlatex-mode " ")
   :custom
