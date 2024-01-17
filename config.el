@@ -3,6 +3,7 @@
 (cat! "+utils")
 (cat! "+benchmark")
 (cat! "+default")
+(cat! "+local")
 
 ;;; enhance
 (cat! "+diredx")
@@ -11,10 +12,10 @@
 (cat! "+sow")
 
 ;;; ui
-(cat! "+font")
-(cat! "+valign")
+(when (display-graphic-p)
+  (cat! "+font")
+  (cat! "+valign"))
 (cat! "+windows")
-(cat! "+local")
 (cat! "+treemacs")
 
 ;;; os
