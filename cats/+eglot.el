@@ -8,8 +8,9 @@
           c++-mode
           c++-ts-mode
           objc-mode
-          kotlin-mode
-          kotlin-ts-mode)
+          ;; kotlin-mode
+          ;; kotlin-ts-mode
+          )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
   (eglot-connect-timeout (* 30 60)))
