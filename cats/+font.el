@@ -109,8 +109,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 ;; 󰄛
 (use-package nerd-icons
-  :config
-  (nerd-icons-set-font))
+  :hook (cat-theme-refresh . nerd-icons-set-font))
 
 ;; 猫，ねこ，고양이
 (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts)
