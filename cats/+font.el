@@ -1,35 +1,83 @@
 ;; -*- lexical-binding: t; -*-
 
-(defvar cat-text-font (if IS-WINDOWS "RobotoMono NF" "Roboto Mono")
-  "Font for `text-mode'.")
+(defvar cat-serif-fonts '("Iosevka Etoile" "DejaVu Serif" "Roboto Serif")
+  "Default proportional serif fonts.")
 
-(defvar cat-code-font "JetBrains Mono"
-  "Font for `prog-mode'.")
+(defvar cat-slab-fonts '("Roboto Slab")
+  "Default proportional slab serif fonts.")
 
-(defvar cat-cjk-font "LXGW WenKai"
+(defvar cat-sans-fonts '("Inter" "Iosevka Aile" "DejaVu Sans" "Roboto")
+  "Default proportional sans serif fonts.")
+
+(defvar cat-mono-code-fonts '("Victor Mono" "JetBrains Mono" "Cascadia Code" "Fira Code")
+  "Default monospaced fonts.")
+
+(defvar cat-mono-thin-fonts '("Iosevka")
+  "Default monospaced thin fonts.")
+
+(defvar cat-mono-serif-fonts '("Courier Prime")
+  "Default monospaced serif fonts.")
+
+(defvar cat-mono-slab-fonts '("Wellfleet")
+  "Default monospaced slab serif fonts.")
+
+(defvar cat-mono-sans-fonts '("DejaVu Sans Mono" "Roboto Mono")
+  "Default monospaced sans serif fonts.")
+
+(defvar cat-cjk-mono-fonts '("LXGW WenKai")
   "Font for cjk scripts.")
 
-(defvar cat-mono-font "Sarasa Term SC Nerd"
-  "Font for faces need monospaced font.")
+(defvar cat-math-fonts '("DejaVu Math TeX Gyre" "Noto Sans Math")
+  "Fonts for characters in `mathematical' script.")
+
+(defvar cat-default-font (car cat-mono-thin-fonts)
+  "Cat default font.
+
+For most causes, we need a 1/2em wide mono font to make UI aligned,
+like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 (defvar cat-font-size (cond (IS-MAC 160)
                             (t 140))
-  "Font size.")
+  "Cat default font size.")
 
-(defvar cat-math-fonts '("Noto Sans Math")
-  "Fonts for characters in `mathematical' script.")
+(defun +safe-set-fontset-fonts (fontset characters font-list &optional frame add)
+  "Safely set fontset fonts."
+  (if add
+      (dolist (font (ensure-list font-list))
+        (if (member font (font-family-list))
+            (progn
+              (set-fontset-font fontset characters font frame add)
+              (message "Set %s fontset font to %s" characters font))
+          (error "Font %s not found" font)))
+    (let ((find nil))
+      (dolist (font (ensure-list font-list))
+        (if (member font (font-family-list))
+            (progn (set-fontset-font fontset characters font frame (if find 'append nil))
+                   (setq find t)
+                   (message "Set %s fontset font to %s" characters font))
+          (error "Font %s not found" font))))))
 
-(defun +safe-set-fonts (fontset characters font-name-list &optional frame add)
-  (dolist (font (ensure-list font-name-list))
-    (when (member font (font-family-list))
-      (set-fontset-font fontset characters font frame add)
-      (message "Set %s font to %s" characters font-name-list))))
+(defun +safe-set-face-fonts (face font-list &optional frame)
+  "Safely set face fonts."
+  (cl-dolist (font (ensure-list font-list))
+    (if (member font (font-family-list))
+        (progn (set-face-font face font frame)
+               (message "Set %s face font to %s" face font)
+               (cl-return font))
+      (error "Font %s not found" font))))
 
-;; Cat UI
-;; For most causes, we need a mono font to make UI aligned, like `org-agenda' and `org-table'
+(defun +safe-buffer-face-set-fonts (font-list)
+  "Safely set buffer face fonts."
+  (cl-dolist (font (ensure-list font-list))
+    (if (member font (font-family-list))
+        (progn (buffer-face-set `(:family ,font))
+               (message "Set buffer %s face font to %s" (current-buffer) font)
+               (cl-return font))
+      (error "Font %s not found" font))))
+
 (if IS-MACPORT
-    (set-face-attribute 'default nil :font cat-mono-font :height cat-font-size)
-  (set-face-attribute 'default nil :font cat-mono-font :height cat-font-size :weight 'light))
+    (set-face-attribute 'default nil :font cat-default-font :height cat-font-size)
+  (set-face-attribute 'default nil :font cat-default-font :height cat-font-size :weight 'light))
 
 ;; Ligature support
 (if IS-MACPORT
@@ -65,13 +113,13 @@
   (nerd-icons-set-font))
 
 ;; 猫，ねこ，고양이
-(+safe-set-fonts t 'han cat-cjk-font)
-(+safe-set-fonts t 'kana cat-cjk-font)
-(+safe-set-fonts t 'hangul cat-cjk-font)
-(+safe-set-fonts t 'cjk-misc cat-cjk-font)
+(+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts)
+(+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts)
+(+safe-set-fontset-fonts t 'hangul cat-cjk-mono-fonts)
+(+safe-set-fontset-fonts t 'cjk-misc cat-cjk-mono-fonts)
 
 ;; 𝓒𝙖𝕥
-(+safe-set-fonts t 'mathematical cat-math-fonts)
+(+safe-set-fontset-fonts t 'mathematical cat-math-fonts)
 
 (setq
  face-font-rescale-alist
@@ -86,14 +134,29 @@
    ("-cdac$" . 1.3)))
 
 (defun cat-setup-org-font ()
-  (set-face-font 'org-table cat-mono-font)
-  (set-face-font 'org-column-title cat-mono-font))
+  "Set font for `org-mode'."
+  (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
+  (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
+  (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
+  (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
+  (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
+  (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
 (add-hook 'org-mode-hook #'cat-setup-org-font)
 
-(defun cat-setup-code-font ()
-  (buffer-face-set `(:family ,cat-code-font)))
-(add-hook 'prog-mode-hook #'cat-setup-code-font)
+(defun cat-setup-coding-font ()
+  "Set font for coding."
+  (+safe-buffer-face-set-fonts cat-mono-code-fonts))
+(add-hook 'prog-mode-hook #'cat-setup-coding-font)
 
-(defun cat-setup-text-font ()
-  (buffer-face-set `(:family ,cat-text-font)))
-(add-hook 'text-mode-hook #'cat-setup-text-font)
+(defun cat-setup-writing-font()
+  "Set font for writing."
+  (+safe-buffer-face-set-fonts cat-serif-fonts))
+(add-hook 'text-mode-hook #'cat-setup-writing-font)
+
+(defun cat-setup-document-font ()
+  "Set font for document."
+  (+safe-buffer-face-set-fonts cat-sans-fonts))
+(add-hook 'Info-mode-hook #'cat-setup-document-font)
+
+(with-eval-after-load 'face-remap
+  (+change-lighter 'buffer-face-mode " 󰛖"))

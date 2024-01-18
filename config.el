@@ -13,8 +13,12 @@
 
 ;;; ui
 (when (display-graphic-p)
+  ;; (cat! "+nano")
+  (cat! "+doom")
   (cat! "+font")
-  (cat! "+valign"))
+  (cat! "+valign")
+  (cat! "+autodark"))
+(cat! "+highlight")
 (cat! "+windows")
 (cat! "+treemacs")
 
@@ -25,12 +29,6 @@
 ;;; daemon
 (when (daemonp)
   (cat! "+daemon"))
-
-;;; theme
-;; (cat! "+nano")
-(cat! "+doom")
-(cat! "+autodark")
-(cat! "+highlight")
 
 ;;; edit
 (cat! "+meow")

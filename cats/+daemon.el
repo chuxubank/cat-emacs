@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(defvar cat-font-load nil
-  "Whether cat font has been loaded.")
+(defvar cat-gui-loaded nil
+  "Whether cat gui config has been loaded.")
 
 (defun cat-client-frame-config ()
   (message "Start config new frame.")
@@ -12,9 +12,10 @@
         (add-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
         (unless eldoc-box-hover-at-point-mode
           (eldoc-box-hover-at-point-mode 1))
-        (unless cat-font-load
+        (unless cat-gui-loaded
+          (cat! "+autodark")
           (cat! "+font")
-          (setq cat-font-load t))
+          (setq cat-gui-loaded t))
         (when IS-MACPORT
           (setq mac-system-move-file-to-trash-use-finder t)))
     (message "In TUI.")

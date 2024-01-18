@@ -31,10 +31,6 @@
 (with-eval-after-load 'telega
   (require 'telega-mnz)
   (global-telega-mnz-mode)
-  (when cat-alt-code-font
-    (set-face-attribute 'telega-entity-type-pre nil :family cat-alt-code-font)
-    (set-face-attribute 'telega-entity-type-code nil :family cat-alt-code-font)
-    (set-face-attribute 'telega-webpage-fixed nil :family cat-alt-code-font))
   (define-key telega-msg-button-map (kbd "SPC") nil))
 
 (define-key telega-prefix-map "k" #'telega-kill)
