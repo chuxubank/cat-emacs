@@ -12,7 +12,9 @@
   (magit-blame-mode-lighter " ")
   (magit-repository-directories '(("~/Developer/" . 5)))
   (magit-diff-refine-hunk t)
-  (magit-diff-refine-ignore-whitespace nil))
+  (magit-diff-refine-ignore-whitespace nil)
+  :config
+  (setq magit-stash-read-message-function #'magit-stash-read-message-traditional))
 
 (use-package forge
   :demand t
