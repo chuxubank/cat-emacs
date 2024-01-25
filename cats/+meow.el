@@ -1,8 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package meow
-  :preface
-  (require 'meow)
+  :demand t
+  :init
+  (defun cat-meow-toggle ()
+    (meow-normal-mode 'toggle))
   :hook
   (after-init . meow-global-mode)
   ((wl-folder-mode
@@ -13,11 +15,6 @@
   (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-keypad-leader-dispatch "C-c")
   (meow-expand-exclude-mode-list nil)
-  (meow-replace-state-name-list '((normal . "🅝")
-                                  (beacon . "🅑")
-                                  (insert . "🅘")
-                                  (motion . "🅜")
-                                  (keypad . "🅚")))
   :bind
   (:map meow-insert-state-keymap
         ("C-g" . meow-insert-exit)
@@ -122,8 +119,11 @@
                       '(osx-dictionary-mode . motion)
                       '(eshell-mode . insert)
                       '(comint-mode . insert))
-  (defun cat-meow-toggle ()
-    (meow-normal-mode 'toggle)))
+  (setq meow-replace-state-name-list '((normal . "🅝")
+                                       (beacon . "🅑")
+                                       (insert . "🅘")
+                                       (motion . "🅜")
+                                       (keypad . "🅚"))))
 
 (with-eval-after-load 'nano-modeline
   (defun +nano-modeline-meow-indicator (args)
