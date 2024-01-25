@@ -22,6 +22,8 @@
                                      (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)))
   :config
+  (unless (file-exists-p cat-org-roam-directory)
+    (make-directory cat-org-roam-directory))
   (org-roam-db-autosync-mode)
   (org-roam-update-org-id-locations)
   (require 'org-roam-protocol)
