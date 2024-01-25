@@ -1,5 +1,4 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package marginalia)
-
-(marginalia-mode 1)
+(use-package marginalia
+  :hook (after-init . marginalia-mode))
