@@ -37,29 +37,6 @@
                             ("KILL" . +org-todo-cancel)))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
-  (org-capture-templates '(("t" "Personal todo" entry
-                            (file "inbox.org")
-                            "* TODO %?\n%i" :prepend t)
-                           ("w" "Work todo" entry
-                            (file+headline "work.org" "Inbox")
-                            "* TODO %?\n%i" :prepend nil)
-                           ("b" "Shopping list" entry
-                            (file "buy.org")
-                            "* TODO %?\n%i" :prepend t)
-                           ("p" "Place" entry
-                            (file+headline "place.org" "Inbox")
-                            (file "templates/place.org")
-                            :prepend t
-                            :empty-lines 1)
-                           ("n" "Personal notes" entry
-                            (file+headline "notes.org" "Inbox")
-                            "* %u %?\n%i\n%a" :prepend t)
-                           ("j" "Journal" entry
-                            (file+olp+datetree "journal.org")
-                            "* %U %?")
-                           ("c" "ChatGPT" entry
-                            (file+olp+datetree "ChatGPT.org")
-                            "* %?")))
   :custom-face
   (+org-todo-active  ((t (:inherit (bold font-lock-constant-face org-todo)))))
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
@@ -85,6 +62,35 @@
   :ensure nil
   :custom
   (org-goto-auto-isearch nil))
+
+(use-package org-capture
+  :ensure nil
+  :custom
+  (org-capture-templates '(("t" "Personal todo" entry
+                            (file "inbox.org")
+                            "* TODO %?\n%i" :prepend t)
+                           ("w" "Work todo" entry
+                            (file+headline "work.org" "Inbox")
+                            "* TODO %?\n%i" :prepend nil)
+                           ("b" "Shopping list" entry
+                            (file "buy.org")
+                            "* TODO %?\n%i" :prepend t)
+                           ("p" "Place" entry
+                            (file+headline "place.org" "Inbox")
+                            (file "templates/place.org")
+                            :prepend t
+                            :empty-lines 1)
+                           ("n" "Personal notes" entry
+                            (file+headline "notes.org" "Inbox")
+                            "* %u %?\n%i\n%a" :prepend t)
+                           ("j" "Journal" entry
+                            (file+olp+datetree "journal.org")
+                            "* %U %?")
+                           ("c" "ChatGPT" entry
+                            (file+olp+datetree "ChatGPT.org")
+                            "* %?")))
+  :config
+  (add-hook 'org-capture-after-finalize-hook #'org-save-all-org-buffers))
 
 (use-package org-refile
   :ensure nil
