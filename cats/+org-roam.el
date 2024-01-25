@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-roam
-  :bind
-  (:map org-roam-map
-        ("r" . org-roam-buffer-toggle))
+  :commands #'org-roam-buffer-toggle
   :custom
   (org-roam-directory cat-org-roam-directory)
   (org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir))
@@ -54,6 +52,7 @@
   "F" #'org-roam-ref-find
   "g" #'org-roam-graph
   "i" #'org-roam-node-insert
+  "r" #'org-roam-buffer-toggle
   "R" #'org-roam-buffer-display-dedicated
   "u" #'org-roam-ui-mode)
 
