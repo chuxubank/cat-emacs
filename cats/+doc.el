@@ -38,6 +38,11 @@ Intended for `eldoc-documentation-functions' (which see)."
                       (eldoc-box-hover-mode "󱔘")
                       (t "󰧮"))))))
 
+(use-package eldoc-toml
+  :delight
+  :hook ((conf-toml-mode
+          toml-ts-mode). eldoc-toml-mode))
+
 (use-package devdocs
   :custom
   (devdocs-data-dir (concat cat-etc-dir "devdocs")))
