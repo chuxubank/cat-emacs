@@ -100,6 +100,7 @@
 (cat! "+caddy")
 (cat! "+docker")
 (cat! "+vb")
+(cat! "+lua")
 
 ;;; plugins
 (cat! "+term")
