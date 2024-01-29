@@ -33,3 +33,4 @@
     :hook (after-init . server-mode)))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
+(define-key global-map (kbd "s-q") #'save-buffers-kill-emacs)
