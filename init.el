@@ -26,6 +26,11 @@
            (load ,file ,noerror 'nomessage))
        (error "Could not load file '%s'" file))))
 
+(cat! "+utils")
+(+mkdir-p cat-local-dir)
+(+mkdir-p cat-etc-dir)
+(+mkdir-p cat-cache-dir)
+
 (load (concat user-emacs-directory "config") nil 'nomessage)
 
 ;;; ui

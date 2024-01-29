@@ -48,6 +48,11 @@ List contains pairs mode lighter, see `minor-mode-alist'"
       (setq list (nthcdr 2 list)))
     (reverse output)))
 
+(defun +mkdir-p (dir)
+  "Make directory for DIR if not exists."
+  (unless (file-directory-p dir)
+    (make-directory dir)))
+
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
   (interactive)
