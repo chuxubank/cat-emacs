@@ -22,13 +22,12 @@
 (cat! "+windows")
 (cat! "+treemacs")
 
+;;; daemon
+(cat! "+daemon")
+
 ;;; os
 (when IS-MAC
   (cat! "+macos"))
-
-;;; daemon
-(when (daemonp)
-  (cat! "+daemon"))
 
 ;;; edit
 (cat! "+meow")

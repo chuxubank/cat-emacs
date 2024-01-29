@@ -6,7 +6,6 @@
   :hook (after-init . ns-auto-titlebar-mode))
 
 (use-package osx-location
-
   :config
   (add-hook 'osx-location-changed-hook
             (lambda ()
@@ -19,17 +18,18 @@
   :config
   (exec-path-from-shell-initialize))
 
-;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
-(use-package mac-pseudo-daemon
-  :disabled
-  :when (and IS-MACPORT
-             (not (daemonp)))
-  :hook (after-init . mac-pseudo-daemon-mode))
-
 (when IS-MACPORT
-  ;; See Info node `(emacs) Mac Fullscreen' for more information.
   (when (display-graphic-p)
     (setq mac-system-move-file-to-trash-use-finder t))
-  (menu-bar-mode 1))
+  ;; See Info node `(emacs) Mac Fullscreen' for more information.
+  (menu-bar-mode 1)
+
+  ;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
+  (use-package mac-pseudo-daemon
+    :hook (after-init . mac-pseudo-daemon-mode)
+    :config
+    (advice-add #'macpd-make-new-default-frame :after (lambda (_) (cat-client-frame-config))))
+  (use-package server
+    :hook (after-init . server-mode)))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
