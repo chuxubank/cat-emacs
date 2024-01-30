@@ -19,6 +19,16 @@
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
 (defconst cat-etc-dir (concat cat-local-dir "etc/"))
+
+(defun +mkdir-p (dir)
+  "Make directory for DIR if not exists."
+  (unless (file-directory-p dir)
+    (make-directory dir)))
+
+(+mkdir-p cat-local-dir)
+(+mkdir-p cat-cache-dir)
+(+mkdir-p cat-etc-dir)
+
 (defconst cat-rime-dir (concat cat-etc-dir "rime/"))
 (defconst cat-org-directory "~/org/"
   "See `org-directory'.")
