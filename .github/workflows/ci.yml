@@ -32,7 +32,7 @@ jobs:
             ghcr.io/${{ github.repository }}
 
       - name: Emacs Build Cache for Docker
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: emacs-build-cache
           key: ${{ runner.os }}-emacs-build-cache-${{ hashFiles('config.el') }}
