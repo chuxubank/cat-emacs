@@ -64,10 +64,24 @@
   (+org-jira-delete-custom-jql-files)
   (org-jira-get-issues-from-custom-jql))
 
-(defun cat-generate-branch-name (input-string)
-  (replace-regexp-in-string "[^A-Za-z]+" "-" input-string))
+(defun cat-generate-branch-name (text)
+  "Make TEXT a valid branch name."
+  (replace-regexp-in-string "[^A-Za-z]+" "-" text))
+
+(defun cat-create-branch-with-key-and-text (source-branch key text)
+  "Use KEY and TEXT as name to create branch from SOURCE-BRANCH."
+  (let ((root (magit-read-repository)))
+    (magit-status root)
+    (if (string= source-branch (magit-get-current-branch))
+        (magit-pull-branch "develop" nil)
+      (magit-fetch-refspec "origin" (format "%s:%s" source-branch source-branch) nil))
+    (magit-branch-and-checkout
+     (read-string "Branch name: "
+                  (concat key (downcase (cat-generate-branch-name text))))
+     source-branch)))
 
 (defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
+  "Helper function to create a branch with ISSUE-KEY and current org heading content."
   (let* ((open-next (cdr (assoc "Open" jiralib-available-actions-cache)))
          (start-action '("Start Dev Work" "Work Started"))
          (start-action-id (mapcar (lambda (pair)
@@ -75,16 +89,8 @@
                                       (car pair)))
                                   open-next))
          (org-heading (nth 4 (org-heading-components))))
-    (if (member action-id start-action-id)
-        (let ((root (magit-read-repository)))
-          (magit-status root)
-          (if (string= "develop" (magit-get-current-branch))
-              (magit-pull-branch "develop" nil)
-            (magit-fetch-refspec "origin" "develop:develop" nil))
-          (magit-branch-and-checkout
-           (read-string "Branch name: "
-                        (concat issue-key (downcase (cat-generate-branch-name org-heading))))
-           "develop")))))
+    (when (member action-id start-action-id)
+      (cat-create-branch-with-key-and-text "develop" issue-key org-heading))))
 (advice-add 'jiralib-progress-workflow-action :after #'cat-org-jira-start-dev-work)
 
 (defvar-keymap org-jira-global-map
