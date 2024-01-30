@@ -188,3 +188,9 @@
   :ensure nil
   :custom
   (epg-pinentry-mode 'loopback))
+
+;;; abbrev
+(use-package abbrev
+  :ensure nil
+  :custom
+  (abbrev-file-name (concat cat-etc-dir "abbrev_defs")))
