@@ -27,8 +27,4 @@ RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom
 
 RUN yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
-FROM silex/emacs:alpine
-
-COPY --from=builder /root/.emacs.d /root/.emacs.d
-
 CMD ["emacs"]
