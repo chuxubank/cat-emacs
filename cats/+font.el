@@ -48,14 +48,14 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
             (progn
               (set-fontset-font fontset characters font frame add)
               (message "Set %s fontset font to %s" characters font))
-          (error "Font %s not found" font)))
+          (warn "Font %s not found" font)))
     (let ((find nil))
       (dolist (font (ensure-list font-list))
         (if (member font (font-family-list))
             (progn (set-fontset-font fontset characters font frame (if find 'append nil))
                    (setq find t)
                    (message "Set %s fontset font to %s" characters font))
-          (error "Font %s not found" font))))))
+          (warn "Font %s not found" font))))))
 
 (defun +safe-set-face-fonts (face font-list &optional frame)
   "Safely set face fonts."
@@ -64,7 +64,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
         (progn (set-face-font face font frame)
                (message "Set %s face font to %s" face font)
                (cl-return font))
-      (error "Font %s not found" font))))
+      (warn "Font %s not found" font))))
 
 (defun +safe-buffer-face-set-fonts (font-list)
   "Safely set buffer face fonts."
@@ -73,7 +73,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
         (progn (buffer-face-set `(:family ,font))
                (message "Set buffer %s face font to %s" (current-buffer) font)
                (cl-return font))
-      (error "Font %s not found" font))))
+      (warn "Font %s not found" font))))
 
 (if IS-MACPORT
     (set-face-attribute 'default nil :font cat-default-font :height cat-font-size)
