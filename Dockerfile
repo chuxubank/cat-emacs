@@ -27,4 +27,6 @@ RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom
 
 RUN yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
+RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
+
 CMD ["emacs"]
