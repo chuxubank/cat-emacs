@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.2
-FROM archlinux
+FROM archlinux as builder
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     gpgconf --kill gpg-agent && \
@@ -27,5 +27,9 @@ RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom
 
 RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
     yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
+
+FROM silex/emacs:alpine
+
+COPY --from=builder /root/.emacs.d /root/.emacs.d
 
 CMD ["emacs"]
