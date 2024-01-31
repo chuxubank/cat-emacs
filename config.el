@@ -12,11 +12,13 @@
 (cat! "+sow")
 
 ;;; ui
-(when (display-graphic-p)
+(when (or (daemonp)
+          (display-graphic-p))
   ;; (cat! "+nano")
   (cat! "+doom")
+  (cat! "+valign"))
+(when (display-graphic-p)
   (cat! "+font")
-  (cat! "+valign")
   (cat! "+autodark"))
 (cat! "+highlight")
 (cat! "+windows")

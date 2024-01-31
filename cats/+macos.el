@@ -26,10 +26,14 @@
 
   ;; see https://github.com/railwaycat/homebrew-emacsmacport/issues/52
   (use-package mac-pseudo-daemon
+    :disabled
+    :when (display-graphic-p)
     :hook (after-init . mac-pseudo-daemon-mode)
     :config
     (advice-add #'macpd-make-new-default-frame :after (lambda (_) (cat-client-frame-config))))
   (use-package server
+    :disabled
+    :when (display-graphic-p)
     :hook (after-init . server-mode)))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
