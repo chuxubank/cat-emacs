@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.2
-FROM archlinux as builder
+FROM archlinux:base-devel as builder
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     gpgconf --kill gpg-agent && \
