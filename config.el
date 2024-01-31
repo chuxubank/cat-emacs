@@ -60,7 +60,7 @@
 (cat! "+org-latex")
 (cat! "+org-roam")
 (cat! "+org-srs")
-;; (cat! "+org-cv")
+(cat! "+org-cv")
 (cat! "+org-link")
 (cat! "+org-jira")
 
