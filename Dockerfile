@@ -17,6 +17,10 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     gnupg \
     p7zip \
     ripgrep \
+    ttc-iosevka \
+    ttc-iosevka-etoile \
+    inter-font \
+    ttf-lxgw-wenkai \
     emacs-wayland
 
 RUN emacs --version
