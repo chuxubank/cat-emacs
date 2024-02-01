@@ -1,8 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package beacon
-  :when (or (daemonp)
-            (display-graphic-p))
   :hook (after-init . beacon-mode)
   :custom
   (beacon-lighter nil))

@@ -30,16 +30,19 @@
 
 (defun cat-load-theme (&optional color)
   (interactive)
-  (mapc 'disable-theme custom-enabled-themes)
-  (when (or (display-graphic-p)
-            (daemonp))
+  (cat-benchmark 'beg "load theme.")
+  (when (or (daemonp)
+            (display-graphic-p))
+    (mapc 'disable-theme custom-enabled-themes)
     (if (or (and color (eq color 'dark))
             (cat-dark-mode-p))
         (run-hooks 'cat-dark-mode-hook)
       (run-hooks 'cat-light-mode-hook))
-    (run-hooks 'cat-theme-refresh-hook)))
+    (run-hooks 'cat-theme-refresh-hook))
+  (cat-benchmark 'end "load theme."))
 
-(add-hook 'after-init-hook #'cat-load-theme)
+(when (display-graphic-p)
+  (add-hook 'after-init-hook #'cat-load-theme))
 
 (when IS-MACPORT
   (add-hook 'mac-effective-appearance-change-hook #'cat-load-theme))
