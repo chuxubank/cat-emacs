@@ -25,6 +25,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     ttc-iosevka-etoile \
     inter-font \
     ttf-lxgw-wenkai \
+    ttf-nerd-fonts-symbols-mono \
     emacs-wayland
 
 RUN emacs --version
