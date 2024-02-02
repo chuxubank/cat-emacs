@@ -1,4 +1,27 @@
 * Cat Emacs
+#+ATTR_HTML: :title CI
+[[https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml][https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml/badge.svg]]
+
+** Docker
+
+*** macOS
+[[https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949][Docker X11 macOS]]
+#+begin_src sh
+  brew install XQuartz
+  open -a /System/Volumes/Data/Applications/Utilities/XQuartz.app
+  DISPLAY=:0 xhost +localhost     # localhost being added to access control list
+  docker run -it -e "DISPLAY=host.docker.internal:0" chuxubank/cat-emacs:main
+#+end_src
+
+*** Windows with WSLg
+[[https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md][Containerizing GUI applications with WSLg]]
+#+begin_src sh
+  sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /mnt/wslg:/mnt/wslg \
+    -e DISPLAY=$DISPLAY -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+    -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -e PULSE_SERVER=$PULSE_SERVER \
+    chuxubank/cat-emacs:main
+#+end_src
+
 ** Rime
 *** Sync
 https://github.com/rime/home/wiki/UserGuide#同步用戶資料
@@ -24,7 +47,7 @@ allow-emacs-pinentry
 #+end_src
 
 ** WSL
-#+begin_src bash
+#+begin_src sh
   export MOZ_ENABLE_WAYLAND=1
 
   isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
