@@ -89,6 +89,7 @@
 (cat! "+yaml")
 (cat! "+kotlin")
 (cat! "+android")
+(cat! "+swift")
 (cat! "+gradle")
 (cat! "+python")
 (cat! "+dart")
