@@ -1,8 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar cat-theme-loaded nil
+  "Whether the font is loaded.")
+
 (defun cat-client-frame-config ()
   (cat-benchmark 'beg "configuring new frame.")
-  (cat-load-theme)
+  (unless cat-theme-loaded
+    (cat-load-theme)
+    (setq cat-theme-loaded t))
   (if (display-graphic-p)
       (progn
         (message "In GUI.")
