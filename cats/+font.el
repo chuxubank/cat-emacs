@@ -1,12 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
-(defvar cat-serif-fonts '("Iosevka Etoile" "DejaVu Serif" "Roboto Serif")
+(defvar cat-serif-fonts '("DejaVu Serif" "Roboto Serif")
   "Default proportional serif fonts.")
 
-(defvar cat-slab-fonts '("Roboto Slab")
+(defvar cat-slab-fonts '("Iosevka Etoile" "Roboto Slab")
   "Default proportional slab serif fonts.")
 
-(defvar cat-sans-fonts '("Inter" "Iosevka Aile" "DejaVu Sans" "Roboto")
+(defvar cat-sans-fonts '("Iosevka Aile" "Inter" "DejaVu Sans" "Roboto")
   "Default proportional sans serif fonts.")
 
 (defvar cat-mono-code-fonts '("Victor Mono" "JetBrains Mono" "Cascadia Code" "Fira Code")
@@ -167,7 +167,8 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 (defun cat-setup-org-font ()
   "Set font for `org-mode'."
-  (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
+  (dolist (face org-level-faces)
+    (+safe-set-face-fonts face cat-mono-sans-fonts))
   (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
@@ -182,7 +183,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 (defun cat-setup-writing-font()
   "Set font for writing."
-  (+safe-buffer-face-set-fonts cat-serif-fonts))
+  (+safe-buffer-face-set-fonts cat-slab-fonts))
 (add-hook 'text-mode-hook #'cat-setup-writing-font)
 
 (defun cat-setup-document-font ()
