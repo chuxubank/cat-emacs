@@ -167,14 +167,17 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 (defun cat-setup-org-font ()
   "Set font for `org-mode'."
-  (dolist (face org-level-faces)
-    (+safe-set-face-fonts face cat-mono-sans-fonts))
+  (+safe-buffer-face-set-fonts cat-mono-sans-fonts))
+(add-hook 'org-mode-hook #'cat-setup-org-font)
+
+(defun cat-setup-org-face-font ()
+  "Set font for org faces."
   (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
   (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
   (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
-(add-hook 'org-mode-hook #'cat-setup-org-font)
+(add-hook 'org-load-hook #'cat-setup-org-face-font)
 
 (defun cat-setup-coding-font ()
   "Set font for coding."
