@@ -131,7 +131,6 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 ;; 󰄛
 (use-package nerd-icons
-  :when (display-graphic-p)
   :hook (cat-theme-refresh . nerd-icons-set-font)
   :config
   (defun nerd-icons-set-font (&optional font-family frame)
