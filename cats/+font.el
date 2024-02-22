@@ -79,10 +79,27 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
                  (cl-return font))
         (warn "Font %s not found" font)))))
 
+(defun cat-setup-fonts ()
+  "Set fonts for Cat Emacs."
+  (when (display-graphic-p)
+    (cat-benchmark 'beg "setup fonts.")
+    (if IS-MACPORT
+        (set-face-attribute 'default nil :font cat-default-font :height cat-font-size)
+      (set-face-attribute 'default nil :font cat-default-font :height cat-font-size :weight 'light))
+    ;; 猫，ねこ，고양이
+    (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts)
+    (+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts)
+    (+safe-set-fontset-fonts t 'hangul cat-cjk-mono-fonts)
+    (+safe-set-fontset-fonts t 'cjk-misc cat-cjk-mono-fonts)
+
+    ;; 𝓒𝙖𝕥
+    (+safe-set-fontset-fonts t 'mathematical cat-math-fonts)
+
+    (nerd-icons-set-font)
+    (cat-benchmark 'end "setup fonts.")))
+
 (when (display-graphic-p)
-  (if IS-MACPORT
-      (set-face-attribute 'default nil :font cat-default-font :height cat-font-size)
-    (set-face-attribute 'default nil :font cat-default-font :height cat-font-size :weight 'light)))
+  (add-hook 'after-init-hook #'cat-setup-fonts))
 
 ;; Ligature support
 (if IS-MACPORT
@@ -143,15 +160,6 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
                              :size   nil)
                   frame
                   'prepend))))))
-
-;; 猫，ねこ，고양이
-(+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts)
-(+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts)
-(+safe-set-fontset-fonts t 'hangul cat-cjk-mono-fonts)
-(+safe-set-fontset-fonts t 'cjk-misc cat-cjk-mono-fonts)
-
-;; 𝓒𝙖𝕥
-(+safe-set-fontset-fonts t 'mathematical cat-math-fonts)
 
 (setq
  face-font-rescale-alist
