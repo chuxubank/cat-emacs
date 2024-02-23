@@ -8,7 +8,8 @@
   (:map elogcat-mode-map
         ("n" . #'next-line)
         ("p" . #'previous-line)
-        ("P" . #'+elogcat-toggle-package))
+        ("P" . #'+elogcat-toggle-package)
+        ("S" . #'+elogcat-save-buffer))
   :config
   (defun elogcat-make-status (&optional status)
     "Get a log buffer STATUS for use in the mode line."
@@ -40,3 +41,9 @@
     (erase-buffer))
   (elogcat-stop)
   (elogcat))
+
+(defun +elogcat-save-buffer ()
+  "Save current elogcat buffer."
+  (interactive)
+  (save-buffer)
+  (elogcat-stop))
