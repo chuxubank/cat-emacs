@@ -105,6 +105,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 (if IS-MACPORT
     (mac-auto-operator-composition-mode)
   (use-package ligature
+    :hook (after-init . global-ligature-mode)
     :config
     ;; Enable the "www" ligature in every possible major mode
     (ligature-set-ligatures 't '("www"))
@@ -124,10 +125,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
                                          "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
                                          "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-                                         "\\\\" "://"))
-    ;; Enables ligature checks globally in all buffers. You can also do it
-    ;; per mode with `ligature-mode'.
-    (global-ligature-mode t)))
+                                         "\\\\" "://"))))
 
 ;; 󰄛
 (use-package nerd-icons
