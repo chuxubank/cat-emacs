@@ -191,7 +191,9 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
 (defun cat-setup-writing-font()
   "Set font for writing."
-  (+safe-buffer-face-set-fonts cat-slab-fonts))
+  (let ((exceptions '(org-mode)))
+    (unless (apply 'derived-mode-p exceptions)
+      (+safe-buffer-face-set-fonts cat-slab-fonts))))
 (add-hook 'text-mode-hook #'cat-setup-writing-font)
 
 (defun cat-setup-document-font ()
