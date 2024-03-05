@@ -95,6 +95,7 @@
 (cat! "+dart")
 (cat! "+plantuml")
 (cat! "+mermaid")
+(cat! "+protobuf")
 (cat! "+json")
 (cat! "+caddy")
 (cat! "+docker")
