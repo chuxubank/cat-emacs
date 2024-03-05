@@ -11,14 +11,21 @@
    '(("LogCat"
       (java-pattern . "MM-dd HH:mm:ss.SSS"))
      ("LogUtil"
-      (java-pattern . "HH:mm:ss.SSS"))))
+      (java-pattern . "HH:mm:ss.SSS"))
+     ("Zscaler"
+      (java-pattern . "yyyy-MM-dd HH:mm:ss.SSSSSS(Z)"))))
   (logview-additional-level-mappings
    '(("LogCat"
       (error "E" "F" "S")
       (warning "W")
       (information "I")
       (debug "D")
-      (trace "V"))))
+      (trace "V"))
+     ("Zscaler"
+      (error "ERR")
+      (warning "WRN")
+      (information "INF")
+      (debug "DBG"))))
   (logview-additional-submodes
    '(("Luna"
       (format . "TIMESTAMP IGNORED LEVEL T: <<RX:THREAD:.+?>> NAME - MESSAGE")
@@ -30,4 +37,8 @@
      ("LogUtil"
       (format . "TIMESTAMP LEVEL/NAME [THREAD, IGNORED]: MESSAGE")
       (levels . "LogCat")
-      (timestamp "LogUtil")))))
+      (timestamp "LogUtil"))
+     ("Zscaler"
+      (format . "TIMESTAMP[IGNORED:THREAD] LEVEL MESSAGE")
+      (levels . "Zscaler")
+      (timestamp "Zscaler")))))
