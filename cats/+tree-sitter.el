@@ -25,6 +25,6 @@
   :custom
   (treesit-auto-install 'prompt)
   :config
-  (dolist (lang '(cmake cpp))
+  (dolist (lang '(cmake cpp bash))
     (setq treesit-auto-langs (delete lang treesit-auto-langs)))
   (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
