@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package docker)
+(use-package docker
+  :custom
+  (docker-compose-command "docker compose"))
 
 (use-package dockerfile-mode)
 
