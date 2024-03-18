@@ -3,6 +3,7 @@
 (cat! "+file")
 (cat! "+benchmark")
 (cat! "+default")
+(cat! "+env")
 (cat! "+local")
 
 ;;; enhance

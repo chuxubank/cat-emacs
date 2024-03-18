@@ -13,11 +13,6 @@
                     calendar-longitude osx-location-longitude
                     calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude)))))
 
-(use-package exec-path-from-shell
-  :when (length< (getenv "PATH") 50)
-  :config
-  (exec-path-from-shell-initialize))
-
 (when IS-MACPORT
   (when (display-graphic-p)
     (setq mac-system-move-file-to-trash-use-finder t))
