@@ -171,31 +171,28 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
    ("-cdac$" . 1.3)))
 
 (defun cat-setup-org-font ()
-  "Set font for `org-mode'."
-  (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
+  "Set font for `org-mode' related faces."
   (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
   (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
   (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
   (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
-(add-hook 'org-mode-hook #'cat-setup-org-font)
+(add-hook 'org-load-hook #'cat-setup-org-font)
 
-(defun cat-setup-coding-font ()
-  "Set font for coding."
-  (+safe-buffer-face-set-fonts cat-mono-code-fonts))
-(add-hook 'prog-mode-hook #'cat-setup-coding-font)
-
-(defun cat-setup-writing-font()
-  "Set font for writing."
-  (let ((exceptions '(org-mode)))
-    (unless (apply 'derived-mode-p exceptions)
-      (+safe-buffer-face-set-fonts cat-slab-fonts))))
-(add-hook 'text-mode-hook #'cat-setup-writing-font)
-
-(defun cat-setup-document-font ()
-  "Set font for document."
-  (+safe-buffer-face-set-fonts cat-sans-fonts))
-(add-hook 'Info-mode-hook #'cat-setup-document-font)
+(defun cat-setup-mode-font ()
+  "Set font according to current major mode.
+Unless `buffer-face-mode' already enabled."
+  (unless (bound-and-true-p buffer-face-mode)
+    (cond
+     ((derived-mode-p 'org-mode)
+      (+safe-buffer-face-set-fonts cat-mono-sans-fonts))
+     ((derived-mode-p 'text-mode)
+      (+safe-buffer-face-set-fonts cat-slab-fonts))
+     ((derived-mode-p 'prog-mode)
+      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
+     ((derived-mode-p 'Info-mode)
+      (+safe-buffer-face-set-fonts cat-sans-fonts)))))
+(add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 
 (with-eval-after-load 'face-remap
   (+change-lighter 'buffer-face-mode " 󰛖"))
