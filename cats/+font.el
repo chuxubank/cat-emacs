@@ -40,6 +40,9 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
                             (t 140))
   "Cat default font size.")
 
+(defvar cat-setup-fonts-hook nil
+  "Hook runs after setup fonts.")
+
 (defun +safe-set-fontset-fonts (fontset characters font-list &optional frame add)
   "Safely set fontset fonts."
   (when (display-graphic-p)
@@ -95,13 +98,13 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
     ;; 𝓒𝙖𝕥
     (+safe-set-fontset-fonts t 'mathematical cat-math-fonts)
 
-    (nerd-icons-set-font)
+    ;; 󰄛
+    (run-hooks 'cat-setup-fonts-hook)
     (cat-benchmark 'end "setup fonts.")))
 
 (when (display-graphic-p)
   (add-hook 'after-init-hook #'cat-setup-fonts))
 
-;; Ligature support
 (if IS-MACPORT
     (mac-auto-operator-composition-mode)
   (use-package ligature
@@ -127,36 +130,34 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\\\" "://"))))
 
-;; 󰄛
 (use-package nerd-icons
-  :hook (cat-theme-refresh . nerd-icons-set-font)
+  :hook (cat-setup-fonts . nerd-icons-set-font)
   :config
   (defun nerd-icons-set-font (&optional font-family frame)
     "Modify nerd font charsets to use FONT-FAMILY for FRAME."
-    (when (display-graphic-p)
-      (let ((font-f (or font-family nerd-icons-font-family))
-            (charsets '((#xe5fa . #xe6b2)  ;; Seti-UI + Custom
-                        (#xe700 . #xe7c5)  ;; Devicons
-                        (#xf000 . #xf2e0)  ;; Font Awesome
-                        (#xe200 . #xe2a9)  ;; Font Awesome Extension
-                        (#xf500 . #xfd46) (#xf0001 . #xf1af0) ;; Material Design Icons
-                        (#xe300 . #xe3eb)  ;; Weather
-                        (#xf400 . #xf4a9) #x2665 #x26A1  ;; Octicons
-                        (#xe0a0 . #xe0a2) (#xe0b0 . #xe0b3)  ;; Powerline Symbols
-                        #xe0a3 (#xe0b4 . #xe0c8) #xe0ca (#xe0cc . #xe0d4)  ;; Powerline Extra Symbols
-                        (#x23fb . #x23fe) #x2b58  ;; IEC Power Symbols
-                        (#xf300 . #xf32d)  ;; Font Logos
-                        (#xe000 . #xe00a)  ;; Pomicons
-                        (#xea60 . #xebeb))))  ;; Codicons
-        (cl-loop for charset in charsets do
-                 (set-fontset-font
-                  (frame-parameter nil 'font)
-                  charset
-                  (font-spec :family font-f
-                             :weight nil
-                             :size   nil)
-                  frame
-                  'prepend))))))
+    (let ((font-f (or font-family nerd-icons-font-family))
+          (charsets '((#xe5fa . #xe6b2)  ;; Seti-UI + Custom
+                      (#xe700 . #xe7c5)  ;; Devicons
+                      (#xf000 . #xf2e0)  ;; Font Awesome
+                      (#xe200 . #xe2a9)  ;; Font Awesome Extension
+                      (#xf500 . #xfd46) (#xf0001 . #xf1af0) ;; Material Design Icons
+                      (#xe300 . #xe3eb)  ;; Weather
+                      (#xf400 . #xf4a8) #x2665 #x26a1 #xf27c  ;; Octicons
+                      (#xe0a0 . #xe0a2) (#xe0b0 . #xe0b3)  ;; Powerline Symbols
+                      #xe0a3 (#xe0b4 . #xe0c8) (#xe0cc . #xe0d2) #xe0d4  ;; Powerline Extra Symbols
+                      (#x23fb . #x23fe) #x2b58  ;; IEC Power Symbols
+                      (#xf300 . #xf372)  ;; Font Logos
+                      (#xe000 . #xe00a)  ;; Pomicons
+                      (#xea60 . #xebeb))))  ;; Codicons
+      (cl-loop for charset in charsets do
+               (set-fontset-font
+                (frame-parameter nil 'font)
+                charset
+                (font-spec :family font-f
+                           :weight nil
+                           :size   nil)
+                frame
+                'prepend)))))
 
 (setq
  face-font-rescale-alist
