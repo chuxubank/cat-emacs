@@ -2,6 +2,7 @@
 
 (use-package exec-path-from-shell
   :demand t
-  :when (display-graphic-p)
+  :custom
+  (exec-path-from-shell-arguments '("-l"))
   :config
   (exec-path-from-shell-initialize))
