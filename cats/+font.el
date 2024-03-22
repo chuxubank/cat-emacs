@@ -145,22 +145,18 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
 
-(defun cat-setup-org-font ()
-  "Set font for `org-mode' related faces."
-  (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
-  (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
-  (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
-  (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
-  (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
-(add-hook 'org-load-hook #'cat-setup-org-font)
-
 (defun cat-setup-mode-font ()
   "Set font according to current major mode.
 Unless `buffer-face-mode' already enabled."
   (unless (bound-and-true-p buffer-face-mode)
     (cond
      ((derived-mode-p 'org-mode)
-      (+safe-buffer-face-set-fonts cat-mono-sans-fonts))
+      (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
+      (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
+      (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
+      (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
+      (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
+      (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'prog-mode)
