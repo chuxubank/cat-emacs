@@ -29,7 +29,7 @@
 **** MSYS2
 You can use
 #+begin_src sh
-  C:\msys64\usr\bin\mintty.exe -w hide /bin/env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit /bin/zsh -l -i -c "/mingw64/bin/emacsclientw -n -c -a ''"
+  C:\msys64\usr\bin\mintty.exe -w hide /bin/env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit /bin/zsh -l -c "/mingw64/bin/emacsclientw -n -c -a ''"
 #+end_src
 to create a shortcut to start Emacs.
 You may also set ~HOME~ environment and start path to ~%USERPROFILE%~
