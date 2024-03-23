@@ -22,6 +22,31 @@
     chuxubank/cat-emacs:main
 #+end_src
 
+** System
+
+*** Windows
+
+**** MSYS2
+You can use
+#+begin_src sh
+  C:\msys64\usr\bin\mintty.exe -w hide /bin/env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit /bin/zsh -l -i -c "/mingw64/bin/emacsclientw -n -c -a ''"
+#+end_src
+to create a shortcut to start Emacs.
+You may also set ~HOME~ environment and start path to ~%USERPROFILE%~
+**** WSL
+To use Wayland and set GTK theme, you can add these to your shell script.
+#+begin_src sh
+  export MOZ_ENABLE_WAYLAND=1
+
+  isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
+
+  if [ "${isLight:2:1}" == 1 ]; then
+      export GTK_THEME=Arc
+  else
+      export GTK_THEME=Arc-Darker
+  fi
+#+end_src
+
 ** Rime
 *** Sync
 https://github.com/rime/home/wiki/UserGuide#同步用戶資料
@@ -33,8 +58,6 @@ https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sourc
 allow-emacs-pinentry
 #+end_example
 
-** Org
-
 ** Latex
 
 *** If you want to include svg file in latex file and generate the pdf file you need to
@@ -44,17 +67,4 @@ allow-emacs-pinentry
 *** To indent tex file you need to
 #+begin_src sh
   sudo cpan -i File::HomeDir
-#+end_src
-
-** WSL
-#+begin_src sh
-  export MOZ_ENABLE_WAYLAND=1
-
-  isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
-
-  if [ "${isLight:2:1}" == 1 ]; then
-      export GTK_THEME=Arc
-  else
-      export GTK_THEME=Arc-Darker
-  fi
 #+end_src
