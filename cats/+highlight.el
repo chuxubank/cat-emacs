@@ -52,6 +52,7 @@
   (add-hook 'nxml-mode-hook #'+pangu-spacing-disable))
 
 (use-package diff-hl
+  :delight (diff-hl-amend-mode " ")
   :hook (after-init . global-diff-hl-mode)
   :hook ((prog-mode text-mode) . diff-hl-flydiff-mode)
   :hook (dired-mode . diff-hl-dired-mode)
