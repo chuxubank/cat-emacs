@@ -16,3 +16,9 @@
   :after flymake
   :config
   (add-to-list 'sideline-backends-right #'sideline-flymake))
+
+(use-package sideline-blame
+  :demand t
+  :after sideline
+  :config
+  (add-to-list 'sideline-backends-right #'sideline-blame))
