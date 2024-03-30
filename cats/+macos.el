@@ -24,10 +24,11 @@
     :when (display-graphic-p)
     :hook (after-init . mac-pseudo-daemon-mode)
     :config
-    (advice-add #'macpd-make-new-default-frame :after (lambda (_) (cat-client-frame-config))))
-  (use-package server
-    :when (display-graphic-p)
-    :hook (after-init . server-mode)))
+    (advice-add #'macpd-make-new-default-frame
+                :filter-return
+                (lambda (frame)
+                  (run-hook-with-args 'cat-setup-fonts-hook nil frame)
+                  frame))))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)
 (define-key global-map (kbd "s-q") #'save-buffers-kill-emacs)
