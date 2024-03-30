@@ -1,14 +1,22 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package codeium
+  :bind
+  (:map cat-cape-map
+        ("c" . cat-cape-codeium))
   :vc (codeium
        :url "https://github.com/Exafunction/codeium.el"
        :rev :newest)
   :init
-  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point)
+  (defun cat-cape-codeium (&optional interactive)
+    "Allow codeium capf to be run by itself"
+    (interactive (list t))
+    (when interactive
+      ;; if also testing copilot, clear their overlay before showing capf popup
+      (when (bound-and-true-p copilot-mode) (copilot-clear-overlay))
+      (cape-interactive #'codeium-completion-at-point)))
   :custom
   (codeium-command-executable (expand-file-name "language_server" cat-codeium-dir))
-  (codeium/metadata/api_key (f-read-text cat-codeium-api-key-file))
   :config
   ;; get codeium status in the modeline
   (setq codeium-mode-line-enable
@@ -17,9 +25,4 @@
   ;; use M-x codeium-diagnose to see apis/fields that would be sent to the local language server
   (setq codeium-api-enabled
         (lambda (api)
-          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion))))
-
-  (defun cat-disable-codeium ()
-    (setq-local completion-at-point-functions (delq 'codeium-completion-at-point completion-at-point-functions)))
-
-  (add-hook 'pass-view-mode-hook #'cat-disable-codeium))
+          (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion)))))

@@ -63,3 +63,7 @@
   "t" 'cat-toggle-prefix
   "w" #'webjump
   "." 'cat-dict-prefix)
+
+(defvar-keymap cat-escape-map
+  :keymap esc-map
+  "p" #'cat-cape-prefix)
