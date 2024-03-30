@@ -20,5 +20,7 @@
 (use-package sideline-blame
   :demand t
   :after sideline
+  :custom
+  (sideline-blame-commit-format " %s")
   :config
-  (add-to-list 'sideline-backends-right #'sideline-blame))
+  (add-to-list 'sideline-backends-left #'sideline-blame))
