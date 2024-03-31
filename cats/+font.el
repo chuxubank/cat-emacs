@@ -12,7 +12,7 @@
 (defvar cat-mono-code-fonts '("Victor Mono" "JetBrains Mono" "Cascadia Code" "Fira Code")
   "Default monospaced fonts.")
 
-(defvar cat-mono-thin-fonts '("Iosevka")
+(defvar cat-mono-thin-fonts '("Iosevka Term")
   "Default monospaced thin fonts.")
 
 (defvar cat-mono-serif-fonts '("Courier Prime")
