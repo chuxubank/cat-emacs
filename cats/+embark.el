@@ -58,6 +58,7 @@
 
 (when (package-installed-p 'avy)
   (use-package avy-embark-collect
+    :after embark
     :bind
     (:map embark-collect-mode-map
           ("C-'" . avy-embark-collect-choose)
