@@ -4,5 +4,5 @@
   :ensure-system-package
   (pylint . pylint)
   (black . black)
-  (pylsp . "pip install python-lsp-server"))
+  (pylsp . python-lsp-server))
 

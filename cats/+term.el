@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package vterm
+  :ensure-system-package
+  (cmake . cmake)
   :bind
   (:map vterm-mode-map
         ("C-q" . #'vterm-send-next-key)))
