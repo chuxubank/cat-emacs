@@ -194,3 +194,7 @@
   :ensure nil
   :custom
   (abbrev-file-name (concat cat-etc-dir "abbrev_defs")))
+
+(use-package ansi-color
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
