@@ -14,6 +14,9 @@
 
 (setq custom-safe-themes t)
 
+(use-package display-line-numbers
+  :hook (prog-mode . display-line-numbers-mode))
+
 (use-package simple
   :ensure nil
   :delight
