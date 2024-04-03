@@ -50,6 +50,8 @@
 
 (defvar-keymap cat-map
   :keymap mode-specific-map
+  "." 'cat-dict-prefix
+  ":" #'avy-goto-char-timer
   "a" #'org-agenda
   "c" #'org-capture
   "d" 'cat-org-roam-dailies-prefix
@@ -61,8 +63,7 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
-  "w" #'webjump
-  "." 'cat-dict-prefix)
+  "w" #'webjump)
 
 (defvar-keymap cat-escape-map
   :keymap esc-map
