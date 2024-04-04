@@ -16,10 +16,12 @@
         (delete-directory rime-librime-root t))
       (when (file-exists-p version-file)
         (delete-file version-file t))
-      (shell-command (format "tar -xjf %s -C %s" file cat-rime-dir))
+      (+mkdir-p cat-rime-dir)
+      (if (zerop (shell-command (format "tar -xjf %s -C %s" file cat-rime-dir)))
+          (message "Latest librime for macOS has been extracted to %s" cat-rime-dir)
+        (error "Extract librime error"))
       (unless keep-after-extract
-        (delete-file file))
-      (message "Latest librime for macOS has been extracted to %s" cat-rime-dir)))
+        (delete-file file))))
 
   (defun +rime-librime-download-install ()
     "Download and install the latest librime from GitHub"
