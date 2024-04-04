@@ -29,7 +29,7 @@
   "r" #'elfeed
   "R" #'magit-list-repositories
   "t" 'telega-prefix
-  "v" #'vterm
+  "v" #'vterm-toggle
   "w" #'wl)
 
 (defvar-keymap cat-org-plugin-map
