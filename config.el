@@ -87,6 +87,7 @@
 
 ;;; language
 (cat! "+cmake")
+(cat! "+makefile")
 (cat! "+powershell")
 (cat! "+yaml")
 (cat! "+kotlin")
