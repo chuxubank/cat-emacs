@@ -21,6 +21,7 @@
 (cat! "+highlight")
 (cat! "+windows")
 (cat! "+treemacs")
+(cat! "+dashboard")
 
 ;;; daemon
 (cat! "+daemon")

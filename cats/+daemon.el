@@ -27,6 +27,11 @@
 
 (add-hook 'server-after-make-frame-hook #'cat-client-frame-config)
 
+(when (package-installed-p 'dashboard)
+  (defun cat-daemon-init-buffer ()
+    (get-buffer-create dashboard-buffer-name))
+  (setq initial-buffer-choice #'cat-daemon-init-buffer))
+
 (defun cat-daemon-preload ()
   (cat-benchmark 'beg "daemon preload.")
   (require 'org)
