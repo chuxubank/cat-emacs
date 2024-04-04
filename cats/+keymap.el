@@ -20,7 +20,7 @@
   :prefix 'cat-plugin-prefix
   "b" #'bbdb
   "c" 'chezmoi-prefix
-  "d" #'devdocs-lookup
+  "d" 'cat-dev-doc-prefix
   "D" 'docker
   "g" #'igist-dispatch
   "l" #'elogcat

@@ -46,3 +46,14 @@ Intended for `eldoc-documentation-functions' (which see)."
 (use-package devdocs
   :custom
   (devdocs-data-dir (concat cat-etc-dir "devdocs")))
+
+(defvar-keymap cat-dev-doc-map
+  :doc "Keymap for `devdocs-mode' commands."
+  :name "Dev doc"
+  :prefix 'cat-dev-doc-prefix
+  "d" #'devdocs-delete
+  "i" #'devdocs-install
+  "l" #'devdocs-lookup
+  "p" #'devdocs-peruse
+  "s" #'devdocs-search
+  "u" #'devdocs-update-all)
