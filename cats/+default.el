@@ -141,7 +141,6 @@
 ;;; image
 (setq image-use-external-converter t)
 
-;;; revert
 (use-package autorevert
   :ensure nil
   :hook (after-init . global-auto-revert-mode)
@@ -166,11 +165,9 @@
         (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
   :custom
   (hs-set-up-overlay 'hideshow-folded-overlay-fn))
-
 ;;; pcache
 (setq pcache-directory (concat cat-cache-dir "pcache/"))
 
-;;; health
 (use-package type-break
   :ensure nil
   :hook
@@ -186,13 +183,11 @@
 ;;; time
 (setq timeclock-file (concat cat-etc-dir "timelog"))
 
-;;; gpg
 (use-package epg-config
   :ensure nil
   :custom
   (epg-pinentry-mode 'loopback))
 
-;;; abbrev
 (use-package abbrev
   :ensure nil
   :custom
@@ -201,3 +196,10 @@
 (use-package ansi-color
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
+
+(use-package transient
+  :pin gnu
+  :custom
+  (transient-levels-file (concat cat-etc-dir "transient/levels"))
+  (transient-values-file (concat cat-etc-dir "transient/values"))
+  (transient-history-file (concat cat-etc-dir "transient/history")))

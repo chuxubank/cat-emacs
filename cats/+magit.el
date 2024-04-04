@@ -1,12 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package transient
-  :ensure nil
-  :custom
-  (transient-levels-file (concat cat-etc-dir "transient/levels"))
-  (transient-values-file (concat cat-etc-dir "transient/values"))
-  (transient-history-file (concat cat-etc-dir "transient/history")))
-
 (use-package magit
   :commands #'magit-read-repository
   :custom
