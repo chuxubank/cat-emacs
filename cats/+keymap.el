@@ -42,6 +42,7 @@
   "f" 'cat-file-prefix
   "j" 'cat-org-jira-prefix
   "l" #'org-store-link
+  "n" #'major-mode-hydra
   "o" #'ace-window
   "p" 'cat-plugin-prefix
   "r" 'cat-org-roam-prefix

@@ -42,15 +42,6 @@
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
   (+org-todo-onhold ((t (:inherit (bold warning org-todo)))))
   (+org-todo-cancel ((t (:inherit (bold org-done) :strike-through t))))
-  :general-config
-  (cat-local-leader-def
-    :keymap org-mode-map
-    "b" #'orb-note-actions
-    "m" #'org-media-note-hydra/body
-    "n" #'org-noter
-    "j" #'org-jira-todo-to-jira
-    "l" #'org-cliplink
-    "s" 'org-srs-prefix)
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))

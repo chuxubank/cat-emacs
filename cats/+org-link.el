@@ -38,4 +38,8 @@
   (when IS-MAC
     (setq org-dial-program "open tel:")))
 
-(use-package org-cliplink)
+(use-package org-cliplink
+  :mode-hydra
+  (org-mode
+   ("Plugin"
+    (("c" org-cliplink "cliplink")))))

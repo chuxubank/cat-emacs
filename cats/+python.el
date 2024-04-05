@@ -15,9 +15,9 @@
 
 (use-package poetry
   :hook (python-base-mode . poetry-tracking-mode)
-  :general
-  (cat-local-leader-def
-    :keymaps 'python-ts-mode-map
-    "p" #'poetry)
+  :mode-hydra
+  (python-base-mode
+   ("Plugin"
+    (("p" poetry "poetry"))))
   :custom
   (poetry-tracking-strategy 'switch-buffer))
