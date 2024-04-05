@@ -37,6 +37,8 @@
 (defvar cat-math-fonts '("DejaVu Math TeX Gyre" "Noto Sans Math")
   "Fonts for characters in `mathematical' script.")
 
+(defvar cat-symbol-fonts '("Apple Symbols"))
+
 (defvar cat-default-font (car cat-mono-thin-fonts)
   "Cat default font.
 
@@ -97,6 +99,9 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
       (set-face-attribute 'default frame :font cat-default-font :height cat-font-size :weight 'light))
     (set-face-attribute 'mode-line-active frame :font (cadr cat-mono-thin-fonts))
     (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
+
+    ;; (+safe-set-fontset-fonts t 'symbol cat-symbol-fonts frame)
+
     ;; 猫，ねこ，고양이
     (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts frame)
     (+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts frame)
