@@ -5,6 +5,10 @@
   (dolist (arg args)
     (add-to-list list arg)))
 
+(defun +random-get (list)
+  "Random get item from LIST."
+  (nth (random (length list)) list))
+
 (defun +url-get-query-content (key &optional url)
   "Get query value from key in url or clipboard."
   (when (null url)
