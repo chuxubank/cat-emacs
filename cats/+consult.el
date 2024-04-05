@@ -52,6 +52,10 @@
         xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
+  :mode-hydra
+  (org-mode
+   ("Plugin"
+    (("h" #'consult-org-heading "headings"))))
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
@@ -62,6 +66,3 @@
    :preview-key '(:debounce 0.4 any))
   (setq consult-narrow-key "<")
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
-
-(with-eval-after-load 'org
-  (define-key org-mode-map [remap org-goto] #'consult-org-heading))
