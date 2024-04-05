@@ -19,7 +19,7 @@
                               "Monaco")
   "Default monospaced fonts.")
 
-(defvar cat-mono-thin-fonts '("Iosevka Term")
+(defvar cat-mono-thin-fonts '("Iosevka Term" "Iosevka")
   "Default monospaced thin fonts.")
 
 (defvar cat-mono-serif-fonts '("Courier Prime")
@@ -66,8 +66,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
               (progn (set-fontset-font fontset characters font frame (if find 'append nil))
                      (setq find t)
                      (message "Set %s fontset font to %s" characters font))
-            (warn "Font %s not found" font))))))
-  )
+            (warn "Font %s not found" font)))))))
 
 (defun +safe-set-face-fonts (face font-list &optional frame)
   "Safely set face fonts."
@@ -96,6 +95,8 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
     (if IS-MACPORT
         (set-face-attribute 'default frame :font cat-default-font :height cat-font-size)
       (set-face-attribute 'default frame :font cat-default-font :height cat-font-size :weight 'light))
+    (set-face-attribute 'mode-line-active frame :font (cadr cat-mono-thin-fonts))
+    (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
     ;; 猫，ねこ，고양이
     (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts frame)
     (+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts frame)
