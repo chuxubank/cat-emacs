@@ -6,9 +6,6 @@
 
 (use-package org-jira
   :delight " 󰌃"
-  :bind
-  (:map org-jira-entry-mode-map
-        ("C-c n j" . cat-org-jira-issue-prefix))
   :init
   ;; prevent `org-jira-mode' load keymap
   (setq org-jira-entry-mode-map (make-sparse-keymap))
@@ -31,6 +28,11 @@
    '(("Open" . "Start Dev Work")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
+  :general-config
+  (cat-local-leader-def
+    :keymaps 'org-jira-entry-mode-map
+    :major-modes org-jira-mode
+    "j" #'cat-org-jira-issue-prefix)
   :config
   (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
   (add-to-list 'org-agenda-files (expand-file-name "cur-sprint.org" org-jira-working-dir)))

@@ -32,22 +32,6 @@
   "v" #'vterm-toggle
   "w" #'wl)
 
-(defvar-keymap cat-org-plugin-map
-  :doc "Keymap for `org' plugins."
-  :name "Cat Org Plugin"
-  :prefix 'cat-org-plugin-prefix
-  "b" #'orb-note-actions
-  "m" #'org-media-note-hydra/body
-  "n" #'org-noter
-  "j" #'org-jira-todo-to-jira
-  "l" #'org-cliplink
-  "s" 'org-srs-prefix)
-
-(with-eval-after-load 'org
-  (defvar-keymap cat-org-map
-    :keymap org-mode-map
-    "C-c n" 'cat-org-plugin-prefix))
-
 (defvar-keymap cat-map
   :keymap mode-specific-map
   "." 'cat-dict-prefix

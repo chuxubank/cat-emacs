@@ -53,6 +53,17 @@
 
 (use-package system-packages)
 (use-package delight)
+(use-package general
+  :demand t
+  :init
+  (defvar cat-local-leader-prefix-key "C-c n")
+  :config
+  (general-create-definer cat-local-leader-def
+    :major-modes t
+    :prefix cat-local-leader-prefix-key
+    :prefix-command 'cat-local-leader-prefix
+    :prefix-map 'cat-local-leader-map
+    :prefix-name "Cat Local Leader"))
 
 (use-package project
   :ensure nil
