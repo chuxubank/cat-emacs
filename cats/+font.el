@@ -14,6 +14,7 @@
                               "Cascadia Code"
                               "Fira Code"
                               "SF Mono"
+                              "IBM Plex Mono"
                               "Menlo"
                               "Monaco")
   "Default monospaced fonts.")
@@ -168,25 +169,28 @@ Unless `buffer-face-mode' already enabled."
       (+safe-set-face-fonts 'markdown-table-face cat-mono-thin-fonts)
       (+safe-set-face-fonts 'markdown-code-face cat-mono-code-fonts)
       (+safe-set-face-fonts 'markdown-inline-code-face cat-mono-code-fonts))
+     ((derived-mode-p 'json-mode 'json-ts-mode
+                      'yaml-mode 'yaml-ts-mode
+                      'toml-ts-mode
+                      'conf-mode)
+      (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
+     ((derived-mode-p 'objc-mode
+                      'swift-mode)
+      (+safe-buffer-face-set-fonts (nth 4 cat-mono-code-fonts)))
+     ((derived-mode-p 'plantuml-mode
+                      'mermaid-mode 'mermaid-ts-mode)
+      (+safe-buffer-face-set-fonts (nth 3 cat-mono-code-fonts)))
+     ((derived-mode-p 'python-base-mode)
+      (+safe-buffer-face-set-fonts (nth 2 cat-mono-code-fonts)))
+     ((derived-mode-p 'kotlin-ts-mode 'kotlin-mode
+                      'java-ts-mode 'java-mode
+                      'js-base-mode
+                      'typescript-ts-base-mode 'typescript-mode)
+      (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'prog-mode)
-      (cond
-       ((derived-mode-p 'objc-mode
-                        'swift-mode)
-        (+safe-buffer-face-set-fonts (nth 4 cat-mono-code-fonts)))
-       ((derived-mode-p 'plantuml-mode
-                        'mermaid-mode 'mermaid-ts-mode)
-        (+safe-buffer-face-set-fonts (nth 3 cat-mono-code-fonts)))
-       ((derived-mode-p 'python-base-mode)
-        (+safe-buffer-face-set-fonts (nth 2 cat-mono-code-fonts)))
-       ((derived-mode-p 'kotlin-ts-mode 'kotlin-mode
-                        'java-ts-mode 'java-mode
-                        'js-base-mode
-                        'typescript-ts-base-mode 'typescript-mode)
-        (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
-       (t
-        (+safe-buffer-face-set-fonts cat-mono-code-fonts))))
+      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'Info-mode)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
