@@ -4,5 +4,16 @@
   :ensure-system-package
   (pylint . pylint)
   (black . black)
-  (pylsp . python-lsp-server))
+  (pylsp . python-lsp-server)
+  :custom
+  (python-indent-guess-indent-offset-verbose nil))
 
+(use-package pet
+  :delight " 󰌠"
+  :ensure-system-package (dasel)
+  :hook (python-base-mode . pet-mode))
+
+(use-package poetry
+  :hook (python-base-mode . poetry-tracking-mode)
+  :custom
+  (poetry-tracking-strategy 'switch-buffer))
