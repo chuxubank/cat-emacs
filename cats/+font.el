@@ -9,7 +9,13 @@
 (defvar cat-sans-fonts '("Iosevka Aile" "Inter" "DejaVu Sans" "Roboto")
   "Default proportional sans serif fonts.")
 
-(defvar cat-mono-code-fonts '("Victor Mono" "JetBrains Mono" "Cascadia Code" "Fira Code")
+(defvar cat-mono-code-fonts '("Victor Mono"
+                              "JetBrains Mono"
+                              "Cascadia Code"
+                              "Fira Code"
+                              "SF Mono"
+                              "Menlo"
+                              "Monaco")
   "Default monospaced fonts.")
 
 (defvar cat-mono-thin-fonts '("Iosevka Term")
@@ -165,7 +171,22 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'prog-mode)
-      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
+      (cond
+       ((derived-mode-p 'objc-mode
+                        'swift-mode)
+        (+safe-buffer-face-set-fonts (nth 4 cat-mono-code-fonts)))
+       ((derived-mode-p 'plantuml-mode
+                        'mermaid-mode 'mermaid-ts-mode)
+        (+safe-buffer-face-set-fonts (nth 3 cat-mono-code-fonts)))
+       ((derived-mode-p 'python-base-mode)
+        (+safe-buffer-face-set-fonts (nth 2 cat-mono-code-fonts)))
+       ((derived-mode-p 'kotlin-ts-mode 'kotlin-mode
+                        'java-ts-mode 'java-mode
+                        'js-base-mode
+                        'typescript-ts-base-mode 'typescript-mode)
+        (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
+       (t
+        (+safe-buffer-face-set-fonts cat-mono-code-fonts))))
      ((derived-mode-p 'Info-mode)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
