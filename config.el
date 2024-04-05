@@ -99,7 +99,7 @@
 (cat! "+plantuml")
 (cat! "+mermaid")
 (cat! "+protobuf")
-(cat! "+json")
+(cat! "+js")
 (cat! "+caddy")
 (cat! "+docker")
 (cat! "+vb")
