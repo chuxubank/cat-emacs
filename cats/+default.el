@@ -197,6 +197,10 @@
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
+(use-package compile
+  :ensure nil
+  :delight (compilation-shell-minor-mode " "))
+
 (use-package transient
   :pin gnu
   :custom
