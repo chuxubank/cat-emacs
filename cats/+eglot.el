@@ -8,12 +8,14 @@
           c++-mode
           c++-ts-mode
           objc-mode
+          python-base-mode
           ;; kotlin-mode
           ;; kotlin-ts-mode
           )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
-  (eglot-connect-timeout (* 30 60)))
-
-(use-package flycheck-eglot
-  :hook (flycheck-mode . global-flycheck-eglot-mode))
+  (eglot-connect-timeout (* 30 60))
+  :mode-hydra
+  (prog-mode
+   ("LSP"
+    (("e" eglot)))))

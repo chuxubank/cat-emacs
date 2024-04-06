@@ -6,7 +6,11 @@
   (black . black)
   (pylsp . python-lsp-server)
   :custom
-  (python-indent-guess-indent-offset-verbose nil))
+  (python-indent-guess-indent-offset-verbose nil)
+  :mode-hydra
+  (python-base-mode
+   ("LSP"
+    (("e" eglot "eglot")))))
 
 (use-package pet
   :delight " 󰌠"

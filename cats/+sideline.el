@@ -27,3 +27,12 @@
   (sideline-blame-commit-format " %s")
   :config
   (add-to-list 'sideline-backends-right #'sideline-blame))
+
+(use-package sideline-eglot
+  :vc (sideline-eglot
+       :url "https://github.com/emacs-sideline/sideline-eglot"
+       :rev :newest)
+  :demand t
+  :after sideline eglot
+  :config
+  (add-to-list 'sideline-backends-right #'sideline-eglot))
