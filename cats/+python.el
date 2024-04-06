@@ -10,7 +10,9 @@
   :mode-hydra
   (python-base-mode
    ("LSP"
-    (("e" eglot "eglot")))))
+    (("e" eglot-hydra/body "eglot"))
+    "Plugin"
+    (("p" poetry "poetry")))))
 
 (use-package pet
   :delight " 󰌠"
@@ -19,9 +21,5 @@
 
 (use-package poetry
   :hook (python-base-mode . poetry-tracking-mode)
-  :mode-hydra
-  (python-base-mode
-   ("Plugin"
-    (("p" poetry "poetry"))))
   :custom
   (poetry-tracking-strategy 'switch-buffer))

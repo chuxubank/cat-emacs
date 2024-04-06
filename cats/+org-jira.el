@@ -28,10 +28,6 @@
    '(("Open" . "Start Dev Work")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
-  :mode-hydra
-  (org-mode
-   ("Jira"
-    (("j" org-jira-todo-to-jira "transform"))))
   :config
   (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
   (add-to-list 'org-agenda-files (expand-file-name "cur-sprint.org" org-jira-working-dir)))

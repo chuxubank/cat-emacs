@@ -6,12 +6,12 @@
   (org-drill-spaced-repetition-algorithm 'simple8)
   (org-drill-add-random-noise-to-intervals-p t)
   (org-drill-adjust-intervals-for-early-and-late-repetitions-p t)
-  :mode-hydra
-  (org-mode
+  :pretty-hydra
+  ((:color teal)
    ("Drill"
-    (("dd" org-drill "drill")
-     ("da" org-drill-again "again")
-     ("dc" org-drill-cram "cram")))))
+    (("d" org-drill "drill")
+     ("a" org-drill-again "again")
+     ("c" org-drill-cram "cram")))))
 
 (use-package org-fc
   :disabled
@@ -26,17 +26,17 @@
   (org-fc-review-history-file (concat cat-etc-dir "org-fc-reviews.tsv")))
 
 (use-package org-anki
-  :mode-hydra
-  (org-mode
+  :pretty-hydra
+  ((:color teal)
    ("Anki"
-    (("aa" #'org-anki-sync-entry "sync entry")
-     ("ab" #'org-anki-browse-entry "browse entry")
-     ("ac" #'org-anki-cloze-dwim "cloze dwim")
-     ("ad" #'org-anki-delete-entry "delete entry")
-     ("aD" #'org-anki-delete-all "delete all")
-     ("ai" #'org-anki-import-deck "import deck")
-     ("as" #'org-anki-sync-all "sync all")
-     ("au" #'org-anki-update-all "update all")))))
+    (("a" #'org-anki-sync-entry "sync entry")
+     ("b" #'org-anki-browse-entry "browse entry")
+     ("c" #'org-anki-cloze-dwim "cloze dwim")
+     ("d" #'org-anki-delete-entry "delete entry")
+     ("D" #'org-anki-delete-all "delete all")
+     ("i" #'org-anki-import-deck "import deck")
+     ("s" #'org-anki-sync-all "sync all")
+     ("u" #'org-anki-update-all "update all")))))
 
 (use-package promise
   :disabled

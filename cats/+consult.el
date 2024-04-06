@@ -52,10 +52,6 @@
         xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
-  :mode-hydra
-  (org-mode
-   ("Plugin"
-    (("h" #'consult-org-heading "headings"))))
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)

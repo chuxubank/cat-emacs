@@ -24,10 +24,6 @@
   :demand t
   :after org-roam
   :delight " 󱉟"
-  :mode-hydra
-  (org-mode
-   ("Note"
-    (("b" orb-note-actions "bibtex"))))
   :custom
   (orb-roam-ref-format 'org-cite)
   (org-roam-capture-templates

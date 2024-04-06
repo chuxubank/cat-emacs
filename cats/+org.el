@@ -42,6 +42,21 @@
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
   (+org-todo-onhold ((t (:inherit (bold warning org-todo)))))
   (+org-todo-cancel ((t (:inherit (bold org-done) :strike-through t))))
+  :mode-hydra
+  (org-mode
+   ("Bibtex"
+    (("b" orb-note-actions "orb action"))
+    "Notes"
+    (("n" org-noter "noter")
+     ("m" org-media-note-hydra/body "media"))
+    "SRS"
+    (("a" org-anki-hydra/body "anki")
+     ("d" org-drill-hydra/body "drill"))
+    "Jira"
+    (("j" org-jira-todo-to-jira "transform"))
+    "Plugin"
+    (("c" org-cliplink "cliplink")
+     ("h" consult-org-heading "headings"))))
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))

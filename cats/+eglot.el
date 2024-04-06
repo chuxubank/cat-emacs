@@ -14,4 +14,10 @@
           )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
-  (eglot-connect-timeout (* 30 60)))
+  (eglot-connect-timeout (* 30 60))
+  :pretty-hydra
+  ((:color teal)
+   ("Eglot"
+    (("e" #'eglot "eglot")
+     ("k" #'eglot-shutdown "eglot shutdown")
+     ("K" #'eglot-shutdown-all "eglot shutdown all")))))

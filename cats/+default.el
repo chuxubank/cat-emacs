@@ -207,3 +207,11 @@
   (transient-levels-file (concat cat-etc-dir "transient/levels"))
   (transient-values-file (concat cat-etc-dir "transient/values"))
   (transient-history-file (concat cat-etc-dir "transient/history")))
+
+(use-package profiler
+  :ensure nil
+  :pretty-hydra
+  ((:color pink :quit-key "q")
+   ("Profiler"
+    (("s" profiler-start "start")
+     ("r" (progn (profiler-report) (profiler-stop)) "stop & report" :exit t)))))
