@@ -2,7 +2,7 @@
 
 (use-package kotlin-mode
   :ensure-system-package
-  (kotlin-language-server . kotlin-language-server))
+  (kotlin-language-server))
 
 (use-package kotlin-ts-mode
   :when EMACS29+

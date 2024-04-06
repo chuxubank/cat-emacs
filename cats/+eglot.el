@@ -14,8 +14,4 @@
           )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
-  (eglot-connect-timeout (* 30 60))
-  :mode-hydra
-  (prog-mode
-   ("LSP"
-    (("e" eglot)))))
+  (eglot-connect-timeout (* 30 60)))
