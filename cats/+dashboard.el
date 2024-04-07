@@ -20,7 +20,7 @@
   (dashboard-startup-banner cat-banner-file)
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
-  (dashboard-show-shortcuts nil)
+  (dashboard-heading-shorcut-format " [%s]")
   (dashboard-display-icons-p t)
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
