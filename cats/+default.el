@@ -215,3 +215,8 @@
    ("Profiler"
     (("s" profiler-start "start")
      ("r" (progn (profiler-report) (profiler-stop)) "stop & report" :exit t)))))
+
+(use-package midnight
+  :ensure nil
+  :hook
+  (after-init . midnight-mode))
