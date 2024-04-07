@@ -18,6 +18,19 @@
   :pretty-hydra
   ((:color teal)
    ("Eglot"
-    (("e" #'eglot "eglot")
+    (("e" #'eglot "start")
+     ("E" #'eglot-reconnect "reconnect")
      ("k" #'eglot-shutdown "eglot shutdown")
-     ("K" #'eglot-shutdown-all "eglot shutdown all")))))
+     ("K" #'eglot-shutdown-all "eglot shutdown all")
+     ("r" #'eglot-rename "rename")
+     ("f" #'eglot-format "format")
+     ("F" #'eglot-format-buffer "format buffer")
+     ("d" #'eglot-find-declaration "declaration")
+     ("i" #'eglot-find-implementation "implementations"))
+    "Code Actions"
+    (("c" #'eglot-code-actions "actions")
+     ("o" #'eglot-code-action-organize-imports "organize imports")
+     ("q" #'eglot-code-action-quickfix "quickfix")
+     ("E" #'eglot-code-action-extract "extract")
+     ("I" #'eglot-code-action-inline "inline")
+     ("R" #'eglot-code-action-rewrite "rewrite")))))
