@@ -20,7 +20,7 @@
 (cat! "+autodark")
 (cat! "+highlight")
 (cat! "+windows")
-(cat! "+tabs")
+(cat! "+workspace")
 (cat! "+treemacs")
 (cat! "+dashboard")
 ;; (cat! "+hydra")

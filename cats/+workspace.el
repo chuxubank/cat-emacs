@@ -9,7 +9,14 @@
   (tab-bar-show 1)
   (tab-bar-tab-hints t))
 
+(use-package burly
+  :hook
+  (after-init . burly-tabs-mode))
+
+(use-package bufler)
+
 (use-package tabspaces
+  :disabled
   :hook
   (after-init . tabspaces-mode)
   :custom
