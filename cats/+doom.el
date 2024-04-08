@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (defun doom-dark-theme ()
-  (load-theme 'kaolin-dark t))
+  (load-theme 'doom-gruvbox t))
 (defun doom-light-theme ()
-  (load-theme 'kaolin-light t))
+  (load-theme 'doom-gruvbox-light t))
 
 (use-package doom-themes
   :demand t
