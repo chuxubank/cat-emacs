@@ -18,8 +18,8 @@
   :pretty-hydra
   ((:color teal)
    ("Eglot"
-    (("e" #'eglot "start")
-     ("E" #'eglot-reconnect "reconnect")
+    (("s" #'eglot "start")
+     ("S" #'eglot-reconnect "reconnect")
      ("k" #'eglot-shutdown "eglot shutdown")
      ("K" #'eglot-shutdown-all "eglot shutdown all")
      ("r" #'eglot-rename "rename")
