@@ -5,14 +5,14 @@
 (defvar cat-theme-refresh-hook nil)
 
 (cond
- ((package-installed-p 'nano)
+ ((featurep 'nano)
   (add-hook 'cat-dark-mode-hook #'nano-theme-set-dark)
   (add-hook 'cat-light-mode-hook #'nano-theme-set-light)
   (add-hook 'cat-theme-refresh-hook #'nano-refresh-theme))
- ((package-installed-p 'nano-theme)
+ ((featurep 'nano-theme)
   (add-hook 'cat-dark-mode-hook #'nano-dark)
   (add-hook 'cat-light-mode-hook #'nano-light))
- ((package-installed-p 'doom-themes)
+ ((featurep 'doom-themes)
   (add-hook 'cat-dark-mode-hook #'doom-dark-theme)
   (add-hook 'cat-light-mode-hook #'doom-light-theme)))
 

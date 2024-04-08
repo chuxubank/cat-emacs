@@ -115,8 +115,7 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
     (run-hook-with-args 'cat-setup-fonts-hook nil frame)
     (cat-benchmark 'end "setup fonts.")))
 
-(when (display-graphic-p)
-  (add-hook 'after-init-hook #'cat-setup-fonts))
+(add-hook 'cat-theme-refresh-hook #'cat-setup-fonts)
 
 (if IS-MACPORT
     (mac-auto-operator-composition-mode)

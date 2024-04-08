@@ -7,6 +7,7 @@
        :rev :newest))
 
 (use-package nano-theme
+  :demand t
   :config
   (setq
    default-frame-alist (list '(internal-border-width . 24)
@@ -20,8 +21,7 @@
                           'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
-  :disabled
-  :after nano-theme
+  :demand t
   :custom
   (nano-modeline-position 'nano-modeline-footer)
   :config
@@ -42,8 +42,13 @@
 
 (use-package nano-minibuffer
   :disabled
+  :predicate
+  (use-package mini-buffer)
+  :demand t
   :vc (nano-minibuffer
        :url "https://github.com/rougier/nano-minibuffer"
        :rev :newest)
   :config
   (nano-minibuffer-mode))
+
+(use-package nano-agenda)

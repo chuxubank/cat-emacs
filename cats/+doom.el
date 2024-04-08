@@ -6,6 +6,7 @@
   (load-theme 'kaolin-light t))
 
 (use-package doom-themes
+  :demand t
   :hook (org-load . doom-themes-org-config))
 
 (use-package kaolin-themes)
