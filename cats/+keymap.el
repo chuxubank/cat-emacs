@@ -10,6 +10,7 @@
   "m" #'cat-toggle-minor-modes
   "s" #'whitespace-mode
   "t" #'toggle-truncate-lines
+  "T" #'toggle-tab-bar-mode-from-frame
   "v" #'visual-line-mode
   "V" #'view-mode
   "w" #'toggle-word-wrap)
