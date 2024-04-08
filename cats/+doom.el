@@ -23,3 +23,6 @@
 (defun cat-toggle-minor-modes ()
   (interactive)
   (setq doom-modeline-minor-modes (not doom-modeline-minor-modes)))
+
+(use-package solaire-mode
+  :hook ((cat-theme-refresh . solaire-global-mode)))
