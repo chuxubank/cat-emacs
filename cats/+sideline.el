@@ -34,5 +34,7 @@
        :rev :newest)
   :demand t
   :after sideline eglot
+  :custom
+  (sideline-eglot-code-actions-prefix " ")
   :config
   (add-to-list 'sideline-backends-right #'sideline-eglot))
