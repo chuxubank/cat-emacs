@@ -32,3 +32,11 @@
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package transpose-frame)
+
+(use-package golden-ratio
+  :delight " 󰨤"
+  :hook (after-init . golden-ratio-mode)
+  :custom
+  (golden-ratio-auto-scale t)
+  :config
+  (add-to-list 'golden-ratio-inhibit-functions #'cat-which-key-buffer-show-p))
