@@ -13,15 +13,8 @@
   :hook
   (after-init . tabspaces-mode)
   :custom
-  (tabspaces-use-filtered-buffers-as-default t)
-  (tabspaces-default-tab "Default")
-  (tabspaces-remove-to-default t)
-  (tabspaces-include-buffers '("*scratch*"))
   (tabspaces-initialize-project-with-todo nil)
-  ;; sessions
-  (tabspaces-session t)
   (tabspaces-session-file (concat cat-etc-dir "tabsession.el"))
-  (tabspaces-session-auto-restore t)
   :config
   (with-eval-after-load 'consult
     ;; hide full buffer list (still available with "b" prefix)
