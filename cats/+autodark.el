@@ -9,10 +9,10 @@
   (add-hook 'cat-dark-mode-hook #'nano-theme-set-dark)
   (add-hook 'cat-light-mode-hook #'nano-theme-set-light)
   (add-hook 'cat-theme-refresh-hook #'nano-refresh-theme))
- ((featurep 'nano-theme)
+ ((featurep '+nano)
   (add-hook 'cat-dark-mode-hook #'nano-dark)
   (add-hook 'cat-light-mode-hook #'nano-light))
- ((featurep 'doom-themes)
+ ((featurep '+doom)
   (add-hook 'cat-dark-mode-hook #'doom-dark-theme)
   (add-hook 'cat-light-mode-hook #'doom-light-theme)))
 

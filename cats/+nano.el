@@ -7,7 +7,6 @@
        :rev :newest))
 
 (use-package nano-theme
-  :demand t
   :config
   (setq
    default-frame-alist (list '(internal-border-width . 24)
@@ -21,7 +20,8 @@
                           'wrap (make-glyph-code ?… 'nano-faded)))
 
 (use-package nano-modeline
-  :demand t
+  :hook
+  (after-init . nano-modeline-text-mode)
   :custom
   (nano-modeline-position 'nano-modeline-footer)
   :config
@@ -37,8 +37,7 @@
   (add-hook 'xwidget-webkit-mode-hook  #'nano-modeline-xwidget-mode)
   (add-hook 'messages-buffer-mode-hook #'nano-modeline-message-mode)
   (add-hook 'org-capture-mode-hook     #'nano-modeline-org-capture-mode)
-  (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode)
-  (nano-modeline-text-mode t))
+  (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode))
 
 (use-package nano-minibuffer
   :disabled
@@ -52,3 +51,6 @@
   (nano-minibuffer-mode))
 
 (use-package nano-agenda)
+
+(provide '+nano)
+;;; +nano.el ends here

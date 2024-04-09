@@ -6,7 +6,6 @@
   (load-theme 'doom-gruvbox-light t))
 
 (use-package doom-themes
-  :demand t
   :hook (org-load . doom-themes-org-config))
 
 (use-package kaolin-themes)
@@ -26,3 +25,6 @@
 
 (use-package solaire-mode
   :hook ((cat-theme-refresh . solaire-global-mode)))
+
+(provide '+doom)
+;;; +doom.el ends here
