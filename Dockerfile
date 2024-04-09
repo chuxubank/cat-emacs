@@ -32,7 +32,7 @@ RUN emacs --version
 
 ADD . /root/.emacs.d
 
-RUN echo "(custom-set-variables '(use-short-answers t))" > /root/.emacs.d/custom.el
+RUN echo "(custom-set-variables '(use-short-answers t) '(package-native-compile t))" > /root/.emacs.d/custom.el
 
 RUN yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
