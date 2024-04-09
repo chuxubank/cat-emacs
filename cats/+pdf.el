@@ -2,11 +2,12 @@
 
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
-  :init
-  (setq pdf-view-use-scaling t)
+  :custom
+  (pdf-view-use-scaling t)
+  :hook
+  (pdf-view-mode . pdf-view-themed-minor-mode)
   :config
-  (add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
-  (pdf-loader-install))
+  (pdf-loader-install :no-query))
 
 (use-package org-pdftools
   :hook (org-mode . org-pdftools-setup-link)
