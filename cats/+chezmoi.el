@@ -1,13 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi
-  :commands (chezmoi-dired-add-marked-files
-             chezmoi-magit-status
-             chezmoi-diff
-             chezmoi-ediff
-             chezmoi-find
-             chezmoi-sync-files)
-  :mode ("\\dot_\\'" . chezmoi-mode))
+  :commands
+  (chezmoi-dired-add-marked-files
+   chezmoi-magit-status
+   chezmoi-diff
+   chezmoi-ediff
+   chezmoi-find
+   chezmoi-sync-files))
 
 (when (package-installed-p 'company)
   (use-package chezmoi-company
