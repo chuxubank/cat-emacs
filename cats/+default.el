@@ -181,6 +181,7 @@
   :custom
   (type-break-file-name (concat cat-etc-dir "type-break"))
   (type-break-query-function #'y-or-n-p)
+  (type-break-good-break-interval 300)
   :config
   (type-break-guesstimate-keystroke-threshold 30))
 
