@@ -13,7 +13,9 @@
   :hook
   (after-init . burly-tabs-mode))
 
-(use-package bufler)
+(use-package bufler
+  :hook
+  (burly-tabs-after . bufler-workspace-mode))
 
 (use-package tabspaces
   :disabled
