@@ -34,9 +34,43 @@
 (use-package transpose-frame)
 
 (use-package golden-ratio
-  :delight " 󰨤"
-  :hook (after-init . golden-ratio-mode)
+  :demand
+  :init
+  ;; https://github.com/roman/golden-ratio.el/issues/57#issuecomment-131472709
+  (defvar golden-ratio-selected-window
+    (frame-selected-window)
+    "Selected window.")
+
+  (defun golden-ratio-set-selected-window
+      (&optional window)
+    "Set selected window to WINDOW."
+    (setq-default
+     golden-ratio-selected-window (or window (frame-selected-window))))
+
+  (defun golden-ratio-selected-window-p
+      (&optional window)
+    "Return t if WINDOW is selected window."
+    (eq (or window (selected-window))
+        (default-value 'golden-ratio-selected-window)))
+
+  (defun golden-ratio-maybe
+      (&optional arg)
+    "Run `golden-ratio' if `golden-ratio-selected-window-p' returns nil."
+    (interactive "p")
+    (unless (golden-ratio-selected-window-p)
+      (golden-ratio-set-selected-window)
+      (golden-ratio arg)))
+  :hook
+  (after-init . golden-ratio-mode)
   :custom
   (golden-ratio-auto-scale t)
   :config
-  (add-to-list 'golden-ratio-inhibit-functions #'cat-which-key-buffer-show-p))
+  (define-minor-mode golden-ratio-mode
+    "Enable automatic window resizing with golden ratio."
+    :lighter " 󰨤"
+    :global t
+    (if golden-ratio-mode
+        (add-hook 'buffer-list-update-hook 'golden-ratio-maybe)
+      (remove-hook 'buffer-list-update-hook 'golden-ratio-maybe)))
+  (with-eval-after-load 'which-key
+    (add-to-list 'golden-ratio-inhibit-functions #'which-key--popup-showing-p)))
