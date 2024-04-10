@@ -6,9 +6,13 @@
 
 (use-package kotlin-ts-mode
   :when EMACS29+
-  :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(kotlin-ts-mode "kotlin-language-server"))))
+  :mode-hydra
+  (("LSP"
+    (("e" eglot-hydra/body "eglot"))
+    "Test"
+    (("t" kotlin-ts-mode-goto-test-file "go to test file")
+     ("r" kotlin-ts-mode-run-current-test-function "run current test function")
+     ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
 
 (use-package flycheck-kotlin
   :hook (flycheck-mode . flycheck-kotlin-setup))
