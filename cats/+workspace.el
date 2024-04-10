@@ -11,11 +11,40 @@
 
 (use-package burly
   :hook
-  (after-init . burly-tabs-mode))
+  (after-init . burly-tabs-mode)
+  :pretty-hydra
+  ((:color teal :title "Burly")
+   ("Bookmark"
+    (("o" #'burly-open-bookmark "open")
+     ("l" #'burly-open-last-bookmark "open last")
+     ("r" #'burly-reset-tab "reset tab")
+     ("f" #'burly-bookmark-frames "frame")
+     ("w" #'burly-bookmark-windows "windows"))
+    "URL"
+    (("u" #'burly-open-url "open")
+     ("b" #'burly-kill-buffer-url "buffer")
+     ("f" #'burly-kill-frames-url "frame")
+     ("w" #'burly-kill-windows-url "windows")))))
 
 (use-package bufler
   :hook
-  (burly-tabs-after . bufler-workspace-mode))
+  (burly-tabs-after . bufler-workspace-mode)
+  :bind
+  ([remap list-buffers] . bufler)
+  :custom
+  (bufler-workspace-mode-lighter (nerd-icons-octicon "nf-oct-codespaces"))
+  :pretty-hydra
+  ((:color teal :title "Bufler")
+   ("Workspace"
+    (("b" #'bufler-workspace-switch-buffer "switch buffer")
+     ("f" #'bufler-workspace-focus-buffer "focus buffer")
+     ("o" #'bufler-workspace-open "open")
+     ("r" #'bufler-workspace-reset "reset")
+     ("s" #'bufler-workspace-save "save"))
+    "Other"
+    (("S" #'bufler-workspace-set "set")
+     ("N" #'bufler-workspace-buffer-name-workspace "set workspace")
+     ("F" #'bufler-workspace-frame-set "set frame")))))
 
 (use-package tabspaces
   :disabled

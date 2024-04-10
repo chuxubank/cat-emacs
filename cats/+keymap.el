@@ -31,7 +31,7 @@
   "R" #'magit-list-repositories
   "t" 'telega-prefix
   "v" #'vterm-toggle
-  "w" #'wl)
+  "w" #'webjump)
 
 (defvar-keymap cat-map
   :keymap mode-specific-map
@@ -49,7 +49,7 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
-  "w" #'webjump)
+  "w" #'bufler-hydra/body)
 
 (defvar-keymap cat-escape-map
   :keymap esc-map
