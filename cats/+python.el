@@ -13,7 +13,8 @@
    ("LSP"
     (("e" eglot-hydra/body "eglot"))
     "Plugin"
-    (("p" poetry "poetry")))))
+    (("p" #'poetry "poetry")
+     ("v" #'pet-verify-setup "pet verify")))))
 
 (use-package pet
   :delight " 󰌠"
