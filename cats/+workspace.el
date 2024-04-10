@@ -47,7 +47,6 @@
      ("F" #'bufler-workspace-frame-set "set frame")))))
 
 (use-package tabspaces
-  :disabled
   :hook
   (after-init . tabspaces-mode)
   :custom
@@ -72,3 +71,11 @@
 
       "Set workspace buffer list for consult-buffer.")
     (add-to-list 'consult-buffer-sources 'consult--source-workspace)))
+
+(pretty-hydra-define cat-workspace
+  (:color teal :title "Workspace")
+  ("Plugin"
+   (("b" #'bufler-hydra/body "bufler")
+    ("m" #'burly-hydra/body "burly"))
+   "Built-In"
+   (("d" #'tab-bar-close-tab "close tab"))))

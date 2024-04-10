@@ -49,7 +49,7 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
-  "w" #'bufler-hydra/body)
+  "w" #'cat-workspace/body)
 
 (defvar-keymap cat-escape-map
   :keymap esc-map
