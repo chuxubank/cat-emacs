@@ -10,6 +10,7 @@
   (tab-bar-tab-hints t))
 
 (use-package burly
+  :disabled
   :hook
   (after-init . burly-tabs-mode)
   :pretty-hydra
@@ -27,6 +28,7 @@
      ("w" #'burly-kill-windows-url "windows")))))
 
 (use-package bufler
+  :disabled
   :hook
   (burly-tabs-after . bufler-workspace-mode)
   :bind
@@ -52,7 +54,29 @@
   :custom
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session-file (concat cat-etc-dir "tabsession.el"))
+  :pretty-hydra
+  ((:color teal :title "Tabspaces")
+   ("Buffer"
+    (("C" tabspaces-clear-buffers "clear")
+     ("b" tabspaces-switch-to-buffer "switch buffer")
+     ("d" tabspaces-close-workspace "close")
+     ("k" tabspaces-kill-buffers-close-workspace "kill buffer close")
+     ("o" tabspaces-open-or-create-project-and-workspace "open project")
+     ("s" tabspaces-switch-or-create-workspace "switch")
+     ("r" tabspaces-remove-current-buffer "remove buffer")
+     ("R" tabspaces-remove-selected-buffer "remove select buffer"))))
   :config
+  (tab-bar-rename-tab "Home")
+  (when (get-buffer "*Messages*")
+    (set-frame-parameter nil
+                         'buffer-list
+                         (cons (get-buffer "*Messages*")
+                               (frame-parameter nil 'buffer-list))))
+  (when (get-buffer "*dashboard*")
+    (set-frame-parameter nil
+                         'buffer-list
+                         (cons (get-buffer "*dashboard*")
+                               (frame-parameter nil 'buffer-list))))
   (with-eval-after-load 'consult
     ;; hide full buffer list (still available with "b" prefix)
     (consult-customize consult--source-buffer :hidden t :default nil)
@@ -68,7 +92,6 @@
                                   :predicate #'tabspaces--local-buffer-p
                                   :sort 'visibility
                                   :as #'buffer-name)))
-
       "Set workspace buffer list for consult-buffer.")
     (add-to-list 'consult-buffer-sources 'consult--source-workspace)))
 
@@ -76,6 +99,9 @@
   (:color teal :title "Workspace")
   ("Plugin"
    (("b" #'bufler-hydra/body "bufler")
-    ("m" #'burly-hydra/body "burly"))
-   "Built-In"
-   (("d" #'tab-bar-close-tab "close tab"))))
+    ("m" #'burly-hydra/body "burly")
+    ("t" #'tabspaces-hydra/body "tabspaces"))
+   "Tab-bar"
+   (("d" #'tab-bar-close-tab "close tab")
+    ("r" #'tab-bar-rename-tab "rename")
+    ("R" #'tab-bar-rename-tab-by-name "rename by name"))))
