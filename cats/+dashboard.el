@@ -8,6 +8,10 @@
 
 (use-package dashboard
   :demand t
+  :bind
+  (:map dashboard-mode-map
+        ("j" . nil) ("n" . dashboard-next-line)
+        ("k" . nil) ("p" . dashboard-previous-line))
   :init
   (unless (file-exists-p cat-banner-file)
     (cat-download-banner))
@@ -18,7 +22,7 @@
                      (registers . 5)))
   (dashboard-item-shortcuts '((recents . "f")
                               (bookmarks . "b")
-                              (projects . "p")
+                              (projects . "j")
                               (agenda . "a")
                               (registers . "r")))
   (dashboard-banner-logo-title "Cat Emacs")
