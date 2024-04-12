@@ -48,6 +48,24 @@
      ("N" #'bufler-workspace-buffer-name-workspace "set workspace")
      ("F" #'bufler-workspace-frame-set "set frame")))))
 
+(use-package activities
+  :hook
+  (after-init . activities-mode)
+  (after-init . activities-tabs-mode)
+  :pretty-hydra
+  ((:color teal :title "Activities")
+   ("Manage"
+    (("n" activities-new)
+     ("d" activities-define)
+     ("a" activities-resume)
+     ("s" activities-suspend)
+     ("k" activities-kill)
+     ("g" activities-revert))
+    "View"
+    (("b" activities-switch-buffer)
+     ("l" activities-list)
+     ("RET" activities-switch)))))
+
 (use-package tabspaces
   :hook
   (after-init . tabspaces-mode)
@@ -98,8 +116,9 @@
 (pretty-hydra-define cat-workspace
   (:color teal :title "Workspace")
   ("Plugin"
-   (("b" #'bufler-hydra/body "bufler")
-    ("m" #'burly-hydra/body "burly")
+   (("a" #'activities-hydra/body "activities")
+    ;; ("b" #'bufler-hydra/body "bufler")
+    ;; ("m" #'burly-hydra/body "burly")
     ("t" #'tabspaces-hydra/body "tabspaces"))
    "Tab-bar"
    (("d" #'tab-bar-close-tab "close tab")
