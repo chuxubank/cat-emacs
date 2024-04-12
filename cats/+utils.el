@@ -52,6 +52,23 @@ List contains pairs mode lighter, see `minor-mode-alist'"
       (setq list (nthcdr 2 list)))
     (reverse output)))
 
+(defun +with-icon (icon str)
+  "Combine ICON with STR."
+  (let* ((category (nth 1 (split-string icon "-")))
+         (nd-icon (pcase category
+                    ("oct" (nerd-icons-octicon icon))
+                    ("md" (nerd-icons-mdicon icon))
+                    ("weather" (nerd-icons-insert-wicon icon))
+                    ("linux" (nerd-icons-insert-flicon icon))
+                    ("cod" (nerd-icons-insert-codicon icon))
+                    ("fa" (nerd-icons-insert-faicon icon))
+                    ("dev" (nerd-icons-insert-devicon icon))
+                    ("ice" (nerd-icons-insert-ipsicon icon))
+                    ("pom" (nerd-icons-insert-pomicon icon))
+                    ("seti" (nerd-icons-insert-sucicon icon))
+                    ("pl" (nerd-icons-insert-powerline icon)))))
+    (concat nd-icon " " str)))
+
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
   (interactive)

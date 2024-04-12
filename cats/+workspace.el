@@ -114,13 +114,13 @@
     (add-to-list 'consult-buffer-sources 'consult--source-workspace)))
 
 (pretty-hydra-define cat-workspace
-  (:color teal :title "Workspace")
+  (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
   ("Plugin"
    (("a" #'activities-hydra/body "activities")
     ;; ("b" #'bufler-hydra/body "bufler")
     ;; ("m" #'burly-hydra/body "burly")
     ("t" #'tabspaces-hydra/body "tabspaces"))
    "Tab-bar"
-   (("d" #'tab-bar-close-tab "close tab")
+   (("k" #'tab-bar-close-tab "close tab")
     ("r" #'tab-bar-rename-tab "rename")
     ("R" #'tab-bar-rename-tab-by-name "rename by name"))))
