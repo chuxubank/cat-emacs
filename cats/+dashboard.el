@@ -11,7 +11,8 @@
   :bind
   (:map dashboard-mode-map
         ("j" . nil) ("n" . dashboard-next-line)
-        ("k" . nil) ("p" . dashboard-previous-line))
+        ("k" . nil) ("p" . dashboard-previous-line)
+        ("d" . dashboard-remove-item-under))
   :init
   (unless (file-exists-p cat-banner-file)
     (cat-download-banner))
