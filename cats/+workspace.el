@@ -75,14 +75,14 @@
   :pretty-hydra
   ((:color teal :title "Tabspaces")
    ("Buffer"
-    (("C" tabspaces-clear-buffers "clear")
+    (("c" tabspaces-clear-buffers "clear")
      ("b" tabspaces-switch-to-buffer "switch buffer")
-     ("d" tabspaces-close-workspace "close")
-     ("k" tabspaces-kill-buffers-close-workspace "kill buffer close")
-     ("o" tabspaces-open-or-create-project-and-workspace "open project")
-     ("s" tabspaces-switch-or-create-workspace "switch")
      ("r" tabspaces-remove-current-buffer "remove buffer")
-     ("R" tabspaces-remove-selected-buffer "remove select buffer"))))
+     ("R" tabspaces-remove-selected-buffer "remove select buffer"))
+    "Workspace"
+    (("o" tabspaces-open-or-create-project-and-workspace "open project")
+     ("k" tabspaces-kill-buffers-close-workspace "kill buffer close")
+     ("s" tabspaces-switch-or-create-workspace "switch"))))
   :config
   (tab-bar-rename-tab "Home")
   (when (get-buffer "*Messages*")
@@ -121,7 +121,9 @@
     ;; ("m" #'burly-hydra/body "burly")
     ("t" #'tabspaces-hydra/body "tabspaces"))
    "Tab-bar"
-   (("k" #'tab-bar-close-tab "close tab")
+   (("n" #'tab-bar-new-tab "new tab")
+    ("N" #'tab-bar-new-tab-to "new tab to")
+    ("k" #'tab-bar-close-tab "close tab")
     ("r" #'tab-bar-rename-tab "rename")
     ("R" #'tab-bar-rename-tab-by-name "rename by name"))
    "Project"
