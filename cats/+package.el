@@ -38,7 +38,7 @@
     ))
 
 (setq package-check-signature nil
-      package-install-upgrade-built-in t
+      package-install-upgrade-built-in nil
       package-archives (assoc-default package-mirror package-mirror-alist))
 
 (unless (or EMACS29+ (package-installed-p 'use-package))
@@ -53,7 +53,14 @@
 
 (use-package system-packages)
 (use-package delight)
-(use-package major-mode-hydra :demand t)
+(use-package major-mode-hydra
+  :demand t
+  :init
+  (defun cat-major-mode-hydra-title-generator (_)
+    `(+with-mode-icon major-mode (s-concat (format-mode-line mode-name) " Commands")))
+  :custom
+  (major-mode-hydra-invisible-quit-key "q")
+  (major-mode-hydra-title-generator #'cat-major-mode-hydra-title-generator))
 
 (use-package project
   :ensure nil

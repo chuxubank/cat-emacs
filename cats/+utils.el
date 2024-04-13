@@ -72,6 +72,14 @@ List contains pairs mode lighter, see `minor-mode-alist'"
         nd-icon
       (concat nd-icon " " str))))
 
+(defun +with-mode-icon (mode &optional str)
+  "Give icon for MODE and STR."
+  (let ((nd-icon (nerd-icons-icon-for-mode mode)))
+    (if (or (null str)
+            (string-empty-p str))
+        nd-icon
+      (concat nd-icon " " str))))
+
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
   (interactive)
