@@ -70,19 +70,24 @@
   :hook
   (after-init . tabspaces-mode)
   :custom
+  (tabspaces-include-buffers nil)
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session-file (concat cat-etc-dir "tabsession.el"))
   :pretty-hydra
   ((:color teal :title "Tabspaces")
    ("Buffer"
-    (("c" tabspaces-clear-buffers "clear")
+    (("C" tabspaces-clear-buffers "clear")
      ("b" tabspaces-switch-to-buffer "switch buffer")
      ("r" tabspaces-remove-current-buffer "remove buffer")
      ("R" tabspaces-remove-selected-buffer "remove select buffer"))
     "Workspace"
     (("o" tabspaces-open-or-create-project-and-workspace "open project")
      ("k" tabspaces-kill-buffers-close-workspace "kill buffer close")
-     ("s" tabspaces-switch-or-create-workspace "switch"))))
+     ("t" tabspaces-switch-buffer-and-tab "switch to buffer tab")
+     ("s" tabspaces-switch-or-create-workspace "switch"))
+    "Session"
+    (("p" #'tabspaces-save-current-project-session "save current project")
+     ("a" #'tabspaces-restore-session "restore"))))
   :config
   (tab-bar-rename-tab "Home")
   (when (get-buffer "*Messages*")
