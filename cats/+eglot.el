@@ -16,8 +16,8 @@
   :custom
   (eglot-connect-timeout (* 30 60))
   :pretty-hydra
-  ((:color teal)
-   ("Eglot"
+  ((:color teal :title (+with-icon "nf-cod-server_environment" "Eglot"))
+   ("Actions"
     (("s" #'eglot "start")
      ("S" #'eglot-reconnect "reconnect")
      ("k" #'eglot-shutdown "eglot shutdown")
