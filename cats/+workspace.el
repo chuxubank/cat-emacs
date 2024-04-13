@@ -123,4 +123,6 @@
    "Tab-bar"
    (("k" #'tab-bar-close-tab "close tab")
     ("r" #'tab-bar-rename-tab "rename")
-    ("R" #'tab-bar-rename-tab-by-name "rename by name"))))
+    ("R" #'tab-bar-rename-tab-by-name "rename by name"))
+   "Project"
+   (("p" #'project-remember-projects-under "project add"))))
