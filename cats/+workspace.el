@@ -34,7 +34,7 @@
   :bind
   ([remap list-buffers] . bufler)
   :custom
-  (bufler-workspace-mode-lighter (nerd-icons-octicon "nf-oct-codespaces"))
+  (bufler-workspace-mode-lighter (+with-icon "nf-oct-codespaces"))
   :pretty-hydra
   ((:color teal :title "Bufler")
    ("Workspace"
@@ -53,7 +53,7 @@
   (after-init . activities-mode)
   (after-init . activities-tabs-mode)
   :pretty-hydra
-  ((:color teal :title "Activities")
+  ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" "Activities"))
    ("Manage"
     (("n" activities-new)
      ("d" activities-define)
@@ -74,7 +74,7 @@
   (tabspaces-initialize-project-with-todo nil)
   (tabspaces-session-file (concat cat-etc-dir "tabsession.el"))
   :pretty-hydra
-  ((:color teal :title "Tabspaces")
+  ((:color teal :title (+with-icon "nf-md-tab" "Tabspaces"))
    ("Buffer"
     (("C" tabspaces-clear-buffers "clear")
      ("b" tabspaces-switch-to-buffer "switch buffer")
