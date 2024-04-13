@@ -31,27 +31,24 @@
 
 (use-package dired-x
   :ensure nil
-  :hook (dired-load . +dired-x-load)
   :hook (dired-mode . dired-omit-mode)
-  :init
-  (defun +dired-x-load ()
-    (require 'dired-x)
-    (defun dired-omit-startup ()
-      (or (assq 'dired-omit-mode minor-mode-alist)
-          (setq minor-mode-alist
-                (append '((dired-omit-mode
-		                   (:eval (if (eq major-mode 'dired-mode)
-				                      " " ""))))
-		                minor-mode-alist))))
-    (setq dired-omit-files
-          (concat dired-omit-files
-                  (cond
-                   (IS-WINDOWS
-                    "\\|^ntuser\\(\\.dat\\|\\.ini\\).*")
-                   (IS-MAC
-                    "\\|.DS_Store")))))
   :custom
-  (dired-x-hands-off-my-keys nil))
+  (dired-x-hands-off-my-keys nil)
+  :config
+  (defun dired-omit-startup ()
+    (or (assq 'dired-omit-mode minor-mode-alist)
+        (setq minor-mode-alist
+              (append '((dired-omit-mode
+		                 (:eval (if (eq major-mode 'dired-mode)
+				                    " " ""))))
+		              minor-mode-alist))))
+  (setq dired-omit-files
+        (concat dired-omit-files
+                (cond
+                 (IS-WINDOWS
+                  "\\|^ntuser\\(\\.dat\\|\\.ini\\).*")
+                 (IS-MAC
+                  "\\|.DS_Store")))))
 
 (use-package nerd-icons-dired
   :delight " "
