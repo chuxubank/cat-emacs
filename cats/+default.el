@@ -215,8 +215,8 @@
 (use-package profiler
   :ensure nil
   :pretty-hydra
-  ((:color pink :quit-key "q")
-   ("Profiler"
+  ((:color pink :title (+with-icon "nf-fa-tachometer" "Profiler") :quit-key "q")
+   ("Actions"
     (("s" profiler-start "start")
      ("r" (progn (profiler-report) (profiler-stop)) "stop & report" :exit t)))))
 
