@@ -132,4 +132,7 @@
     ("r" #'tab-bar-rename-tab "rename")
     ("R" #'tab-bar-rename-tab-by-name "rename by name"))
    "Project"
-   (("p" #'project-remember-projects-under "project add"))))
+   (("p" #'project-remember-projects-under "remember all")
+    ("f" #'project-forget-project "forget")
+    ("F" #'project-forget-zombie-projects "forget zombie")
+    ("D" #'project-forget-projects-under "forget all"))))
