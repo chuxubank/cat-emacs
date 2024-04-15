@@ -38,7 +38,7 @@
     ))
 
 (setq package-check-signature nil
-      package-install-upgrade-built-in nil
+      package-install-upgrade-built-in t
       package-archives (assoc-default package-mirror package-mirror-alist))
 
 (unless (or EMACS29+ (package-installed-p 'use-package))

@@ -207,6 +207,7 @@
   :delight (compilation-shell-minor-mode " "))
 
 (use-package transient
+  :pin melpa
   :custom
   (transient-levels-file (concat cat-etc-dir "transient/levels"))
   (transient-values-file (concat cat-etc-dir "transient/values"))
