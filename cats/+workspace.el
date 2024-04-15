@@ -124,9 +124,11 @@
    (("a" #'activities-hydra/body "activities")
     ;; ("b" #'bufler-hydra/body "bufler")
     ;; ("m" #'burly-hydra/body "burly")
-    ("t" #'tabspaces-hydra/body "tabspaces"))
+    ("s" #'tabspaces-hydra/body "tabspaces"))
    "Tab-bar"
-   (("n" #'tab-bar-new-tab "new tab")
+   (("t" #'tab-bar-mode "mode")
+    ("h" #'tab-bar-history-mode "history")
+    ("n" #'tab-bar-new-tab "new tab")
     ("N" #'tab-bar-new-tab-to "new tab to")
     ("k" #'tab-bar-close-tab "close tab")
     ("r" #'tab-bar-rename-tab "rename")
