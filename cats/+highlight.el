@@ -53,9 +53,11 @@
 
 (use-package diff-hl
   :delight (diff-hl-amend-mode " ")
-  :hook (after-init . global-diff-hl-mode)
-  :hook ((prog-mode text-mode) . diff-hl-flydiff-mode)
-  :hook (dired-mode . diff-hl-dired-mode)
+  :hook
+  (after-init . global-diff-hl-mode)
+  (after-init . diff-hl-margin-mode)
+  (dired-mode . diff-hl-dired-mode)
+  ((prog-mode text-mode) . diff-hl-flydiff-mode)
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))

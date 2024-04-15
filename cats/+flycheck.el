@@ -4,7 +4,8 @@
   :hook (after-init . global-flycheck-mode)
   :custom
   (flycheck-emacs-lisp-load-path 'inherit)
-  (flycheck-mode-line-prefix ""))
+  (flycheck-mode-line-prefix "")
+  (flycheck-indication-mode 'left-margin))
 
 (use-package flycheck-pos-tip
   :disabled
