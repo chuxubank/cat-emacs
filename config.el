@@ -106,6 +106,7 @@
 (cat! "+docker")
 (cat! "+vb")
 (cat! "+lua")
+(cat! "+go")
 
 ;;; plugins
 (cat! "+term")
