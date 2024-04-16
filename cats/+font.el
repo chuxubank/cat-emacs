@@ -177,7 +177,9 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'json-mode 'json-ts-mode
                       'yaml-mode 'yaml-ts-mode
                       'toml-ts-mode
-                      'conf-mode)
+                      'conf-mode
+                      'nxml-mode
+                      'templ-ts-mode)
       (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
      ((derived-mode-p 'objc-mode
                       'swift-mode)
@@ -196,7 +198,8 @@ Unless `buffer-face-mode' already enabled."
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'prog-mode)
       (+safe-buffer-face-set-fonts cat-mono-code-fonts))
-     ((derived-mode-p 'Info-mode)
+     ((derived-mode-p 'Info-mode
+                      'man-common)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 
