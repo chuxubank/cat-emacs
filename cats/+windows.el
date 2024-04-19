@@ -34,6 +34,7 @@
 (use-package transpose-frame)
 
 (use-package golden-ratio
+  :disabled
   :demand
   :init
   ;; https://github.com/roman/golden-ratio.el/issues/57#issuecomment-131472709
