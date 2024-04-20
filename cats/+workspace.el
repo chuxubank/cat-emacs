@@ -52,6 +52,8 @@
   :hook
   (after-init . activities-mode)
   (after-init . activities-tabs-mode)
+  :custom
+  (activities-kill-buffers t)
   :config
   (add-hook 'activities-anti-save-predicates #'cat-treemacs-close)
   :pretty-hydra

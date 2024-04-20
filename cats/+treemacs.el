@@ -25,6 +25,7 @@
 
 (defun cat-treemacs-close ()
   (interactive)
-  (when (featurep 'treemacs)
+  (when (and (featurep 'treemacs)
+             (treemacs-get-local-window))
     (treemacs-select-window)
     (treemacs-kill-buffer)))
