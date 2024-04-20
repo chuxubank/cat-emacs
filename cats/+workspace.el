@@ -57,6 +57,8 @@
    ("Manage"
     (("n" activities-new)
      ("d" activities-define)
+     ("r" activities-rename)
+     ("D" activities-discard)
      ("a" activities-resume)
      ("s" activities-suspend)
      ("k" activities-kill)
