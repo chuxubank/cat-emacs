@@ -22,3 +22,9 @@
   :after treemacs
   :config
   (treemacs-load-theme "nerd-icons"))
+
+(defun cat-treemacs-close ()
+  (interactive)
+  (when (featurep 'treemacs)
+    (treemacs-select-window)
+    (treemacs-kill-buffer)))
