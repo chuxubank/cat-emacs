@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package treemacs
+  :commands treemacs-get-local-window
   :bind
   ("M-0" . treemacs-select-window)
   :custom
