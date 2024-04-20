@@ -52,8 +52,6 @@
   :hook
   (after-init . activities-mode)
   (after-init . activities-tabs-mode)
-  :config
-  (add-to-list 'activities-anti-save-predicates #'treemacs-get-local-window)
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" "Activities"))
    ("Manage"
