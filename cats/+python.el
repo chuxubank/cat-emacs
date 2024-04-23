@@ -19,7 +19,10 @@
 (use-package pet
   :delight " 󰌠"
   :ensure-system-package (dasel)
-  :hook (python-base-mode . pet-mode))
+  :hook (python-base-mode . pet-mode)
+  :custom
+  (pet-find-file-functions '(pet-find-file-from-project-root
+                             pet-locate-dominating-file)))
 
 (use-package poetry
   :hook (python-base-mode . poetry-tracking-mode)
