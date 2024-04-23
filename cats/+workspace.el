@@ -9,6 +9,11 @@
   (tab-bar-show 1)
   (tab-bar-tab-hints t))
 
+(use-package project
+  :ensure nil
+  :custom
+  (project-list-file (concat cat-cache-dir "projects")))
+
 (use-package burly
   :disabled
   :hook

@@ -62,12 +62,6 @@
   (major-mode-hydra-invisible-quit-key "q")
   (major-mode-hydra-title-generator #'cat-major-mode-hydra-title-generator))
 
-(use-package project
-  :ensure nil
-  :commands #'project--find-in-directory
-  :custom
-  (project-list-file (concat cat-cache-dir "projects")))
-
 (unless (or EMACS30+ (package-installed-p 'vc-use-package))
   (package-vc-install "https://github.com/slotThe/vc-use-package"))
 
