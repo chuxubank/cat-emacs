@@ -97,19 +97,12 @@
 ;;; backup
 (setq create-lockfiles nil
       make-backup-files nil
-      backup-directory-alist (list (cons "." (concat cat-cache-dir "backup/")))
-      tramp-backup-directory-alist backup-directory-alist)
+      backup-directory-alist (list (cons "." (concat cat-cache-dir "backup/"))))
 
 ;;; autosave
 (setq auto-save-default t
       auto-save-include-big-deletions t
-      auto-save-list-file-prefix (concat cat-cache-dir "autosave/")
-      tramp-auto-save-directory  (concat cat-cache-dir "tramp-autosave/")
-      auto-save-file-name-transforms
-      (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
-                  ;; Prefix tramp autosaves to prevent conflicts with local ones
-                  (concat auto-save-list-file-prefix "tramp-\\2") t)
-            (list ".*" auto-save-list-file-prefix t)))
+      auto-save-list-file-prefix (concat cat-cache-dir "autosave/"))
 
 ;;; ediff
 (setq ediff-diff-options "-w" ; turn off whitespace checking
