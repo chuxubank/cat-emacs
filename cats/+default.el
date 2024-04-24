@@ -6,7 +6,10 @@
   (setq no-littering-etc-directory cat-etc-dir
         no-littering-var-directory cat-cache-dir)
   :config
-  (no-littering-theme-backups))
+  (no-littering-theme-backups)
+  (let ((dir (no-littering-expand-var-file-name "lock-files/")))
+    (make-directory dir t)
+    (setq lock-file-name-transforms `((".*" ,dir t)))))
 
 ;;; ui
 (blink-cursor-mode 0)
@@ -92,9 +95,6 @@
 
 ;;; saveplace
 (add-hook 'after-init-hook #'save-place-mode)
-
-;;; backup
-(setq create-lockfiles nil)
 
 ;;; autosave
 (setq auto-save-default t
