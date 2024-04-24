@@ -4,7 +4,6 @@
   :commands #'org-roam-buffer-toggle
   :custom
   (org-roam-directory cat-org-roam-directory)
-  (org-roam-db-location (expand-file-name "org-roam.db" cat-etc-dir))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${type:10} " (propertize "${tags:15} " 'face 'org-tag) "${title:*} "))
   (org-roam-mode-section-functions (list #'org-roam-backlinks-section

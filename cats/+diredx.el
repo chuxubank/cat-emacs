@@ -61,6 +61,4 @@
     (gls . coreutils)
     (fd . fd)
     (ffmpegthumbnailer . ffmpegthumbnailer)
-    (mediainfo . mediainfo)
-    :custom
-    (dirvish-cache-dir (concat cat-cache-dir "dirvish/"))))
+    (mediainfo . mediainfo)))

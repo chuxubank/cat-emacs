@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(setq eudc-options-file (expand-file-name "eudc-options" cat-etc-dir))
-
 (with-eval-after-load "message"
   (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
 (with-eval-after-load "sendmail"

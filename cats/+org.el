@@ -132,11 +132,6 @@
                                    ("*" . "+")
                                    ("1." . "a."))))
 
-(use-package org-id
-  :ensure nil
-  :custom
-  (org-id-locations-file (expand-file-name "org-id-locations" cat-etc-dir)))
-
 (use-package org-indent
   :ensure nil
   :delight  " 󰉶")
@@ -150,7 +145,6 @@
   :ensure nil
   :custom
   (org-clock-persist 'history)
-  (org-clock-persist-file (expand-file-name "org-clock-save.el" cat-etc-dir))
   (org-clock-clocked-in-display 'frame-title))
 
 (use-package org-timer

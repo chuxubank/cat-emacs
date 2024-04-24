@@ -3,9 +3,7 @@
 
 # emacs
 auto-save-list
-tramp
 eln-cache/
-server/
 
 # backup
 *.*~

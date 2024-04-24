@@ -9,11 +9,6 @@
   (tab-bar-show 1)
   (tab-bar-tab-hints t))
 
-(use-package project
-  :ensure nil
-  :custom
-  (project-list-file (concat cat-cache-dir "projects")))
-
 (use-package burly
   :disabled
   :hook
@@ -83,7 +78,6 @@
   :custom
   (tabspaces-include-buffers nil)
   (tabspaces-initialize-project-with-todo nil)
-  (tabspaces-session-file (concat cat-etc-dir "tabsession.el"))
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-tab" "Tabspaces"))
    ("Buffer"

@@ -5,8 +5,6 @@
   :hook (logview-mode . hl-line-mode)
   :custom
   (datetime-timezone 'Asia/Shanghai)
-  (logview-cache-filename (concat cat-cache-dir "logview-cache.extmap"))
-  (logview-views-file (concat cat-etc-dir "logview.views"))
   (logview-additional-timestamp-formats
    '(("LogCat"
       (java-pattern . "MM-dd HH:mm:ss.SSS"))

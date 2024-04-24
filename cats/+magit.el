@@ -12,6 +12,4 @@
 
 (use-package forge
   :demand t
-  :after magit
-  :custom
-  (forge-database-file (concat cat-etc-dir "forge.db")))
+  :after magit)

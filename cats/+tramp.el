@@ -3,7 +3,6 @@
 (use-package tramp
   :ensure nil
   :custom
-  (tramp-auto-save-directory  (concat cat-cache-dir "tramp-autosave/"))
   (tramp-backup-directory-alist backup-directory-alist))
 
 (defun +sudo-edit-current-file ()

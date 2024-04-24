@@ -1,5 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package no-littering
+  :demand
+  :init
+  (setq no-littering-etc-directory cat-etc-dir
+        no-littering-var-directory cat-cache-dir)
+  :config
+  (no-littering-theme-backups))
+
 ;;; ui
 (blink-cursor-mode 0)
 (scroll-bar-mode 0)
@@ -72,37 +80,25 @@
 ;;; url
 (setq url-configuration-directory (concat cat-etc-dir "url/"))
 
-;;; bookmarks
-(setq bookmark-default-file (expand-file-name "bookmarks" cat-etc-dir))
-
 ;;; minibuffer
 (setq enable-recursive-minibuffers t
       confirm-kill-emacs #'yes-or-no-p)
 
-(setq savehist-file (expand-file-name "minibuffer/history" cat-cache-dir))
 (savehist-mode)
 
-;;; eshell
-(setq eshell-history-file-name (expand-file-name "eshell/history" cat-cache-dir))
-
 ;;; recentf
-(setq recentf-max-saved-items 100
-      recentf-save-file (expand-file-name "recentf" cat-cache-dir))
+(setq recentf-max-saved-items 100)
 (add-hook 'after-init-hook #'recentf-mode)
 
 ;;; saveplace
-(setq save-place-file (expand-file-name "places" cat-cache-dir))
 (add-hook 'after-init-hook #'save-place-mode)
 
 ;;; backup
-(setq create-lockfiles nil
-      make-backup-files nil
-      backup-directory-alist (list (cons "." (concat cat-cache-dir "backup/"))))
+(setq create-lockfiles nil)
 
 ;;; autosave
 (setq auto-save-default t
-      auto-save-include-big-deletions t
-      auto-save-list-file-prefix (concat cat-cache-dir "autosave/"))
+      auto-save-include-big-deletions t)
 
 ;;; ediff
 (setq ediff-diff-options "-w" ; turn off whitespace checking
@@ -162,8 +158,6 @@
         (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
   :custom
   (hs-set-up-overlay 'hideshow-folded-overlay-fn))
-;;; pcache
-(setq pcache-directory (concat cat-cache-dir "pcache/"))
 
 (use-package type-break
   :ensure nil
@@ -172,24 +166,15 @@
   (type-break-mode . type-break-query-mode)
   (type-break-mode . type-break-mode-line-message-mode)
   :custom
-  (type-break-file-name (concat cat-etc-dir "type-break"))
   (type-break-query-function #'y-or-n-p)
   (type-break-good-break-interval 300)
   :config
   (type-break-guesstimate-keystroke-threshold 30))
 
-;;; time
-(setq timeclock-file (concat cat-etc-dir "timelog"))
-
 (use-package epg-config
   :ensure nil
   :custom
   (epg-pinentry-mode 'loopback))
-
-(use-package abbrev
-  :ensure nil
-  :custom
-  (abbrev-file-name (concat cat-etc-dir "abbrev_defs")))
 
 (use-package ansi-color
   :ensure nil
@@ -198,13 +183,6 @@
 (use-package compile
   :ensure nil
   :delight (compilation-shell-minor-mode " "))
-
-(use-package transient
-  :pin melpa
-  :custom
-  (transient-levels-file (concat cat-etc-dir "transient/levels"))
-  (transient-values-file (concat cat-etc-dir "transient/values"))
-  (transient-history-file (concat cat-etc-dir "transient/history")))
 
 (use-package profiler
   :ensure nil

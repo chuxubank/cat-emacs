@@ -43,9 +43,7 @@ Intended for `eldoc-documentation-functions' (which see)."
   :hook ((conf-toml-mode
           toml-ts-mode). eldoc-toml-mode))
 
-(use-package devdocs
-  :custom
-  (devdocs-data-dir (concat cat-etc-dir "devdocs")))
+(use-package devdocs)
 
 (defvar-keymap cat-dev-doc-map
   :doc "Keymap for `devdocs-mode' commands."
