@@ -16,9 +16,6 @@
   (add-hook 'cat-dark-mode-hook #'doom-dark-theme)
   (add-hook 'cat-light-mode-hook #'doom-light-theme)))
 
-(with-eval-after-load 'org
-  (add-hook 'cat-theme-refresh-hook #'+org-buffers-refresh))
-
 (defun cat-dark-mode-p ()
   (cond
    (IS-WSL     (string-match-p "-Darker" (getenv "GTK_THEME")))
@@ -46,10 +43,3 @@
 
 (when IS-MACPLUS
   (add-hook 'ns-system-appearance-change-functions #'cat-load-theme))
-
-(defun +org-buffers-refresh ()
-  "Save and revert all org buffers without confirm."
-  (interactive)
-  (org-save-all-org-buffers)
-  (+no-confirm #'org-revert-all-org-buffers)
-  (org-element-update-syntax))
