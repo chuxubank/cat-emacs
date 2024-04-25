@@ -61,3 +61,13 @@
   :config
   (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
+(use-package indent-bars
+  :pin jcs-elpa
+  :hook (prog-mode . indent-bars-mode)
+  :custom
+  (indent-bars-treesit-support t)
+  :config
+  (when (or IS-MACPLUS
+            IS-WINDOWS)
+    (setq indent-bars-prefer-character t)))
