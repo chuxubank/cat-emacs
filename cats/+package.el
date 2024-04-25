@@ -12,11 +12,6 @@
      ("nongnu". "https://elpa.nongnu.org/nongnu/")
      ("melpa". "https://melpa.org/packages/")
      ("melpa-stable". "https://stable.melpa.org/packages/"))
-    (emacs-china ; https://elpamirror.emacs-china.org
-     ("gnu". "http://1.15.88.122/gnu/")
-     ("nongnu". "http://1.15.88.122/nongnu/")
-     ("melpa". "http://1.15.88.122/melpa/")
-     ("melpa-stable". "http://1.15.88.122/stable-melpa/"))
     (tsinghua ; https://mirrors.tuna.tsinghua.edu.cn/help/elpa/
      ("gnu". "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
      ("nongnu". "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
@@ -25,16 +20,11 @@
     (ustc ; https://mirrors.ustc.edu.cn/help/elpa.html
      ("gnu". "https://mirrors.ustc.edu.cn/elpa/gnu/")
      ("nongnu". "https://mirrors.ustc.edu.cn/elpa/nongnu/")
-     ("melpa". "https://mirrors.ustc.edu.cn/elpa/melpa/")
-     ("melpa-stable". "https://mirrors.ustc.edu.cn/elpa/melpa-stable/"))
+     ("melpa". "https://mirrors.ustc.edu.cn/elpa/melpa/"))
     (sjtu ; https://mirrors.sjtug.sjtu.edu.cn/docs/emacs-elpa
      ("gnu". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/gnu/")
      ("nongnu". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/nongnu/")
-     ("melpa". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")
-     ("melpa-stable". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa-stable/")
-     ("marmalade". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/marmalade/")
-     ("sunrise". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/sunrise-commander/")
-     ("user42". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/user42/"))
+     ("melpa". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/"))
     ))
 
 (setq package-check-signature nil
