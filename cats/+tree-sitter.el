@@ -4,22 +4,24 @@
 
 (setq treesit-font-lock-level 4)
 
-(unless EMACS29+
-  (use-package tree-sitter
-    :hook
-    (after-init . global-tree-sitter-mode)
-    (tree-sitter-after-on . tree-sitter-hl-mode))
+(use-package tree-sitter
+  :delight " "
+  :hook
+  (after-init . global-tree-sitter-mode)
+  (tree-sitter-after-on . tree-sitter-hl-mode))
 
-  (use-package tree-sitter-langs)
+(use-package tree-sitter-langs)
 
-  (use-package ts-fold
-    :vc (ts-fold
-         :url "https://github.com/emacs-tree-sitter/ts-fold"
-         :rev :newest)
-    :hook
-    (after-init . global-ts-fold-indicators-mode)))
+(use-package ts-fold
+  :delight " "
+  :vc (ts-fold
+       :url "https://github.com/emacs-tree-sitter/ts-fold"
+       :rev :newest)
+  :hook
+  (after-init . global-ts-fold-indicators-mode))
 
 (use-package treesit-auto
+  :disabled
   :when EMACS29+
   :hook (after-init . global-treesit-auto-mode)
   :custom
