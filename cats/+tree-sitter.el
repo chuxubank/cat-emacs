@@ -12,11 +12,12 @@
 
 (use-package tree-sitter-langs)
 
+(use-package ts-docstr
+  :pin jcs-elpa)
+
 (use-package ts-fold
+  :pin jcs-elpa
   :delight " "
-  :vc (ts-fold
-       :url "https://github.com/emacs-tree-sitter/ts-fold"
-       :rev :newest)
   :hook
   (after-init . global-ts-fold-indicators-mode))
 

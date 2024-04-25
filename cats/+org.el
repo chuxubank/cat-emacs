@@ -205,7 +205,5 @@
                            ("KILL" :inverse-video t :inherit +org-todo-cancel))))
 
 (use-package org-modern-indent
-  :vc (org-modern-indent
-       :url "https://github.com/jdtsmith/org-modern-indent"
-       :rev :newest)
+  :pin jcs-elpa
   :hook (org-mode . org-modern-indent-mode))

@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package vbscript-mode
-  :vc (vbscript-mode
-       :url "https://github.com/nverno/vbs-mode"
-       :rev :newest)
+  :pin jcs-elpa
   :mode "\\.\\(bas\\|vb\\)$")
 
 (use-package vbnet-mode

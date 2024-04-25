@@ -30,9 +30,7 @@
   (add-to-list 'sideline-backends-right #'sideline-blame))
 
 (use-package sideline-eglot
-  :vc (sideline-eglot
-       :url "https://github.com/emacs-sideline/sideline-eglot"
-       :rev :newest)
+  :pin jcs-elpa
   :demand t
   :after sideline eglot
   :custom

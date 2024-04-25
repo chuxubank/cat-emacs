@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package beancount
-  :vc (beancount
-       :url "https://github.com/beancount/beancount-mode"
-       :rev :newest)
+  :pin jcs-elpa
   :init
   (setq beancount-mode-map-prefix [(control c) (control c)])
   (add-hook 'beancount-mode-hook #'outline-minor-mode)

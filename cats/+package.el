@@ -39,7 +39,11 @@
 
 (setq package-check-signature nil
       package-install-upgrade-built-in nil
-      package-archives (assoc-default package-mirror package-mirror-alist))
+      package-archives (assoc-default package-mirror package-mirror-alist)
+      package-archive-priorities '(("melpa"    . 5)
+                                   ("jcs-elpa" . 0)))
+
+(add-to-list 'package-archives '("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
 
 (unless (or EMACS29+ (package-installed-p 'use-package))
   (package-refresh-contents)

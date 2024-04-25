@@ -1,12 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package codeium
+  :pin jcs-elpa
   :bind
   (:map cat-cape-map
         ("c" . cat-cape-codeium))
-  :vc (codeium
-       :url "https://github.com/Exafunction/codeium.el"
-       :rev :newest)
   :init
   (defun cat-cape-codeium (&optional interactive)
     "Allow codeium capf to be run by itself"
