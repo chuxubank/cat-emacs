@@ -14,7 +14,7 @@
   :hook
   (after-init . burly-tabs-mode)
   :pretty-hydra
-  ((:color teal :title "Burly")
+  ((:color teal :title (+with-icon "nf-oct-bookmark" "Burly"))
    ("Bookmark"
     (("o" #'burly-open-bookmark "open")
      ("l" #'burly-open-last-bookmark "open last")
@@ -36,7 +36,7 @@
   :custom
   (bufler-workspace-mode-lighter (+with-icon "nf-oct-codespaces"))
   :pretty-hydra
-  ((:color teal :title "Bufler")
+  ((:color teal :title (+with-icon "nf-oct-project" "Bufler"))
    ("Workspace"
     (("b" #'bufler-workspace-switch-buffer "switch buffer")
      ("f" #'bufler-workspace-focus-buffer "focus buffer")
