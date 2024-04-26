@@ -111,7 +111,7 @@
 ;;; plugins
 (cat! "+term")
 (cat! "+log")
-(cat! "+telega")
+(cat! "+chat")
 (cat! "+pdf")
 (cat! "+nov")
 (cat! "+toc")
