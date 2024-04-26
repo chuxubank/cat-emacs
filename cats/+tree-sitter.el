@@ -33,6 +33,9 @@ more information."
   :delight " "
   :hook
   (after-init . global-ts-fold-indicators-mode)
+  :bind
+  (:map prog-mode-map
+        ("C-." . ts-fold-toggle))
   :config
   (push '(import_list . (ts-fold-range-seq 6 -1)) (alist-get 'kotlin-mode ts-fold-range-alist))
   (push '(import_declaration
