@@ -26,7 +26,7 @@
   :custom
   (sideline-blame-commit-format " %s")
   :config
-  (add-to-list 'sideline-backends-left #'sideline-blame))
+  (add-to-list 'sideline-backends-right #'sideline-blame))
 
 (use-package sideline-eglot
   :pin jcs-elpa
