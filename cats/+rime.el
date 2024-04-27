@@ -4,48 +4,10 @@
   :commands #'toggle-input-method)
 
 (when IS-MAC
-  (setq rime-librime-root (concat cat-rime-dir "dist/"))
-
-  (defun +rime-extract-librime (&optional file keep-after-extract)
-    "Extract the downloaded librime to correct place."
-    (interactive
-     (list (read-file-name "Select the librime file to extract: " "~/Downloads/")
-           current-prefix-arg))
-    (let ((version-file (concat rime-librime-root "version-info.txt")))
-      (when (file-exists-p rime-librime-root)
-        (delete-directory rime-librime-root t))
-      (when (file-exists-p version-file)
-        (delete-file version-file t))
-      (+mkdir-p cat-rime-dir)
-      (if (zerop (shell-command (format "tar -xjf %s -C %s" file cat-rime-dir)))
-          (message "Latest librime for macOS has been extracted to %s" cat-rime-dir)
-        (error "Extract librime error"))
-      (unless keep-after-extract
-        (delete-file file))))
-
-  (defun +rime-librime-download-install ()
-    "Download and install the latest librime from GitHub"
-    (interactive)
-    (let* ((url "https://api.github.com/repos/rime/librime/releases/latest")
-           (download-dir (expand-file-name "~/Downloads"))
-           (download-url-cmd (concat "curl -s " url " | jq -r '.assets[] | select(.name | contains(\"macOS\") and (test(\"deps\") | not)) | .browser_download_url'"))
-           (download-url (string-trim-right (shell-command-to-string download-url-cmd)))
-           (downloaded-file (concat download-dir "/" (file-name-nondirectory download-url)))
-           (log-buffer-name "*librime-download-log*"))
-      (message "Downloading from: %s" download-url)
-      (let ((download-command (list "curl" "-L" "-o" downloaded-file download-url)))
-        (if (file-exists-p downloaded-file)
-            (+rime-extract-librime downloaded-file)
-          (+start-process-with-finish-callback
-           "download-librime"
-           log-buffer-name
-           download-command
-           (lambda (_)
-             (message "Downloaded librime to %s" downloaded-file)
-             (+rime-extract-librime downloaded-file))))))))
+  (setq rime-librime-root (concat cat-rime-directory "dist/")))
 
 (setq
- rime-user-data-dir (concat cat-rime-dir "data/")
+ rime-user-data-dir (concat cat-rime-directory "data/")
  rime-disable-predicates
  '(rime-predicate-hydra-p
    rime-predicate-ace-window-p

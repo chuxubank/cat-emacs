@@ -29,7 +29,7 @@
 (+mkdir-p cat-cache-dir)
 (+mkdir-p cat-etc-dir)
 
-(defconst cat-rime-dir (concat cat-etc-dir "rime/"))
+(defconst cat-rime-directory "~/.rime/" )
 (defconst cat-org-directory "~/org/"
   "See `org-directory'.")
 (defconst cat-org-roam-directory "~/org-roam/"
