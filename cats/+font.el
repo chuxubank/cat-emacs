@@ -165,6 +165,7 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'org-mode)
       (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
       (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
+      (+safe-set-face-fonts 'org-formula cat-mono-thin-fonts)
       (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
       (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
       (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
