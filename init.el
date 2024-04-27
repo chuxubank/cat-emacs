@@ -7,6 +7,11 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(defgroup cat-emacs nil
+  "A lightweight Emacs configuration works on Linux, macOS and Windows."
+  :group 'Emacs
+  :version "29.3")
+
 ;;; packages
 (add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
 

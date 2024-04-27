@@ -2,8 +2,14 @@
 
 (require 'package)
 
-(defcustom package-mirror 'default
-  "The package mirror to use for package.el.")
+(defcustom cat-package-mirror 'default
+  "The package mirror to use for package.el."
+  :group 'cat-emacs
+  :type '(choice
+          (const default)
+          (const tsinghua)
+          (const ustc)
+          (const sjtu)))
 
 (defconst package-mirror-alist
   '((default
@@ -29,7 +35,7 @@
 
 (setq package-check-signature nil
       package-install-upgrade-built-in nil
-      package-archives (assoc-default package-mirror package-mirror-alist)
+      package-archives (assoc-default cat-package-mirror package-mirror-alist)
       package-archive-priorities '(("melpa"    . 5)
                                    ("jcs-elpa" . 0)))
 
