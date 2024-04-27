@@ -21,13 +21,12 @@
   (add-to-list 'sideline-backends-right #'sideline-flymake))
 
 (use-package sideline-blame
-  :disabled
   :demand t
   :after sideline
   :custom
   (sideline-blame-commit-format " %s")
   :config
-  (add-to-list 'sideline-backends-right #'sideline-blame))
+  (add-to-list 'sideline-backends-left #'sideline-blame))
 
 (use-package sideline-eglot
   :pin jcs-elpa
