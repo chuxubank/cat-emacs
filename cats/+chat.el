@@ -10,6 +10,8 @@
         ("SPC" . nil))
   :init
   (defalias 'telega-prefix telega-prefix-map)
+  (when IS-WSL
+    (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
   :custom
   (telega-use-docker t)
   (telega-use-images t)
@@ -20,8 +22,18 @@
   (telega-chat-input-markups '("markdown2" nil))
   (telega-open-file-function #'org-open-file)
   (telega-completing-read-function completing-read-function)
-  (when IS-WSL
-    (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
   :config
   (require 'telega-mnz)
   (global-telega-mnz-mode))
+
+(use-package ement
+  :init
+  (defvar-keymap ement-prefix-map
+    :doc "Keymap for ement."
+    :name "Ement"
+    :prefix 'ement-prefix
+    "e" #'ement-connect
+    "k" #'ement-kill-buffers
+    "l" #'ement-list-rooms)
+  :custom
+  (ement-save-sessions t))

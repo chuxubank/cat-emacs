@@ -116,6 +116,7 @@
                       '(diary-mode . normal)
                       '(help-mode . motion)
                       '(telega-root-mode . motion)
+                      '(ement-room-mode . motion)
                       '(osx-dictionary-mode . motion)
                       '(eshell-mode . insert)
                       '(comint-mode . insert))

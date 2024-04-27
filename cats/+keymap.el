@@ -23,6 +23,7 @@
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
   "D" 'docker
+  "e" 'ement-prefix
   "g" #'igist-dispatch
   "l" #'elogcat
   "m" #'mu4e
