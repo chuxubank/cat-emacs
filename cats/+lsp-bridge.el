@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package lsp-bridge
+  :delight " 󰘘"
   :vc (lsp-bridge
        :url "https://github.com/manateelazycat/lsp-bridge"
        :rev :newest)
