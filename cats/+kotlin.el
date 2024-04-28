@@ -2,7 +2,10 @@
 
 (use-package kotlin-mode
   :ensure-system-package
-  (kotlin-language-server))
+  (kotlin-language-server)
+  :mode-hydra
+  (("LSP"
+    (("e" eglot-hydra/body "eglot")))))
 
 (use-package kotlin-ts-mode
   :when EMACS29+
