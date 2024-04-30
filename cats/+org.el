@@ -136,6 +136,10 @@
   :ensure nil
   :delight  " 󰉶")
 
+(use-package org-src
+  :ensure nil
+  :delight " ")
+
 (use-package org-keys
   :ensure nil
   :custom
