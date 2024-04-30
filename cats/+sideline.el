@@ -21,6 +21,7 @@
   (add-to-list 'sideline-backends-right #'sideline-flymake))
 
 (use-package sideline-blame
+  :disabled
   :demand t
   :after sideline
   :custom
