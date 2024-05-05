@@ -8,7 +8,8 @@
                                   ("~/.emacs.d/". 0)
                                   ("~/org/" . 0)
                                   ("~/org-roam/" . 0)
-                                  ("~/.local/share/chezmoi/" . 0)))
+                                  ("~/.local/share/chezmoi/" . 0)
+                                  ("~/.password-store/" . 0)))
   (magit-diff-refine-hunk t)
   (magit-diff-refine-ignore-whitespace nil)
   :config
