@@ -43,7 +43,8 @@
   (tab-width 4)
   (indent-tabs-mode nil)
   (tab-always-indent 'complete)
-  (read-extended-command-predicate #'command-completion-default-include-p))
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (completion-auto-select 'second-tab))
 
 (setq show-paren-when-point-inside-paren t
       show-paren-when-point-in-periphery t)
@@ -84,8 +85,14 @@
 (setq url-configuration-directory (concat cat-etc-dir "url/"))
 
 ;;; minibuffer
-(setq enable-recursive-minibuffers t
-      confirm-kill-emacs #'yes-or-no-p)
+(use-package minibuffer
+  :ensure nil
+  :init
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+  :custom
+  (enable-recursive-minibuffers t)
+  (completion-auto-help 'visible)
+  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)))
 
 (savehist-mode)
 
@@ -145,7 +152,8 @@
 (use-package files
   :ensure nil
   :custom
-  (revert-buffer-quick-short-answers t))
+  (revert-buffer-quick-short-answers t)
+  (confirm-kill-emacs #'yes-or-no-p))
 
 (use-package hideshow
   :ensure nil
@@ -198,3 +206,15 @@
   :ensure nil
   :hook
   (after-init . midnight-mode))
+
+(use-package crm
+  :ensure nil
+  :config
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator))
