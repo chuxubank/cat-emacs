@@ -8,3 +8,8 @@
   (TeX-parse-self t)
   (TeX-master nil)
   (TeX-engine 'xetex))
+
+(use-package reftex
+  :ensure nil
+  :custom
+  (reftex-default-bibliography cat-default-bibliography-files))

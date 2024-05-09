@@ -1,23 +1,31 @@
 ;; -*- lexical-binding: t; -*-
-(setq reftex-default-bibliography cat-default-bibliography-files
-      org-cite-global-bibliography cat-default-bibliography-files
-      org-cite-csl-styles-dir cat-default-csl-styles-dir
-      org-cite-insert-processor 'citar
-      org-cite-follow-processor 'citar
-      org-cite-activate-processor 'citar
-      bibtex-completion-additional-search-fields '(keywords)
-      bibtex-completion-pdf-field "file"
-      bibtex-completion-bibliography cat-default-bibliography-files)
+
+(use-package oc
+  :ensure nil
+  :custom
+  (org-cite-global-bibliography cat-default-bibliography-files)
+  (org-cite-csl-styles-dir cat-default-csl-styles-dir)
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar))
+
+(use-package bibtex-completion
+  :custom
+  (bibtex-completion-additional-search-fields '(keywords))
+  (bibtex-completion-pdf-field "file")
+  (bibtex-completion-bibliography cat-default-bibliography-files)
+  :config
+  (bibtex-completion-init))
 
 (defun +orb-note-update-file (citekey)
-  "Update the `org-noter-property-doc-file' property of the CITEKEY"
+  "Update the `org-noter-property-doc-file' property of the CITEKEY."
   (citar--library-file-action
    citekey
    (lambda (file)
      (org-entry-put nil org-noter-property-doc-file (abbreviate-file-name file)))))
 
 (defun +orb-note-citar (citekey)
-  "Use `citar' to open the CITEKEY note file"
+  "Use `citar' to open the CITEKEY note file."
   (citar-run-default-action (ensure-list citekey)))
 
 (use-package org-roam-bibtex
