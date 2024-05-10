@@ -2,9 +2,6 @@
 
 (use-package sideline
   :delight
-  :vc (sideline
-       :url "https://github.com/chuxubank/sideline"
-       :rev :newest)
   :hook (after-init . global-sideline-mode)
   :custom
   (sideline-display-backend-name t))
