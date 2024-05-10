@@ -1,8 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package benchmark-init
-  :config
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  :demand
+  :hook (after-init . benchmark-init/deactivate))
 
 (defun cat-init-time ()
   "Prints the init time."
