@@ -114,6 +114,7 @@
   (meow-setup-line-number)
   (+add-to-list-multi 'meow-mode-state-list
                       '(diary-mode . normal)
+                      '(deft-mode . motion)
                       '(help-mode . motion)
                       '(telega-root-mode . motion)
                       '(ement-room-mode . motion)

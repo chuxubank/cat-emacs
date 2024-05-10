@@ -27,6 +27,7 @@
   "g" #'igist-dispatch
   "l" #'elogcat
   "m" #'mu4e
+  "n" #'deft
   "p" #'pass
   "r" #'elfeed
   "R" #'magit-list-repositories
