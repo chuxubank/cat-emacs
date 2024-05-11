@@ -34,6 +34,7 @@ Hides dot, git ignored and template directories."
   (let ((default-directory dir))
     (and (not (string-match-p "\\(\/\\|\\\\\\)\\..*?"  dir))
          (not (string-match-p cat-org-roam-template-directory (file-name-as-directory dir)))
+         (not (string-match-p cat-org-roam-dailies-directory (file-name-as-directory dir)))
          (not (zerop (call-process "git" nil nil nil "check-ignore" "-q" "."))))))
 
 (defun cat-org-roam-locate-file (name)
