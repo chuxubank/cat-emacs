@@ -60,7 +60,10 @@ Hides template, daily directories."
   "Relocate and rename the Org-roam file."
   (interactive)
   (let* ((default-directory cat-org-roam-directory)
-         (node (org-roam-node-read))
+         (node (or (org-roam-node-at-point)
+                   (let ((node (org-roam-node-read)))
+                     (org-roam-node-open node)
+                     node)))
          (slug (org-roam-node-slug node))
          (file (org-roam-node-file node))
          (git-time (string-trim (shell-command-to-string (format "git log --diff-filter=A --follow --format='%%aI' -- %s | tail -1" file))))
@@ -74,10 +77,12 @@ Hides template, daily directories."
                      file-time))))
          (new-name (concat (format-time-string "%Y%m%d%H%M%S" time)
                            "-"
-                           slug)))
-    (org-roam-node-open node)
-    (rename-file file (cat-org-roam-locate-file new-name))
-    (kill-buffer (get-file-buffer file))))
+                           slug))
+         (new-file (cat-org-roam-locate-file new-name)))
+    (rename-file file new-file)
+    (kill-buffer (get-file-buffer file))
+    (org-roam-db-sync)
+    (org-open-file new-file)))
 
 (use-package org-roam-bibtex
   :demand t
