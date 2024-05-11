@@ -5,7 +5,7 @@
   :custom
   (org-roam-directory cat-org-roam-directory)
   (org-roam-completion-everywhere t)
-  (org-roam-node-display-template (concat "${type:10} " (propertize "${tags:15} " 'face 'org-tag) "${title:*} "))
+  (org-roam-node-display-template (concat "${type:30} " (propertize "${tags:15} " 'face 'org-tag) "${title:*} "))
   (org-roam-mode-section-functions (list #'org-roam-backlinks-section
                                          #'org-roam-reflinks-section
                                          #'org-roam-unlinked-references-section))
@@ -29,10 +29,9 @@
 For display the directory
 Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
     (condition-case nil
-        (file-name-nondirectory
-         (directory-file-name
-          (file-name-directory
-           (file-relative-name (org-roam-node-file node) org-roam-directory))))
+        (directory-file-name
+         (file-name-directory
+          (file-relative-name (org-roam-node-file node) org-roam-directory)))
       (error ""))))
 
 (use-package org-roam-ui
