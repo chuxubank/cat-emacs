@@ -122,8 +122,6 @@ Hides template, daily directories."
   :after citar org-roam-bibtex
   :custom
   (citar-org-roam-capture-template-key "rn")
-  (citar-org-roam-subdir cat-org-roam-reference-directory)
-  (citar-notes-paths (list (concat cat-org-roam-directory cat-org-roam-reference-directory)))
   :config
   ;; https://github.com/emacs-citar/citar/wiki/Notes-configuration#org-roam-bibtex
   ;; See `citar-org-roam-notes-config'

@@ -36,9 +36,6 @@
   "See `org-roam-directory'.")
 (defconst cat-org-roam-dailies-directory "daily/"
   "See `org-roam-dailies-directory'.")
-(defconst cat-org-roam-reference-directory "reference/"
-  "Orb notes directory.
-Used by `citar-notes-paths' and `org-roam-capture-templates'.")
 (defconst cat-org-roam-template-directory "templates/"
   "Orb notes template directory.")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
