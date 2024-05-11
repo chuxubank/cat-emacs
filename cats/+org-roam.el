@@ -36,7 +36,9 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
       (error ""))))
 
 (use-package org-roam-ui
-  :delight " 󰴠"
+  :delight
+  (org-roam-ui-mode " 󰴠")
+  (org-roam-ui-follow-mode " 󰓾")
   :custom
   (org-roam-ui-sync-theme t)
   (org-roam-ui-follow t)
