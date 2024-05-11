@@ -24,7 +24,10 @@
   (org-roam-update-org-id-locations)
   (require 'org-roam-protocol)
   (cl-defmethod org-roam-node-type ((node org-roam-node))
-    "Return the TYPE of NODE."
+    "Return the TYPE of NODE.
+
+For display the directory
+Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
     (condition-case nil
         (file-name-nondirectory
          (directory-file-name
