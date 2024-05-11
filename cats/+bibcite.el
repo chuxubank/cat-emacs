@@ -64,7 +64,7 @@ Hides template, daily directories."
   (orb-roam-ref-format 'org-cite)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}")
+      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")" "#+title: ${title}")
       :unnarrowed t)
      ("r" "bibliography reference")
      ("rd" "Bibliography reference default" plain "%?"
