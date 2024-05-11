@@ -39,6 +39,8 @@
 (defconst cat-org-roam-reference-directory "reference/"
   "Orb notes directory.
 Used by `citar-notes-paths' and `org-roam-capture-templates'.")
+(defconst cat-org-roam-template-directory "templates/"
+  "Orb notes template directory.")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
 (defconst cat-default-csl-styles-dir "~/Zotero/styles/")
 (defconst cat-codeium-dir "~/.codeium/")

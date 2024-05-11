@@ -28,6 +28,38 @@
   "Use `citar' to open the CITEKEY note file."
   (citar-run-default-action (ensure-list citekey)))
 
+(defun cat-org-roam-allowed-directory-p (dir)
+  "Check whether a DIR should be listed as a filterable directory.
+Hides dot, git ignored and template directories."
+  (let ((default-directory dir))
+    (and (not (string-match-p "\\(\/\\|\\\\\\)\\..*?"  dir))
+         (not (string-match-p cat-org-roam-template-directory (file-name-as-directory dir)))
+         (not (zerop (call-process "git" nil nil nil "check-ignore" "-q" "."))))))
+
+(defun cat-org-roam-locate-file (name)
+  "Choose directory and return with full file NAME."
+  (let* ((subdirs (seq-filter
+                   (lambda (file) (and (file-directory-p file)
+                                       (cat-org-roam-allowed-directory-p file)))
+                   (directory-files-recursively cat-org-roam-directory
+                                                ".*" t #'cat-org-roam-allowed-directory-p)))
+         (dir (completing-read "Choose org-roam sub directory: " subdirs nil 'confirm))
+         (full-dir (if (member dir subdirs) dir (expand-file-name dir cat-org-roam-directory)))
+         (filename (concat name ".org")))
+    (unless (file-directory-p full-dir)
+      (make-directory full-dir t))
+    (expand-file-name filename full-dir)))
+
+(defun cat-org-roam-get-template (&optional dir)
+  "Choose template based on DIR."
+  (let* ((template (concat cat-org-roam-directory
+                           cat-org-roam-template-directory
+                           dir))
+         (file (if (file-directory-p template)
+                   (completing-read "Choose template: " (directory-files-recursively template ".*\\.org") nil t)
+                 template)))
+    (org-file-contents file)))
+
 (use-package org-roam-bibtex
   :demand t
   :after org-roam
@@ -40,20 +72,17 @@
       :unnarrowed t)
      ("r" "bibliography reference")
      ("rd" "Bibliography reference default" plain "%?"
-      :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}")
+      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}")
       :unnarrowed t)
-     ("rn" "Bibliography reference with org-noter" plain (file "templates/org-noter.org")
-      :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
+     ("rn" "Bibliography reference with org-noter" plain (function (lambda () (cat-org-roam-get-template "org-noter.org")))
+      :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)
      ("rl" "Bibliography reference with link" plain "eww:%^{url}"
-      :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n#+date: ${date}"))
+      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
      ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
-      :target (file+head "%(concat cat-org-roam-reference-directory \"${citekey}.org\")" "#+title: ${title}\n"))
-     ("rx" "SCSEE XingCe" plain (file "templates/xingce.org")
-      :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
-      :unnarrowed t)
-     ("rs" "SCSEE ShenLun" plain (file "templates/shenlun.org")
-      :target (file "%(concat cat-org-roam-reference-directory \"${citekey}.org\")")
+      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n"))
+     ("re" "Examination" plain (function (lambda () (cat-org-roam-get-template "exam")))
+      :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)))
   :config
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
