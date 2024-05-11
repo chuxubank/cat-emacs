@@ -30,22 +30,17 @@
 
 (defun cat-org-roam-allowed-directory-p (dir)
   "Check whether a DIR should be listed as a filterable directory.
-Hides dot, git ignored and template directories."
-  (let ((default-directory dir))
-    (and (not (string-match-p "\\(\/\\|\\\\\\)\\..*?"  dir))
-         (not (string-match-p cat-org-roam-template-directory (file-name-as-directory dir)))
-         (not (string-match-p cat-org-roam-dailies-directory (file-name-as-directory dir)))
-         (not (zerop (call-process "git" nil nil nil "check-ignore" "-q" "."))))))
+Hides template, daily directories."
+  (and (not (string-match-p cat-org-roam-template-directory (file-name-as-directory dir)))
+       (not (string-match-p cat-org-roam-dailies-directory (file-name-as-directory dir)))))
 
 (defun cat-org-roam-locate-file (name)
   "Choose directory and return with full file NAME."
-  (let* ((subdirs (seq-filter
-                   (lambda (file) (and (file-directory-p file)
-                                       (cat-org-roam-allowed-directory-p file)))
-                   (directory-files-recursively cat-org-roam-directory
-                                                ".*" t #'cat-org-roam-allowed-directory-p)))
-         (dir (completing-read "Choose org-roam sub directory: " subdirs nil 'confirm))
-         (full-dir (if (member dir subdirs) dir (expand-file-name dir cat-org-roam-directory)))
+  (let* ((default-directory cat-org-roam-directory)
+         (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
+         (filter-dir-list (seq-filter #'cat-org-roam-allowed-directory-p dir-list))
+         (dir (completing-read "Choose org-roam sub directory: " filter-dir-list nil 'confirm))
+         (full-dir (expand-file-name dir cat-org-roam-directory))
          (filename (concat name ".org")))
     (unless (file-directory-p full-dir)
       (make-directory full-dir t))
