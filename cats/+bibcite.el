@@ -41,7 +41,7 @@ Hides template, daily directories."
          (filter-dir-list (seq-filter #'cat-org-roam-allowed-directory-p dir-list))
          (dir (completing-read "Choose org-roam sub directory: " filter-dir-list nil 'confirm))
          (full-dir (expand-file-name dir cat-org-roam-directory))
-         (filename (concat name ".org")))
+         (filename (file-name-with-extension name "org")))
     (unless (file-directory-p full-dir)
       (make-directory full-dir t))
     (expand-file-name filename full-dir)))
