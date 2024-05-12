@@ -19,7 +19,9 @@
                     (org-noter--doc-approx-location
                      (when arg (org-noter--get-precise-info))))))
 
-  (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info))
+  (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info)
+  (with-eval-after-load 'org-roam
+    (org-noter-enable-org-roam-integration)))
 
 (use-package deft
   :custom
