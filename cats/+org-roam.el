@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-roam
-  :commands #'org-roam-buffer-toggle
   :custom
   (org-roam-directory cat-org-roam-directory)
   (org-roam-completion-everywhere t)
@@ -54,7 +53,6 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
   "F" #'org-roam-ref-find
   "g" #'org-roam-graph
   "i" #'org-roam-node-insert
-  "r" #'org-roam-buffer-toggle
   "R" #'org-roam-buffer-display-dedicated
   "u" #'org-roam-ui-mode)
 
@@ -64,11 +62,11 @@ Distinguish with original `org-roam-dailies-map'."
   :name "Org-roam Dailies"
   :prefix 'cat-org-roam-dailies-prefix
   "." #'org-roam-dailies-goto-today
-  "/" #'org-roam-dailies-find-directory
+  "d" #'org-roam-dailies-find-directory
   "b" #'org-roam-dailies-goto-previous-note
   "c" #'org-roam-dailies-capture-today
   "C" #'org-roam-dailies-capture-date
-  "d" #'org-roam-dailies-goto-date
+  "g" #'org-roam-dailies-goto-date
   "f" #'org-roam-dailies-goto-next-note
-  "t" #'org-roam-dailies-goto-tomorrow
-  "y" #'org-roam-dailies-goto-yesterday)
+  ">" #'org-roam-dailies-goto-tomorrow
+  "<" #'org-roam-dailies-goto-yesterday)

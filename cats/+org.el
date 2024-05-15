@@ -51,8 +51,11 @@
   (+org-todo-cancel ((t (:inherit (bold org-done) :strike-through t))))
   :mode-hydra
   (org-mode
-   ("Bibtex"
-    (("b" orb-note-actions "orb action"))
+   (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
+   ("Roam"
+    (("t" org-roam-buffer-toggle "toggle")
+     ("e" org-roam-extract-subtree "extract")
+     ("b" orb-note-actions "orb action"))
     "Notes"
     (("n" org-noter "noter")
      ("m" org-media-note-hydra/body "media"))
