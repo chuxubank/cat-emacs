@@ -180,6 +180,7 @@ Unless `buffer-face-mode' already enabled."
                       'toml-ts-mode
                       'conf-mode
                       'nxml-mode
+                      'sgml-mode
                       'templ-ts-mode)
       (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
      ((derived-mode-p 'objc-mode
