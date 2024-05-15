@@ -48,6 +48,7 @@
   "n" #'major-mode-hydra
   "o" #'ace-window
   "p" 'cat-plugin-prefix
+  "P" #'profiler-hydra/body
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
