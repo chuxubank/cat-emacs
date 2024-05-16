@@ -40,11 +40,10 @@ Hides template, daily directories."
          (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
          (filter-dir-list (seq-filter #'cat-org-roam-allowed-directory-p dir-list))
          (dir (completing-read "Choose org-roam sub directory: " filter-dir-list nil 'confirm))
-         (full-dir (expand-file-name dir cat-org-roam-directory))
          (filename (file-name-with-extension name "org")))
-    (unless (file-directory-p full-dir)
-      (make-directory full-dir t))
-    (expand-file-name filename full-dir)))
+    (unless (file-directory-p dir)
+      (make-directory dir t))
+    (concat (file-name-as-directory dir) filename)))
 
 (defun cat-org-roam-get-template (&optional dir)
   "Choose template based on DIR."
@@ -90,6 +89,7 @@ Hides template, daily directories."
   :delight " 󱉟"
   :custom
   (orb-roam-ref-format 'org-cite)
+  (org-roam-extract-new-file-path "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")")
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")" "#+title: ${title}")
