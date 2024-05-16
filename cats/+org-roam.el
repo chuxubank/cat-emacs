@@ -17,6 +17,14 @@
                                      plain (file "templates/course.org") :target
                                      (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)))
+  :pretty-hydra
+  ((:color teal :title (+with-icon "nf-md-map_marker_path" "Org Roam"))
+   ("Action"
+    (("r" org-roam-buffer-toggle "toggle")
+     ("e" org-roam-extract-subtree "extract")
+     ("R" cat-org-roam-relocate-file "relocate"))
+    "BibTex"
+    (("b" orb-note-actions "orb action"))))
   :config
   (+mkdir-p cat-org-roam-directory)
   (org-roam-db-autosync-mode)

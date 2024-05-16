@@ -52,12 +52,9 @@
   :mode-hydra
   (org-mode
    (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
-   ("Roam"
-    (("t" org-roam-buffer-toggle "toggle")
-     ("e" org-roam-extract-subtree "extract")
-     ("b" orb-note-actions "orb action"))
-    "Notes"
-    (("n" org-noter "noter")
+   ("Notes"
+    (("r" org-roam-hydra/body "roam")
+     ("n" org-noter "noter")
      ("m" org-media-note-hydra/body "media"))
     "SRS"
     (("a" org-anki-hydra/body "anki")

@@ -66,6 +66,7 @@ List contains pairs mode lighter, see `minor-mode-alist'"
                     ("ice" (nerd-icons-ipsicon icon))
                     ("pom" (nerd-icons-pomicon icon))
                     ("seti" (nerd-icons-sucicon icon))
+                    ("custom" (nerd-icons-sucicon icon))
                     ("pl" (nerd-icons-powerline icon)))))
     (if (or (null str)
             (string-empty-p str))
