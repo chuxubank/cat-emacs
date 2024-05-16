@@ -218,3 +218,7 @@
                   (car args))
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator))
+
+(use-package xref
+  :custom
+  (xref-search-program 'ripgrep))

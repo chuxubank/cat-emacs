@@ -86,6 +86,7 @@
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
+(cat! "+jump")
 
 ;;; language
 (cat! "+cmake")
