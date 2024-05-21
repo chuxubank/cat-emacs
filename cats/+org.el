@@ -53,7 +53,8 @@
   (org-mode
    (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
    ("Notes"
-    (("r" org-roam-hydra/body "roam")
+    (("i" #'org-id-get-create "id")
+     ("r" org-roam-hydra/body "roam")
      ("n" org-noter "noter")
      ("m" org-media-note-hydra/body "media"))
     "SRS"

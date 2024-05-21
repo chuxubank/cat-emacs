@@ -23,8 +23,14 @@
     (("r" org-roam-buffer-toggle "toggle")
      ("e" org-roam-extract-subtree "extract")
      ("R" cat-org-roam-relocate-file "relocate"))
+    "Alias"
+    (("aa" #'org-roam-alias-add "add alias")
+     ("da" #'org-roam-alias-remove "remove alias"))
     "BibTex"
-    (("b" orb-note-actions "orb action"))))
+    (("b" orb-note-actions "orb action"))
+    "Reference"
+    (("ar" #'org-roam-ref-add "add ref")
+     ("dr" #'org-roam-ref-remove "remove ref"))))
   :config
   (+mkdir-p cat-org-roam-directory)
   (org-roam-db-autosync-mode)
