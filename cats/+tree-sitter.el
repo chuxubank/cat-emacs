@@ -1,9 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-;; https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter
-
-(setq treesit-font-lock-level 4)
-
 (use-package tree-sitter
   :delight " "
   :hook
@@ -41,14 +37,3 @@ more information."
   (push '(import_declaration
           . (lambda (node offset)
               (ts-fold-range-same node offset "import "))) (alist-get 'java-mode ts-fold-range-alist)))
-
-(use-package treesit-auto
-  :disabled
-  :when EMACS29+
-  :hook (after-init . global-treesit-auto-mode)
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (dolist (lang '(cmake cpp bash))
-    (setq treesit-auto-langs (delete lang treesit-auto-langs)))
-  (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
