@@ -28,7 +28,7 @@ more information."
   :pin jcs-elpa
   :delight " "
   :hook
-  (after-init . global-ts-fold-indicators-mode)
+  (prog-mode . ts-fold-indicators-mode)
   :bind
   (:map prog-mode-map
         ("C-." . ts-fold-toggle))

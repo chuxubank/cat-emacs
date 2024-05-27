@@ -79,7 +79,7 @@
 ;;; code
 (cat! "+format")
 (cat! "+flycheck")
-(if EMACS29+ (cat! "+treesit") (cat! "+tree-sitter"))
+(if EMACS30+ (cat! "+treesit") (cat! "+tree-sitter"))
 (cat! "+doc")
 (cat! "+sideline")
 (cat! "+codeium")
