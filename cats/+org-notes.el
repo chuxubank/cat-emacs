@@ -9,6 +9,8 @@
   (require 'org-attach))
 
 (use-package org-noter
+  :custom
+  (org-noter-use-indirect-buffer nil)
   :config
   (setq org-noter--inhibit-location-change-handler t)
   (defun +org-noter-update-page-info (&optional arg)
