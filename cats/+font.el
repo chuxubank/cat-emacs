@@ -97,8 +97,8 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
     (if IS-MACPORT
         (set-face-attribute 'default frame :font cat-default-font :height cat-font-size)
       (set-face-attribute 'default frame :font cat-default-font :height cat-font-size :weight 'light))
-    (set-face-attribute 'mode-line-active frame :font (cadr cat-mono-thin-fonts))
-    (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
+    ;; (set-face-attribute 'mode-line-active frame :font (cadr cat-mono-thin-fonts))
+    ;; (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
 
     ;; (+safe-set-fontset-fonts t 'symbol cat-symbol-fonts frame)
 
