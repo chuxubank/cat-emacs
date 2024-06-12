@@ -4,13 +4,6 @@
   :pin gnu
   :delight
   (org-cdlatex-mode " ")
-  :init
-  (defun +org-buffers-refresh ()
-    "Save and revert all org buffers without confirm."
-    (interactive)
-    (org-save-all-org-buffers)
-    (+no-confirm #'org-revert-all-org-buffers)
-    (org-element-update-syntax))
   :custom
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))
@@ -78,7 +71,6 @@
      (plantuml . t)
      (awk . t)))
   (add-to-list 'org-modules 'org-habit)
-  (add-hook 'cat-theme-refresh-hook #'+org-buffers-refresh)
   (require 'server)
   (require 'org-protocol))
 
