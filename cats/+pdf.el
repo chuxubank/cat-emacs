@@ -2,6 +2,10 @@
 
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
+  :bind
+  (:map pdf-view-mode-map
+        ("v" . +pdf-keyboard-select-region)
+        ("C-S-l" . #'pdf-view-center-in-window))
   :custom
   (pdf-view-use-scaling t)
   :hook
@@ -32,6 +36,3 @@
     (setq pdf-view-active-region (list edges))
     (pdf-view--push-mark)
     (pdf-view-display-region)))
-
-(with-eval-after-load 'pdf-view
-  (define-key pdf-view-mode-map (kbd "v") #'+pdf-keyboard-select-region))
