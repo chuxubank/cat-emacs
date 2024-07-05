@@ -120,6 +120,7 @@
 (cat! "+dict")
 (cat! "+ncm")
 (cat! "+mu4e")
+(cat! "+music")
 (cat! "+pass")
 (cat! "+gist")
 (cat! "+beancount")
