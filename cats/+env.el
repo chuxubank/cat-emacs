@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package exec-path-from-shell
-  :unless IS-WINDOWS
+  :when
+  (not (getenv "TERM_PROGRAM"))
   :demand t
   :custom
   (exec-path-from-shell-arguments '("-l"))
