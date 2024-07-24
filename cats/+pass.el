@@ -1,6 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package pass)
+(use-package pass
+  :ensure-system-package
+  (zbarimg . zbar)
+  (qrencode . qrencode))
 
 (use-package password-store
   :custom
