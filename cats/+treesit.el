@@ -8,6 +8,7 @@
   (treesit-font-lock-level 4))
 
 (use-package treesit-fold
+  :disabled
   :hook (after-init . global-treesit-fold-mode)
   :pin jcs-elpa)
 
@@ -19,3 +20,9 @@
   (dolist (lang '(cmake cpp bash))
     (setq treesit-auto-langs (delete lang treesit-auto-langs)))
   (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
+
+(with-eval-after-load 'meow
+  (use-package meow-tree-sitter
+    :demand
+    :config
+    (meow-tree-sitter-register-defaults)))
