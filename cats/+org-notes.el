@@ -8,6 +8,8 @@
   :config
   (require 'org-attach))
 
+(use-package mpv)
+
 (use-package org-noter
   :custom
   (org-noter-use-indirect-buffer nil)
