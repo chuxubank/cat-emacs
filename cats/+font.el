@@ -203,7 +203,9 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'Info-mode
                       'man-common)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
+
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
+(add-hook 'after-revert-hook 'cat-setup-mode-font)
 
 (with-eval-after-load 'face-remap
   (+change-lighter 'buffer-face-mode " 󰛖"))
