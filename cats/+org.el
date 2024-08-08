@@ -190,8 +190,8 @@
   (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
 
 (use-package org-modern
-  :hook
-  (org-mode . global-org-modern-mode)
+  :demand
+  :after org
   :custom
   (org-modern-table nil)
   (org-modern-hide-stars nil)
@@ -199,7 +199,9 @@
                            ("WAIT" :inverse-video t :inherit +org-todo-onhold)
                            ("HOLD" :inverse-video t :inherit +org-todo-onhold)
                            ("PROJ" :inverse-video t :inherit +org-todo-project)
-                           ("KILL" :inverse-video t :inherit +org-todo-cancel))))
+                           ("KILL" :inverse-video t :inherit +org-todo-cancel)))
+  :config
+  (global-org-modern-mode))
 
 (use-package org-modern-indent
   :pin jcs-elpa
