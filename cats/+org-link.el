@@ -39,3 +39,15 @@
     (setq org-dial-program "open tel:")))
 
 (use-package org-cliplink)
+
+;; Remember to install latest org via https://orgmode.org/org.html#Installation
+(use-package org-link-beautify
+  :hook
+  (org-mode . org-link-beautify-mode)
+  :custom
+  (org-link-beautify-thumbnails-dir 'user-home)
+  (org-link-beautify-display-overlay-info t)
+  (org-link-beautify-image-preview t)
+  :config
+  (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
+  (advice-add 'org-agenda-finalize :after #'org-link-beautify-enable))
