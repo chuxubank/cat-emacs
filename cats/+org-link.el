@@ -5,6 +5,8 @@
        :url "https://github.com/TobiasZawada/org-yt"
        :rev :newest)
   :demand t
+  :custom
+  (org-yt-cache-directory (concat cat-cache-dir "yt-cache"))
   :after org)
 
 (defun +org-inline-image-data-fn (_protocol link _description)
