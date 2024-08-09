@@ -17,7 +17,7 @@
    ("Mail"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
-     ("u" #'mu4e-update-mail-and-index "update")
+     ("u" #'mu4e-update-index "update")
      ("o" #'mu4e-overview "overview")))))
 
 (with-eval-after-load 'selectrum
