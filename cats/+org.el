@@ -57,6 +57,8 @@
     (("j" org-jira-todo-to-jira "transform"))
     "Plugin"
     (("c" org-cliplink "cliplink")
+     ("lb" org-link-beautify-mode "link beautify")
+     ("ld" org-toggle-link-display "link display")
      ("h" consult-org-heading "headings"))))
   :config
   (when IS-LINUX
@@ -156,8 +158,7 @@
   :bind
   (:map org-mode-map
         ("M-n" . org-next-link)
-        ("M-p" . org-previous-link)
-        ("C-c C-x l" . org-toggle-link-display))
+        ("M-p" . org-previous-link))
   :custom
   (org-link-abbrev-alist '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
                            ("wiki-en" . "https://en.wikipedia.org/wiki/%s")
