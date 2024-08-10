@@ -12,3 +12,6 @@
   :bind
   (:map json-mode-map
         ("C-c C-w" . json-mode-kill-path)))
+
+(defun cat-is-node-package-lock-buffer ()
+  (string-match-p "package-lock.json" (buffer-name)))

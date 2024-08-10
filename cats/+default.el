@@ -181,6 +181,9 @@
   :config
   (type-break-guesstimate-keystroke-threshold 30))
 
+(defun cat-is-type-break-buffer ()
+  (string= (buffer-file-name) type-break-file-name))
+
 (use-package epg-config
   :ensure nil
   :custom
