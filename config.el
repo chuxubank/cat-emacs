@@ -55,6 +55,7 @@
 
 ;;; git
 (cat! "+magit")
+(cat! "+git-misc")
 
 ;;; org
 (cat! "+org")
