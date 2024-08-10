@@ -19,6 +19,7 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
+  "." 'cat-dict-prefix
   "b" #'bbdb
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
@@ -37,7 +38,6 @@
 
 (defvar-keymap cat-map
   :keymap mode-specific-map
-  "." 'cat-dict-prefix
   ":" #'avy-goto-char-timer
   "a" #'org-agenda
   "c" #'org-capture
