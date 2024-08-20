@@ -14,8 +14,8 @@
   (mu4e-read-option-use-builtin nil)
   (mu4e-completing-read-function 'completing-read)
   :pretty-hydra
-  ((:color teal)
-   ("Mail"
+  ((:color teal :title (+with-icon "nf-oct-mail" "Mail"))
+   ("Mu4e"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
      ("u" #'mu4e-update-index "update")
