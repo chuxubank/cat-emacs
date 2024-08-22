@@ -22,7 +22,7 @@
 (cat! "+windows")
 (cat! "+workspace")
 (cat! "+treemacs")
-;; (cat! "+dashboard")
+(cat! "+dashboard")
 ;; (cat! "+hydra")
 
 ;;; daemon
