@@ -49,8 +49,7 @@
   (org-link-beautify-display-overlay-info t)
   (org-link-beautify-image-preview t)
   :config
-  ;; (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
-  ;; (advice-add 'org-agenda-finalize :after #'org-link-beautify-enable)
+  (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
   (defun org-link-beautify--display-icon (start end description icon)
     "Display ICON for link on START and END with DESCRIPTION."
     (put-text-property
