@@ -17,5 +17,6 @@
   (setq magit-stash-read-message-function #'magit-stash-read-message-traditional))
 
 (use-package forge
+  :pin melpa-stable
   :demand t
   :after magit)
