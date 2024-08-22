@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package magit
+  :pin nongnu
   :commands #'magit-read-repository
   :custom
   (magit-blame-mode-lighter " ")
