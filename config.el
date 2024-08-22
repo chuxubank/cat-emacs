@@ -74,6 +74,9 @@
 (cat! "+cdlatex")
 ;; (cat! "+zotero")
 
+;;; markdown
+(cat! "+markdown")
+
 ;;; input
 (cat! "+rime")
 
