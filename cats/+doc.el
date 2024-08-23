@@ -43,6 +43,22 @@ Intended for `eldoc-documentation-functions' (which see)."
   :hook ((conf-toml-mode
           toml-ts-mode). eldoc-toml-mode))
 
+(use-package helpful
+  :bind
+  ([remap describe-function] . #'helpful-callable)
+  ([remap describe-variable] . #'helpful-variable)
+  ([remap describe-key]      . #'helpful-key)
+  ([remap describe-command]  . #'helpful-command)
+  ([remap describe-symbol]   . #'helpful-symbol)
+  (:map help-map
+        ("C-d" . #'helpful-at-point)))
+
+(use-package elisp-demos
+  :demand
+  :after helpful
+  :config
+  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+
 (use-package devdocs)
 
 (defvar-keymap cat-dev-doc-map
