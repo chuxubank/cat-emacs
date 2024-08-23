@@ -24,13 +24,28 @@
       ((agenda
         ""
         ((org-agenda-span 'day)
-         (org-agenda-include-diary nil)
          (org-agenda-overriding-header
           (format "Agenda [%s]" (org-agenda-count)))))
        (alltodo
         ""
         ((org-agenda-overriding-header
-          (format "All TODOs [%s]" (org-agenda-count "alltodo"))))))))))
+          (format "All TODOs [%s]" (org-agenda-count "alltodo")))))))))
+  :config
+  (defun org-agenda--count (list &optional type)
+    "Count the number of entries in this block for `org-agenda-count'.
+
+Intended as (temporary) :before advice for the function
+`org-agenda-finalize-hook'.
+
+This function filters out non-TODO entries before counting them."
+    (let ((todo-entries
+           (seq-filter (lambda (entry)
+                         (get-text-property 0 'todo-state entry))
+                       list)))
+      (alist-put org-agenda-count--alist
+                 org-agenda-count--block
+                 (length todo-entries)
+                 #'equal))))
 
 (use-package org-edna
   :delight " "
