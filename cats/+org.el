@@ -55,10 +55,12 @@
      ("d" org-drill-hydra/body "drill"))
     "Jira"
     (("j" org-jira-todo-to-jira "transform"))
+    "Display"
+    (("b" org-link-beautify-mode "link beautify")
+     ("l" org-toggle-link-display "link display"))
     "Plugin"
     (("c" org-cliplink "cliplink")
-     ("lb" org-link-beautify-mode "link beautify")
-     ("ld" org-toggle-link-display "link display")
+     ("e" org-edna-edit "edna edit")
      ("h" consult-org-heading "headings"))))
   :config
   (when IS-LINUX
