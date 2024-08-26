@@ -21,6 +21,6 @@
 
 (use-package bbdb
   :custom
-  (bbdb-file (expand-file-name "bbdb" cat-org-directory))
+  (bbdb-file (expand-file-name "bbdb.gpg" cat-org-directory))
   :config
   (bbdb-initialize))
