@@ -5,6 +5,8 @@
   (zbarimg . zbar)
   (qrencode . qrencode))
 
+(use-package password-store-menu)
+
 (use-package password-store
   :custom
   (password-store-password-length 16)
