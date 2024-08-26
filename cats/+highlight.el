@@ -71,3 +71,7 @@
   (when (or IS-MACPLUS
             IS-WINDOWS)
     (setq indent-bars-prefer-character t)))
+
+(use-package rainbow-mode
+  :delight " "
+  :hook (prog-mode text-mode))
