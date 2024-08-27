@@ -77,6 +77,9 @@
 ;;; markdown
 (cat! "+markdown")
 
+;;; csv
+(cat! "+csv")
+
 ;;; input
 (cat! "+rime")
 
