@@ -3,9 +3,10 @@
 (use-package org-agenda
   :ensure nil
   :custom
+  (org-agenda-include-diary t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-deadline-if-done t)
-  (org-agenda-include-diary t))
+  (org-agenda-skip-deadline-prewarning-if-scheduled t))
 
 (use-package calendar
   :ensure nil
