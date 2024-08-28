@@ -225,3 +225,6 @@
 (use-package xref
   :custom
   (xref-search-program 'ripgrep))
+
+(use-package outline
+  :delight (outline-minor-mode " 󰠶"))
