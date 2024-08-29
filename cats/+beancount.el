@@ -5,7 +5,7 @@
   :init
   (setq beancount-mode-map-prefix [(control c) (control c)])
   (add-hook 'beancount-mode-hook #'outline-minor-mode)
-  :mode ("\\.beancount\\'" . beancount-mode)
+  (add-hook 'beancount-mode-hook #'flymake-bean-check-enable)
   :custom
   (beancount-use-ido nil)
   :config
