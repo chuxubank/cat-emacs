@@ -6,6 +6,7 @@
   (setq beancount-mode-map-prefix [(control c) (control c)])
   (add-hook 'beancount-mode-hook #'outline-minor-mode)
   (add-hook 'beancount-mode-hook #'flymake-bean-check-enable)
+  (add-hook 'beancount-mode-hook #'cat-disable-electric-indent-chars)
   :custom
   (beancount-use-ido nil)
   :config

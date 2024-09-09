@@ -228,3 +228,7 @@
 
 (use-package outline
   :delight (outline-minor-mode " 󰠶"))
+
+(defun cat-disable-electric-indent-chars ()
+  "Set local variable `electric-indent-chars' to nil."
+  (setq-local electric-indent-chars nil))
