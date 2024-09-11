@@ -8,7 +8,7 @@
 
 (use-package markdown-xwidget
   :vc (markdown-xwidget
-       :url "https://github.com/cfclrk/markdown-xwidget"
+       :url "https://github.com/chuxubank/markdown-xwidget"
        :rev :newest)
   :demand t
   :after markdown-mode
