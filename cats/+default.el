@@ -118,7 +118,7 @@
                       (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
                       (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
   (defun +ediff-setup-keymap ()
-    (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+    (define-key ediff-mode-map "d" '+ediff-copy-both-to-C))
   :hook (ediff-keymap-setup . +ediff-setup-keymap)
   :custom
   (ediff-split-window-function #'split-window-horizontally))
