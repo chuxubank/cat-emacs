@@ -30,20 +30,3 @@
   :config (mu4e-column-faces-mode))
 
 (use-package mu4e-overview)
-
-(use-package mu4e-views
-  :demand
-  :after mu4e
-  :bind
-  (:map mu4e-headers-mode-map
-	    ("v" . mu4e-views-mu4e-select-view-msg-method)
-	    ("M-n" . mu4e-views-cursor-msg-view-window-down)
-	    ("M-p" . mu4e-views-cursor-msg-view-window-up)
-        ("f" . mu4e-views-toggle-auto-view-selected-message)
-        ("i" . mu4e-views-mu4e-view-as-nonblocked-html))
-  :custom
-  (mu4e-views-default-view-method "html")
-  (mu4e-views-next-previous-message-behaviour 'stick-to-current-window)
-  (mu4e-views-auto-view-selected-message t)
-  :config
-  (mu4e-views-mu4e-use-view-msg-method "html"))

@@ -119,6 +119,7 @@
                       '(telega-root-mode . motion)
                       '(ement-room-mode . motion)
                       '(osx-dictionary-mode . motion)
+                      '(gnus-mode . motion)
                       '(eshell-mode . insert)
                       '(comint-mode . insert))
   (setq meow-replace-state-name-list '((normal . "🅝")
