@@ -116,6 +116,7 @@
                       '(diary-mode . normal)
                       '(deft-mode . motion)
                       '(help-mode . motion)
+                      '(helpful-mode . motion)
                       '(telega-root-mode . motion)
                       '(ement-room-mode . motion)
                       '(osx-dictionary-mode . motion)
