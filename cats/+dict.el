@@ -1,14 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package bing-dict
-
   :config
   (setq bing-dict-vocabulary-save t
         bing-dict-show-thesaurus 'both
         bing-dict-vocabulary-file (expand-file-name "vocabulary.org" cat-org-directory)))
 
 (use-package anki-vocabulary
-
   :custom
   (anki-vocabulary-deck-name "Inbox")
   (anki-vocabulary-model-name "AutoCopy")
@@ -18,7 +16,6 @@
 
 (use-package osx-dictionary
   :when IS-MAC)
-
 
 (defvar-keymap cat-dict-map
   :doc "Keymap for cat dict commands."
