@@ -19,7 +19,6 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "." 'cat-dict-prefix
   "b" #'bbdb
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
@@ -44,7 +43,8 @@
   "d" 'cat-org-roam-dailies-prefix
   "f" 'cat-file-prefix
   "j" 'cat-org-jira-prefix
-  "l" #'org-store-link
+  "l" #'cat-language/body
+  "L" #'org-store-link
   "n" #'major-mode-hydra
   "o" #'ace-window
   "p" 'cat-plugin-prefix

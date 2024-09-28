@@ -4,6 +4,8 @@
   :pin gnu
   :delight
   (org-cdlatex-mode " ")
+  :commands
+  (org-store-link)
   :custom
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))

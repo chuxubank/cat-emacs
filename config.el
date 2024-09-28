@@ -124,7 +124,7 @@
 (cat! "+nov")
 (cat! "+toc")
 (cat! "+elfeed")
-(cat! "+dict")
+(cat! "+language")
 (cat! "+ncm")
 (cat! "+mu4e")
 (cat! "+music")
