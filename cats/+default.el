@@ -184,6 +184,11 @@
 (defun cat-is-type-break-buffer ()
   (string= (buffer-file-name) type-break-file-name))
 
+(use-package epa-file
+  :ensure nil
+  :custom
+  (epa-file-name-regexp "\\.\\(gpg\\|asc\\)\\(~\\|\\.~[0-9]+~\\)?\\'"))
+
 (use-package epg-config
   :ensure nil
   :custom
