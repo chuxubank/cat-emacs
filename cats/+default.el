@@ -237,3 +237,6 @@
 (defun cat-disable-electric-indent-chars ()
   "Set local variable `electric-indent-chars' to nil."
   (setq-local electric-indent-chars nil))
+
+(use-package transient
+  :pin gnu)
