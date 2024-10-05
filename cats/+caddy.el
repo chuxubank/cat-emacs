@@ -1,4 +1,3 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package caddyfile-mode
-  :mode "Caddyfile\\'")
+(use-package caddyfile-mode)

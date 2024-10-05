@@ -23,7 +23,6 @@
 (cat! "+workspace")
 (cat! "+treemacs")
 (cat! "+dashboard")
-;; (cat! "+hydra")
 
 ;;; daemon
 (cat! "+daemon")
@@ -32,10 +31,11 @@
 (when IS-MAC
   (cat! "+macos"))
 
-;;; edit
+;;; editor
 (cat! "+meow")
 (cat! "+avy")
 (cat! "+smartparens")
+;; (cat! "+hydra")
 
 ;;; completion
 ;; (cat! "+company")
@@ -110,11 +110,14 @@
 (cat! "+mermaid")
 (cat! "+protobuf")
 (cat! "+js")
-(cat! "+caddy")
-(cat! "+docker")
 (cat! "+vb")
 (cat! "+lua")
 (cat! "+go")
+
+;;; tools
+(cat! "+ansible")
+(cat! "+caddy")
+(cat! "+docker")
 
 ;;; plugins
 (cat! "+term")
