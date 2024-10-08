@@ -239,4 +239,6 @@
   (setq-local electric-indent-chars nil))
 
 (use-package transient
+  :preface
+  (assq-delete-all 'transient package--builtins)
   :pin gnu)

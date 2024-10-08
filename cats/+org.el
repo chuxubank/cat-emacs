@@ -1,6 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org
+  :preface
+  (assq-delete-all 'org package--builtins)
+  (assq-delete-all 'org package--builtin-versions)
   :pin gnu
   :delight
   (org-cdlatex-mode " ")
