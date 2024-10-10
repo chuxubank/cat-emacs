@@ -14,14 +14,17 @@
   :mode-hydra
   (beancount-mode
    ("LSP"
-    (("e" eglot-hydra/body "eglot"))))
+    (("e" eglot-hydra/body "eglot"))
+    "Tools"
+    (("f" #'beancount-fava "fava"))))
   :config
   (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
   (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
 
-  (defun beancount--fava-filter (process output)
+  (defun beancount--fava-filter (_process output)
     "Open fava url as soon as the address is announced."
-    (if-let ((url-index (string-match "\\(http://.+:[0-9]+\\)" output)))
+    (with-current-buffer "*fava*" (insert output))
+    (if-let ((url (string-match "Starting Fava on \\(http://.+:[0-9]+\\)" output)))
         (browse-url (match-string 1 output)))))
 
 (with-eval-after-load 'eglot
