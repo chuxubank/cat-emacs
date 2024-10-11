@@ -7,7 +7,6 @@
  calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"])
 
 (use-package pinyin-search
-  :disabled
   :bind
   (:map search-map
         ("p" . #'pinyin-search)))
