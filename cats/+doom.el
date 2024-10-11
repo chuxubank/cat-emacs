@@ -23,8 +23,5 @@
   (interactive)
   (setq doom-modeline-minor-modes (not doom-modeline-minor-modes)))
 
-(use-package solaire-mode
-  :hook (after-init . solaire-global-mode))
-
 (provide '+doom)
 ;;; +doom.el ends here

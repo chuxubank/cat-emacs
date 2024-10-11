@@ -72,6 +72,9 @@
             IS-WINDOWS)
     (setq indent-bars-prefer-character t)))
 
+(use-package solaire-mode
+  :hook (after-init . solaire-global-mode))
+
 (use-package rainbow-mode
   :delight " "
   :hook (prog-mode text-mode))
