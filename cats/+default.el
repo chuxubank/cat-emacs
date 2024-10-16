@@ -137,6 +137,11 @@
 (define-key ctl-x-4-map "v" 'view-file-other-window)
 (define-key ctl-x-5-map "v" 'view-file-other-frame)
 
+(use-package window
+  :ensure nil
+  :custom
+  (fit-window-to-buffer-horizontally t))
+
 ;;; gnus
 (setq gnus-select-method '(nntp "news.gmane.io"))
 
