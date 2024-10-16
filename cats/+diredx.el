@@ -16,7 +16,9 @@
   (dired-guess-shell-alist-user
    '(("\\.zip\\'"
       (concat "7z x -o\\*")
-      (concat "7z x -o\\* -p"))))
+      (concat "7z x -o\\* -p"))
+     ("\\.pub\\'"
+      (concat "ssh-keygen -lv -f"))))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
