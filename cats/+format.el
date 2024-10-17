@@ -7,6 +7,7 @@
   :custom
   (apheleia-remote-algorithm 'local)
   (apheleia-mode-lighter " 󰿞")
+  (apheleia-formatters-respect-indent-level nil)
   :config
   (setf (alist-get 'latexindent apheleia-formatters)
         '("latexindent" "-l" "--logfile=/dev/null"))
