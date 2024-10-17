@@ -46,6 +46,7 @@
   (package-install 'use-package))
 
 (require 'use-package)
+(require 'ignore-builtin)
 
 (custom-set-variables
  '(use-package-always-ensure t)
