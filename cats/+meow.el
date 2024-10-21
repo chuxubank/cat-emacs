@@ -9,8 +9,7 @@
   (after-init . meow-global-mode)
   ((wl-folder-mode
     mime-view-mode
-    view-mode
-    magit-blame-mode) . cat-meow-toggle)
+    view-mode) . cat-meow-toggle)
   :custom
   (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-keypad-leader-dispatch "C-c")
