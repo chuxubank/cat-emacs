@@ -20,7 +20,10 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/pacman \
     github-cli \
     gnupg \
     p7zip \
+    python-pylint \
+    python-black \
     ripgrep \
+    sudo \
     ttc-iosevka \
     ttc-iosevka-etoile \
     inter-font \
