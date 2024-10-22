@@ -12,15 +12,33 @@
     (setq lock-file-name-transforms `((".*" ,dir t)))))
 
 ;;; ui
-(blink-cursor-mode 0)
-(scroll-bar-mode 0)
-(menu-bar-mode 0)
-(tool-bar-mode 0)
+(use-package frame
+  :ensure nil
+  :config
+  (blink-cursor-mode 0))
+
+(use-package scroll-bar
+  :demand t
+  :ensure nil
+  :config
+  (scroll-bar-mode 0))
+
+(use-package menu-bar
+  :demand t
+  :ensure nil
+  :config
+  (menu-bar-mode 0))
+
+(use-package tool-bar
+  :demand t
+  :ensure nil
+  :config
+  (tool-bar-mode 0))
+
 (setq inhibit-startup-screen t
       initial-scratch-message nil
-      frame-resize-pixelwise t)
-
-(setq frame-title-format '("%b – " cat-emacs-name)
+      frame-resize-pixelwise t
+      frame-title-format '("%b – " cat-emacs-name)
       icon-title-format frame-title-format)
 
 (setq custom-safe-themes t)
