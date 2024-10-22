@@ -17,9 +17,11 @@ jobs:
   check:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         emacs-version:
           - 29.4
+          - 28.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
