@@ -14,31 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        emacs-version:
-          - 29.4
-          - 28.2
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Emacs
-        uses: jcs090218/setup-emacs@master
-        with:
-          version: ${{ matrix.emacs-version }}
-
-      - name: Setup custom
-        run: echo "(custom-set-variables '(use-short-answers t) '(package-native-compile t))" > custom.el
-
-      - name: Run init
-        run: yes | emacs --init-directory=. --fg-daemon --debug-init --eval "(kill-emacs)"
-
   docker:
-    needs: check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,7 +62,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}

@@ -64,6 +64,7 @@
   (major-mode-hydra-title-generator #'cat-major-mode-hydra-title-generator))
 
 (unless (or EMACS30+ (package-installed-p 'vc-use-package))
+  (system-packages-ensure "git")
   (package-vc-install "https://github.com/slotThe/vc-use-package"))
 
 ;; Ref @twlz0ne https://emacs-china.org/t/elpa/18226
