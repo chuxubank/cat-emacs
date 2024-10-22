@@ -23,7 +23,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        path: ~/.emacs.d/
 
       - name: Setup Emacs
         uses: jcs090218/setup-emacs@master
@@ -31,10 +30,10 @@ jobs:
           version: ${{ matrix.emacs-version }}
 
       - name: Setup custom
-        run: echo "(custom-set-variables '(use-short-answers t) '(package-native-compile t))" > ~/.emacs.d/custom.el
+        run: echo "(custom-set-variables '(use-short-answers t) '(package-native-compile t))" > custom.el
 
       - name: Run init
-        run: yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
+        run: yes | emacs --init-directory=. --fg-daemon --debug-init --eval "(kill-emacs)"
 
   docker:
     needs: check
