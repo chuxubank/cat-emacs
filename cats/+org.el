@@ -156,6 +156,14 @@
   :custom
   (org-timer-display 'frame-title))
 
+(use-package org-crypt
+  :ensure nil
+  :after org
+  :config
+  (add-to-list 'org-tags-exclude-from-inheritance
+               org-crypt-tag-matcher)
+  (org-crypt-use-before-save-magic))
+
 (use-package ol
   :demand t
   :after org
