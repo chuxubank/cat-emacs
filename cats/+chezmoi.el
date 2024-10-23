@@ -2,7 +2,8 @@
 
 (use-package chezmoi
   :commands
-  (chezmoi-dired-add-marked-files
+  (chezmoi-mode
+   chezmoi-dired-add-marked-files
    chezmoi-magit-status
    chezmoi-diff
    chezmoi-ediff
