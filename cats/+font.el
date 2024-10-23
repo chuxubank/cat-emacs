@@ -185,7 +185,8 @@ Unless `buffer-face-mode' already enabled."
                       'templ-ts-mode)
       (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
      ((derived-mode-p 'objc-mode
-                      'swift-mode)
+                      'swift-mode
+                      'applescript-mode)
       (+safe-buffer-face-set-fonts (nth 4 cat-mono-code-fonts)))
      ((derived-mode-p 'plantuml-mode
                       'mermaid-mode 'mermaid-ts-mode)
