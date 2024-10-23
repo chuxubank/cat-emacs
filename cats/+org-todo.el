@@ -3,6 +3,7 @@
 (use-package org-agenda
   :ensure nil
   :custom
+  (org-agenda-file-regexp "\\`[^.].*\\.org\\(\\.gpg\\)?\\'")
   (org-agenda-include-diary t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-deadline-if-done t)
