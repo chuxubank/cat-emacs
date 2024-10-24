@@ -158,10 +158,18 @@
 
 (use-package org-crypt
   :ensure nil
+  :demand t
   :after org
+  :bind
+  (:map org-mode-map
+        ("C-c C-/" . org-decrypt-entries))
+  :custom
+  (org-crypt-disable-auto-save 'encrypt)
   :config
   (add-to-list 'org-tags-exclude-from-inheritance
                org-crypt-tag-matcher)
+  (add-to-list 'org-tag-alist
+               (cons org-crypt-tag-matcher ?c))
   (org-crypt-use-before-save-magic))
 
 (use-package ol
