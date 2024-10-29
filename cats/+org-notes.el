@@ -22,10 +22,27 @@
                    (org-noter--pretty-print-location
                     (org-noter--doc-approx-location
                      (when arg (org-noter--get-precise-info))))))
-
   (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info)
+
   (with-eval-after-load 'org-roam
-    (org-noter-enable-org-roam-integration)))
+    (org-noter-enable-org-roam-integration))
+
+  (defun org-noter-orb-citar-find-document-from-refs (&optional cite-key)
+    "Return a note file associated with CITE-KEY.
+When there is more than one note files associated with CITE-KEY, have
+user select one of them."
+    (let* ((key (or cite-key (orb-get-node-citekey)))
+           (file-table (citar-get-files key))
+           (files '()))
+      (when file-table
+        (maphash (lambda (key file-list)
+                   (setq files (append files file-list)))
+                 file-table))
+      (cond ((= (length files) 1)
+             (car files))
+            ((> (length files) 1)
+             (completing-read (format "Which document from %s?: " key) files)))))
+  (add-to-list 'org-noter-parse-document-property-hook #'org-noter-orb-citar-find-document-from-refs))
 
 (use-package deft
   :custom

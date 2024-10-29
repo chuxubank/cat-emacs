@@ -17,13 +17,6 @@
   :config
   (bibtex-completion-init))
 
-(defun +orb-note-update-file (citekey)
-  "Update the `org-noter-property-doc-file' property of the CITEKEY."
-  (citar--library-file-action
-   citekey
-   (lambda (file)
-     (org-entry-put nil org-noter-property-doc-file (abbreviate-file-name file)))))
-
 (defun +orb-note-citar (citekey)
   "Use `citar' to open the CITEKEY note file."
   (citar-run-default-action (ensure-list citekey)))
@@ -98,9 +91,6 @@ Hides template, daily directories."
      ("rd" "Bibliography reference default" plain "%?"
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}")
       :unnarrowed t)
-     ("rn" "Bibliography reference with org-noter" plain (function (lambda () (cat-org-roam-get-template "org-noter.org")))
-      :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
-      :unnarrowed t)
      ("rl" "Bibliography reference with link" plain "eww:%^{url}"
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
      ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
@@ -112,7 +102,6 @@ Hides template, daily directories."
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
   (+add-to-list-multi 'orb-preformat-keywords "title" "url")
   (+add-to-list-multi 'orb-note-actions-user
-                      '("Update org-noter file" . +orb-note-update-file)
                       '("Open with citar" . +orb-note-citar))
   (org-roam-bibtex-mode 1))
 
