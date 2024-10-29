@@ -12,7 +12,12 @@
 
 (use-package org-noter
   :custom
-  (org-noter-use-indirect-buffer nil)
+  ;; (org-noter-notes-window-location
+  ;;  (if (string= (getenv "HOST_TYPE") "work")
+  ;;      'other-frame
+  ;;    'horizontal-split))
+  ;; (org-noter-use-indirect-buffer nil)
+  (org-noter-doc-split-fraction '(0.6 . 0.5))
   :config
   (setq org-noter--inhibit-location-change-handler t)
   (defun +org-noter-update-page-info (&optional arg)
