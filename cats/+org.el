@@ -52,14 +52,15 @@
     (("i" #'org-id-get-create "id")
      ("r" org-roam-hydra/body "roam")
      ("n" org-noter "noter")
-     ("m" org-media-note-hydra/body "media"))
+     ("v" org-media-note-hydra/body "media"))
     "SRS"
     (("a" org-anki-hydra/body "anki")
      ("d" org-drill-hydra/body "drill"))
     "Jira"
     (("j" org-jira-todo-to-jira "transform"))
     "Display"
-    (("b" org-link-beautify-mode "link beautify")
+    (("m" org-modern-mode "modern mode")
+     ("b" org-link-beautify-mode "link beautify")
      ("l" org-toggle-link-display "link display"))
     "Plugin"
     (("c" org-cliplink "cliplink")
