@@ -7,7 +7,8 @@
   (tab-bar-close-button-show nil)
   (tab-bar-new-button-show nil)
   (tab-bar-show 1)
-  (tab-bar-tab-hints t))
+  (tab-bar-tab-hints t)
+  (tab-bar-select-tab-modifiers '(super)))
 
 (use-package burly
   :disabled
