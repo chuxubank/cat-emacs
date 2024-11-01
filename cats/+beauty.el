@@ -78,3 +78,7 @@
 (use-package rainbow-mode
   :delight " "
   :hook (prog-mode text-mode))
+
+(use-package valign
+  :delight " 󱥣"
+  :commands (valign--space valign--put-overlay))

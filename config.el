@@ -15,10 +15,9 @@
 ;;; ui
 ;; (cat! "+nano")
 (cat! "+doom")
-(cat! "+valign")
 (cat! "+font")
 (cat! "+autodark")
-(cat! "+highlight")
+(cat! "+beauty")
 (cat! "+windows")
 (cat! "+workspace")
 (cat! "+treemacs")
