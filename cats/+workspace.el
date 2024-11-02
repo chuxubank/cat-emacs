@@ -124,6 +124,11 @@
       "Set workspace buffer list for consult-buffer.")
     (add-to-list 'consult-buffer-sources 'consult--source-workspace)))
 
+(use-package sow
+  :ensure nil
+  :delight
+  :hook (after-init . sow-mode))
+
 (pretty-hydra-define cat-workspace
   (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
   ("Plugin"

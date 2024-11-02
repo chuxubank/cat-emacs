@@ -10,7 +10,6 @@
 (cat! "+diredx")
 (cat! "+tramp")
 (cat! "+eudc")
-(cat! "+sow")
 
 ;;; ui
 ;; (cat! "+nano")
