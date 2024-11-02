@@ -11,7 +11,10 @@
    ("Drill"
     (("d" org-drill "drill")
      ("a" org-drill-again "again")
-     ("c" org-drill-cram "cram")))))
+     ("c" org-drill-cram "cram"))))
+  :config
+  (add-to-list 'org-tag-alist
+               (cons org-drill-question-tag ?d)))
 
 (use-package org-fc
   :disabled
