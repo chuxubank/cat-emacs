@@ -3,8 +3,6 @@
 (use-package avy
   :bind
   ("C-:" . avy-goto-char-timer)
-  (:map goto-map
-        ("w" . avy-goto-word-1))
   (:map isearch-mode-map
         ("M-j" . avy-isearch))
   :config
