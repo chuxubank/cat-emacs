@@ -37,12 +37,27 @@
          "\\documentclass[dvisvgm]{article}"
          org-format-latex-header t t)))
 
-(defun +org-redisplay-latex-preview ()
+(defun +org-src-redisplay-latex-preview ()
   (when (eq major-mode 'latex-mode)
     (with-current-buffer (org-src-source-buffer)
       (org-latex-preview))))
 
-(advice-add #'org-edit-src-save :after #'+org-redisplay-latex-preview)
+(advice-add #'org-edit-src-save :after #'+org-src-redisplay-latex-preview)
+
+(defun +org-redisplay-all-latex-preview ()
+  "Copy from `org-revert-all-org-buffers', refresh all latex preview."
+  (interactive)
+  (save-excursion
+    (save-window-excursion
+      (dolist (b (buffer-list))
+	    (when (and (with-current-buffer b (derived-mode-p 'org-mode))
+		           (with-current-buffer b buffer-file-name)
+                   (with-current-buffer b org-startup-with-latex-preview))
+	      (pop-to-buffer-same-window b)
+	      (org-latex-preview '(64))
+          (org-latex-preview '(16)))))))
+
+(add-hook 'cat-theme-refresh-hook #'+org-redisplay-all-latex-preview)
 
 (defun cat-org-preview-clear-cache ()
   (interactive)
