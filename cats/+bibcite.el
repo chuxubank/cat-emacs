@@ -95,12 +95,12 @@ Hides template, daily directories."
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
      ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n"))
-     ("re" "Examination" plain (function (lambda () (cat-org-roam-get-template "exam")))
+     ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat-org-roam-get-template "exam")))
       :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)))
   :config
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
-  (+add-to-list-multi 'orb-preformat-keywords "title" "url")
+  (+add-to-list-multi 'orb-preformat-keywords "title" "url" "annotation")
   (+add-to-list-multi 'orb-note-actions-user
                       '("Open with citar" . +orb-note-citar))
   (org-roam-bibtex-mode 1))
