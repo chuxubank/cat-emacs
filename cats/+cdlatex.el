@@ -24,8 +24,8 @@
         ))
 
 (setq cdlatex-math-modify-alist
-      '((86 "\\vb*" nil t nil nil)
-        (98 "\\bm" nil t nil nil)))
+      '((?V "\\vb*" nil t nil nil)
+        (?b "\\bm" nil t nil nil)))
 
 (setq cdlatex-math-symbol-alist
-      '((76 ("\\Lambda" "\\varLambda"))))
+      '((?L ("\\Lambda" "\\varLambda"))))
