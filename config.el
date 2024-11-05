@@ -128,7 +128,7 @@
 (cat! "+elfeed")
 (cat! "+language")
 (cat! "+ncm")
-(cat! "+mu4e")
+(cat! "+mail")
 (cat! "+music")
 (cat! "+pass")
 (cat! "+gist")

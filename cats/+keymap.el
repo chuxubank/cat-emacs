@@ -26,7 +26,7 @@
   "e" 'ement-prefix
   "g" #'igist-dispatch
   "l" #'elogcat
-  "m" #'mu4e-hydra/body
+  "m" #'cat-mail/body
   "n" #'deft
   "p" #'pass
   "r" #'elfeed

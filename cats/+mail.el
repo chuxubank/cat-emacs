@@ -1,5 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-mail
+  (:color teal :title (+with-icon "nf-oct-mail" "Mail"))
+  ("Gnus"
+   (("g" #'gnus "Gnus"))))
+
 (use-package mu4e
   :commands #'mu4e
   :ensure-system-package
@@ -14,7 +19,7 @@
   (mu4e-read-option-use-builtin nil)
   (mu4e-completing-read-function 'completing-read)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-oct-mail" "Mail"))
+  (cat-mail
    ("Mu4e"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
@@ -30,3 +35,8 @@
   :config (mu4e-column-faces-mode))
 
 (use-package mu4e-overview)
+
+(use-package gnus
+  :ensure nil
+  :custom
+  (gnus-select-method '(nntp "news.gmane.io")))
