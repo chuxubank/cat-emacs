@@ -25,7 +25,7 @@ Accepts either no argument, a single package symbol, or a list of package symbol
   (cond
    ((null args) nil)
    ((symbolp args) (list args))
-   ((and (listp args) (every #'symbolp args)) args)
+   ((and (listp args) (cl-every #'symbolp args)) args)
    (t (use-package-error ":ignore-builtin takes either no argument, a package symbol, or a list of package symbols"))))
 
 (eval-after-load 'use-package-core
