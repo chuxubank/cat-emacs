@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(package-vc-install '(org-mode :url "https://code.tecosaur.net/tec/org-mode"))
+
 (use-package org
-  :ignore-builtin
   :load-path "~/.emacs.d/elpa/org-mode/lisp/"
-  :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode")
   :delight
   (org-cdlatex-mode " ")
   :commands
