@@ -6,6 +6,7 @@
   :custom
   (org-latex-preview-live t)
   (org-latex-preview-live-debounce 0.25)
+  (org-latex-preview-process-precompiled nil)
   (org-latex-preview-auto-ignored-commands
    '(next-line
      previous-line
