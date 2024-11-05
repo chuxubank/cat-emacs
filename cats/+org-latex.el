@@ -8,7 +8,8 @@
         ("" "fontspec" nil)
         ("" "svg" nil)
         ("" "pgfplots" t)
-        ("" "geometry" nil))
+        ("" "geometry" nil)
+        ("" "extarrows" t))
       org-latex-default-table-environment "longtable"
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm

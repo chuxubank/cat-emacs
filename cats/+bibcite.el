@@ -77,6 +77,7 @@ Hides template, daily directories."
     (org-open-file new-file)))
 
 (use-package org-roam-bibtex
+  :commands (orb-get-node-citekey)
   :demand t
   :after org-roam
   :delight " 󱉟"
@@ -125,6 +126,7 @@ Hides template, daily directories."
   (setq citar-notes-source 'orb-citar-source))
 
 (use-package citar
+  :commands (citar-get-files)
   :custom
   (citar-bibliography cat-default-bibliography-files))
 
