@@ -2,7 +2,8 @@
 
 (use-package org
   :ignore-builtin
-  :pin gnu
+  :load-path "~/.emacs.d/elpa/org-mode/lisp/"
+  :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode")
   :delight
   (org-cdlatex-mode " ")
   :commands
