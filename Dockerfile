@@ -26,4 +26,4 @@ RUN cd /root/.emacs.d/elpa/org-mode/ && make compile && make autoloads
 
 RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
 
-CMD ["emacs"]
+ENTRYPOINT ["emacs"]
