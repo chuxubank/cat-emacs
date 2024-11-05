@@ -22,7 +22,7 @@ RUN echo "(custom-set-variables \
 RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
     yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
-RUN cd /root/.emacs.d/elpa/org-mode/ && make compile && make autoloads
+RUN make -C /root/.emacs.d/elpa/org-mode compile autoloads
 
 RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
 
