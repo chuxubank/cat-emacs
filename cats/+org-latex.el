@@ -58,4 +58,4 @@
 (defun cat-org-preview-clear-cache ()
   (interactive)
   (delete-directory org-preview-latex-image-directory t)
-  (message "org-preview-latex-image-directory cleared"))
+  (message "`%s' cleared" org-preview-latex-image-directory))
