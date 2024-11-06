@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package telega
+  :hook
+  (telega-mode . telega-mode-line-mode)
   :bind
   (:map telega-prefix-map
         ("k" . #'telega-kill))
