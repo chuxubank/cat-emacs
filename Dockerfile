@@ -1,6 +1,5 @@
 # syntax = docker/dockerfile:1.2
 FROM silex/emacs as builder
-USER root
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,target=/var/lib/apt \
@@ -11,21 +10,21 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     git \
     make
 
-ADD . /root/.emacs.d
+ADD . ~/.emacs.d
 
 RUN echo "(custom-set-variables \
     '(use-short-answers t) \
     '(package-native-compile t) \
     '(system-packages-use-sudo nil) \
-    )" > /root/.emacs.d/custom.el
+    )" > ~/.emacs.d/custom.el
 
-RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
+RUN --mount=type=cache,sharing=locked,target=~/.emacs.d/elpa \
     yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
-RUN ls -l /root/.emacs.d/elpa/
+RUN ls -l ~/.emacs.d/elpa/
 
-RUN make -C /root/.emacs.d/elpa/org-mode compile autoloads
+RUN make -C ~/.emacs.d/elpa/org-mode compile autoloads
 
-RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
+RUN emacs --batch -f batch-byte-recompile-directory ~/.emacs.d/
 
 ENTRYPOINT ["emacs"]
