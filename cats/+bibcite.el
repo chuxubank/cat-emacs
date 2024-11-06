@@ -38,15 +38,9 @@ Hides template, daily directories."
       (make-directory dir t))
     (concat (file-name-as-directory dir) filename)))
 
-(defun cat-org-roam-get-template (&optional dir)
-  "Choose template based on DIR."
-  (let* ((template (concat cat-org-roam-directory
-                           cat-org-roam-template-directory
-                           dir))
-         (file (if (file-directory-p template)
-                   (completing-read "Choose template: " (directory-files-recursively template ".*\\.org") nil t)
-                 template)))
-    (org-file-contents file)))
+(defun cat-org-roam-template (&optional dir)
+  "Return org-roam template's content based on DIR."
+  (org-file-contents (cat-org-roam-get-template dir)))
 
 (defun cat-org-roam-relocate-file ()
   "Relocate and rename the Org-roam file."
@@ -96,7 +90,7 @@ Hides template, daily directories."
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
      ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
       :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n"))
-     ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat-org-roam-get-template "exam")))
+     ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat-org-roam-template "exam")))
       :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)))
   :config

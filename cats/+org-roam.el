@@ -47,6 +47,21 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
           (file-relative-name (org-roam-node-file node) org-roam-directory)))
       (error ""))))
 
+(defun cat-org-roam-get-template (&optional dir)
+  "Locate a template file based on DIR.
+If called interactively, open the selected template file.
+If called non-interactively, return the file name of the selected template.
+DIR specifies a subdirectory under `cat-org-roam-template-directory'."
+  (interactive)
+  (let ((template-dir (expand-file-name (concat cat-org-roam-template-directory dir) cat-org-roam-directory)))
+    (if-let* ((dir-exists (file-directory-p template-dir))
+              (files (directory-files-recursively template-dir ".*\\.org")))
+        (let ((chosen-file (completing-read "Choose template: " files nil t)))
+          (if (called-interactively-p 'any)
+              (find-file chosen-file)
+            chosen-file))
+      (user-error "No .org templates found or directory does not exist: %s" template-dir))))
+
 (use-package org-roam-ui
   :delight
   (org-roam-ui-mode " 󰴠")
@@ -68,7 +83,8 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
   "g" #'org-roam-graph
   "i" #'org-roam-node-insert
   "R" #'org-roam-buffer-display-dedicated
-  "u" #'org-roam-ui-mode)
+  "u" #'org-roam-ui-mode
+  "t" #'cat-org-roam-get-template)
 
 (defvar-keymap org-roam-dailies-map
   :doc "Keymap for `org-roam-dailies' commands.
