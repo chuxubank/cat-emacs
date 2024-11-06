@@ -11,12 +11,12 @@
 (use-package mpv)
 
 (use-package org-noter
-  :custom
+  ;; :custom
   ;; (org-noter-notes-window-location
   ;;  (if (string= (getenv "HOST_TYPE") "work")
   ;;      'other-frame
   ;;    'horizontal-split))
-  (org-noter-doc-split-fraction '(0.6 . 0.5))
+  ;; (org-noter-doc-split-fraction '(0.6 . 0.5))
   :config
   (setq org-noter--inhibit-location-change-handler t)
   (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info)
