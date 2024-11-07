@@ -23,6 +23,9 @@
     (("r" org-roam-buffer-toggle "toggle")
      ("e" org-roam-extract-subtree "extract")
      ("R" cat-org-roam-relocate-file "relocate"))
+    "Tags"
+    (("at" #'org-roam-tag-add "add tag")
+     ("dt" #'org-roam-tag-remove "remove tag"))
     "Alias"
     (("aa" #'org-roam-alias-add "add alias")
      ("da" #'org-roam-alias-remove "remove alias"))
