@@ -29,3 +29,18 @@
 
 (setq cdlatex-math-symbol-alist
       '((?L ("\\Lambda" "\\varLambda"))))
+
+(use-package math-delimiters
+  :vc (math-delimiters :url "https://github.com/oantolin/math-delimiters"))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map "$" #'math-delimiters-insert))
+
+(with-eval-after-load 'tex              ; for AUCTeX
+  (define-key TeX-mode-map "$" #'math-delimiters-insert))
+
+(with-eval-after-load 'tex-mode         ; for the built-in TeX/LaTeX modes
+  (define-key tex-mode-map "$" #'math-delimiters-insert))
+
+(with-eval-after-load 'cdlatex
+  (define-key cdlatex-mode-map "$" nil))
