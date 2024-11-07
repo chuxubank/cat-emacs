@@ -18,7 +18,10 @@
         (replace-regexp-in-string
          (regexp-quote "\\documentclass{article}")
          "\\documentclass[dvisvgm]{article}"
-         org-latex-preview-preamble t t)))
+         org-latex-preview-preamble t t))
+  (defun org--latex-preview-region (point-min point-max)
+    (org-latex-preview--preview-region
+     org-latex-preview-process-default (point-min) (point-max))))
 
 (setq org-latex-compiler "xelatex"
       org-latex-packages-alist
