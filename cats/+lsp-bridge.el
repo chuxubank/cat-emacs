@@ -10,9 +10,7 @@
   :custom
   (codeium-bridge-folder (expand-file-name cat-codeium-dir))
   (acm-enable-codeium t)
-  (acm-backend-codeium-api-key-path cat-codeium-api-key-file)
-  :config
-  (global-corfu-mode -1))
+  (acm-backend-codeium-api-key-path cat-codeium-api-key-file))
 
 (use-package flymake-bridge
   :vc (flymake-bridge
