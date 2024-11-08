@@ -8,6 +8,7 @@
   :hook
   (after-init . global-lsp-bridge-mode)
   :custom
+  (lsp-bridge-enable-log init-file-debug)
   (codeium-bridge-folder (expand-file-name cat-codeium-dir))
   (acm-enable-codeium t)
   (acm-backend-codeium-api-key-path cat-codeium-api-key-file))
