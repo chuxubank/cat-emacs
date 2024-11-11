@@ -124,6 +124,32 @@ Hides template, daily directories."
 
 (use-package citar
   :commands (citar-get-files)
+  :init
+  (setq
+   citar-indicator-links
+   (citar-indicator-create
+    :symbol (nerd-icons-codicon "nf-cod-link" :face 'nerd-icons-blue)
+    :function #'citar-has-links
+    :padding "  "
+    :tag "has:links")
+   citar-indicator-files
+   (citar-indicator-create
+    :symbol (nerd-icons-codicon "nf-cod-file" :face 'nerd-icons-blue-alt)
+    :function #'citar-has-files
+    :padding "  "
+    :tag "has:files")
+   citar-indicator-notes
+   (citar-indicator-create
+    :symbol (nerd-icons-codicon "nf-cod-note" :face 'nerd-icons-green)
+    :function #'citar-has-notes
+    :padding "  "
+    :tag "has:notes")
+   citar-indicator-cited
+   (citar-indicator-create
+    :symbol (nerd-icons-codicon "nf-cod-quote" :face 'nerd-icons-cyan)
+    :function #'citar-is-cited
+    :padding "  "
+    :tag "is:cited"))
   :custom
   (citar-bibliography cat-default-bibliography-files))
 
