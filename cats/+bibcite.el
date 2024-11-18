@@ -9,9 +9,6 @@
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar))
 
-(use-package parsebib
-  :pin melpa-stable)
-
 (use-package bibtex-completion
   :custom
   (bibtex-completion-additional-search-fields '(keywords))
