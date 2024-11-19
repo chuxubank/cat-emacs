@@ -9,6 +9,7 @@
           c++-ts-mode
           objc-mode
           python-base-mode
+          js-base-mode
           ;; kotlin-mode
           ;; kotlin-ts-mode
           )

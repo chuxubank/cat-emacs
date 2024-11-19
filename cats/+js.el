@@ -9,6 +9,8 @@
   (js-indent-level 2))
 
 (use-package json-mode
+  :ensure-system-package
+  (vscode-json-languageserver . "pnpm add -g vscode-json-languageserver")
   :bind
   (:map json-mode-map
         ("C-c C-w" . json-mode-kill-path)))
