@@ -4,6 +4,7 @@
   :vc (diagram-preview
        :url "https://github.com/natrys/diagram-preview"
        :rev :newest)
+  :delight " "
   :hook (graphviz-dot-mode
          plantuml-mode
          mermaid-mode
