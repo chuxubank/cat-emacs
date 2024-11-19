@@ -1,0 +1,8 @@
+{
+  "$schema": "https://mermaid.js.org/schemas/config.schema.json",
+  "fontFamily": "sans-serif;",
+  "flowchart": {
+    "useMaxWidth": false,
+    "htmlLabels": false
+  }
+}

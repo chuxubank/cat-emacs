@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar cat-mermaid-config-file (expand-file-name "mermaid/config.json" user-emacs-directory))
+
 (use-package mermaid-mode
   :ensure-system-package
   (mmdc . "pnpm add -g @mermaid-js/mermaid-cli")
@@ -7,7 +9,7 @@
   :custom
   (mermaid-tmp-dir (concat cat-cache-dir "mermaid/"))
   (mermaid-output-format ".svg")
-  (mermaid-flags "-b transparent -f")
+  (mermaid-flags (format "-b transparent -f -c %s" cat-mermaid-config-file))
   :config
   (mkdir mermaid-tmp-dir t))
 
@@ -42,8 +44,9 @@
                           (concat " -w " (number-to-string width)))
                         (when height
                           (concat " -H " (number-to-string height)))
-                        (when mermaid-config-file
-                          (concat " -c " (org-babel-process-file-name mermaid-config-file)))
+                        (if mermaid-config-file
+                            (concat " -c " (org-babel-process-file-name mermaid-config-file))
+                          (concat " -c " cat-mermaid-config-file))
                         (when css-file
                           (concat " -C " (org-babel-process-file-name css-file)))
                         (when pupeteer-config-file
