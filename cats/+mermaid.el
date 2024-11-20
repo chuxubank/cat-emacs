@@ -2,6 +2,11 @@
 
 (defvar cat-mermaid-config-file (expand-file-name "mermaid/config.json" user-emacs-directory))
 
+(defun cat-mermaid-theme ()
+  (if (+dark-mode-p)
+      "dark"
+    "default"))
+
 (use-package mermaid-mode
   :ensure-system-package
   (mmdc . "pnpm add -g @mermaid-js/mermaid-cli")
@@ -9,7 +14,7 @@
   :custom
   (mermaid-tmp-dir (concat cat-cache-dir "mermaid/"))
   (mermaid-output-format ".svg")
-  (mermaid-flags (format "-b transparent -f -c %s" cat-mermaid-config-file))
+  (mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file (cat-mermaid-theme)))
   :config
   (mkdir mermaid-tmp-dir t))
 
@@ -36,8 +41,9 @@
            (cmd (concat (shell-quote-argument (expand-file-name mmdc))
                         " -i " (org-babel-process-file-name temp-file)
                         " -o " (org-babel-process-file-name out-file)
-                        (when theme
-                          (concat " -t " theme))
+                        (if theme
+                            (concat " -t " theme)
+                          (concat " -t " (cat-mermaid-theme)))
                         (when background-color
                           (concat " -b " background-color))
                         (when width
