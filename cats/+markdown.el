@@ -1,10 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
-(defun markdown-xwidget-dark-theme ()
-  (setq markdown-xwidget-github-theme "dark"))
-
-(defun markdown-xwidget-light-theme ()
-  (setq markdown-xwidget-github-theme "light"))
+(defun markdown-xwidget-auto-theme ()
+  "Update `markdown-xwidget-github-theme' and `markdown-xwidget-mermaid-theme' to fit current Emacs' current theme."
+  (custom-set-variables
+   '(markdown-xwidget-github-theme (if (+dark-mode-p) "dark" "light"))
+   '(markdown-xwidget-mermaid-theme (if (+dark-mode-p) "dark" "default"))))
 
 (use-package markdown-xwidget
   :vc (markdown-xwidget
@@ -12,8 +12,9 @@
        :rev :newest)
   :demand t
   :after markdown-mode
-  :custom
-  (markdown-xwidget-github-theme (symbol-name (frame-parameter nil 'background-mode)))
   :bind
   (:map markdown-mode-command-map
-        ("x" . markdown-xwidget-preview-mode)))
+        ("x" . markdown-xwidget-preview-mode))
+  :config
+  (add-hook 'cat-theme-refresh-hook #'markdown-xwidget-auto-theme)
+  (markdown-xwidget-auto-theme))

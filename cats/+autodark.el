@@ -16,10 +16,6 @@
   (add-hook 'cat-dark-mode-hook #'doom-dark-theme)
   (add-hook 'cat-light-mode-hook #'doom-light-theme)))
 
-(with-eval-after-load 'markdown-xwidget
-  (add-hook 'cat-dark-mode-hook #'markdown-xwidget-dark-theme)
-  (add-hook 'cat-light-mode-hook #'markdown-xwidget-light-theme))
-
 (defun cat-dark-mode-p ()
   (cond
    (IS-WSL     (string-match-p "-Darker" (getenv "GTK_THEME")))

@@ -2,10 +2,13 @@
 
 (defvar cat-mermaid-config-file (expand-file-name "mermaid/config.json" user-emacs-directory))
 
-(defun cat-mermaid-theme ()
-  (if (+dark-mode-p)
-      "dark"
-    "default"))
+(defvar cat-mermaid-theme "default")
+
+(defun cat-mermaid-auto-theme ()
+  "Update `cat-mermaid-theme' to fit Emacs's current theme."
+  (setq cat-mermaid-theme (if (+dark-mode-p) "dark" "default"))
+  (custom-set-variables
+   '(mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file cat-mermaid-theme))))
 
 (use-package mermaid-mode
   :ensure-system-package
@@ -14,9 +17,10 @@
   :custom
   (mermaid-tmp-dir (expand-file-name "mermaid/" cat-cache-dir))
   (mermaid-output-format ".svg")
-  (mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file (cat-mermaid-theme)))
   :config
-  (mkdir mermaid-tmp-dir t))
+  (mkdir mermaid-tmp-dir t)
+  (add-hook 'cat-theme-refresh-hook #'cat-mermaid-auto-theme)
+  (cat-mermaid-auto-theme))
 
 (defun +mermaid-mode ()
   (setq-local indent-line-function 'insert-tab)
@@ -28,11 +32,11 @@
   (defun org-babel-execute:mermaid (body params)
     (let* ((out-file (or (cdr (assoc :file params))
                          (error "mermaid requires a \":file\" header argument")))
-           (theme (cdr (assoc :theme params)))
+           (theme (or (cdr (assoc :theme params)) cat-mermaid-theme))
            (width (cdr (assoc :width params)))
            (height (cdr (assoc :height params)))
            (background-color (cdr (assoc :background-color params)))
-           (mermaid-config-file (cdr (assoc :mermaid-config-file params)))
+           (mermaid-config-file (or (cdr (assoc :mermaid-config-file params)) cat-mermaid-config-file))
            (css-file (cdr (assoc :css-file params)))
            (pupeteer-config-file (cdr (assoc :pupeteer-config-file params)))
            (temp-file (org-babel-temp-file "mermaid-"))
@@ -41,18 +45,16 @@
            (cmd (concat (shell-quote-argument (expand-file-name mmdc))
                         " -i " (org-babel-process-file-name temp-file)
                         " -o " (org-babel-process-file-name out-file)
-                        (if theme
-                            (concat " -t " theme)
-                          (concat " -t " (cat-mermaid-theme)))
+                        (when theme
+                          (concat " -t " theme))
                         (when background-color
                           (concat " -b " background-color))
                         (when width
                           (concat " -w " (number-to-string width)))
                         (when height
                           (concat " -H " (number-to-string height)))
-                        (if mermaid-config-file
-                            (concat " -c " (org-babel-process-file-name mermaid-config-file))
-                          (concat " -c " cat-mermaid-config-file))
+                        (when mermaid-config-file
+                          (concat " -c " (org-babel-process-file-name mermaid-config-file)))
                         (when css-file
                           (concat " -C " (org-babel-process-file-name css-file)))
                         (when pupeteer-config-file
