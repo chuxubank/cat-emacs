@@ -12,7 +12,7 @@
   (mmdc . "pnpm add -g @mermaid-js/mermaid-cli")
   :mode "\\.mmd\\'"
   :custom
-  (mermaid-tmp-dir (concat cat-cache-dir "mermaid/"))
+  (mermaid-tmp-dir (expand-file-name "mermaid/" cat-cache-dir))
   (mermaid-output-format ".svg")
   (mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file (cat-mermaid-theme)))
   :config
