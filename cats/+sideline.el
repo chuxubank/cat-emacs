@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package sideline
+  :pin melpa-stable
   :delight
   :hook (after-init . global-sideline-mode)
   :custom
