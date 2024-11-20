@@ -1,6 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
-(defconst plantuml-dark-arg "-darkmode")
+(defun cat-plantuml-auto-theme ()
+  "Adjust `plantuml-executable-args' and `org-plantuml-args' to align with Emacs' current theme."
+  (let ((args (delq nil (list "-headless"
+                              "-theme" (if (+dark-mode-p)
+                                           "reddress-darkorange"
+                                         "reddress-lightorange")))))
+    (setq-default plantuml-executable-args args
+                  org-plantuml-args args)))
 
 (use-package plantuml-mode
   :mode ("\\.puml\\'" . plantuml-mode)
@@ -8,15 +15,6 @@
   (plantuml-default-exec-mode 'executable)
   (plantuml-indent-level 4)
   :config
-  (defun plantuml-executable-start-process (buf)
-    "Run PlantUML as an Emacs process and puts the output into the given buffer (as BUF)."
-    (apply #'start-process
-           "PLANTUML" buf plantuml-executable-path
-           `(,@plantuml-executable-args
-             ,(plantuml-jar-output-type-opt plantuml-output-type)
-             ,(if (+dark-mode-p) plantuml-dark-arg "")
-             "-p")))
-
   (defun hex-encode (str)
     (string-join (mapcar (lambda (c) (format "%02x" c)) (string-as-unibyte str))))
 
@@ -38,7 +36,9 @@
       (when (string-empty-p data) (error "Failed to compute URL"))
       (kill-new url)
       (message "Copied PlantUML server URL to kill ring")
-      url)))
+      url))
+  (add-hook 'cat-theme-refresh-hook #'cat-plantuml-auto-theme)
+  (cat-plantuml-auto-theme))
 
 (use-package flycheck-plantuml
   :demand t
