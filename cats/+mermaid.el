@@ -5,10 +5,9 @@
 (defvar cat-mermaid-theme "default")
 
 (defun cat-mermaid-auto-theme ()
-  "Update `cat-mermaid-theme' to fit Emacs's current theme."
-  (setq cat-mermaid-theme (if (+dark-mode-p) "dark" "default"))
-  (custom-set-variables
-   '(mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file cat-mermaid-theme))))
+  "Adjust `cat-mermaid-theme' to align with Emacs' current theme."
+  (setq-default cat-mermaid-theme (if (+dark-mode-p) "dark" "default")
+                mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file cat-mermaid-theme)))
 
 (use-package mermaid-mode
   :ensure-system-package

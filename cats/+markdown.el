@@ -1,10 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (defun markdown-xwidget-auto-theme ()
-  "Update `markdown-xwidget-github-theme' and `markdown-xwidget-mermaid-theme' to fit current Emacs' current theme."
-  (custom-set-variables
-   '(markdown-xwidget-github-theme (if (+dark-mode-p) "dark" "light"))
-   '(markdown-xwidget-mermaid-theme (if (+dark-mode-p) "dark" "default"))))
+  "Adjust `markdown-xwidget-github-theme' and `markdown-xwidget-mermaid-theme' to align with Emacs' current theme."
+  (setq-default markdown-xwidget-github-theme (if (+dark-mode-p) "dark" "light")
+                markdown-xwidget-mermaid-theme (if (+dark-mode-p) "dark" "default")))
 
 (use-package markdown-xwidget
   :vc (markdown-xwidget
