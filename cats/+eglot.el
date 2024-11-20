@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package eglot
+  :ignore-builtin
+  :pin gnu
   :hook ((cmake-mode
           cmake-ts-mode
           c-mode
