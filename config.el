@@ -101,7 +101,7 @@
 (cat! "+go")
 (cat! "+gradle")
 (cat! "+js")
-(cat! "+kotlin")
+(cat! "+jvm")
 (cat! "+lua")
 (cat! "+makefile")
 (cat! "+mermaid")
