@@ -28,9 +28,7 @@
 
 (use-package eglot-java
   :hook ((java-mode
-          java-ts-mode
-          kotlin-mode
-          kotlins-ts-mode) . eglot-java-mode)
+          java-ts-mode) . eglot-java-mode)
   :custom
   (eglot-java-eglot-server-programs-manual-updates t)
   (eglot-java-eclipse-jdt-cache-directory (concat cat-cache-dir "jdt/"))
