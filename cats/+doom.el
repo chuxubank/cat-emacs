@@ -6,7 +6,9 @@
   (load-theme 'doom-gruvbox-light t))
 
 (use-package doom-themes
-  :hook (org-load . doom-themes-org-config))
+  :hook (org-load . doom-themes-org-config)
+  :config
+  (doom-themes-visual-bell-config))
 
 (use-package kaolin-themes)
 
