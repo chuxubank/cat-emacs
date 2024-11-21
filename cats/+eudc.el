@@ -1,5 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-eudc
+  (:color teal :title (+with-icon "nf-md-contacts" "EUDC"))
+  ("Action"
+   (("e" #'eudc-expand-try-all "expand"))))
+
 (with-eval-after-load "message"
   (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
 (with-eval-after-load "sendmail"
@@ -23,4 +28,9 @@
   :custom
   (bbdb-file (expand-file-name "bbdb.gpg" cat-org-directory))
   :config
-  (bbdb-initialize))
+  (bbdb-initialize)
+  :pretty-hydra
+  (cat-eudc
+   ("BBDB"
+    (("b" #'bbdb "bbdb")
+     ("a" #'bbdb-create "create")))))

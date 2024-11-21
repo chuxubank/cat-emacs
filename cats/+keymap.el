@@ -19,7 +19,7 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "b" #'bbdb
+  "e" #'cat-eudc/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
   "D" 'docker
