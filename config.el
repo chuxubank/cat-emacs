@@ -121,7 +121,7 @@
 ;;; plugins
 (cat! "+term")
 (cat! "+log")
-(cat! "+chat")
+(cat! "+im")
 (cat! "+pdf")
 (cat! "+nov")
 (cat! "+toc")

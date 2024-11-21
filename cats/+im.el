@@ -41,3 +41,10 @@
     "l" #'ement-list-rooms)
   :custom
   (ement-save-sessions t))
+
+(defvar-keymap cat-im-map
+  :doc "Keymap for IM plugins."
+  :name "Instant messaging"
+  :prefix 'cat-im-prefix
+  "t" #'telega-prefix
+  "e" #'ement-prefix)

@@ -23,15 +23,14 @@
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
   "D" 'docker
-  "e" 'ement-prefix
   "g" #'igist-dispatch
+  "i" 'cat-im-prefix
   "l" #'elogcat
   "m" #'cat-mail/body
   "n" #'deft
   "p" #'pass
   "r" #'elfeed
   "R" #'magit-list-repositories
-  "t" 'telega-prefix
   "v" #'vterm-toggle
   "w" #'webjump)
 
