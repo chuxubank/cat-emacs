@@ -54,3 +54,22 @@ This function filters out non-TODO entries before counting them."
   :hook (org-mode . org-edna-mode)
   :custom
   (org-edna-finder-use-cache t))
+
+(defun org-todo-with-date (&optional arg)
+  "Like `org-todo' but with given date.
+
+Ref: https://stackoverflow.com/a/28130043
+Ref: https://emacs.stackexchange.com/a/57749"
+  (interactive "P")
+  (cl-letf* ((org-read-date-prefer-future nil)
+             (my-current-time (org-read-date t t nil "when:" nil nil nil))
+             ((symbol-function #'current-time)
+              #'(lambda () my-current-time))
+             ((symbol-function #'org-today)
+              #'(lambda () (time-to-days my-current-time)))
+             ((symbol-function #'org-current-effective-time)
+              #'(lambda () my-current-time)))
+    (if (eq major-mode 'org-agenda-mode)
+        (org-agenda-todo arg)
+      (org-todo arg))))
+
