@@ -36,4 +36,7 @@
      ("q" #'eglot-code-action-quickfix "quickfix")
      ("E" #'eglot-code-action-extract "extract")
      ("I" #'eglot-code-action-inline "inline")
-     ("R" #'eglot-code-action-rewrite "rewrite")))))
+     ("R" #'eglot-code-action-rewrite "rewrite"))))
+  :config
+  (setf (alist-get '(kotlin-mode kotlin-ts-mode) eglot-server-programs nil nil #'equal)
+        '("kotlin-language-server")))
