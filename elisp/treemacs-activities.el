@@ -51,31 +51,23 @@ Will return \"No Activity\" if no activity is active."
 
 (cl-defmethod treemacs-scope->setup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope setup."
+  (advice-add 'activities-define :after #'treemacs-activities--on-activity-switch)
+  (advice-add 'activities-resume :after #'treemacs-activities--on-activity-switch)
   (add-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
-  (add-hook 'activities-after-resume-functions #'treemacs-activities--on-activity-switch)
-  (add-hook 'activities-before-resume-functions #'treemacs-activities--on-activity-before-resume)
   (treemacs-activities--ensure-workspace-exists))
 
 (cl-defmethod treemacs-scope->cleanup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope tear-down."
-  (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
-  (remove-hook 'activities-after-resume-functions #'treemacs-activities--on-activity-switch)
-  (remove-hook 'activities-before-resume-functions #'treemacs-activities--on-activity-before-resume))
+  (advice-remove 'activities-define #'treemacs-activities--on-activity-switch)
+  (advice-remove 'activities-resume #'treemacs-activities--on-activity-switch)
+  (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch))
 
-(defun treemacs-activities--on-activity-switch (activity)
+(defun treemacs-activities--on-activity-switch (activity &rest _)
   "Hook running after the activity was switched or resumed.
 Will select a workspace for the now active activity ACTIVITY, creating it if necessary."
-  (run-with-timer
-   0.1 nil
-   (lambda ()
-     (treemacs-without-following
-      (treemacs-activities--ensure-workspace-exists)
-      (treemacs--change-buffer-on-scope-change)))))
-
-(defun treemacs-activities--on-activity-before-resume (activity)
-  "Hook running before an activity is resumed.
-Ensures the treemacs workspace exists for ACTIVITY before resuming."
-  (treemacs-activities--ensure-workspace-exists))
+  (treemacs-without-following
+   (treemacs-activities--ensure-workspace-exists)
+   (treemacs--change-buffer-on-scope-change)))
 
 (defun treemacs-activities--ensure-workspace-exists ()
   "Make sure a workspace exists for the current activity.

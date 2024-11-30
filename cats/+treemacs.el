@@ -11,11 +11,8 @@
   :after treemacs magit)
 
 (use-package treemacs-tab-bar
-  :disabled
   :demand t
-  :after treemacs
-  :config
-  (treemacs-set-scope-type 'Tabs))
+  :after treemacs)
 
 (use-package treemacs-nerd-icons
   :demand t

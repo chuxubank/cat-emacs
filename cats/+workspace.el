@@ -145,13 +145,7 @@
     "View"
     (("b" activities-switch-buffer)
      ("l" activities-list)
-     ("RET" activities-switch))))
-  :config
-  (advice-add #'activities-resume :after #'activities-after-resume))
-
-(defun activities-after-resume (activity &rest _)
-  "Called after resuming ACTIVITY."
-  (run-hook-with-args 'activities-after-resume-functions activity))
+     ("RET" activities-switch)))))
 
 (use-package sow
   :ensure nil
