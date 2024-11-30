@@ -1,5 +1,19 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-workspace
+  (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
+  ("Plugin"
+   (("a" #'activities-hydra/body "activities")
+    ;; ("b" #'bufler-hydra/body "bufler")
+    ;; ("m" #'burly-hydra/body "burly")
+    ;; ("s" #'tabspaces-hydra/body "tabspaces")
+    )
+   "Project"
+   (("p" #'project-remember-projects-under "remember all")
+    ("f" #'project-forget-project "forget")
+    ("F" #'project-forget-zombie-projects "forget zombie")
+    ("D" #'project-forget-projects-under "forget all"))))
+
 (use-package tab-bar
   :hook
   (tab-bar-mode . tab-bar-history-mode)
@@ -8,7 +22,17 @@
   (tab-bar-new-button-show nil)
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
-  (tab-bar-select-tab-modifiers '(super)))
+  (tab-bar-select-tab-modifiers '(super))
+  :pretty-hydra
+  (cat-workspace
+   ("Tab-bar"
+    (("t" #'tab-bar-mode "mode")
+     ("h" #'tab-bar-history-mode "history")
+     ("n" #'tab-bar-new-tab "new tab")
+     ("N" #'tab-bar-new-tab-to "new tab to")
+     ("k" #'tab-bar-close-tab "close tab")
+     ("r" #'tab-bar-rename-tab "rename")
+     ("R" #'tab-bar-rename-tab-by-name "rename by name")))))
 
 (use-package burly
   :disabled
@@ -49,31 +73,8 @@
      ("N" #'bufler-workspace-buffer-name-workspace "set workspace")
      ("F" #'bufler-workspace-frame-set "set frame")))))
 
-(use-package activities
-  :hook
-  (after-init . activities-mode)
-  (after-init . activities-tabs-mode)
-  :custom
-  (activities-kill-buffers t)
-  :config
-  (add-hook 'activities-anti-save-predicates #'+treemacs-persist-p)
-  :pretty-hydra
-  ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" "Activities"))
-   ("Manage"
-    (("n" activities-new)
-     ("d" activities-define)
-     ("r" activities-rename)
-     ("D" activities-discard)
-     ("a" activities-resume)
-     ("s" activities-suspend)
-     ("k" activities-kill)
-     ("g" activities-revert))
-    "View"
-    (("b" activities-switch-buffer)
-     ("l" activities-list)
-     ("RET" activities-switch)))))
-
 (use-package tabspaces
+  :disabled
   :hook
   (after-init . tabspaces-mode)
   :custom
@@ -124,28 +125,34 @@
       "Set workspace buffer list for consult-buffer.")
     (add-to-list 'consult-buffer-sources 'consult--source-workspace)))
 
+(use-package activities
+  :hook
+  (after-init . activities-mode)
+  (after-init . activities-tabs-mode)
+  :custom
+  (activities-kill-buffers t)
+  :pretty-hydra
+  ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" "Activities"))
+   ("Manage"
+    (("n" activities-new)
+     ("d" activities-define)
+     ("r" activities-rename)
+     ("D" activities-discard)
+     ("a" activities-resume)
+     ("s" activities-suspend)
+     ("k" activities-kill)
+     ("g" activities-revert))
+    "View"
+    (("b" activities-switch-buffer)
+     ("l" activities-list)
+     ("RET" activities-switch))))
+  :config
+  (defun activities-after-resume (activity &rest _)
+    "Called after resuming ACTIVITY."
+    (run-hook-with-args 'activities-after-resume-functions activity))
+  (advice-add #'activities-resume :after #'activities-after-resume))
+
 (use-package sow
   :ensure nil
   :delight
   :hook (after-init . sow-mode))
-
-(pretty-hydra-define cat-workspace
-  (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
-  ("Plugin"
-   (("a" #'activities-hydra/body "activities")
-    ;; ("b" #'bufler-hydra/body "bufler")
-    ;; ("m" #'burly-hydra/body "burly")
-    ("s" #'tabspaces-hydra/body "tabspaces"))
-   "Tab-bar"
-   (("t" #'tab-bar-mode "mode")
-    ("h" #'tab-bar-history-mode "history")
-    ("n" #'tab-bar-new-tab "new tab")
-    ("N" #'tab-bar-new-tab-to "new tab to")
-    ("k" #'tab-bar-close-tab "close tab")
-    ("r" #'tab-bar-rename-tab "rename")
-    ("R" #'tab-bar-rename-tab-by-name "rename by name"))
-   "Project"
-   (("p" #'project-remember-projects-under "remember all")
-    ("f" #'project-forget-project "forget")
-    ("F" #'project-forget-zombie-projects "forget zombie")
-    ("D" #'project-forget-projects-under "forget all"))))
