@@ -53,6 +53,9 @@ Will return \"No Activity\" if no activity is active."
   "Activities-scope setup."
   (advice-add 'activities-define :after #'treemacs-activities--on-activity-switch)
   (advice-add 'activities-resume :after #'treemacs-activities--on-activity-switch)
+  (advice-add 'activities-rename :after #'treemacs-activities--on-activity-rename)
+  (advice-add 'activities-suspend :before #'treemacs-activities--on-activity-kill)
+  (advice-add 'activities-kill :before #'treemacs-activities--on-activity-kill)
   (add-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
   (treemacs-activities--ensure-workspace-exists))
 
@@ -60,6 +63,9 @@ Will return \"No Activity\" if no activity is active."
   "Activities-scope tear-down."
   (advice-remove 'activities-define #'treemacs-activities--on-activity-switch)
   (advice-remove 'activities-resume #'treemacs-activities--on-activity-switch)
+  (advice-remove 'activities-rename #'treemacs-activities--on-activity-rename)
+  (advice-remove 'activities-suspend #'treemacs-activities--on-activity-kill)
+  (advice-remove 'activities-kill #'treemacs-activities--on-activity-kill)
   (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch))
 
 (defun treemacs-activities--on-activity-switch (activity &rest _)
@@ -68,6 +74,18 @@ Will select a workspace for the now active activity ACTIVITY, creating it if nec
   (treemacs-without-following
    (treemacs-activities--ensure-workspace-exists)
    (treemacs--change-buffer-on-scope-change)))
+
+(defun treemacs-activities--on-activity-rename (activity name)
+  "Hook running after activity was renamed.
+Will rename treemacs activity workspace from ACTIVITY's old name to NAME."
+  (treemacs-do-rename-workspace
+   (treemacs--find-workspace-by-name (activities-activity-name activity))
+   name))
+
+(defun treemacs-activities--on-activity-kill (activity)
+  "Hook running before an activity is killed.
+Will delete the treemacs workspace for ACTIVITY."
+  (treemacs--on-scope-kill (activities-activity-name activity)))
 
 (defun treemacs-activities--ensure-workspace-exists ()
   "Make sure a workspace exists for the current activity.
