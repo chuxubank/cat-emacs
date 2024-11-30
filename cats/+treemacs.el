@@ -22,9 +22,12 @@
   :config
   (treemacs-load-theme "nerd-icons"))
 
-(defun cat-treemacs-close ()
-  (interactive)
-  (when (and (featurep 'treemacs)
-             (treemacs-get-local-window))
-    (treemacs-select-window)
-    (treemacs-kill-buffer)))
+(with-eval-after-load 'treemacs
+  (with-eval-after-load 'activities
+    (add-hook 'activities-anti-save-predicates #'treemacs-is-treemacs-window-selected?)
+    (add-hook 'activities-after-resume-functions #'+treemacs-correct-in-this-buffer)))
+
+(defun +treemacs-correct-in-this-buffer (_)
+  "Select the `treemacs' buffer after restore."
+  (pcase (treemacs-current-visibility)
+    ('visible (setq-local treemacs--in-this-buffer t))))
