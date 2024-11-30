@@ -147,10 +147,11 @@
      ("l" activities-list)
      ("RET" activities-switch))))
   :config
-  (defun activities-after-resume (activity &rest _)
-    "Called after resuming ACTIVITY."
-    (run-hook-with-args 'activities-after-resume-functions activity))
   (advice-add #'activities-resume :after #'activities-after-resume))
+
+(defun activities-after-resume (activity &rest _)
+  "Called after resuming ACTIVITY."
+  (run-hook-with-args 'activities-after-resume-functions activity))
 
 (use-package sow
   :ensure nil
