@@ -34,6 +34,9 @@
   (require 'treemacs-macros)
   (require 'cl-lib))
 
+(defun treemacs-activities-format-name (activity-name)
+  (format "Activity %s%s" activities-name-prefix activity-name))
+
 (defclass treemacs-activities-scope (treemacs-scope) () :abstract t)
 (add-to-list 'treemacs-scope-types (cons 'Activities 'treemacs-activities-scope))
 
@@ -47,12 +50,12 @@ Returns the symbol `none' if no activity is active."
 Will return \"No Activity\" if no activity is active."
   (if (eq 'none activity)
       "No Activity"
-    (format "Activity %s" (activities-name-for activity))))
+    (treemacs-activities-format-name (activities-activity-name activity))))
 
 (cl-defmethod treemacs-scope->setup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope setup."
   (advice-add 'activities-set :after #'treemacs-activities--on-activity-switch)
-  (advice-add 'activities-rename :after #'treemacs-activities--on-activity-rename)
+  (advice-add 'activities-rename :before #'treemacs-activities--on-activity-rename)
   (advice-add 'activities-close :before #'treemacs-activities--on-activity-kill)
   (add-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
   (treemacs-activities--ensure-workspace-exists))
@@ -72,11 +75,24 @@ Will select a workspace for the now active activity ACTIVITY, creating it if nec
    (treemacs--change-buffer-on-scope-change)))
 
 (defun treemacs-activities--on-activity-rename (activity name)
-  "Hook running after activity was renamed.
-Will rename treemacs activity workspace from ACTIVITY's old name to NAME."
-  (treemacs-do-rename-workspace
-   (treemacs--find-workspace-by-name (activities-activity-name activity))
-   name))
+  "Hook running before activity is renamed.
+Will rename treemacs activity workspace from ACTIVITY's current name to NAME.
+Return t on success, nil otherwise.
+Should be run before `activities-rename' to ensure workspace name stays in sync."
+  (treemacs-block
+   (let* ((old-name (treemacs-scope->current-scope-name
+                     (treemacs-current-scope-type) activity))
+          (new-name (treemacs-activities-format-name name))
+          (workspace (treemacs--find-workspace-by-name old-name)))
+     (unless workspace
+       (treemacs-log-err "Could not find workspace for activity %s" old-name)
+       (treemacs-return nil))
+     (-let [(success msg) (treemacs-do-rename-workspace workspace new-name)]
+       (if success
+           (progn
+             (treemacs-log "Renamed workspace from '%s' to '%s'" old-name new-name)
+             (treemacs-return t))
+         (user-error "Failed to rename treemacs workspace: %s" msg))))))
 
 (defun treemacs-activities--on-activity-kill (activity)
   "Hook running before an activity is killed.
