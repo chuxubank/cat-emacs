@@ -79,6 +79,8 @@ Will select a workspace for the now active activity ACTIVITY, creating it if nec
 Will rename treemacs activity workspace from ACTIVITY's current name to NAME.
 Return t on success, nil otherwise.
 Should be run before `activities-rename' to ensure workspace name stays in sync."
+  (when (eq activity 'none)
+    (user-error "Cannot rename the 'none' activity"))
   (treemacs-block
    (let* ((old-name (treemacs-scope->current-scope-name
                      (treemacs-current-scope-type) activity))
@@ -116,9 +118,11 @@ Matching happens by name. If no workspace can be found it will be created."
   "Create a new workspace for the ACTIVITY with NAME.
 Projects will be found as per `treemacs--find-user-project-functions'.  If that
 does not return anything the projects of the fallback workspace will be copied."
-  (let ((root-path (when activity
-                     (activities-with activity
-                       (treemacs--find-current-user-project)))))
+  (let ((root-path (if (and activity
+                            (not (eq activity 'none)))
+                       (activities-with activity
+                         (treemacs--find-current-user-project))
+                     (treemacs--find-current-user-project))))
     (treemacs-block
      (let* ((ws-result (treemacs-do-create-workspace name))
             (ws-status (car ws-result))
