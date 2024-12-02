@@ -34,9 +34,6 @@
   (require 'treemacs-macros)
   (require 'cl-lib))
 
-(defun treemacs-activities-format-name (activity-name)
-  (format "Activity %s%s" activities-name-prefix activity-name))
-
 (defclass treemacs-activities-scope (treemacs-scope) () :abstract t)
 (add-to-list 'treemacs-scope-types (cons 'Activities 'treemacs-activities-scope))
 
@@ -50,7 +47,12 @@ Returns the symbol `none' if no activity is active."
 Will return \"No Activity\" if no activity is active."
   (if (eq 'none activity)
       "No Activity"
-    (treemacs-activities-format-name (activities-activity-name activity))))
+    (treemacs-activities--format-workspace-name (activities-activity-name activity))))
+
+(defun treemacs-activities--on-activity-kill (activity)
+  "Hook running before an activity is killed.
+Will delete the treemacs workspace for ACTIVITY."
+  (treemacs--on-scope-kill (activities-activity-name activity)))
 
 (cl-defmethod treemacs-scope->setup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope setup."
@@ -67,24 +69,15 @@ Will return \"No Activity\" if no activity is active."
   (advice-remove 'activities-close #'treemacs-activities--on-activity-kill)
   (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch))
 
-(defun treemacs-activities--on-activity-switch (activity &rest _)
-  "Hook running after the activity was switched or resumed.
-Will select a workspace for the now active activity ACTIVITY, creating it if necessary."
-  (treemacs-without-following
-   (treemacs-activities--ensure-workspace-exists)
-   (treemacs--change-buffer-on-scope-change)))
-
 (defun treemacs-activities--on-activity-rename (activity name)
   "Hook running before activity is renamed.
 Will rename treemacs activity workspace from ACTIVITY's current name to NAME.
 Return t on success, nil otherwise.
 Should be run before `activities-rename' to ensure workspace name stays in sync."
-  (when (eq activity 'none)
-    (user-error "Cannot rename the 'none' activity"))
   (treemacs-block
    (let* ((old-name (treemacs-scope->current-scope-name
                      (treemacs-current-scope-type) activity))
-          (new-name (treemacs-activities-format-name name))
+          (new-name (treemacs-activities--format-workspace-name name))
           (workspace (treemacs--find-workspace-by-name old-name)))
      (unless workspace
        (treemacs-log-err "Could not find workspace for activity %s" old-name)
@@ -96,58 +89,60 @@ Should be run before `activities-rename' to ensure workspace name stays in sync.
              (treemacs-return t))
          (user-error "Failed to rename treemacs workspace: %s" msg))))))
 
-(defun treemacs-activities--on-activity-kill (activity)
-  "Hook running before an activity is killed.
-Will delete the treemacs workspace for ACTIVITY."
-  (treemacs--on-scope-kill (activities-activity-name activity)))
+(defun treemacs-activities--on-activity-switch (&rest _)
+  "Hook running after the activity was switched or resumed.
+Will select a workspace for the now active activity, creating it if necessary."
+  (treemacs-without-following
+   (treemacs-activities--ensure-workspace-exists)
+   (treemacs--change-buffer-on-scope-change)))
 
 (defun treemacs-activities--ensure-workspace-exists ()
   "Make sure a workspace exists for the current activity.
 Matching happens by name. If no workspace can be found it will be created."
-  (let* ((activity (treemacs-current-scope))
-         (activity-name (treemacs-scope->current-scope-name
-                         (treemacs-current-scope-type) activity))
+  (let* ((activity-name (treemacs-scope->current-scope-name
+                         (treemacs-current-scope-type) (treemacs-current-scope)))
          (workspace (or (treemacs--find-workspace-by-name activity-name)
-                        (treemacs-activities--create-workspace activity-name activity))))
+                        (treemacs-activities--create-workspace activity-name))))
     (setf (treemacs-current-workspace) workspace)
     (treemacs--invalidate-buffer-project-cache)
     (run-hooks 'treemacs-switch-workspace-hook)
     workspace))
 
-(defun treemacs-activities--create-workspace (name &optional activity)
-  "Create a new workspace for the ACTIVITY with NAME.
+(defun treemacs-activities--create-workspace (name)
+  "Create a new workspace for the activity with NAME.
 Projects will be found as per `treemacs--find-user-project-functions'.  If that
 does not return anything the projects of the fallback workspace will be copied."
-  (let ((root-path (if (and activity
-                            (not (eq activity 'none)))
-                       (activities-with activity
-                         (treemacs--find-current-user-project))
-                     (treemacs--find-current-user-project))))
-    (treemacs-block
-     (let* ((ws-result (treemacs-do-create-workspace name))
-            (ws-status (car ws-result))
-            (ws (cadr ws-result))
-            (project-list))
-       (unless (eq ws-status 'success)
-         (treemacs-log "Failed to create workspace for activity: %s, using fallback instead." ws)
-         (treemacs-return (car treemacs--workspaces)))
-       (if root-path
+  (treemacs-block
+   (let* ((ws-result (treemacs-do-create-workspace name))
+          (ws-status (car ws-result))
+          (ws (cadr ws-result))
+          (root-path (treemacs--find-current-user-project))
+          (project-list))
+     (unless (eq ws-status 'success)
+       (treemacs-log "Failed to create workspace for activity: %s, using fallback instead." ws)
+       (treemacs-return (car treemacs--workspaces)))
+     (if root-path
+         (progn
+           (treemacs-log "Get root-path: %s." root-path)
            (setf project-list
                  (list (treemacs-project->create!
                         :name (treemacs--filename root-path)
                         :path root-path
-                        :path-status (treemacs--get-path-status root-path))))
-         (-let [fallback-workspace (car treemacs--workspaces)]
-           ;; copy the projects instead of reusing them so we don't accidentally rename
-           ;; a project in 2 workspaces
-           (dolist (project (treemacs-workspace->projects fallback-workspace))
-             (push (treemacs-project->create!
-                    :name (treemacs-project->name project)
-                    :path (treemacs-project->path project)
-                    :path-status (treemacs-project->path-status project))
-                   project-list))))
-       (setf (treemacs-workspace->projects ws) (nreverse project-list))
-       (treemacs-return ws)))))
+                        :path-status (treemacs--get-path-status root-path)))))
+       (-let [fallback-workspace (car treemacs--workspaces)]
+         ;; copy the projects instead of reusing them so we don't accidentally rename
+         ;; a project in 2 workspaces
+         (dolist (project (treemacs-workspace->projects fallback-workspace))
+           (push (treemacs-project->create!
+                  :name (treemacs-project->name project)
+                  :path (treemacs-project->path project)
+                  :path-status (treemacs-project->path-status project))
+                 project-list))))
+     (setf (treemacs-workspace->projects ws) (nreverse project-list))
+     (treemacs-return ws))))
+
+(defun treemacs-activities--format-workspace-name (activity-name)
+  (format "Activity %s" activity-name))
 
 (provide 'treemacs-activities)
 ;;; treemacs-activities.el ends here
