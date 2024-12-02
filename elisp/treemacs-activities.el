@@ -56,7 +56,8 @@ Will delete the treemacs workspace for ACTIVITY."
 
 (cl-defmethod treemacs-scope->setup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope setup."
-  (advice-add 'activities-set :after #'treemacs-activities--on-activity-switch)
+  ;; (advice-add 'activities-set :after #'treemacs-activities--on-activity-switch)
+  (add-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (advice-add 'activities-rename :before #'treemacs-activities--on-activity-rename)
   (advice-add 'activities-close :before #'treemacs-activities--on-activity-kill)
   (add-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
@@ -64,7 +65,8 @@ Will delete the treemacs workspace for ACTIVITY."
 
 (cl-defmethod treemacs-scope->cleanup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope tear-down."
-  (advice-remove 'activities-set #'treemacs-activities--on-activity-switch)
+  ;; (advice-remove 'activities-set #'treemacs-activities--on-activity-switch)
+  (remove-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (advice-remove 'activities-rename #'treemacs-activities--on-activity-rename)
   (advice-remove 'activities-close #'treemacs-activities--on-activity-kill)
   (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch))
