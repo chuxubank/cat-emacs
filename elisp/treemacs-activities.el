@@ -52,23 +52,23 @@ Will return \"No Activity\" if no activity is active."
 (defun treemacs-activities--on-activity-kill (activity)
   "Hook running before an activity is killed.
 Will delete the treemacs workspace for ACTIVITY."
-  (treemacs--on-scope-kill (activities-activity-name activity)))
+  (treemacs--on-scope-kill activity))
 
 (cl-defmethod treemacs-scope->setup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope setup."
   ;; (advice-add 'activities-set :after #'treemacs-activities--on-activity-switch)
-  (add-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (advice-add 'activities-rename :before #'treemacs-activities--on-activity-rename)
-  (advice-add 'activities-close :before #'treemacs-activities--on-activity-kill)
+  (advice-add 'activities-discard :before #'treemacs-activities--on-activity-kill)
+  (add-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (add-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch)
   (treemacs-activities--ensure-workspace-exists))
 
 (cl-defmethod treemacs-scope->cleanup ((_ (subclass treemacs-activities-scope)))
   "Activities-scope tear-down."
   ;; (advice-remove 'activities-set #'treemacs-activities--on-activity-switch)
-  (remove-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (advice-remove 'activities-rename #'treemacs-activities--on-activity-rename)
-  (advice-remove 'activities-close #'treemacs-activities--on-activity-kill)
+  (advice-remove 'activities-discard #'treemacs-activities--on-activity-kill)
+  (remove-hook 'bookmark-after-jump-hook #'treemacs-activities--on-activity-switch)
   (remove-hook 'activities-after-switch-functions #'treemacs-activities--on-activity-switch))
 
 (defun treemacs-activities--on-activity-rename (activity name)
