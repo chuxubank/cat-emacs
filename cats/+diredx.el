@@ -14,7 +14,9 @@
   (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-guess-shell-alist-user
-   '(("\\.zip\\'"
+   '(("^app_logs.*\\.zip\\'"
+      (format "7z x -o\\* -p%s" (password-store-get "Work/AA/Luna/Log")))
+     ("\\.zip\\'"
       (concat "7z x -o\\*")
       (concat "7z x -o\\* -p"))
      ("\\.pub\\'"
