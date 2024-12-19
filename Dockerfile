@@ -11,6 +11,8 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     git \
     make
 
+RUN curl -fsSL https://bun.sh/install | bash
+
 ADD . /root/.emacs.d
 
 RUN echo "(custom-set-variables \
