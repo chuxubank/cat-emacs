@@ -5,7 +5,7 @@
   (pylint . pylint)
   (black . black)
   (pylsp . python-lsp-server)
-  (pyright . "pnpm add -g pyright")
+  (pyright . "bun add -g pyright")
   :custom
   (python-indent-guess-indent-offset-verbose nil)
   :mode-hydra

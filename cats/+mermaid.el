@@ -11,7 +11,7 @@
 
 (use-package mermaid-mode
   :ensure-system-package
-  (mmdc . "pnpm add -g @mermaid-js/mermaid-cli")
+  (mmdc . "bun add -g @mermaid-js/mermaid-cli")
   :mode "\\.mmd\\'"
   :custom
   (mermaid-tmp-dir (expand-file-name "mermaid/" cat-cache-dir))
