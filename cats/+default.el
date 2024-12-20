@@ -259,5 +259,4 @@
   (setq-local electric-indent-chars nil))
 
 (use-package transient
-  :ignore-builtin
-  :pin gnu)
+  :ignore-builtin)
