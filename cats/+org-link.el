@@ -12,7 +12,9 @@
 (use-package org-remoteimg
   :vc (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
   :demand t
-  :after org)
+  :after org
+  :config
+  (advice-add #'org-link-preview-region :after #'org-display-user-inline-images))
 
 (use-package org-imgtog
   :vc (org-imgtog :url "https://github.com/gaoDean/org-imgtog")
