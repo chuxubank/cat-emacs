@@ -14,6 +14,7 @@
   (org-archive-location (concat cat-org-directory "archive.org::* From %s"))
   (org-auto-align-tags nil)
   (org-startup-indented t)
+  (org-startup-with-inline-images t)
   (org-special-ctrl-a/e t)
   (org-tags-column 0)
   (org-export-backends '(ascii beamer html icalendar latex md odt))
