@@ -99,10 +99,12 @@
 ;;; buffer
 (defalias 'list-buffers 'ibuffer)
 
-;;; url
-(setq url-configuration-directory (concat cat-etc-dir "url/"))
+(use-package url
+  :ensure nil
+  :custom
+  (url-configuration-directory (concat cat-etc-dir "url/"))
+  (url-automatic-caching t))
 
-;;; minibuffer
 (use-package minibuffer
   :ensure nil
   :init
@@ -125,7 +127,6 @@
 (setq auto-save-default t
       auto-save-include-big-deletions t)
 
-;;; ediff
 (use-package ediff
   :ensure nil
   :init
