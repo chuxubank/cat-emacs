@@ -12,9 +12,7 @@
                                   ("~/.local/share/chezmoi/" . 0)
                                   ("~/.password-store/" . 0)))
   (magit-diff-refine-hunk t)
-  (magit-diff-refine-ignore-whitespace nil)
-  :config
-  (setq magit-stash-read-message-function #'magit-stash-read-message-traditional))
+  (magit-diff-refine-ignore-whitespace nil))
 
 (use-package forge
   :pin melpa-stable
