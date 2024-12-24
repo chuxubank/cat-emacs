@@ -7,9 +7,9 @@
     (meow-normal-mode 'toggle))
   :hook
   (after-init . meow-global-mode)
-  ((wl-folder-mode
-    mime-view-mode
-    view-mode) . cat-meow-toggle)
+  ((mime-view-mode
+    view-mode
+    wl-folder-mode) . cat-meow-toggle)
   :custom
   (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-keypad-leader-dispatch "C-c")
@@ -112,16 +112,16 @@
      '(":" . avy-goto-char-timer)))
   (meow-setup-line-number)
   (+add-to-list-multi 'meow-mode-state-list
-                      '(diary-mode . normal)
+                      '(comint-mode . insert)
                       '(deft-mode . motion)
+                      '(diary-mode . normal)
+                      '(ement-room-mode . motion)
+                      '(eshell-mode . insert)
+                      '(gnus-mode . motion)
                       '(help-mode . motion)
                       '(helpful-mode . motion)
-                      '(telega-root-mode . motion)
-                      '(ement-room-mode . motion)
                       '(osx-dictionary-mode . motion)
-                      '(gnus-mode . motion)
-                      '(eshell-mode . insert)
-                      '(comint-mode . insert))
+                      '(telega-root-mode . motion))
   (setq meow-replace-state-name-list '((normal . "🅝")
                                        (beacon . "🅑")
                                        (insert . "🅘")
