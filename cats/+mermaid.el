@@ -11,7 +11,7 @@
 
 (use-package mermaid-mode
   :ensure-system-package
-  (mmdc . "bun add -g @mermaid-js/mermaid-cli")
+  (mmdc . "bun add -g @mermaid-js/mermaid-cli && bunx puppeteer browsers install chrome-headless-shell")
   :mode "\\.mmd\\'"
   :custom
   (mermaid-tmp-dir (expand-file-name "mermaid/" cat-cache-dir))
