@@ -19,9 +19,16 @@
         (pop-to-buffer vterm-buffer  (bound-and-true-p display-comint-buffer-action))
       (vterm))))
 
+(use-package mistty
+  :bind
+  (:map project-prefix-map
+        ("M" . mistty-in-project)))
+
 (with-eval-after-load 'project
   (add-to-list 'project-switch-commands '(project-vterm "Vterm") t)
-  (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode)))
+  (add-to-list 'project-switch-commands '(mistty-in-project "Mistty") t)
+  (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode))
+  (add-to-list 'project-kill-buffer-conditions '(major-mode . mistty-mode)))
 
 (use-package eshell-vterm
   :hook (eshell-mode . eshell-vterm-mode))
