@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package magit
-  :pin nongnu
+  :pin melpa-stable
   :commands #'magit-read-repository
   :custom
   (magit-blame-mode-lighter " ")
