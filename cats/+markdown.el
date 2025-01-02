@@ -5,6 +5,8 @@
   (setq-default markdown-xwidget-github-theme (if (+dark-mode-p) "dark" "light")
                 markdown-xwidget-mermaid-theme (if (+dark-mode-p) "dark" "default")))
 
+(use-package mustache)
+
 (use-package markdown-xwidget
   :vc (markdown-xwidget
        :url "https://github.com/cfclrk/markdown-xwidget"
