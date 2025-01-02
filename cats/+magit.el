@@ -14,6 +14,10 @@
   (magit-diff-refine-hunk t)
   (magit-diff-refine-ignore-whitespace nil))
 
+(use-package magit-file-icons
+  :hook
+  (after-init . magit-file-icons-mode))
+
 (use-package forge
   :pin melpa-stable
   :demand t
