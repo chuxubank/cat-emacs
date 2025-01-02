@@ -18,6 +18,12 @@
   :hook
   (after-init . magit-file-icons-mode))
 
+(use-package magit-todos
+  :demand t
+  :after magit
+  :config
+  (magit-todos-mode 1))
+
 (use-package forge
   :pin melpa-stable
   :demand t
