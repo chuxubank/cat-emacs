@@ -125,6 +125,11 @@
   (org-refile-targets '((nil :maxlevel . 10)
                         (org-agenda-files :maxlevel . 3))))
 
+(use-package org-habit
+  :ensure nil
+  :custom
+  (org-habit-graph-column 60))
+
 (use-package org-list
   :ensure nil
   :custom
