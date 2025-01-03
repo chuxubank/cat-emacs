@@ -5,12 +5,10 @@
   :commands #'magit-read-repository
   :custom
   (magit-blame-mode-lighter " ")
-  (magit-repository-directories '(("~/Developer/" . 5)
-                                  ("~/.emacs.d/". 0)
-                                  ("~/org/" . 0)
-                                  ("~/org-roam/" . 0)
-                                  ("~/.local/share/chezmoi/" . 0)
-                                  ("~/.password-store/" . 0)))
+  (magit-repository-directories `(("~/Developer/" . 5)
+                                  ("~/Life/" . 5)
+                                  (,(getenv "XDG_CONFIG_HOME") . 3)
+                                  (,(getenv "XDG_DATA_HOME") . 3)))
   (magit-diff-refine-hunk t)
   (magit-diff-refine-ignore-whitespace nil))
 

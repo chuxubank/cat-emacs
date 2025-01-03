@@ -30,9 +30,9 @@
 (+mkdir-p cat-etc-dir)
 
 (defconst cat-rime-directory "~/.rime/" )
-(defconst cat-org-directory "~/org/"
+(defconst cat-org-directory "~/Life/org/"
   "See `org-directory'.")
-(defconst cat-org-roam-directory "~/org-roam/"
+(defconst cat-org-roam-directory "~/Life/org-roam/"
   "See `org-roam-directory'.")
 (defconst cat-org-roam-dailies-directory "daily/"
   "See `org-roam-dailies-directory'.")
