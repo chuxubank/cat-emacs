@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org
-  :load-path "~/.emacs.d/elpa/org-mode/lisp/"
+  :load-path "elpa/org-mode/lisp/"
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode")
   :delight
   (org-cdlatex-mode " ")
