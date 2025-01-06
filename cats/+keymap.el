@@ -29,6 +29,7 @@
   "m" #'cat-mail/body
   "n" #'deft
   "p" #'pass
+  "P" #'password-store-menu
   "r" #'elfeed
   "R" #'magit-list-repositories
   "v" #'vterm-toggle
