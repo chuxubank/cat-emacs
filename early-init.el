@@ -23,7 +23,7 @@
 (defun +mkdir-p (dir)
   "Make directory for DIR if not exists."
   (unless (file-directory-p dir)
-    (make-directory dir)))
+    (make-directory dir t)))
 
 (+mkdir-p cat-local-dir)
 (+mkdir-p cat-cache-dir)
