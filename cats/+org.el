@@ -268,3 +268,7 @@
 (use-package org-modern-indent
   :pin jcs-elpa
   :hook (org-mode . org-modern-indent-mode))
+
+(defun +find-org-files ()
+  (interactive)
+  (+project-find-file-in-dir cat-org-directory))

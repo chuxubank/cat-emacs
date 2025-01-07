@@ -1,5 +1,17 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar-keymap cat-file-map
+  :doc "Keymap for file commands."
+  :name "Cat File"
+  :prefix 'cat-file-prefix
+  "d" #'+delete-file-and-buffer
+  "e" #'+find-emacs-profile
+  "f" #'find-function
+  "l" #'find-library
+  "o" #'+find-org-files
+  "O" #'consult-org-agenda
+  "r" #'recentf-open-files)
+
 (defvar-keymap cat-toggle-map
   :doc "Keymap for toggle commands."
   :name "Cat Toggle"

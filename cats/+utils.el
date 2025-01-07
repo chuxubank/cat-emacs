@@ -81,6 +81,27 @@ List contains pairs mode lighter, see `minor-mode-alist'"
         nd-icon
       (concat nd-icon " " str))))
 
+(defun +project-find-file-in-dir (dir)
+  (let* ((pr (project-current nil dir))
+         (dirs (project-roots pr)))
+    (project-find-file-in nil dirs pr)))
+
+(defun +delete-file-and-buffer ()
+  "Kill the current buffer and deletes the file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if filename
+        (if (y-or-n-p (concat "Do you really want to delete file " filename " ?"))
+            (progn
+              (delete-file filename)
+              (message "Deleted file %s." filename)
+              (kill-buffer)))
+      (message "Not a file visiting buffer!"))))
+
+(defun +find-emacs-profile ()
+  (interactive)
+  (+project-find-file-in-dir user-emacs-directory))
+
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
   (interactive)

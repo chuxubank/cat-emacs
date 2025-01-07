@@ -1,6 +1,5 @@
 (cat! "+package")
 (cat! "+utils")
-(cat! "+file")
 (cat! "+benchmark")
 (cat! "+default")
 (cat! "+env")
