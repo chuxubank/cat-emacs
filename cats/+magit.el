@@ -6,7 +6,6 @@
   :custom
   (magit-blame-mode-lighter " ")
   (magit-repository-directories `(("~/Developer/" . 5)
-                                  ("~/Life/" . 5)
                                   (,(getenv "XDG_CONFIG_HOME") . 3)
                                   (,(getenv "XDG_DATA_HOME") . 3)))
   (magit-diff-refine-hunk t)
