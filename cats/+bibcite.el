@@ -24,7 +24,7 @@
 (defun cat-org-roam-allowed-directory-p (dir)
   "Check whether a DIR should be listed as a filterable directory.
 Hides template, daily directories."
-  (and (not (string-match-p cat-org-roam-template-directory (file-name-as-directory dir)))
+  (and (not (string-match-p cat-org-roam-templates-directory (file-name-as-directory dir)))
        (not (string-match-p cat-org-roam-dailies-directory (file-name-as-directory dir)))))
 
 (defun cat-org-roam-locate-file (name)

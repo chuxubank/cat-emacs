@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-rime-directory
+  (or (getenv "RIME_DIR") "~/.local/share/rime/")
+  "Filename of the rime folder."
+  :type 'directory
+  :group 'cat-emacs)
+
 (use-package rime
   :commands #'toggle-input-method)
 

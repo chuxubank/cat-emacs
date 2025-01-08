@@ -11,7 +11,7 @@
   (lsp-bridge-enable-log init-file-debug)
   (codeium-bridge-folder (expand-file-name cat-codeium-dir))
   (acm-enable-codeium t)
-  (acm-backend-codeium-api-key-path cat-codeium-api-key-file))
+  (acm-backend-codeium-api-key-path (expand-file-name "api_key" cat-codeium-dir)))
 
 (use-package flymake-bridge
   :vc (flymake-bridge

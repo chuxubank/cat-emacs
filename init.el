@@ -12,6 +12,26 @@
   :group 'Emacs
   :version "29.3")
 
+(defcustom cat-org-directory
+  (or (getenv "ORG_DIR") "~/Developer/Personal/org/")
+  "Filename of the org folder.
+See `org-directory'."
+  :type 'directory
+  :group 'cat-emacs)
+
+(defcustom cat-default-csl-styles-dir
+  (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
+  "Filename of the default csl styles folder.
+See `org-cite-csl-styles-dir'."
+  :type 'directory
+  :group 'cat-emacs)
+
+(defcustom cat-codeium-dir
+  (or (getenv "CODEIUM_DIR") "~/.codeium/")
+  "Filename of the codeium folder."
+  :type 'directory
+  :group 'cat-emacs)
+
 ;;; packages
 (add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
 

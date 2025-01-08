@@ -29,19 +29,7 @@
 (+mkdir-p cat-cache-dir)
 (+mkdir-p cat-etc-dir)
 
-(defconst cat-rime-directory "~/.local/share/rime/" )
-(defconst cat-org-directory "~/Developer/Personal/org/"
-  "See `org-directory'.")
-(defconst cat-org-roam-directory "~/Developer/Personal/org-roam/"
-  "See `org-roam-directory'.")
-(defconst cat-org-roam-dailies-directory "daily/"
-  "See `org-roam-dailies-directory'.")
-(defconst cat-org-roam-template-directory "templates/"
-  "Orb notes template directory.")
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
-(defconst cat-default-csl-styles-dir "~/Zotero/styles/")
-(defconst cat-codeium-dir "~/.codeium/")
-(defconst cat-codeium-api-key-file (expand-file-name "api_key" cat-codeium-dir))
 
 ;;; benchmark
 (defun cat-benchmark (pos &optional file)

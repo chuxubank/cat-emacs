@@ -1,5 +1,25 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-org-roam-directory
+  (or (getenv "ORG_ROAM_DIR") "~/Developer/Personal/org-roam/")
+  "Filename of the `org-roam' folder.
+See `org-roam-directory'."
+  :type 'directory
+  :group 'cat-emacs)
+
+(defcustom cat-org-roam-dailies-directory
+  (or (getenv "ORG_ROAM_DAILIES_DIR") "daily/")
+  "Filename of the `org-roam' dailies folder.
+See `org-roam-dailies-directory'."
+  :type 'directory
+  :group 'cat-emacs)
+
+(defcustom cat-org-roam-templates-directory
+  (or (getenv "ORG_ROAM_TEMPLATES_DIR") "templates/")
+  "Filename of the `org-roam-bibtex' templates folder."
+  :type 'directory
+  :group 'cat-emacs)
+
 (use-package org-roam
   :custom
   (org-roam-directory cat-org-roam-directory)
@@ -9,12 +29,12 @@
                                          #'org-roam-reflinks-section
                                          #'org-roam-unlinked-references-section))
   (org-roam-dailies-directory cat-org-roam-dailies-directory)
-  (org-roam-capture-ref-templates '(("r" "Protocol Capture Reference"
+  (org-roam-capture-ref-templates `(("r" "Protocol Capture Reference"
                                      plain "${body}%?" :target
                                      (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
                                      :unnarrowed t)
                                     ("c" "Course"
-                                     plain (file "templates/course.org") :target
+                                     plain (file ,(concat cat-org-roam-templates-directory "course.org")) :target
                                      (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)))
   :pretty-hydra
@@ -54,9 +74,9 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
   "Locate a template file based on DIR.
 If called interactively, open the selected template file.
 If called non-interactively, return the file name of the selected template.
-DIR specifies a subdirectory under `cat-org-roam-template-directory'."
+DIR specifies a subdirectory under `cat-org-roam-templates-directory'."
   (interactive)
-  (let ((template-dir (expand-file-name (concat cat-org-roam-template-directory dir) cat-org-roam-directory)))
+  (let ((template-dir (expand-file-name (concat cat-org-roam-templates-directory dir) cat-org-roam-directory)))
     (if-let* ((dir-exists (file-directory-p template-dir))
               (files (directory-files-recursively template-dir ".*\\.org")))
         (let ((chosen-file (completing-read "Choose template: " files nil t)))
