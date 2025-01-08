@@ -33,13 +33,15 @@
      ("melpa". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/"))
     ))
 
-(setq package-check-signature nil
-      package-install-upgrade-built-in nil
-      package-archives (assoc-default cat-package-mirror package-mirror-alist)
-      package-archive-priorities '(("melpa"    . 5)
-                                   ("jcs-elpa" . 0)))
-
-(add-to-list 'package-archives '("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
+(custom-set-variables
+ '(package-check-signature nil)
+ '(package-install-upgrade-built-in nil)
+ '(package-archives (append
+                     (assoc-default cat-package-mirror package-mirror-alist)
+                     '(("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/"))))
+ '(package-archive-priorities '(("gnu" . 5)
+                                ("melpa" . 3)
+                                ("jcs-elpa" . 0))))
 
 (unless (or EMACS29+ (package-installed-p 'use-package))
   (package-refresh-contents)
