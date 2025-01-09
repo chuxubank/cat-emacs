@@ -229,7 +229,7 @@
                            ("HOLD" :inverse-video t :inherit +org-todo-onhold)
                            ("PROJ" :inverse-video t :inherit +org-todo-project)
                            ("KILL" :inverse-video t :inherit +org-todo-cancel)))
-  (org-modern-keyword '(;; (info "(org) In-Buffer Settings")
+  (org-modern-keyword `(;; (info "(org) In-Buffer Settings")
                         ("archive" . "")
                         ("category" . "")
                         ("columns" . "󰕭")
@@ -261,6 +261,10 @@
                         ("latex" . "")
                         ;; inpage
                         ("tblfm" . "󰿉")
+                        ("name" . "󱈤")
+                        ("call" . "")
+                        ("include" . ,(+with-icon "nf-oct-cross_reference"))
+                        ("macro" . "")
                         (t . t)))
   :config
   (global-org-modern-mode))
