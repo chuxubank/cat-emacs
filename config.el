@@ -61,7 +61,7 @@
 (cat! "+org-notes")
 (cat! "+org-latex")
 (cat! "+org-srs")
-;; (cat! "+org-cv")
+(cat! "+org-cv")
 (cat! "+org-link")
 (cat! "+org-jira")
 
