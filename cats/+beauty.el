@@ -82,3 +82,12 @@
 (use-package valign
   :delight " 󱥣"
   :commands (valign--space valign--put-overlay))
+
+
+(use-package ultra-scroll
+  :vc (ultra-scroll
+       :url "https://github.com/jdtsmith/ultra-scroll")
+  :hook (after-init . ultra-scroll-mode)
+  :custom
+  (scroll-conservatively 101)
+  (scroll-margin 0))
