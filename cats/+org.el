@@ -275,4 +275,4 @@
 
 (defun +find-org-files ()
   (interactive)
-  (+project-find-file-in-dir cat-org-directory))
+  (+project-find-file-in-dir cat-org-directory nil t))

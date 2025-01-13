@@ -81,10 +81,18 @@ List contains pairs mode lighter, see `minor-mode-alist'"
         nd-icon
       (concat nd-icon " " str))))
 
-(defun +project-find-file-in-dir (dir)
-  (let* ((pr (project-current nil dir))
-         (dirs (project-roots pr)))
-    (project-find-file-in nil dirs pr)))
+(defun +project-find-file-in-dir (dir &optional exclude-dirs include-all)
+  "Find a file in a specific directory DIR, optionally excluding certain paths.
+
+EXCLUDE-DIRS is a list of paths to exclude from the search.
+
+If INCLUDE-ALL is non-nil, include all files from DIRS, except for VCS
+directories listed in `vc-directory-exclusion-list'."
+  (let* ((vc-directory-exclusion-list (append vc-directory-exclusion-list (ensure-list exclude-dirs)))
+         (pr (project-current nil dir)))
+    (if pr
+        (project-find-file-in nil (ensure-list dir) pr include-all)
+      (user-error "Not a project directory: %s" dir))))
 
 (defun +delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
@@ -99,8 +107,16 @@ List contains pairs mode lighter, see `minor-mode-alist'"
       (message "Not a file visiting buffer!"))))
 
 (defun +find-emacs-profile ()
+  "Find a file in the Emacs user directory, excluding specified directories."
   (interactive)
-  (+project-find-file-in-dir user-emacs-directory))
+  (let ((exclude-dirs (list ".local"
+                            "elpa"
+                            "eln-cache"
+                            "tree-sitter")))
+    (+project-find-file-in-dir
+     user-emacs-directory
+     exclude-dirs
+     t)))
 
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
