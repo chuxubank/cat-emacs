@@ -73,12 +73,13 @@
   (org-clock-persistence-insinuate)
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t)
-     (R . t)
-     (shell . t)
+   '((awk . t)
      (C . t)
+     (emacs-lisp . t)
      (plantuml . t)
-     (awk . t)))
+     (python . t)
+     (R . t)
+     (shell . t)))
   (add-to-list 'org-modules 'org-habit)
   (require 'server)
   (require 'org-protocol))
