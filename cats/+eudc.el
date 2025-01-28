@@ -22,7 +22,7 @@
 (with-eval-after-load 'eudc
   (when IS-MAC
     (require 'eudcb-macos-contacts)
-    (eudc-macos-contacts-set-server "localhost")))
+    (add-to-list 'eudc-server-hotlist '("localhost" . macos-contacts))))
 
 (use-package bbdb
   :custom
