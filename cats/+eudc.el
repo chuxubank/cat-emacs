@@ -3,7 +3,11 @@
 (pretty-hydra-define cat-eudc
   (:color teal :title (+with-icon "nf-md-contacts" "EUDC"))
   ("Action"
-   (("e" #'eudc-expand-try-all "expand"))))
+   (("t" #'eudc-expand-try-all "expand")
+    ("f" #'eudc-query-form "query form")
+    ("p" #'eudc-get-phone "get phone")
+    ("e" #'eudc-get-email "get email")
+    ("l" #'eudc-get-attribute-list "get list"))))
 
 (with-eval-after-load "message"
   (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
