@@ -23,8 +23,7 @@
    ("Mu4e"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
-     ("u" #'mu4e-update-index "update")
-     ("o" #'mu4e-overview "overview")))))
+     ("u" #'mu4e-update-index "update")))))
 
 (with-eval-after-load 'selectrum
   (setq mu4e-completing-read-function #'selectrum-completing-read))
@@ -34,7 +33,11 @@
   :after mu4e
   :config (mu4e-column-faces-mode))
 
-(use-package mu4e-overview)
+(use-package mu4e-overview
+  :pretty-hydra
+  (cat-mail
+   ("Mu4e"
+    (("o" #'mu4e-overview "overview")))))
 
 (use-package gnus
   :ensure nil
