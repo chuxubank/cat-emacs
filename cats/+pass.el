@@ -5,7 +5,8 @@
   (zbarimg . zbar)
   (qrencode . qrencode))
 
-(use-package password-store-menu)
+(use-package password-store-menu
+  :commands #'password-store-menu)
 
 (use-package password-store
   :custom
