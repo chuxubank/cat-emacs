@@ -21,6 +21,8 @@
       (concat "7z x -o\\* -p"))
      ("\\.pub\\'"
       (concat "ssh-keygen -lv -f"))
+     ("\\.plist\\'"
+      (concat "plutil -p"))
      ("\\.md\\'"
       (concat "pandoc ? -o $(basename `?` .md).org --lua-filter=remove-header-attr.lua")
       (concat "pandoc ? -o $(basename `?` .md).org"))))
