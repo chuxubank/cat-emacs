@@ -12,6 +12,7 @@
   (magit-diff-refine-ignore-whitespace nil))
 
 (use-package magit-file-icons
+  :disabled
   :hook
   (after-init . magit-file-icons-mode))
 
