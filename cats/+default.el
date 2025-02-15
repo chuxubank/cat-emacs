@@ -169,6 +169,7 @@
   :hook (after-init . global-auto-revert-mode)
   :custom
   (auto-revert-mode-text " 󰁪")
+  (auto-revert-tail-mode-text " 󰨿")
   (global-auto-revert-ignore-modes '(logview-mode)))
 
 (use-package files
