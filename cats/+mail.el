@@ -25,9 +25,6 @@
      ("k" #'mu4e-quit "quit")
      ("u" #'mu4e-update-index "update")))))
 
-(with-eval-after-load 'selectrum
-  (setq mu4e-completing-read-function #'selectrum-completing-read))
-
 (use-package mu4e-column-faces
   :demand
   :after mu4e

@@ -4,10 +4,6 @@
   (use-package company-prescient
     :hook (company-mode . company-prescient-mode)))
 
-(when (package-installed-p 'selectrum)
-  (use-package selectrum-prescient
-    :hook (selectrum-mode . selectrum-prescient-mode)))
-
 (when (package-installed-p 'vertico)
   (use-package vertico-prescient
     :hook (vertico-mode . vertico-prescient-mode)))

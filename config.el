@@ -37,7 +37,6 @@
 ;;; completion
 ;; (cat! "+company")
 (cat! "+corfu")
-;; (cat! "+selectrum")
 (cat! "+vertico")
 ;; (cat! "+orderless")
 (cat! "+prescient")
