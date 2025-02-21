@@ -19,6 +19,11 @@
       (information "I")
       (debug "D")
       (trace "V"))
+     ("Xray"
+      (error "Error")
+      (warning "Warning")
+      (information "Info")
+      (debug "Debug"))
      ("Zscaler"
       (error "ERR")
       (warning "WRN")
@@ -36,6 +41,9 @@
       (format . "TIMESTAMP LEVEL/NAME [THREAD, IGNORED]: MESSAGE")
       (levels . "LogCat")
       (timestamp "LogUtil"))
+     ("Xray"
+      (format . "TIMESTAMP [LEVEL]<<RX:THREAD: \\[[^]]+\\] \\| >>NAME: MESSAGE")
+      (levels . "Xray"))
      ("Zscaler"
       (format . "TIMESTAMP[IGNORED:THREAD] LEVEL MESSAGE")
       (levels . "Zscaler")
