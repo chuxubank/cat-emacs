@@ -9,6 +9,7 @@
 (defconst IS-MACPLUS (boundp 'ns-system-appearance))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkeley-unix)))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-ANDROID (string-equal system-type "android"))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
 (defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
@@ -30,6 +31,13 @@
 (+mkdir-p cat-etc-dir)
 
 (defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
+
+;;; path
+(when IS-ANDROID
+  ;; Add Termux binaries to PATH environment
+  (let ((termuxpath "/data/data/com.termux/files/usr/bin"))
+    (setenv "PATH" (concat termuxpath ":" (getenv "PATH")))
+    (push termuxpath exec-path)))
 
 ;;; benchmark
 (defun cat-benchmark (pos &optional file)
