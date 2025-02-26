@@ -27,7 +27,7 @@
   :demand t
   :ensure nil
   :config
-  (menu-bar-mode 0))
+  (menu-bar-mode (if IS-ANDROID 1 0)))
 
 (use-package tool-bar
   :demand t
