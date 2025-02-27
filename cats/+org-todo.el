@@ -11,12 +11,8 @@
   (org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                               (todo   . " %i %-20:c")
                               (tags   . " %i %-20:c")
-                              (search . " %i %-20:c"))))
-
-(use-package calendar
-  :ensure nil
-  :custom
-  (diary-file (expand-file-name "diary" cat-org-directory)))
+                              (search . " %i %-20:c")))
+  (org-agenda-diary-file (expand-file-name "diary.org" cat-org-directory)))
 
 (use-package org-agenda-count
   :vc (org-agenda-count
