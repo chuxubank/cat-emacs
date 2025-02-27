@@ -14,6 +14,14 @@
                               (search . " %i %-20:c")))
   (org-agenda-diary-file (expand-file-name "diary.org" cat-org-directory)))
 
+(defun cat-filter-todo-entries (args)
+  "Filter out non-TODO entries from the ARGS for `org-agenda--count'."
+  (let* ((list (car args))
+         (filtered-list (seq-filter (lambda (entry)
+                                      (get-text-property 0 'todo-state entry))
+                                    list)))
+    (list filtered-list (cadr args))))
+
 (use-package org-agenda-count
   :vc (org-agenda-count
        :url "https://github.com/sid-kurias/org-agenda-count"
@@ -33,21 +41,7 @@
         ((org-agenda-overriding-header
           (format "All TODOs [%s]" (org-agenda-count "alltodo")))))))))
   :config
-  (defun org-agenda--count (list &optional type)
-    "Count the number of entries in this block for `org-agenda-count'.
-
-Intended as (temporary) :before advice for the function
-`org-agenda-finalize-hook'.
-
-This function filters out non-TODO entries before counting them."
-    (let ((todo-entries
-           (seq-filter (lambda (entry)
-                         (get-text-property 0 'todo-state entry))
-                       list)))
-      (alist-put org-agenda-count--alist
-                 org-agenda-count--block
-                 (length todo-entries)
-                 #'equal))))
+  (advice-add 'org-agenda--count :filter-args #'cat-filter-todo-entries))
 
 (use-package org-edna
   :delight " "
