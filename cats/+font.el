@@ -182,7 +182,8 @@ Unless `buffer-face-mode' already enabled."
                       'conf-mode
                       'nxml-mode
                       'sgml-mode
-                      'templ-ts-mode)
+                      'templ-ts-mode
+                      'go-template-mode)
       (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
      ((derived-mode-p 'objc-mode
                       'swift-mode
