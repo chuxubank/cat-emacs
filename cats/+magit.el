@@ -10,12 +10,8 @@
                                   (,(getenv "XDG_DATA_HOME") . 3)
                                   (,auth-source-pass-filename . 0)))
   (magit-diff-refine-hunk t)
-  (magit-diff-refine-ignore-whitespace nil))
-
-(use-package magit-file-icons
-  :disabled
-  :hook
-  (after-init . magit-file-icons-mode))
+  (magit-diff-refine-ignore-whitespace nil)
+  (magit-format-file-function #'magit-format-file-nerd-icons))
 
 (use-package magit-todos
   :demand t
