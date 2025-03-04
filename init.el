@@ -19,6 +19,13 @@ See `org-directory'."
   :type 'directory
   :group 'cat-emacs)
 
+(defcustom cat-pass-directory
+  (or (getenv "PASSWORD_STORE_DIR") "~/.password-store")
+  "Filename of the password-store folder.
+See `auth-source-pass-filename'."
+  :type 'directory
+  :group 'cat-emacs)
+
 (defcustom cat-default-csl-styles-dir
   (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
   "Filename of the default csl styles folder.

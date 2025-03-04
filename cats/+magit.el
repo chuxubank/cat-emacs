@@ -8,7 +8,7 @@
   (magit-repository-directories `(("~/Developer/" . 5)
                                   (,(getenv "XDG_CONFIG_HOME") . 3)
                                   (,(getenv "XDG_DATA_HOME") . 3)
-                                  (,auth-source-pass-filename . 0)))
+                                  (,cat-pass-directory . 0)))
   (magit-diff-refine-hunk t)
   (magit-diff-refine-ignore-whitespace nil)
   (magit-format-file-function #'magit-format-file-nerd-icons))
