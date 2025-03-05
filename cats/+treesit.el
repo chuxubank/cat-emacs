@@ -8,8 +8,20 @@
   (treesit-font-lock-level 4))
 
 (use-package treesit-fold
+  :delight
+  :pin jcs-elpa
   :hook (after-init . global-treesit-fold-indicators-mode)
-  :pin jcs-elpa)
+  :bind
+  ([remap hs-hide-block] . treesit-fold-close)
+  ([remap hs-show-block] . treesit-fold-open)
+  ([remap hs-hide-all] . treesit-fold-close-all)
+  ([remap hs-show-all] . treesit-fold-open-all)
+  ([remap hs-toggle-hiding] . treesit-fold-toggle)
+  (:map treesit-fold-mode-map
+        ("C-c @ C-r" . treesit-fold-open-recursively))
+  :custom
+  (treesit-fold-line-count-show t)
+  (treesit-fold-line-count-format " <%d lines> "))
 
 (use-package treesit-auto
   :hook (after-init . global-treesit-auto-mode)
