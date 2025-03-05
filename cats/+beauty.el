@@ -94,5 +94,7 @@
 
 (use-package breadcrumb
   :hook (after-init . breadcrumb-mode)
+  :custom
+  (breadcrumb-imenu-max-length 0.9)
   :config
   (fset 'breadcrumb--project-crumbs-1 #'ignore))
