@@ -91,3 +91,8 @@
   :custom
   (scroll-conservatively 101)
   (scroll-margin 0))
+
+(use-package breadcrumb
+  :hook (after-init . breadcrumb-mode)
+  :config
+  (fset 'breadcrumb--project-crumbs-1 #'ignore))
