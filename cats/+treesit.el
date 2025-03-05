@@ -8,8 +8,7 @@
   (treesit-font-lock-level 4))
 
 (use-package treesit-fold
-  :disabled
-  :hook (after-init . global-treesit-fold-mode)
+  :hook (after-init . global-treesit-fold-indicators-mode)
   :pin jcs-elpa)
 
 (use-package treesit-auto
