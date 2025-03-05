@@ -12,12 +12,12 @@
   :pin jcs-elpa
   :hook (after-init . global-treesit-fold-indicators-mode)
   :bind
-  ([remap hs-hide-block] . treesit-fold-close)
-  ([remap hs-show-block] . treesit-fold-open)
-  ([remap hs-hide-all] . treesit-fold-close-all)
-  ([remap hs-show-all] . treesit-fold-open-all)
-  ([remap hs-toggle-hiding] . treesit-fold-toggle)
   (:map treesit-fold-mode-map
+        ([remap hs-hide-block] . treesit-fold-close)
+        ([remap hs-show-block] . treesit-fold-open)
+        ([remap hs-hide-all] . treesit-fold-close-all)
+        ([remap hs-show-all] . treesit-fold-open-all)
+        ([remap hs-toggle-hiding] . treesit-fold-toggle)
         ("C-c @ C-r" . treesit-fold-open-recursively))
   :custom
   (treesit-fold-line-count-show t)
