@@ -16,6 +16,8 @@
   (dired-guess-shell-alist-user
    '(("^app_logs.*\\.zip\\'"
       (format "7z x -o\\* -p%s" (password-store-get "Work/AA/Luna/Log")))
+     ("\\.tmpl\\'"
+      "cat * | chezmoi execute-template")
      ("\\.zip\\'"
       (concat "7z x -o\\*")
       (concat "7z x -o\\* -p"))
