@@ -21,7 +21,12 @@
         ("C-c @ C-r" . treesit-fold-open-recursively))
   :custom
   (treesit-fold-line-count-show t)
-  (treesit-fold-line-count-format " <%d lines> "))
+  (treesit-fold-line-count-format " <%d lines> ")
+  :config
+  (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
+  (push '(import_declaration
+          . (lambda (node offset)
+              (treesit-fold-range-markers node offset "import "))) (alist-get 'java-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-auto
   :hook (after-init . global-treesit-auto-mode)
