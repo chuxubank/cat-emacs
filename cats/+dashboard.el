@@ -27,7 +27,7 @@
                               (agenda . "a")
                               (registers . "r")))
   (dashboard-banner-logo-title "Cat Emacs")
-  (dashboard-startup-banner cat-banner-file)
+  (dashboard-startup-banner (if IS-ANDROID 'official cat-banner-file))
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
   (dashboard-heading-shorcut-format " [%s]")
