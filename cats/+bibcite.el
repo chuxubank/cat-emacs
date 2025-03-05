@@ -121,34 +121,43 @@ Hides template, daily directories."
 
 (use-package citar
   :commands (citar-get-files)
-  :init
-  (setq
-   citar-indicator-links
-   (citar-indicator-create
-    :symbol (nerd-icons-codicon "nf-cod-link" :face 'nerd-icons-blue)
-    :function #'citar-has-links
-    :padding "  "
-    :tag "has:links")
-   citar-indicator-files
-   (citar-indicator-create
-    :symbol (nerd-icons-codicon "nf-cod-file" :face 'nerd-icons-blue-alt)
-    :function #'citar-has-files
-    :padding "  "
-    :tag "has:files")
-   citar-indicator-notes
-   (citar-indicator-create
-    :symbol (nerd-icons-codicon "nf-cod-note" :face 'nerd-icons-green)
-    :function #'citar-has-notes
-    :padding "  "
-    :tag "has:notes")
-   citar-indicator-cited
-   (citar-indicator-create
-    :symbol (nerd-icons-codicon "nf-cod-quote" :face 'nerd-icons-cyan)
-    :function #'citar-is-cited
-    :padding "  "
-    :tag "is:cited"))
   :custom
-  (citar-bibliography cat-default-bibliography-files))
+  (citar-bibliography cat-default-bibliography-files)
+  :config
+  (defvar citar-indicator-notes-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon "nf-cod-note" :face 'nerd-icons-green)
+     :function #'citar-has-notes
+     :padding "  "
+     :tag "has:notes"))
+
+  (defvar citar-indicator-links-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon "nf-cod-link" :face 'nerd-icons-blue)
+     :function #'citar-has-links
+     :padding "  "
+     :tag "has:links"))
+
+  (defvar citar-indicator-files-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon "nf-cod-file" :face 'nerd-icons-blue-alt)
+     :function #'citar-has-files
+     :padding "  "
+     :tag "has:files"))
+
+  (defvar citar-indicator-cited-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon "nf-cod-quote" :face 'nerd-icons-cyan)
+     :function #'citar-is-cited
+     :padding "  "
+     :tag "is:cited"))
+
+  (setq citar-indicators
+        (list citar-indicator-files-icons
+              citar-indicator-notes-icons
+              citar-indicator-links-icons
+              citar-indicator-cited-icons))
+  )
 
 (use-package citar-embark
   :delight
