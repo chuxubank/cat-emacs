@@ -25,31 +25,6 @@
   (treesit-fold-line-count-show t)
   (treesit-fold-line-count-format " <%d lines> ")
   :config
-  (defun treesit-fold--continuous-node-prefix (node prefix next)
-    "Iterate through node starting from NODE and compare node-text to PREFIX;
-then return the last iterated node.
-
-Argument NEXT is a boolean type.  If non-nil iterate forward; otherwise iterate
-in backward direction."
-    (let* ((iter-node node) (last-node node)
-           (last-line (car (treesit-fold--node-start-position node))) line text break
-           (line-range 1) (last-line-range 1) max-line-range
-           (indentation (treesit-fold--indentation (treesit-node-start iter-node)))
-           next-indentation)
-      (while (and iter-node (not break))
-        (setq text (string-trim (treesit-node-text iter-node))
-              line (car (treesit-fold--node-start-position iter-node))
-              line-range (1+ (treesit-fold--count-matches "\n" text))
-              max-line-range (max line-range last-line-range)
-              next-indentation (treesit-fold--indentation (treesit-node-start iter-node)))
-        (if (and (treesit-fold--in-range-p line (- last-line max-line-range) (+ last-line max-line-range))
-                 (string-prefix-p prefix text)
-                 (= indentation next-indentation))
-            (setq last-node iter-node last-line line
-                  last-line-range (1+ (treesit-fold--count-matches "\n" text)))
-          (setq break t))
-        (setq iter-node (treesit-fold--next-prev-node-skip-newline iter-node next)))
-      last-node))
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
           . (lambda (node offset)
