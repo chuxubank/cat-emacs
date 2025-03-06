@@ -42,10 +42,14 @@
 ;;; benchmark
 (defun cat-benchmark (pos &optional file)
   "Print the current time of load POS of FILE."
-  (message "%s %s of %s"
-           (format-time-string "%T %3N")
-           (upcase (symbol-name pos))
-           (or file load-file-name buffer-file-name)))
+  (let ((file-name (abbreviate-file-name
+                    (or file
+                        load-file-name
+                        buffer-file-name))))
+    (message "%s %s of %s"
+             (format-time-string "%T %3N")
+             (upcase (symbol-name pos))
+             file-name)))
 
 ;;; modifier-key
 (cond

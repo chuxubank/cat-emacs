@@ -52,11 +52,15 @@ See `org-cite-csl-styles-dir'."
          (file (if path
                    `(expand-file-name ,filename ,path)
                  filename)))
-    `(condition-case-unless-debug e
+    `(condition-case-unless-debug err
          (let (file-name-handler-alist)
            (cat-benchmark 'beg ,file)
            (load ,file ,noerror 'nomessage))
-       (error "Could not load file '%s'" file))))
+       (error
+        (message "ERROR: %S when loading file: %s\nBacktrace:\n%s"
+                 err
+                 (abbreviate-file-name ,file)
+                 (with-output-to-string (backtrace)))))))
 
 (load (concat user-emacs-directory "config") nil 'nomessage)
 
