@@ -27,6 +27,7 @@
   (java-imports-find-block-function 'java-imports-find-place-sorted-block))
 
 (use-package eglot-java
+  :disabled
   :hook ((java-mode
           java-ts-mode) . eglot-java-mode)
   :custom
