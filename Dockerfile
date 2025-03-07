@@ -21,8 +21,6 @@ RUN echo "(custom-set-variables \
 
 RUN yes | emacs --fg-daemon --debug-init --eval "(kill-emacs)"
 
-RUN make -C /root/.emacs.d/elpa/org-mode compile autoloads
-
 RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
 
 ENTRYPOINT ["emacs"]

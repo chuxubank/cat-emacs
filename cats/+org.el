@@ -2,7 +2,8 @@
 
 (use-package org
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode"
-                :lisp-dir "lisp")
+                :lisp-dir "lisp/"
+                :make "compile autoloads")
   :delight
   (org-cdlatex-mode " ")
   :commands
