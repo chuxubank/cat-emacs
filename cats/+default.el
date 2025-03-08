@@ -178,19 +178,22 @@
   (revert-buffer-quick-short-answers t)
   (confirm-kill-emacs #'yes-or-no-p))
 
+(defconst cat-hs-folded-face
+  '((t (:inherit 'font-lock-comment-face :box t)))
+  "Face used to display the fold text.")
+
+(defun cat-hs-folded-overlay-fn (ov)
+  (when (eq 'code (overlay-get ov 'hs))
+    (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
+           (info (format " ... #%d " nlines)))
+      (overlay-put ov 'display (propertize info 'face cat-hs-folded-face)))))
+
 (use-package hideshow
   :ensure nil
   :delight (hs-minor-mode " 󰡍")
   :hook (prog-mode . hs-minor-mode)
-  :init
-  (defconst hideshow-folded-face '((t (:inherit 'font-lock-comment-face :box t))))
-  (defun hideshow-folded-overlay-fn (ov)
-    (when (eq 'code (overlay-get ov 'hs))
-      (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
-             (info (format " ... #%d " nlines)))
-        (overlay-put ov 'display (propertize info 'face hideshow-folded-face)))))
   :custom
-  (hs-set-up-overlay 'hideshow-folded-overlay-fn))
+  (hs-set-up-overlay 'cat-hs-folded-overlay-fn))
 
 (use-package type-break
   :ensure nil

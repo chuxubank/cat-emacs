@@ -24,6 +24,8 @@
   :custom
   (treesit-fold-line-count-show t)
   (treesit-fold-line-count-format " <%d lines> ")
+  :custom-face
+  (treesit-fold-replacement-face ,cat-hs-folded-face)
   :config
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
