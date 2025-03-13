@@ -25,3 +25,4 @@ network-security.data
 
 # treesit
 tree-sitter/
+.aider*

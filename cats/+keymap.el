@@ -31,6 +31,7 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
+  "a" #'aidermacs-transient-menu
   "e" #'cat-eudc/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix

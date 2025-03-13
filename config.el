@@ -118,6 +118,7 @@
 
 ;;; plugins
 (cat! "+term")
+(cat! "+aider")
 (cat! "+log")
 (cat! "+im")
 (cat! "+pdf")
