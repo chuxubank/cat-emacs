@@ -173,6 +173,7 @@
         ("C-c C-/" . org-decrypt-entries))
   :custom
   (org-crypt-disable-auto-save 'encrypt)
+  (org-crypt-key (getenv "EMAIL"))
   :config
   (add-to-list 'org-tags-exclude-from-inheritance
                org-crypt-tag-matcher)
