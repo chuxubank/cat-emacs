@@ -2,6 +2,10 @@
 
 (use-package org-agenda
   :ensure nil
+  :bind
+  (:map org-agenda-mode-map
+        ("W" . #'org-todo-with-date)
+        ("Y" . #'org-todo-yesterday))
   :custom
   (org-agenda-file-regexp "\\`[^.].*\\.org\\(\\.gpg\\)?\\'")
   (org-agenda-include-diary t)
