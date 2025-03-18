@@ -9,7 +9,7 @@
 (defvar cat-sans-fonts '("Iosevka Aile" "Inter" "DejaVu Sans" "Roboto")
   "Default proportional sans serif fonts.")
 
-(defvar cat-mono-code-fonts '("Victor Mono"
+(defvar cat-mono-code-fonts '("Maple Mono"
                               "JetBrains Mono"
                               "Cascadia Code"
                               "Fira Code"
@@ -123,7 +123,10 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
     :hook (after-init . global-ligature-mode)
     :config
     ;; Enable the "www" ligature in every possible major mode
-    (ligature-set-ligatures 't '("www"))
+    (ligature-set-ligatures 't '("www"
+                                 "[TODO]" "todo))"
+                                 "[FIXME]" "fixme))"
+                                 "[DEBUG]" "[INFO]" "[WARN]" "[ERROR]"))
     ;; Enable traditional ligature support in eww-mode, if the
     ;; `variable-pitch' face supports it
     (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
