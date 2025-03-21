@@ -28,7 +28,12 @@
       (error "ERR")
       (warning "WRN")
       (information "INF")
-      (debug "DBG"))))
+      (debug "DBG"))
+     ("Rclone"
+      (error "ERROR" "CRITICAL")
+      (warning "NOTICE")
+      (information "INFO")
+      (debug "DEBUG"))))
   (logview-additional-submodes
    '(("Luna"
       (format . "TIMESTAMP IGNORED LEVEL T: <<RX:THREAD:.+?>> NAME - MESSAGE")
@@ -47,4 +52,7 @@
      ("Zscaler"
       (format . "TIMESTAMP[IGNORED:THREAD] LEVEL MESSAGE")
       (levels . "Zscaler")
-      (timestamp "Zscaler")))))
+      (timestamp "Zscaler"))
+     ("Rclone"
+      (format . "TIMESTAMP LEVEL<<RX:IGNORED: *:>><<RX:THREAD:.+?: \\| >>MESSAGE")
+      (levels . "Rclone")))))
