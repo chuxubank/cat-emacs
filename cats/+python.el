@@ -13,8 +13,7 @@
    ("LSP"
     (("e" eglot-hydra/body "eglot"))
     "Plugin"
-    (("p" #'poetry "poetry")
-     ("v" #'pet-verify-setup "pet verify")))))
+    (("v" #'pet-verify-setup "pet verify")))))
 
 (use-package pet
   :delight " 󰌠"
@@ -25,6 +24,10 @@
                              pet-locate-dominating-file)))
 
 (use-package poetry
+  :disabled
   :hook (python-base-mode . poetry-tracking-mode)
   :custom
   (poetry-tracking-strategy 'switch-buffer))
+
+(use-package uv-mode
+  :hook (python-mode . uv-mode-auto-activate-hook))
