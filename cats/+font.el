@@ -178,8 +178,7 @@ Unless `buffer-face-mode' already enabled."
       (+safe-set-face-fonts 'markdown-table-face cat-mono-thin-fonts)
       (+safe-set-face-fonts 'markdown-code-face cat-mono-code-fonts)
       (+safe-set-face-fonts 'markdown-inline-code-face cat-mono-code-fonts))
-     ((derived-mode-p 'vterm-mode
-                      'json-mode 'json-ts-mode
+     ((derived-mode-p 'json-mode 'json-ts-mode
                       'yaml-mode 'yaml-ts-mode
                       'toml-ts-mode
                       'conf-mode
@@ -204,7 +203,9 @@ Unless `buffer-face-mode' already enabled."
       (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
-     ((derived-mode-p 'prog-mode)
+     ((derived-mode-p 'prog-mode
+                      'comint-mode
+                      'vterm-mode)
       (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'Info-mode
                       'man-common)
