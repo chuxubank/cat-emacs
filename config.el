@@ -19,7 +19,7 @@
 (cat! "+windows")
 (cat! "+workspace")
 (cat! "+treemacs")
-(cat! "+dashboard")
+;; (cat! "+dashboard")
 
 ;;; daemon
 (cat! "+daemon")
