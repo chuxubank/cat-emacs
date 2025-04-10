@@ -102,10 +102,11 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
 
     ;; (+safe-set-fontset-fonts t 'symbol cat-symbol-fonts frame)
 
-    ;; 猫，ねこ，고양이
+    ;; 猫，ネコ，ねこ，고양이，ㄇㄠ
     (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts frame)
     (+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts frame)
     (+safe-set-fontset-fonts t 'hangul cat-cjk-mono-fonts frame)
+    (+safe-set-fontset-fonts t 'bopomofo cat-cjk-mono-fonts frame)
     (+safe-set-fontset-fonts t 'cjk-misc cat-cjk-mono-fonts frame)
 
     ;; 𝓒𝙖𝕥
