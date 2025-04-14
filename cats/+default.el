@@ -266,3 +266,6 @@
 
 (use-package transient
   :ignore-builtin)
+
+(use-package follow
+  :custom (follow-mode-line-text " "))
