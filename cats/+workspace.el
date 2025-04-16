@@ -18,8 +18,8 @@
   :hook
   (tab-bar-mode . tab-bar-history-mode)
   :custom
-  (tab-bar-close-button-show nil)
-  (tab-bar-new-button-show nil)
+  (tab-bar-close-button-show t)
+  (tab-bar-new-button-show t)
   (tab-bar-show 1)
   (tab-bar-tab-hints t)
   (tab-bar-select-tab-modifiers '(super))
