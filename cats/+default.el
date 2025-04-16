@@ -45,7 +45,7 @@
 
 (use-package icons
   :custom
-  (icon-preference '(symbol emoji image text)))
+  (icon-preference '(image emoji symbol text)))
 
 (use-package display-line-numbers
   :hook (prog-mode . display-line-numbers-mode))
