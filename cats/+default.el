@@ -203,7 +203,8 @@
   (type-break-mode . type-break-mode-line-message-mode)
   :custom
   (type-break-query-function #'y-or-n-p)
-  (type-break-good-break-interval 300)
+  (type-break-good-break-interval (* 5 60))
+  (type-break-demo-boring-stats t)
   :config
   (type-break-guesstimate-keystroke-threshold 30))
 
