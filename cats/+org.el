@@ -15,6 +15,9 @@
   (org-auto-align-tags nil)
   (org-startup-indented t)
   (org-startup-with-link-previews t)
+  (org-pretty-entities t)
+  (org-use-sub-superscripts '{})
+  (org-export-with-sub-superscripts '{})
   (org-special-ctrl-a/e t)
   (org-tags-column 0)
   (org-export-backends '(ascii beamer html icalendar latex md odt))
@@ -44,8 +47,8 @@
   :custom-face
   (+org-todo-active  ((t (:inherit (bold font-lock-constant-face org-todo)))))
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
-  (+org-todo-onhold ((t (:inherit (bold warning org-todo)))))
-  (+org-todo-cancel ((t (:inherit (bold org-done) :strike-through t))))
+  (+org-todo-onhold  ((t (:inherit (bold warning org-todo)))))
+  (+org-todo-cancel  ((t (:inherit (bold org-done) :strike-through t))))
   :mode-hydra
   (org-mode
    (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
@@ -62,7 +65,8 @@
     "Display"
     (("m" org-modern-mode "modern mode")
      ("b" org-link-beautify-mode "link beautify")
-     ("l" org-toggle-link-display "link display"))
+     ("l" org-toggle-link-display "link display")
+     ("p" org-toggle-pretty-entities "pretty entities"))
     "Plugin"
     (("c" org-cliplink "cliplink")
      ("e" org-edna-edit "edna edit")
