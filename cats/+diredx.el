@@ -73,3 +73,11 @@
     (fd . fd)
     (ffmpegthumbnailer . ffmpegthumbnailer)
     (mediainfo . mediainfo)))
+
+(use-package dired-rsync
+  :bind (:map dired-mode-map
+              ("r r" . dired-rsync)))
+
+(use-package dired-rsync-transient
+  :bind (:map dired-mode-map
+              ("r t" . dired-rsync-transient)))
