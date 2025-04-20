@@ -12,5 +12,5 @@
   (setf (alist-get 'latexindent apheleia-formatters)
         '("latexindent" "-l" "--logfile=/dev/null"))
   (+add-to-list-multi 'apheleia-inhibit-functions
-                      #'cat-is-type-break-buffer
-                      #'cat-is-node-package-lock-buffer))
+                      #'cat-type-break-buffer-p
+                      #'cat-node-package-lock-buffer-p))

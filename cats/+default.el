@@ -208,7 +208,7 @@
   :config
   (type-break-guesstimate-keystroke-threshold 30))
 
-(defun cat-is-type-break-buffer ()
+(defun cat-type-break-buffer-p ()
   (string= (buffer-file-name) type-break-file-name))
 
 (use-package epa-file
