@@ -32,6 +32,7 @@
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
   "a" #'aidermacs-transient-menu
+  "b" #'cat-blog/body
   "e" #'cat-eudc/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix

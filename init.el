@@ -19,6 +19,13 @@ See `org-directory'."
   :type 'directory
   :group 'cat-emacs)
 
+(defcustom cat-blog-directory
+  (or (getenv "BLOG_DIR") "~/Developer/Personal/blog/")
+  "Filename of the blog folder.
+See `hugoista-site-dir' and `easy-hugo-basedir'."
+  :type 'directory
+  :group 'cat-emacs)
+
 (defcustom cat-pass-directory
   (or (getenv "PASSWORD_STORE_DIR") "~/.password-store")
   "Filename of the password-store folder.

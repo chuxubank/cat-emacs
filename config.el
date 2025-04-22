@@ -136,5 +136,6 @@
 (cat! "+confluence")
 (cat! "+chezmoi")
 (cat! "+undo")
+(cat! "+blog")
 
 (cat! "+keymap")
