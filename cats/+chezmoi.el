@@ -10,6 +10,10 @@
    chezmoi-find
    chezmoi-sync-files))
 
+(defun cat-chezmoi-mode-p ()
+  "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
+  (bound-and-true-p chezmoi-mode))
+
 (when (package-installed-p 'company)
   (use-package chezmoi-company
     :vc (chezmoi-company
