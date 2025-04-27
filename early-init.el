@@ -13,6 +13,7 @@
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
 (defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
+(defconst IS-CI      (getenv "CI"))
 
 (defconst cat-emacs-name "Cat Emacs")
 
