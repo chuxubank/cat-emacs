@@ -31,7 +31,7 @@
        :url "https://github.com/sid-kurias/org-agenda-count"
        :rev :newest)
   :demand t
-  :after org
+  :after org-agenda
   :custom
   (org-agenda-custom-commands
    '(("n" "Agenda and all TODOs"
@@ -43,7 +43,9 @@
        (alltodo
         ""
         ((org-agenda-overriding-header
-          (format "All TODOs [%s]" (org-agenda-count "alltodo")))))))))
+          (format "All TODOs [%s]" (org-agenda-count "alltodo")))))))
+     ("X" agenda "" nil ("agenda.html" "agenda.ps"))
+     ("Y" alltodo "" nil ("todo.html" "todo.ps"))))
   :config
   (advice-add 'org-agenda--count :filter-args #'cat-filter-todo-entries))
 
