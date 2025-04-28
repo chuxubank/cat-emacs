@@ -19,8 +19,8 @@ RUN echo "(custom-set-variables \
     '(system-packages-use-sudo nil) \
     )" > /root/.emacs.d/custom.el
 
-RUN yes | emacs --fg-daemon --debug-init -kill
-
-RUN emacs --batch -f batch-byte-recompile-directory /root/.emacs.d/
+RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
+    --mount=type=cache,sharing=locked,target=/root/.emacs.d/eln-cache \
+    yes | emacs --fg-daemon --debug-init -kill
 
 ENTRYPOINT ["emacs"]

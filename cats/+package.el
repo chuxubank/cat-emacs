@@ -36,6 +36,7 @@
 (custom-set-variables
  '(package-check-signature nil)
  '(package-install-upgrade-built-in nil)
+ '(package-native-compile IS-CI)
  '(package-archives (append
                      (assoc-default cat-package-mirror package-mirror-alist)
                      '(("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/"))))
