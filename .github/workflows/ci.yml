@@ -35,16 +35,43 @@ jobs:
             ${{ vars.DOCKERHUB_USERNAME }}/cat-emacs
             ghcr.io/${{ github.repository }}
 
+      - name: Apt Cache for Docker
+        uses: actions/cache@v4
+        id: apt-cache
+        with:
+          path: |
+            var-cache-apt
+            var-lib-apt
+          key: apt-cache-${{ hashFiles('Dockerfile') }}
+
+      - name: Inject apt-cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          cache-map: |
+            {
+              "var-cache-apt": "/var/cache/apt",
+              "var-lib-apt": "/var/lib/apt"
+            }
+          skip-extraction: ${{ steps.apt-cache.outputs.cache-hit }}
+
       - name: Emacs Build Cache for Docker
         uses: actions/cache@v4
+        id: emacs-cache
         with:
-          path: emacs-build-cache
-          key: ${{ runner.os }}-emacs-build-cache-${{ hashFiles('config.el') }}
+          path: |
+            emacs-packages
+            emacs-eln-cache
+          key: ${{ runner.os }}-emacs-cache-${{ hashFiles('config.el') }}
 
-      - name: Inject emacs-build-cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@v2
+      - name: Inject emacs-cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v3
         with:
-          cache-source: emacs-build-cache
+          cache-map: |
+            {
+              "emacs-packages": "/root/.emacs.d/elpa",
+              "emacs-eln-cache": "/root/.emacs.d/eln-cache"
+            }
+          skip-extraction: ${{ steps.emacs-cache.outputs.cache-hit }}
 
       - name: Login to Docker Hub
         if: github.event_name != 'pull_request'
