@@ -1,6 +1,8 @@
 # syntax = docker/dockerfile:1.2
 FROM silex/emacs as builder
 USER root
+ARG CI
+ENV CI=$CI
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,sharing=locked,target=/var/lib/apt \
