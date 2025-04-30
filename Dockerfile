@@ -25,4 +25,8 @@ RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
     --mount=type=cache,sharing=locked,target=/root/.emacs.d/eln-cache \
     yes | emacs --fg-daemon --debug-init -kill
 
+RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
+    --mount=type=cache,sharing=locked,target=/root/.emacs.d/eln-cache \
+    make -C /root/.emacs.d/elpa/org-mode compile autoloads
+
 ENTRYPOINT ["emacs"]
