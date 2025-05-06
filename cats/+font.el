@@ -206,6 +206,7 @@ Unless `buffer-face-mode' already enabled."
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'prog-mode
                       'comint-mode
+                      'mistty-mode
                       'vterm-mode)
       (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'Info-mode
