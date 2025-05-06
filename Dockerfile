@@ -11,7 +11,8 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     elpa-pdf-tools-server \
     gh \
     git \
-    make
+    make \
+    tzdata
 
 ADD . /root/.emacs.d
 
