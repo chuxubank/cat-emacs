@@ -14,20 +14,24 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     make \
     tzdata
 
-ADD . /root/.emacs.d
+RUN useradd -m -u 1000 github
+USER github
+ENV HOME=/home/github
+
+COPY --chown=github:github . $HOME/.emacs.d
 
 RUN echo "(custom-set-variables \
     '(use-short-answers t) \
     '(package-native-compile t) \
     '(system-packages-use-sudo nil) \
-    )" > /root/.emacs.d/custom.el
+    )" > $HOME/.emacs.d/custom.el
 
-RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
-    --mount=type=cache,sharing=locked,target=/root/.emacs.d/eln-cache \
+RUN --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/elpa \
+    --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/eln-cache \
     yes | emacs --fg-daemon --debug-init -kill
 
-RUN --mount=type=cache,sharing=locked,target=/root/.emacs.d/elpa \
-    --mount=type=cache,sharing=locked,target=/root/.emacs.d/eln-cache \
-    make -C /root/.emacs.d/elpa/org-mode compile autoloads
+RUN --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/elpa \
+    --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/eln-cache \
+    make -C $HOME/.emacs.d/elpa/org-mode compile autoloads
 
 ENTRYPOINT ["emacs"]
