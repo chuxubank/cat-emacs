@@ -1,6 +1,5 @@
 # syntax = docker/dockerfile:1.2
 FROM silex/emacs as builder
-USER root
 ARG CI
 ENV CI=$CI
 
@@ -14,11 +13,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     make \
     tzdata
 
-RUN useradd -m -u 1000 github
-USER github
-ENV HOME=/home/github
-
-COPY --chown=github:github . $HOME/.emacs.d
+COPY . /root/.emacs.d
 
 RUN echo "(custom-set-variables \
     '(use-short-answers t) \
