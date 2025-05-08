@@ -35,8 +35,8 @@ jobs:
             ${{ vars.DOCKERHUB_USERNAME }}/cat-emacs
             ghcr.io/${{ github.repository }}
 
-      - name: Get current date
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Get current week
+        run: echo "WEEK=$(date +'%Y W%V')" >> $GITHUB_ENV
 
       - name: Apt Cache for Docker
         uses: actions/cache@v4
@@ -64,7 +64,7 @@ jobs:
           path: |
             emacs-packages
             emacs-eln-cache
-          key: ${{ runner.os }}-emacs-cache-${{ hashFiles('config.el') }}-${{ env.DATE }}
+          key: ${{ runner.os }}-emacs-cache-${{ env.WEEK }}
 
       - name: Inject emacs-cache into docker
         uses: reproducible-containers/buildkit-cache-dance@v3
