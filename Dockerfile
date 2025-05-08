@@ -11,6 +11,7 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     gh \
     git \
     make \
+    p7zip \
     tzdata
 
 COPY . /root/.emacs.d
