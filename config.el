@@ -91,7 +91,7 @@
 (cat! "+eglot")
 (cat! "+jump")
 
-;;; language
+;;; program
 (cat! "+android")
 (cat! "+applescript")
 (cat! "+cmake")
@@ -109,6 +109,7 @@
 (cat! "+python")
 (cat! "+swift")
 (cat! "+vb")
+(cat! "+web")
 (cat! "+yaml")
 
 ;;; tools
