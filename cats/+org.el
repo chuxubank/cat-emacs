@@ -114,7 +114,7 @@
                             (file+headline "notes.org" "Inbox")
                             "* %u %?\n%i\n%a" :prepend t)
                            ("j" "Journal" entry
-                            (file+olp+datetree "journal.org")
+                            (file+olp+datetree "journal.org.gpg")
                             "* %U %?")
                            ("c" "ChatGPT" entry
                             (file+olp+datetree "ChatGPT.org")
