@@ -134,7 +134,7 @@
 (cat! "+gist")
 (cat! "+beancount")
 (cat! "+diagram-preview")
-(cat! "+confluence")
+(cat! "+atlassian")
 (cat! "+chezmoi")
 (cat! "+undo")
 (cat! "+blog")

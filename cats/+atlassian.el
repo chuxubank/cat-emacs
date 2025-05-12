@@ -5,6 +5,10 @@
   :ensure org-contrib
   :after org)
 
+(use-package jira
+  :custom
+  (jira-base-url (getenv "JIRA_URL")))
+
 (use-package confluence
   :disabled
   :vc (confluence

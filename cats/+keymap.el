@@ -39,6 +39,7 @@
   "D" 'docker
   "g" #'igist-dispatch
   "i" 'cat-im-prefix
+  "j" #'jira-issues
   "l" #'elogcat
   "m" #'cat-mail/body
   "n" #'deft
