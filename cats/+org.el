@@ -61,7 +61,7 @@
     (("a" org-anki-hydra/body "anki")
      ("d" org-drill-hydra/body "drill"))
     "Jira"
-    (("j" org-jira-todo-to-jira "transform"))
+    (("j" cat-org-jira-dispatch "dispatch"))
     "Display"
     (("m" org-modern-mode "modern mode")
      ("b" org-link-beautify-mode "link beautify")
