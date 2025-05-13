@@ -25,6 +25,7 @@
   (org-image-actual-width 500)
   (org-display-remote-inline-images 'cache)
   (org-insert-heading-respect-content t)
+  (org-todo-repeat-to-state "STRT")
   (org-todo-keywords '((sequence
                         "TODO(t)"  ; A task that needs doing & is ready to do
                         "PROJ(p)"  ; A project, which usually contains other tasks
