@@ -3,6 +3,7 @@
 (use-package calendar
   :ensure nil
   :custom
+  (calendar-today-visible-hook '(calendar-mark-today))
   (calendar-mark-holidays-flag t)
   (calendar-chinese-all-holidays-flag t)
   (calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
