@@ -16,8 +16,7 @@
   (org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                               (todo   . " %i %-20:c")
                               (tags   . " %i %-20:c")
-                              (search . " %i %-20:c")))
-  (org-agenda-diary-file (expand-file-name "diary.org" cat-org-directory)))
+                              (search . " %i %-20:c"))))
 
 (defun cat-filter-todo-entries (args)
   "Filter out non-TODO entries from the ARGS for `org-agenda--count'."
