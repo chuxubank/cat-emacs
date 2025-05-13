@@ -179,6 +179,8 @@ Unless `buffer-face-mode' already enabled."
       (+safe-set-face-fonts 'markdown-table-face cat-mono-thin-fonts)
       (+safe-set-face-fonts 'markdown-code-face cat-mono-code-fonts)
       (+safe-set-face-fonts 'markdown-inline-code-face cat-mono-code-fonts))
+     ((derived-mode-p 'beancount-mode)
+      (+safe-buffer-face-set-fonts cat-mono-sans-fonts))
      ((derived-mode-p 'json-mode 'json-ts-mode
                       'yaml-mode 'yaml-ts-mode
                       'toml-ts-mode
