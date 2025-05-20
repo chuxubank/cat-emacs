@@ -13,6 +13,13 @@
   (magit-diff-refine-ignore-whitespace nil)
   (magit-format-file-function #'magit-format-file-nerd-icons))
 
+(use-package magit-section
+  :pin melpa-stable)
+
+(use-package transient
+  :ignore-builtin
+  :pin melpa-stable)
+
 (use-package magit-todos
   :demand t
   :after magit

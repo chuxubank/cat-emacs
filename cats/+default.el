@@ -265,8 +265,5 @@
   "Set local variable `electric-indent-chars' to nil."
   (setq-local electric-indent-chars nil))
 
-(use-package transient
-  :ignore-builtin)
-
 (use-package follow
   :custom (follow-mode-line-text " "))
