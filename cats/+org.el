@@ -277,7 +277,7 @@
 
 (use-package org-modern-indent
   :pin jcs-elpa
-  :hook (org-mode . org-modern-indent-mode))
+  :hook (org-modern-mode . org-modern-indent-mode))
 
 (defun +find-org-files ()
   (interactive)
