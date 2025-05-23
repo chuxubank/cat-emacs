@@ -40,7 +40,6 @@
 (cat! "+vertico")
 ;; (cat! "+orderless")
 (cat! "+prescient")
-(cat! "+marginalia")
 (cat! "+which-key")
 (cat! "+consult")
 (cat! "+embark")

@@ -92,6 +92,9 @@
   (scroll-conservatively 101)
   (scroll-margin 0))
 
+(use-package marginalia
+  :hook (after-init . marginalia-mode))
+
 (use-package breadcrumb
   :hook (after-init . breadcrumb-mode)
   :custom
