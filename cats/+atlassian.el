@@ -6,6 +6,7 @@
   :after org)
 
 (use-package jira
+  :pin melpa-stable
   :custom
   (jira-base-url (getenv "JIRA_URL")))
 
