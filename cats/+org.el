@@ -11,7 +11,7 @@
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))
   (org-default-notes-file (expand-file-name "notes.org" cat-org-directory))
-  (org-archive-location (concat cat-org-directory "archive.org::* From %s"))
+  (org-archive-location (concat (expand-file-name "archive.org" cat-org-directory) "::* From %s"))
   (org-auto-align-tags nil)
   (org-startup-indented t)
   (org-startup-with-link-previews t)
