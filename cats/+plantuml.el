@@ -13,7 +13,7 @@
   :mode ("\\.puml\\'" . plantuml-mode)
   :custom
   (plantuml-default-exec-mode 'executable)
-  (plantuml-indent-level 4)
+  (plantuml-indent-level 2)
   :config
   (defun hex-encode (str)
     (string-join (mapcar (lambda (c) (format "%02x" c)) (string-as-unibyte str))))
