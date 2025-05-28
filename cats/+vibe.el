@@ -40,3 +40,9 @@
   (cat-vibe
    ("Aider"
     (("A" #'aider-transient-menu "aider.el")))))
+
+(use-package ob-aider
+  :demand t
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(aider . t)))
