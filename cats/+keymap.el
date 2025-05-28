@@ -47,7 +47,7 @@
   "P" #'password-store-menu
   "r" #'elfeed
   "R" #'magit-list-repositories
-  "v" #'vterm-toggle
+  "t" #'cat-term/body
   "w" #'webjump)
 
 (defvar-keymap cat-map
