@@ -24,3 +24,8 @@
   (setq codeium-api-enabled
         (lambda (api)
           (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion)))))
+
+(use-package aidermacs
+  :commands #'aidermacs-transient-menu
+  :custom
+  (aidermacs-backend 'vterm))

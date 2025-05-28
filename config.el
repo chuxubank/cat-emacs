@@ -84,11 +84,11 @@
 (if EMACS29+ (cat! "+treesit") (cat! "+tree-sitter"))
 (cat! "+doc")
 (cat! "+sideline")
-(cat! "+codeium")
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
 (cat! "+jump")
+(cat! "+vibe")
 
 ;;; program
 (cat! "+android")
@@ -118,7 +118,6 @@
 
 ;;; plugins
 (cat! "+term")
-(cat! "+aider")
 (cat! "+log")
 (cat! "+im")
 (cat! "+pdf")
