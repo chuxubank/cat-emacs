@@ -1,5 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-vibe
+  (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
+  ("Aider"
+   (("a" #'aidermacs-transient-menu "aidermacs"))))
+
 (use-package codeium
   :pin jcs-elpa
   :bind
@@ -29,3 +34,9 @@
   :commands #'aidermacs-transient-menu
   :custom
   (aidermacs-backend 'vterm))
+
+(use-package aider
+  :pretty-hydra
+  (cat-vibe
+   ("Aider"
+    (("A" #'aider-transient-menu "aider.el")))))

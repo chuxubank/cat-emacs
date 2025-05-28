@@ -31,7 +31,6 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "a" #'aidermacs-transient-menu
   "b" #'cat-blog/body
   "e" #'cat-eudc/body
   "c" 'chezmoi-prefix
@@ -48,6 +47,7 @@
   "r" #'elfeed
   "R" #'magit-list-repositories
   "t" #'cat-term/body
+  "v" #'cat-vibe/body
   "w" #'webjump)
 
 (defvar-keymap cat-map
