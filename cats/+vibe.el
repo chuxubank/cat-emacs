@@ -46,3 +46,15 @@
   :after org
   :config
   (add-to-list 'org-babel-load-languages '(aider . t)))
+
+(use-package gptel
+  :custom
+  (gptel-model 'gemini-2.5-flash-preview-05-20)
+  (gptel-default-mode 'org-mode)
+  :pretty-hydra
+  (cat-vibe
+   ("gptel"
+    (("g" #'gptel-send "gptel send")
+     ("G" #'gptel "gptel"))))
+  :config
+  (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
