@@ -36,3 +36,12 @@
   (eglot-java-junit-platform-console-standalone-jar (concat cat-etc-dir "junit-platform-console-standalone.jar"))
   ;; Prevent auto install java lsp server
   (eglot-java-server-install-dir cat-etc-dir))
+
+(use-package ob-kotlin
+  :vc (ob-kotlin
+       :url "https://github.com/chuxubank/ob-kotlin"
+       :rev patch-1)
+  :demand
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(kotlin . t)))
