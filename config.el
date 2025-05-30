@@ -136,5 +136,6 @@
 (cat! "+chezmoi")
 (cat! "+undo")
 (cat! "+blog")
+(cat! "+oj")
 
 (cat! "+keymap")
