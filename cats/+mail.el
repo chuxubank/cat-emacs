@@ -11,6 +11,11 @@
   (mu)
   (mbsync . isync)
   :ensure nil
+  :bind
+  (:map mu4e-main-mode-map
+        ("q" . #'bury-buffer)
+        ("Q" . #'mu4e-quit)
+        ("u" . #'mu4e-update-index))
   :custom
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-update-interval 300)
