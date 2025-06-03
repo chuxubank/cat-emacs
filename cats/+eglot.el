@@ -44,3 +44,8 @@
     beancount-mode)
    ("LSP"
     (("e" eglot-hydra/body "eglot")))))
+
+(use-package lsp-proxy
+  :commands #'lsp-proxy-mode
+  :ensure nil
+  :hook (kotlin-ts-mode . lsp-proxy-mode))
