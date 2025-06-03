@@ -1,0 +1,9 @@
+[language-server]
+kotlin-language-server = { command = "kotlin-language-server" }
+
+[[language]]
+name = "kotlin"
+file-types = ["kt", "kts"]
+language-id = "kotlin"
+roots = ["settings.gradle", "settings.gradle.kts"]
+language-servers = ["kotlin-language-server"]

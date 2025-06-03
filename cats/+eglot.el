@@ -46,6 +46,7 @@
     (("e" eglot-hydra/body "eglot")))))
 
 (use-package lsp-proxy
+  :delight " 󰑣"
   :commands #'lsp-proxy-mode
   :ensure nil
   :hook (kotlin-ts-mode . lsp-proxy-mode))
