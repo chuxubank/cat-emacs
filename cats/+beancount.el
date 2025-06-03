@@ -13,9 +13,7 @@
   (beancount-use-ido nil)
   :mode-hydra
   (beancount-mode
-   ("LSP"
-    (("e" eglot-hydra/body "eglot"))
-    "Tools"
+   ("Tools"
     (("f" #'beancount-fava "fava"))))
   :config
   (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)

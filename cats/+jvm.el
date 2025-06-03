@@ -2,17 +2,12 @@
 
 (use-package kotlin-mode
   :ensure-system-package
-  (kotlin-language-server)
-  :mode-hydra
-  (("LSP"
-    (("e" eglot-hydra/body "eglot")))))
+  (kotlin-language-server))
 
 (use-package kotlin-ts-mode
   :when EMACS29+
   :mode-hydra
-  (("LSP"
-    (("e" eglot-hydra/body "eglot"))
-    "Test"
+  (("Test"
     (("t" kotlin-ts-mode-goto-test-file "go to test file")
      ("r" kotlin-ts-mode-run-current-test-function "run current test function")
      ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))

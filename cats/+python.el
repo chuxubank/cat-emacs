@@ -7,13 +7,7 @@
   (pylsp . python-lsp-server)
   (pyright . "bun add -g pyright")
   :custom
-  (python-indent-guess-indent-offset-verbose nil)
-  :mode-hydra
-  (python-base-mode
-   ("LSP"
-    (("e" eglot-hydra/body "eglot"))
-    "Plugin"
-    (("v" #'pet-verify-setup "pet verify")))))
+  (python-indent-guess-indent-offset-verbose nil))
 
 (use-package pet
   :delight " 󰌠"
@@ -21,7 +15,11 @@
   :hook (python-base-mode . pet-mode)
   :custom
   (pet-find-file-functions '(pet-find-file-from-project-root
-                             pet-locate-dominating-file)))
+                             pet-locate-dominating-file))
+  :mode-hydra
+  (python-base-mode
+   ("Plugin"
+    (("v" #'pet-verify-setup "pet verify")))))
 
 (use-package poetry
   :disabled

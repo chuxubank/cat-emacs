@@ -36,4 +36,11 @@
      ("q" #'eglot-code-action-quickfix "quickfix")
      ("E" #'eglot-code-action-extract "extract")
      ("I" #'eglot-code-action-inline "inline")
-     ("R" #'eglot-code-action-rewrite "rewrite")))))
+     ("R" #'eglot-code-action-rewrite "rewrite"))))
+  :mode-hydra
+  ((prog-mode
+    python-base-mode
+    kotlin-ts-mode
+    beancount-mode)
+   ("LSP"
+    (("e" eglot-hydra/body "eglot")))))
