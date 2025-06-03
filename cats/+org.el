@@ -56,7 +56,7 @@
     (("i" #'org-id-get-create "id")
      ("r" org-roam-hydra/body "roam")
      ("n" org-noter "noter")
-     ("v" org-media-note-hydra/body "media"))
+     ("v" org-media-note-show-interface "media"))
     "SRS"
     (("a" org-anki-hydra/body "anki")
      ("d" org-drill-hydra/body "drill"))
