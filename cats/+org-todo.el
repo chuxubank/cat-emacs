@@ -53,7 +53,11 @@
   :delight " "
   :hook (org-mode . org-edna-mode)
   :custom
-  (org-edna-finder-use-cache t))
+  (org-edna-finder-use-cache t)
+  :mode-hydra
+  (org-mode
+   ("Plugin"
+    (("e" org-edna-edit "edna edit")))))
 
 (defun org-todo-with-date (&optional arg)
   "Like `org-todo' but with given date.

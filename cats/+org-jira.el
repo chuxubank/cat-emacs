@@ -6,6 +6,7 @@
 
 (use-package org-jira
   :delight " 󰌃"
+  :after org
   :init
   ;; prevent `org-jira-mode' load keymap
   (setq org-jira-entry-mode-map (make-sparse-keymap))
@@ -30,6 +31,10 @@
    '(("Open" . "Start Dev Work")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
+  :mode-hydra
+  (org-mode
+   ("Jira"
+    (("j" cat-org-jira-dispatch "org jira dispatch"))))
   :config
   (+mkdir-p org-jira-working-dir)
   (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)

@@ -53,24 +53,9 @@
   (org-mode
    (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
    ("Notes"
-    (("i" #'org-id-get-create "id")
-     ("r" org-roam-hydra/body "roam")
-     ("n" org-noter "noter")
-     ("v" org-media-note-show-interface "media"))
-    "SRS"
-    (("a" org-anki-hydra/body "anki")
-     ("d" org-drill-hydra/body "drill"))
-    "Jira"
-    (("j" cat-org-jira-dispatch "dispatch"))
+    (("i" #'org-id-get-create "id"))
     "Display"
-    (("m" org-modern-mode "modern mode")
-     ("b" org-link-beautify-mode "link beautify")
-     ("l" org-toggle-link-display "link display")
-     ("p" org-toggle-pretty-entities "pretty entities"))
-    "Plugin"
-    (("c" org-cliplink "cliplink")
-     ("e" org-edna-edit "edna edit")
-     ("h" consult-org-heading "headings"))))
+    (("p" org-toggle-pretty-entities "pretty entities"))))
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
@@ -200,7 +185,11 @@
                            ("google" . "https://goo.gle/%s")
                            ("bitbucket" . "https://bitbucket.org/%s")
                            ("bili". "https://bilibili.com/video/%s")
-                           ("coursera". "https://www.coursera.org/%s"))))
+                           ("coursera". "https://www.coursera.org/%s")))
+  :mode-hydra
+  (org-mode
+   ("Link"
+    (("l" org-toggle-link-display "link display")))))
 
 (use-package ob-core
   :ensure nil
@@ -272,6 +261,10 @@
                         ("include" . ,(+with-icon "nf-oct-cross_reference"))
                         ("macro" . "")
                         (t . t)))
+  :mode-hydra
+  (org-mode
+   ("Display"
+    (("m" org-modern-mode "modern mode"))))
   :config
   (global-org-modern-mode))
 

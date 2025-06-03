@@ -5,6 +5,10 @@
        :url "https://github.com/yuchen-lea/org-media-note"
        :rev :newest)
   :hook (org-mode . org-media-note-mode)
+  :mode-hydra
+  (org-mode
+   ("Notes"
+    (("v" org-media-note-show-interface "media"))))
   :config
   (require 'org-attach))
 
@@ -17,6 +21,10 @@
   ;;      'other-frame
   ;;    'horizontal-split))
   ;; (org-noter-doc-split-fraction '(0.6 . 0.5))
+  :mode-hydra
+  (org-mode
+   ("Notes"
+    (("n" org-noter "noter"))))
   :config
   (setq org-noter--inhibit-location-change-handler t)
   (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info)

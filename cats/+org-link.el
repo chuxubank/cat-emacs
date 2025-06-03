@@ -37,14 +37,23 @@
   (when IS-MAC
     (setq org-dial-program "open tel:")))
 
-(use-package org-cliplink)
+(use-package org-cliplink
+  :mode-hydra
+  (org-mode
+   ("Link"
+    (("c" org-cliplink "cliplink")))))
 
 ;; Remember to install latest org via https://orgmode.org/org.html#Installation
 (use-package org-link-beautify
+  :after org
   :custom
   (org-link-beautify-thumbnails-dir 'user-home)
   (org-link-beautify-display-overlay-info t)
   (org-link-beautify-image-preview t)
+  :mode-hydra
+  (org-mode
+   ("Link"
+    (("b" org-link-beautify-mode "link beautify"))))
   :config
   (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
   (defun org-link-beautify--display-icon (start end description icon)

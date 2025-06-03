@@ -61,4 +61,8 @@
    consult--source-recent-file consult--source-project-recent-file
    :preview-key '(:debounce 0.4 any))
   (setq consult-narrow-key "<")
-  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help))
+  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  :mode-hydra
+  (org-mode
+   ("Plugin"
+    (("h" consult-org-heading "headings")))))

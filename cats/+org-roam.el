@@ -54,6 +54,9 @@ See `org-roam-dailies-directory'."
     "Reference"
     (("ar" #'org-roam-ref-add "add ref")
      ("dr" #'org-roam-ref-remove "remove ref"))))
+  (org-mode
+   ("Notes"
+    (("r" org-roam-hydra/body "roam"))))
   :config
   (+mkdir-p cat-org-roam-directory)
   (org-roam-db-autosync-mode)
