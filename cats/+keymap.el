@@ -47,7 +47,6 @@
   "r" #'elfeed
   "R" #'magit-list-repositories
   "t" #'cat-term/body
-  "v" #'cat-vibe/body
   "w" #'webjump)
 
 (defvar-keymap cat-map
@@ -67,6 +66,7 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
+  "v" #'cat-vibe/body
   "w" #'cat-workspace/body)
 
 (defvar-keymap cat-escape-map
