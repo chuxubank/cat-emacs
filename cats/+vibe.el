@@ -58,3 +58,11 @@
      ("G" #'gptel "gptel"))))
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
+
+(use-package gptel-prompts
+  :vc (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
+  :demand t
+  :after gptel
+  :config
+  (gptel-prompts-update)
+  (gptel-prompts-add-update-watchers))
