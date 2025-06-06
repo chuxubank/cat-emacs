@@ -30,6 +30,18 @@
      ("k" #'mu4e-quit "quit")
      ("u" #'mu4e-update-index "update")))))
 
+(defun cat/mu4e--update-mail-and-index-real-around (orig-fun run-in-background)
+  "Temporarily set `mu4e-get-mail-command' to \"true\".
+When run ORIG-FUN with RUN-IN-BACKGROUND not nil.
+
+So we can take advantage of the brew service's schedule function."
+  (if run-in-background
+      (let ((mu4e-get-mail-command "true"))
+        (funcall orig-fun run-in-background))
+    (funcall orig-fun run-in-background)))
+
+(advice-add 'mu4e--update-mail-and-index-real :around #'cat/mu4e--update-mail-and-index-real-around)
+
 (use-package mu4e-column-faces
   :demand
   :after mu4e
