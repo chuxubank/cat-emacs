@@ -267,3 +267,7 @@
 
 (use-package follow
   :custom (follow-mode-line-text " "))
+
+(use-package table
+  :config
+  (+safe-set-face-fonts 'table-cell cat-mono-thin-fonts))
