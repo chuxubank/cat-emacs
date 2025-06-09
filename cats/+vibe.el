@@ -59,6 +59,9 @@
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
 
+(use-package gptel-magit
+  :hook (magit-mode . gptel-magit-install))
+
 (use-package gptel-prompts
   :vc (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
   :demand t
