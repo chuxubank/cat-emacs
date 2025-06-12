@@ -63,7 +63,9 @@
   :hook (magit-mode . gptel-magit-install))
 
 (use-package gptel-prompts
-  :vc (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
+  :vc (gptel-prompts
+       :url "https://github.com/jwiegley/gptel-prompts"
+       :rev :newest)
   :demand t
   :after gptel
   :custom
