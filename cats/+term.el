@@ -88,3 +88,7 @@
     :after vterm meow
     :config
     (meow-vterm-enable)))
+
+(use-package shell-maker
+  :custom
+  (shell-maker-root-path (concat cat-local-dir "shell-maker/")))
