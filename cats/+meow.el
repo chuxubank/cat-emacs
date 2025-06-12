@@ -70,7 +70,7 @@
    '("i" . meow-insert)
    '("I" . meow-open-above)
    '("j" . meow-join)
-   '("J" . meow-start-kmacro-or-insert-counter)
+   '("J" . kmacro-start-macro-or-insert-counter)
    '("k" . meow-kill)
    '("K" . meow-end-or-call-kmacro)
    '("l" . meow-right)
