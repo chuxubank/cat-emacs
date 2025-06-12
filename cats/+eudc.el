@@ -36,4 +36,5 @@
      ("a" #'bbdb-create "create"))))
   :config
   (bbdb-initialize)
-  (add-to-list 'eudc-server-hotlist '("" . bbdb)))
+  (with-eval-after-load 'eudc
+    (add-to-list 'eudc-server-hotlist '("" . bbdb))))
