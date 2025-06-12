@@ -6,25 +6,11 @@
 
 (use-package eudc
   :ensure nil
-  ;; :init
-  ;; (with-eval-after-load 'message
-  ;;   (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
-  ;; (with-eval-after-load 'sendmail
-  ;;   (define-key mail-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
-  :bind
-  (:map message-mode-map
-        ("C-c TAB" . #'eudc-expand-try-all))
-  (:map mail-mode-map
-        ("C-c TAB" . #'eudc-expand-try-all))
-  :custom
-  (eudc-server-hotlist
-   '(("" . bbdb)
-     ("ldaps://ldap.gnu.org" . ldap)))
-  (ldap-host-parameters-alist
-   '(("ldaps://ldap.gnu.org"
-      base "ou=people,dc=gnu,dc=org"
-      binddn "gnu\\emacsuser"
-      passwd ldap-password-read)))
+  :init
+  (with-eval-after-load 'message
+    (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
+  (with-eval-after-load 'sendmail
+    (define-key mail-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
   :pretty-hydra
   (cat-eudc
    ("Action"
@@ -43,10 +29,11 @@
 (use-package bbdb
   :custom
   (bbdb-file (expand-file-name "bbdb.gpg" cat-org-directory))
-  :config
-  (bbdb-initialize)
   :pretty-hydra
   (cat-eudc
    ("BBDB"
     (("b" #'bbdb "bbdb")
-     ("a" #'bbdb-create "create")))))
+     ("a" #'bbdb-create "create"))))
+  :config
+  (bbdb-initialize)
+  (add-to-list 'eudc-server-hotlist '("" . bbdb)))
