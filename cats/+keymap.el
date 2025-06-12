@@ -32,7 +32,6 @@
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
   "b" #'cat-blog/body
-  "e" #'cat-eudc/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
   "D" 'docker
@@ -55,6 +54,7 @@
   "a" #'org-agenda
   "c" #'org-capture
   "d" 'cat-org-roam-dailies-prefix
+  "e" #'cat-eudc/body
   "f" 'cat-file-prefix
   "j" 'cat-org-jira-prefix
   "l" #'cat-language/body
