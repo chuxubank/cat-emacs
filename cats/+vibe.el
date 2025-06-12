@@ -52,7 +52,7 @@
 
 (use-package gptel
   :custom
-  (gptel-model 'gemini-2.5-flash-preview-05-20)
+  (gptel-model 'gemini-2.5-pro-preview-06-05)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
   (cat-vibe
@@ -63,7 +63,9 @@
   (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
 
 (use-package gptel-magit
-  :hook (magit-mode . gptel-magit-install))
+  :hook (magit-mode . gptel-magit-install)
+  :custom
+  (gptel-magit-model 'gemini-2.0-flash))
 
 (use-package gptel-prompts
   :vc (gptel-prompts
