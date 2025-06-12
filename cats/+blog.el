@@ -2,14 +2,17 @@
 
 (pretty-hydra-define cat-blog
   (:color teal :title (+with-icon "nf-fa-blog" "Blog"))
-  ("Hugoista"
-   (("h" #'hugoista "hugoista"))))
+  ("" ()))
 
 (use-package ox-hugo)
 
 (use-package hugoista
   :custom
-  (hugoista-site-dir cat-blog-directory))
+  (hugoista-site-dir cat-blog-directory)
+  :pretty-hydra
+  (cat-blog
+   ("Hugoista"
+    (("h" #'hugoista "hugoista")))))
 
 (use-package easy-hugo
   :custom

@@ -2,13 +2,30 @@
 
 (pretty-hydra-define cat-term
   (:color teal :title (+with-icon "nf-oct-terminal" "Term"))
-  ("Term"
-   (("t" #'term "term")
-    ("a" #'ansi-term "ansi-term")
-    ("S" #'serial-term "serial-term"))
-   "Shell"
-   (("s" #'shell "shell")
-    ("e" #'eshell "eshell"))))
+  ("" ()))
+
+(use-package term
+  :ensure nil
+  :pretty-hydra
+  (cat-term
+   ("Term"
+    (("t" #'term "term")
+     ("a" #'ansi-term "ansi-term")
+     ("S" #'serial-term "serial-term")))))
+
+(use-package shell
+  :ensure nil
+  :pretty-hydra
+  (cat-term
+   ("Shell"
+    (("s" #'shell "shell")))))
+
+(use-package eshell
+  :ensure nil
+  :pretty-hydra
+  (cat-term
+   ("Shell"
+    (("e" #'eshell "eshell")))))
 
 (use-package vterm
   :ensure-system-package

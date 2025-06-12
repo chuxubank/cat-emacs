@@ -2,8 +2,7 @@
 
 (pretty-hydra-define cat-vibe
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
-  ("Aider"
-   (("a" #'aidermacs-transient-menu "aidermacs"))))
+  ("" ()))
 
 (use-package codeium
   :pin jcs-elpa
@@ -33,7 +32,11 @@
 (use-package aidermacs
   :commands #'aidermacs-transient-menu
   :custom
-  (aidermacs-backend 'vterm))
+  (aidermacs-backend 'vterm)
+  :pretty-hydra
+  (cat-vibe
+   ("Aider"
+    (("a" #'aidermacs-transient-menu "aidermacs")))))
 
 (use-package aider
   :pretty-hydra

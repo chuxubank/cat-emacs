@@ -2,19 +2,20 @@
 
 (pretty-hydra-define cat-workspace
   (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
-  ("Plugin"
-   (("a" #'activities-hydra/body "activities")
-    ;; ("b" #'bufler-hydra/body "bufler")
-    ;; ("m" #'burly-hydra/body "burly")
-    ;; ("s" #'tabspaces-hydra/body "tabspaces")
-    )
-   "Project"
-   (("p" #'project-remember-projects-under "remember all")
-    ("f" #'project-forget-project "forget")
-    ("F" #'project-forget-zombie-projects "forget zombie")
-    ("D" #'project-forget-projects-under "forget all"))))
+  ("" ()))
+
+(use-package project
+  :ensure nil
+  :pretty-hydra
+  (cat-workspace
+   ("Project"
+    (("p" #'project-remember-projects-under "remember all")
+     ("f" #'project-forget-project "forget")
+     ("F" #'project-forget-zombie-projects "forget zombie")
+     ("D" #'project-forget-projects-under "forget all")))))
 
 (use-package tab-bar
+  :ensure nil
   :hook
   (tab-bar-mode . tab-bar-history-mode)
   :custom
@@ -50,7 +51,10 @@
     (("u" #'burly-open-url "open")
      ("b" #'burly-kill-buffer-url "buffer")
      ("f" #'burly-kill-frames-url "frame")
-     ("w" #'burly-kill-windows-url "windows")))))
+     ("w" #'burly-kill-windows-url "windows"))))
+  (cat-workspace
+   ("Plugin"
+    (("m" #'burly-hydra/body "burly")))))
 
 (use-package bufler
   :disabled
@@ -71,7 +75,10 @@
     "Other"
     (("S" #'bufler-workspace-set "set")
      ("N" #'bufler-workspace-buffer-name-workspace "set workspace")
-     ("F" #'bufler-workspace-frame-set "set frame")))))
+     ("F" #'bufler-workspace-frame-set "set frame"))))
+  (cat-workspace
+   ("Plugin"
+    (("b" #'bufler-hydra/body "bufler")))))
 
 (use-package tabspaces
   :disabled
@@ -95,6 +102,9 @@
     "Session"
     (("p" #'tabspaces-save-current-project-session "save current project")
      ("a" #'tabspaces-restore-session "restore"))))
+  (cat-workspace
+   ("Plugin"
+    (("s" #'tabspaces-hydra/body "tabspaces"))))
   :config
   (tab-bar-rename-tab "Home")
   (when (get-buffer "*Messages*")
@@ -145,7 +155,10 @@
     "View"
     (("b" activities-switch-buffer)
      ("l" activities-list)
-     ("RET" activities-switch)))))
+     ("RET" activities-switch))))
+  (cat-workspace
+   ("Plugin"
+    (("a" #'activities-hydra/body "activities")))))
 
 (use-package sow
   :ensure nil

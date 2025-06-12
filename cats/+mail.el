@@ -2,8 +2,7 @@
 
 (pretty-hydra-define cat-mail
   (:color teal :title (+with-icon "nf-oct-mail" "Mail"))
-  ("Gnus"
-   (("g" #'gnus "Gnus"))))
+  ("" ()))
 
 (use-package mu4e
   :commands #'mu4e
@@ -56,4 +55,8 @@ So we can take advantage of the brew service's schedule function."
 (use-package gnus
   :ensure nil
   :custom
-  (gnus-select-method '(nntp "news.gmane.io")))
+  (gnus-select-method '(nntp "news.gmane.io"))
+  :pretty-hydra
+  (cat-mail
+   ("Gnus"
+    (("g" #'gnus "Gnus")))))

@@ -2,15 +2,17 @@
 
 (pretty-hydra-define cat-language
   (:color teal :title (+with-icon "nf-fa-language" "Language"))
-  ("Dictionary"
-   (("a" #'anki-vocabulary "anki")
-    ("b" #'bing-dict-brief "bing"))))
+  ("" ()))
 
 (use-package bing-dict
   :config
   (setq bing-dict-vocabulary-save t
         bing-dict-show-thesaurus 'both
-        bing-dict-vocabulary-file (expand-file-name "vocabulary.org" cat-org-directory)))
+        bing-dict-vocabulary-file (expand-file-name "vocabulary.org" cat-org-directory))
+  :pretty-hydra
+  (cat-language
+   ("Dictionary"
+    (("b" #'bing-dict-brief "bing")))))
 
 (use-package anki-vocabulary
   :custom
@@ -18,7 +20,11 @@
   (anki-vocabulary-model-name "AutoCopy")
   (anki-vocabulary-field-alist '(("expression" . "${expression:单词}")
                                  ("glossary"   . "${glossary:释义}")
-                                 ("sentence"   . "${sentence_bold:标粗的原文例句}"))))
+                                 ("sentence"   . "${sentence_bold:标粗的原文例句}")))
+  :pretty-hydra
+  (cat-language
+   ("Dictionary"
+    (("a" #'anki-vocabulary "anki")))))
 
 (use-package osx-dictionary
   :when IS-MAC
