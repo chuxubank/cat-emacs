@@ -55,10 +55,21 @@
   (gptel-model 'gemini-2.5-pro-preview-06-05)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
+  ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
+   ("Send"
+    (("g" #'gptel "gptel")
+     ("s" #'gptel-send "send"))
+    "Tweak"
+    (("m" #'gptel-menu "menu"))
+    "Context"
+    (("a" #'gptel-add "add/remove")
+     ("A" #'gptel-add-file "add file"))
+    "Org"
+    (("t" #'gptel-org-set-topic "set topic")
+     ("p" #'gptel-org-set-properties "set properties"))))
   (cat-vibe
-   ("gptel"
-    (("g" #'gptel-send "gptel send")
-     ("G" #'gptel "gptel"))))
+   ("Fundamental"
+    (("g" #'gptel-hydra/body "gptel"))))
   :config
   (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
 
