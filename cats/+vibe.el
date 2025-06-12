@@ -66,6 +66,8 @@
   :vc (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
   :demand t
   :after gptel
+  :custom
+  (gptel-prompts-directory cat-prompt-dir)
   :config
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))
