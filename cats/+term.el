@@ -91,4 +91,6 @@
 
 (use-package shell-maker
   :custom
-  (shell-maker-root-path (concat cat-local-dir "shell-maker/")))
+  (shell-maker-root-path (concat cat-local-dir "shell-maker/"))
+  :config
+  (+mkdir-p shell-maker-root-path))

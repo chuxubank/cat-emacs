@@ -9,6 +9,7 @@
 (cat! "+diredx")
 (cat! "+tramp")
 (cat! "+eudc")
+(cat! "+term")
 
 ;;; ui
 ;; (cat! "+nano")
@@ -88,7 +89,6 @@
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
 (cat! "+jump")
-(cat! "+vibe")
 
 ;;; program
 (cat! "+android")
@@ -117,7 +117,7 @@
 (cat! "+docker")
 
 ;;; plugins
-(cat! "+term")
+(cat! "+vibe")
 (cat! "+log")
 (cat! "+im")
 (cat! "+pdf")
