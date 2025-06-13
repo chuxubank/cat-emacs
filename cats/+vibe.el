@@ -93,15 +93,13 @@
 (use-package chatgpt-shell
   :custom
   (chatgpt-shell-google-key
-   (let*
-       ((found (car (auth-source-search
-                     :host "generativelanguage.googleapis.com"
-                     :user "apikey"
-                     :require '(:user :secret))))
-        (secret (if found
-                    (plist-get found :secret)
-                  (error "No matching entry found"))))
-     secret))
+   (let ((found (car (auth-source-search
+                      :host "generativelanguage.googleapis.com"
+                      :user "apikey"
+                      :require '(:user :secret)))))
+     (if found
+         (plist-get found :secret)
+       (error "No matching entry found"))))
   (chatgpt-shell-model-version "gemini-2.5-flash-preview-05-20")
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-fa-terminal" "ChatGPT Shell"))
