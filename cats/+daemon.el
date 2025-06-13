@@ -35,6 +35,9 @@
 (defvar cat-idle-preload-hook nil
   "Hook to run after `server-after-make-frame-hook' with idle time.")
 
+(defvar cat-startup-idle-time nil
+  "Time between daemon start and first frame.")
+
 (defun cat-run-idle-preload ()
   "The function to run the `cat-idle-preload-hook'."
   (run-hooks 'cat-idle-preload-hook)
@@ -43,15 +46,19 @@
 
 (defun cat-idle-preload ()
   "The function to schedule the idle preload time."
-  (let* ((cur-idle-time (current-idle-time))
-         (idle 5)
-         (act-idle (if cur-idle-time
-                       (+ idle (float-time cur-idle-time))
-                     idle)))
+  (setq cat-startup-idle-time
+        (let ((cur (current-idle-time)))
+          (if cur
+              (float-time cur)
+            0)))
+  (let* ((intent-idle cat-startup-idle-preload-delay)
+         (idle (if (>= intent-idle cat-startup-idle-time)
+                   (+ intent-idle cat-startup-idle-time)
+                 intent-idle)))
     (cat-benchmark 'beg "idle preload.")
-    (message "Current idle time: %ss, will start preload if idle %ss" (float-time cur-idle-time) idle)
+    (message "Startup idle time: %ss, will start preload if idle %ss" cat-startup-idle-time idle)
     (run-with-idle-timer
-     act-idle
+     idle
      nil
      #'cat-run-idle-preload)))
 

@@ -46,6 +46,11 @@ See `org-cite-csl-styles-dir'."
   :type 'directory
   :group 'cat-emacs)
 
+(defcustom cat-startup-idle-preload-delay 5
+  "Time between first frame and preload start."
+  :type 'integer
+  :group 'cat-emacs)
+
 ;;; packages
 (add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
 
