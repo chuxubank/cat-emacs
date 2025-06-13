@@ -31,3 +31,19 @@
   (defun cat-daemon-init-buffer ()
     (get-buffer-create dashboard-buffer-name))
   (setq initial-buffer-choice #'cat-daemon-init-buffer))
+
+(defun cat-preload-org-agenda ()
+  "Preload Org agenda files, useful when running as a daemon."
+  ;; Ensure org-agenda is available. org-mode should have been loaded already
+  ;; via cats/+org.el, which makes org-agenda's autoloads available.
+  (require 'org)
+  (if (bound-and-true-p org-agenda-files)
+      (progn
+        (cat-benchmark 'beg "pre-loading Org agenda files.")
+        (let ((files (org-agenda-files nil 'ifmode)))
+          (org-agenda-prepare-buffers files)
+          (cat-benchmark 'end (format "Org agenda files pre-loaded using %s files." (length files)))))
+    (message "Org agenda files not set, skipping preload.")))
+
+(when (daemonp)
+  (add-hook 'emacs-startup-hook #'cat-preload-org-agenda))
