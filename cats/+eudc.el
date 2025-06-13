@@ -11,6 +11,8 @@
     (define-key message-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
   (with-eval-after-load 'sendmail
     (define-key mail-mode-map [(control ?c) (tab)] 'eudc-expand-try-all))
+  :custom
+  (eudc-strict-return-matches nil)
   :pretty-hydra
   (cat-eudc
    ("Action"
