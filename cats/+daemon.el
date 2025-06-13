@@ -32,18 +32,41 @@
     (get-buffer-create dashboard-buffer-name))
   (setq initial-buffer-choice #'cat-daemon-init-buffer))
 
+(defvar cat-idle-preload-hook nil
+  "Hook to run after `server-after-make-frame-hook' with idle time.")
+
+(defun cat-run-idle-preload ()
+  "The function to run the `cat-idle-preload-hook'."
+  (run-hooks 'cat-idle-preload-hook)
+  (cat-benchmark 'end "idle preload.")
+  (remove-hook 'server-after-make-frame-hook #'cat-idle-preload))
+
+(defun cat-idle-preload ()
+  "The function to schedule the idle preload time."
+  (let* ((cur-idle-time (current-idle-time))
+         (idle 5)
+         (act-idle (if cur-idle-time
+                       (+ idle (float-time cur-idle-time))
+                     idle)))
+    (cat-benchmark 'beg "idle preload.")
+    (message "Current idle time: %ss, will start preload if idle %ss" (float-time cur-idle-time) idle)
+    (run-with-idle-timer
+     act-idle
+     nil
+     #'cat-run-idle-preload)))
+
+(add-hook 'server-after-make-frame-hook #'cat-idle-preload)
+
 (defun cat-preload-org-agenda ()
   "Preload Org agenda files, useful when running as a daemon."
+  (cat-benchmark 'beg "preload org agenda files.")
   ;; Ensure org-agenda is available. org-mode should have been loaded already
   ;; via cats/+org.el, which makes org-agenda's autoloads available.
   (require 'org)
   (if (bound-and-true-p org-agenda-files)
-      (progn
-        (cat-benchmark 'beg "pre-loading Org agenda files.")
-        (let ((files (org-agenda-files nil 'ifmode)))
-          (org-agenda-prepare-buffers files)
-          (cat-benchmark 'end (format "Org agenda files pre-loaded using %s files." (length files)))))
+      (let ((files (org-agenda-files nil 'ifmode)))
+        (org-agenda-prepare-buffers files)
+        (cat-benchmark 'end (format "preload %s org agenda files." (length files))))
     (message "Org agenda files not set, skipping preload.")))
 
-(when (daemonp)
-  (add-hook 'emacs-startup-hook #'cat-preload-org-agenda))
+(add-hook 'cat-idle-preload-hook #'cat-preload-org-agenda)
