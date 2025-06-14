@@ -42,7 +42,9 @@
   :pretty-hydra
   (cat-vibe
    ("Aider"
-    (("A" #'aider-transient-menu "aider.el")))))
+    (("A" #'aider-transient-menu "aider.el"))))
+  :config
+  (aider-magit-setup-transients))
 
 (use-package ob-aider
   :demand t
