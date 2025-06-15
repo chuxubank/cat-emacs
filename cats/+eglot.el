@@ -49,4 +49,10 @@
   :delight " 󰑣"
   :commands #'lsp-proxy-mode
   :ensure nil
-  :hook (kotlin-ts-mode . lsp-proxy-mode))
+  :mode-hydra
+  ((prog-mode
+    python-base-mode
+    kotlin-ts-mode
+    beancount-mode)
+   ("LSP"
+    (("p" lsp-proxy-mode "lsp proxy")))))
