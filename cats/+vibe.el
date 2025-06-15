@@ -33,6 +33,7 @@
   :commands #'aidermacs-transient-menu
   :custom
   (aidermacs-backend 'vterm)
+  (aidermacs-watch-files t)
   :pretty-hydra
   (cat-vibe
    ("Aider"
