@@ -53,6 +53,7 @@
   (add-to-list 'org-babel-load-languages '(aider . t)))
 
 (use-package gptel
+  :delight " 󱡄"
   :custom
   (gptel-model 'gemini-2.5-pro-preview-06-05)
   (gptel-default-mode 'org-mode)
@@ -78,7 +79,14 @@
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-model 'gemini-2.0-flash))
+  (gptel-magit-model 'gemini-2.0-flash)
+  :config
+  (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
+
+(defun cat/gptel-magit--generate-without-reasoning (orig-fn callback)
+  "Advice around ORIG-FN to set `gptel-include-reasoning' to nil with CALLBACK."
+  (let ((gptel-include-reasoning nil))
+    (funcall orig-fn callback)))
 
 (use-package gptel-prompts
   :vc (gptel-prompts
