@@ -1,7 +1,15 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-startup-idle-preload-delay 5
+  "Time between first frame and preload start."
+  :type 'integer
+  :group 'cat-emacs)
+
 (defvar cat-font-loaded nil
   "Whether the font is loaded.")
+
+(defvar cat-idle-preload-hook nil
+  "Hook to run after `server-after-make-frame-hook' with idle time.")
 
 (defun cat-client-frame-config ()
   (cat-benchmark 'beg "configuring new frame.")
@@ -32,37 +40,22 @@
     (get-buffer-create dashboard-buffer-name))
   (setq initial-buffer-choice #'cat-daemon-init-buffer))
 
-(defvar cat-idle-preload-hook nil
-  "Hook to run after `server-after-make-frame-hook' with idle time.")
-
-(defvar cat-startup-idle-time nil
-  "Time between daemon start and first frame.")
-
 (defun cat-run-idle-preload ()
   "The function to run the `cat-idle-preload-hook'."
   (run-hooks 'cat-idle-preload-hook)
   (cat-benchmark 'end "idle preload.")
-  (remove-hook 'server-after-make-frame-hook #'cat-idle-preload))
+  (remove-hook 'emacs-startup-hook #'cat-idle-preload))
 
 (defun cat-idle-preload ()
   "The function to schedule the idle preload time."
-  (setq cat-startup-idle-time
-        (let ((cur (current-idle-time)))
-          (if cur
-              (float-time cur)
-            0)))
-  (let* ((intent-idle cat-startup-idle-preload-delay)
-         (idle (if (>= intent-idle cat-startup-idle-time)
-                   (+ intent-idle cat-startup-idle-time)
-                 intent-idle)))
-    (cat-benchmark 'beg "idle preload.")
-    (message "Startup idle time: %ss, will start preload if idle %ss" cat-startup-idle-time idle)
-    (run-with-idle-timer
-     idle
-     nil
-     #'cat-run-idle-preload)))
+  (cat-benchmark 'beg "idle preload.")
+  (message "Will start preload if idle %ss" cat-startup-idle-preload-delay)
+  (run-with-idle-timer
+   cat-startup-idle-preload-delay
+   nil
+   #'cat-run-idle-preload))
 
-(add-hook 'server-after-make-frame-hook #'cat-idle-preload)
+(add-hook 'emacs-startup-hook #'cat-idle-preload)
 
 (defun cat-preload-org-agenda ()
   "Preload Org agenda files, useful when running as a daemon."
