@@ -9,7 +9,7 @@
   "Whether the font is loaded.")
 
 (defvar cat-idle-preload-hook nil
-  "Hook to run after `server-after-make-frame-hook' with idle time.")
+  "Hook to run after `emacs-startup-hook' with idle time.")
 
 (defun cat-client-frame-config ()
   (cat-benchmark 'beg "configuring new frame.")
@@ -60,8 +60,6 @@
 (defun cat-preload-org-agenda ()
   "Preload Org agenda files, useful when running as a daemon."
   (cat-benchmark 'beg "preload org agenda files.")
-  ;; Ensure org-agenda is available. org-mode should have been loaded already
-  ;; via cats/+org.el, which makes org-agenda's autoloads available.
   (require 'org)
   (if (bound-and-true-p org-agenda-files)
       (let ((files (org-agenda-files nil 'ifmode)))
