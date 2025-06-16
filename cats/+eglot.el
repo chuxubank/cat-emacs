@@ -43,7 +43,10 @@
     kotlin-ts-mode
     beancount-mode)
    ("LSP"
-    (("e" eglot-hydra/body "eglot")))))
+    (("e" eglot-hydra/body "eglot"))))
+  :config
+  (setf (alist-get '(kotlin-mode kotlin-ts-mode) eglot-server-programs nil nil #'equal)
+        '("kotlin-lsp" "--stdio")))
 
 (use-package lsp-proxy
   :delight " 󰑣"
