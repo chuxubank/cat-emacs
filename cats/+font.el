@@ -204,13 +204,18 @@ Unless `buffer-face-mode' already enabled."
                       'js-base-mode
                       'typescript-ts-base-mode 'typescript-mode)
       (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
+     ((derived-mode-p 'comint-mode
+                      'mistty-mode
+                      'vterm-mode
+                      'logview-mode)
+      (let ((font (nth 0 cat-mono-code-fonts)))
+        (+safe-buffer-face-set-fonts font)
+        (setq-local face-font-rescale-alist
+                    '(("Symbols Nerd Font" . 1.2)))))
+     ((derived-mode-p 'prog-mode)
+      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
-     ((derived-mode-p 'prog-mode
-                      'comint-mode
-                      'mistty-mode
-                      'vterm-mode)
-      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'Info-mode
                       'man-common)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
