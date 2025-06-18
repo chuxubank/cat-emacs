@@ -4,6 +4,13 @@
   (:color teal :title (+with-icon "nf-fa-blog" "Blog"))
   ("" ()))
 
+(defcustom cat-blog-directory
+  (or (getenv "BLOG_DIR") "~/Developer/Personal/blog/")
+  "Filename of the blog folder.
+See `hugoista-site-dir' and `easy-hugo-basedir'."
+  :type 'directory
+  :group 'cat-emacs)
+
 (use-package ox-hugo)
 
 (use-package hugoista

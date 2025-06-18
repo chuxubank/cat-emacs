@@ -36,8 +36,6 @@
   (run-hooks 'cat-theme-refresh-hook)
   (cat-benchmark 'end "load theme."))
 
-(add-hook 'after-init-hook #'cat-load-theme)
-
 (when IS-MACPORT
   (add-hook 'mac-effective-appearance-change-hook #'cat-load-theme))
 

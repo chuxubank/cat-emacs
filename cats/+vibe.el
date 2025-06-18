@@ -4,6 +4,12 @@
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
 
+(defcustom cat-codeium-dir
+  (or (getenv "CODEIUM_DIR") "~/.codeium/")
+  "Filename of the codeium folder."
+  :type 'directory
+  :group 'cat-emacs)
+
 (use-package codeium
   :pin jcs-elpa
   :bind

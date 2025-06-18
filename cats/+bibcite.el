@@ -1,5 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-default-csl-styles-dir
+  (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
+  "Filename of the default csl styles folder.
+See `org-cite-csl-styles-dir'."
+  :type 'directory
+  :group 'cat-emacs)
+
 (use-package oc
   :ensure nil
   :custom

@@ -19,36 +19,11 @@ See `org-directory'."
   :type 'directory
   :group 'cat-emacs)
 
-(defcustom cat-blog-directory
-  (or (getenv "BLOG_DIR") "~/Developer/Personal/blog/")
-  "Filename of the blog folder.
-See `hugoista-site-dir' and `easy-hugo-basedir'."
-  :type 'directory
-  :group 'cat-emacs)
-
 (defcustom cat-pass-directory
   (or (getenv "PASSWORD_STORE_DIR") "~/.password-store")
   "Filename of the password-store folder.
 See `auth-source-pass-filename'."
   :type 'directory
-  :group 'cat-emacs)
-
-(defcustom cat-default-csl-styles-dir
-  (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
-  "Filename of the default csl styles folder.
-See `org-cite-csl-styles-dir'."
-  :type 'directory
-  :group 'cat-emacs)
-
-(defcustom cat-codeium-dir
-  (or (getenv "CODEIUM_DIR") "~/.codeium/")
-  "Filename of the codeium folder."
-  :type 'directory
-  :group 'cat-emacs)
-
-(defcustom cat-startup-idle-preload-delay 5
-  "Time between first frame and preload start."
-  :type 'integer
   :group 'cat-emacs)
 
 ;;; packages
