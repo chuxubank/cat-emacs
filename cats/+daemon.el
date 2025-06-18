@@ -5,9 +5,6 @@
   :type 'integer
   :group 'cat-emacs)
 
-(defvar cat-font-loaded nil
-  "Whether the font is loaded.")
-
 (defvar cat-idle-preload-hook nil
   "Hook to run after `emacs-startup-hook' with idle time.")
 
@@ -19,18 +16,13 @@
         (select-frame-set-input-focus (selected-frame))
         (add-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
         (unless eldoc-box-hover-at-point-mode
-          (eldoc-box-hover-at-point-mode 1))
-        (unless cat-font-loaded
-          (cat-setup-fonts)
-          (setq cat-font-loaded t))
-        (when IS-MACPORT
-          (setq mac-system-move-file-to-trash-use-finder t)))
+          (eldoc-box-hover-at-point-mode 1)))
     (message "In TUI.")
     (remove-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
     (when eldoc-box-hover-at-point-mode
-      (eldoc-box-hover-at-point-mode 0))
-    (when IS-MACPORT
-      (setq mac-system-move-file-to-trash-use-finder nil)))
+      (eldoc-box-hover-at-point-mode 0)))
+  (when IS-MACPORT
+    (setq mac-system-move-file-to-trash-use-finder (display-graphic-p)))
   (cat-benchmark 'end "configuring new frame."))
 
 (add-hook 'server-after-make-frame-hook #'cat-client-frame-config)

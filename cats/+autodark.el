@@ -36,8 +36,7 @@
   (run-hooks 'cat-theme-refresh-hook)
   (cat-benchmark 'end "load theme."))
 
-(when IS-MACPORT
-  (add-hook 'mac-effective-appearance-change-hook #'cat-load-theme))
-
-(when IS-MACPLUS
-  (add-hook 'ns-system-appearance-change-functions #'cat-load-theme))
+(cond
+ (IS-MACPORT (add-hook 'mac-effective-appearance-change-hook #'cat-load-theme))
+ (IS-MACPLUS (add-hook 'ns-system-appearance-change-functions #'cat-load-theme))
+ (t          (add-hook 'server-after-make-frame-hook #'cat-load-theme)))
