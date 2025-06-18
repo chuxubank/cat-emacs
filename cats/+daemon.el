@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(defcustom cat-startup-idle-preload-delay 5
-  "Time between first frame and preload start."
+(defcustom cat-startup-idle-preload-delay 10
+  "Idle time before startup preload."
   :type 'integer
   :group 'cat-emacs)
 
@@ -43,8 +43,7 @@
 (defun cat-run-idle-preload ()
   "The function to run the `cat-idle-preload-hook'."
   (run-hooks 'cat-idle-preload-hook)
-  (cat-benchmark 'end "idle preload.")
-  (remove-hook 'emacs-startup-hook #'cat-idle-preload))
+  (cat-benchmark 'end "idle preload."))
 
 (defun cat-idle-preload ()
   "The function to schedule the idle preload time."
