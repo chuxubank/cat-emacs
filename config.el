@@ -129,7 +129,7 @@
 (cat! "+mail")
 (cat! "+music")
 (cat! "+pass")
-(cat! "+gist")
+(cat! "+github")
 (cat! "+beancount")
 (cat! "+diagram-preview")
 (cat! "+atlassian")

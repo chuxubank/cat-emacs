@@ -35,7 +35,7 @@
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
   "D" 'docker
-  "g" #'igist-dispatch
+  "g" #'cat-github/body
   "i" 'cat-im-prefix
   "j" #'jira-issues
   "l" #'elogcat
