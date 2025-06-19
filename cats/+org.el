@@ -11,7 +11,7 @@
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))
   (org-default-notes-file (expand-file-name "notes.org" cat-org-directory))
-  (org-archive-location (concat (expand-file-name "archive.org" cat-org-directory) "::* From %s"))
+  (org-archive-location (concat (expand-file-name "archive/archive.org" cat-org-directory) "::* From %s"))
   (org-auto-align-tags nil)
   (org-startup-indented t)
   (org-startup-with-link-previews t)
@@ -85,7 +85,7 @@
                             (file "inbox.org")
                             "* TODO %?\n%i" :prepend t)
                            ("w" "Work todo" entry
-                            (file+headline "work.org" "Inbox")
+                            (file+headline "work.org.gpg" "Inbox")
                             "* TODO %?\n%i" :prepend nil)
                            ("b" "Shopping list" entry
                             (file "buy.org")
@@ -100,10 +100,7 @@
                             "* %u %?\n%i\n%a" :prepend t)
                            ("j" "Journal" entry
                             (file+olp+datetree "journal.org.gpg")
-                            "* %U %?")
-                           ("c" "ChatGPT" entry
-                            (file+olp+datetree "ChatGPT.org")
-                            "* %?")))
+                            "* %U %?")))
   :config
   (add-hook 'org-capture-after-finalize-hook #'org-save-all-org-buffers))
 
