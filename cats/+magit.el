@@ -26,6 +26,14 @@
   :config
   (magit-todos-mode 1))
 
+(use-package glab)
+
+(use-package gtea)
+
+(use-package gogs)
+
+(use-package buck)
+
 (use-package forge
   :pin melpa-stable
   :demand t
