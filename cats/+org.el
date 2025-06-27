@@ -20,6 +20,7 @@
   (org-export-with-sub-superscripts '{})
   (org-special-ctrl-a/e t)
   (org-tags-column 0)
+  (org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
   (org-export-backends '(ascii beamer html icalendar latex md odt))
   (org-highlight-latex-and-related '(native latex script entities))
   (org-image-actual-width 500)
@@ -83,10 +84,14 @@
   :custom
   (org-capture-templates '(("t" "Personal todo" entry
                             (file "inbox.org")
-                            "* TODO %?\n%i" :prepend t)
+                            "* TODO %?\n%i"
+                            :prepend t
+                            :empty-lines 1)
                            ("w" "Work todo" entry
                             (file+headline "work.org.gpg" "Inbox")
-                            "* TODO %?\n%i" :prepend nil)
+                            "* TODO %?\n%i"
+                            :prepend t
+                            :empty-lines 1)
                            ("b" "Shopping list" entry
                             (file "buy.org")
                             "* TODO %?\n%i" :prepend t)
@@ -97,7 +102,9 @@
                             :empty-lines 1)
                            ("n" "Personal notes" entry
                             (file+headline "notes.org" "Inbox")
-                            "* %u %?\n%i\n%a" :prepend t)
+                            "* %u %?\n%i\n%a"
+                            :prepend t
+                            :empty-lines 1)
                            ("j" "Journal" entry
                             (file+olp+datetree "journal.org.gpg")
                             "* %U %?")))
