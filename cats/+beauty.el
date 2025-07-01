@@ -101,3 +101,10 @@
   (breadcrumb-imenu-max-length 0.9)
   :config
   (fset 'breadcrumb--project-crumbs-1 #'ignore))
+
+(use-package minimap
+  :delight " "
+  :custom
+  (minimap-width-fraction 0.1)
+  (minimap-minimum-width 15)
+  (minimap-window-location 'right))
