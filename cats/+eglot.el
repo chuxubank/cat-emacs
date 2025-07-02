@@ -50,12 +50,20 @@
 
 (use-package lsp-proxy
   :delight " 󰑣"
-  :commands #'lsp-proxy-mode
+  :commands (lsp-proxy-mode
+             lsp-proxy-open-log-file
+             lsp-proxy-open-config-file)
   :ensure nil
+  :pretty-hydra
+  ((:color teal :title (+with-icon "nf-md-rocket" "LSP Proxy"))
+   ("Actions"
+    (("s" #'lsp-proxy-mode "start")
+     ("l" #'lsp-proxy-open-log-file "open log")
+     ("c" #'lsp-proxy-open-config-file "open config"))))
   :mode-hydra
   ((prog-mode
     python-base-mode
     kotlin-ts-mode
     beancount-mode)
    ("LSP"
-    (("p" lsp-proxy-mode "lsp proxy")))))
+    (("p" lsp-proxy-hydra/body "lsp proxy")))))
