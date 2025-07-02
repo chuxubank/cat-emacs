@@ -27,7 +27,9 @@ See `auth-source-pass-filename'."
   :group 'cat-emacs)
 
 ;;; packages
-(add-to-list 'load-path (expand-file-name "elisp" user-emacs-directory))
+(let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
+  (add-to-list 'load-path default-directory)
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;;; modules
 (defmacro cat! (filename &optional path noerror)
