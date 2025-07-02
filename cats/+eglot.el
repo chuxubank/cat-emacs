@@ -52,9 +52,9 @@
 
 (use-package lsp-proxy
   :delight " 󰑣"
-  :commands (lsp-proxy-mode
-             lsp-proxy-open-config-file)
   :ensure nil
+  :commands #'lsp-proxy-open-config-file
+  :hook ((kotlin-mode kotlin-ts-mode) . lsp-proxy-mode)
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-rocket" "LSP Proxy"))
    ("Commands"
