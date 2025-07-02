@@ -20,12 +20,14 @@
   (eglot-connect-timeout (* 30 60))
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-cod-server_environment" "Eglot"))
-   ("Actions"
+   ("Commands"
     (("s" #'eglot "start")
      ("S" #'eglot-reconnect "reconnect")
-     ("k" #'eglot-shutdown "eglot shutdown")
-     ("K" #'eglot-shutdown-all "eglot shutdown all")
-     ("r" #'eglot-rename "rename")
+     ("k" #'eglot-shutdown "shutdown")
+     ("K" #'eglot-shutdown-all "shutdown all")
+     ("l" #'eglot-events-buffer "event buffer"))
+    "Actions"
+    (("r" #'eglot-rename "rename")
      ("f" #'eglot-format "format")
      ("F" #'eglot-format-buffer "format buffer")
      ("d" #'eglot-find-declaration "declaration")
@@ -51,15 +53,28 @@
 (use-package lsp-proxy
   :delight " 󰑣"
   :commands (lsp-proxy-mode
-             lsp-proxy-open-log-file
              lsp-proxy-open-config-file)
   :ensure nil
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-rocket" "LSP Proxy"))
-   ("Actions"
-    (("s" #'lsp-proxy-mode "start")
+   ("Commands"
+    (("t" #'lsp-proxy-mode "toggle")
+     ("s" #'lsp-proxy-workspace-restart "restart")
+     ("S" #'lsp-proxy-restart "restart all")
      ("l" #'lsp-proxy-open-log-file "open log")
-     ("c" #'lsp-proxy-open-config-file "open config"))))
+     ("c" #'lsp-proxy-open-config-file "open config"))
+    "Actions"
+    (("r" #'lsp-proxy-rename "rename")
+     ("f" #'lsp-proxy-format-buffer "format")
+     ("d" #'lsp-proxy-find-declaration "declaration")
+     ("D" #'lsp-proxy-find-definition "definition")
+     ("T" #'lsp-proxy-find-type-definition "type definition")
+     ("i" #'lsp-proxy-find-implementations "implementations")
+     ("." #'lsp-proxy-describe-thing-at-point "describe"))
+    "Code Actions"
+    (("a" #'lsp-proxy-execute-code-action "actions")
+     ("e" #'lsp-proxy-execute-command "execute command")
+     ("s" #'lsp-proxy-show-project-diagnostics "show diagnostics"))))
   :mode-hydra
   ((prog-mode
     python-base-mode
