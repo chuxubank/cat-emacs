@@ -279,3 +279,15 @@
 (defun +find-org-files ()
   (interactive)
   (+project-find-file-in-dir cat-org-directory nil t))
+
+(defun cat-preload-org-agenda ()
+  "Preload Org agenda files, useful when running as a daemon."
+  (cat-benchmark 'beg "preload org agenda files.")
+  (require 'org)
+  (if (bound-and-true-p org-agenda-files)
+      (let ((files (org-agenda-files nil 'ifmode)))
+        (org-agenda-prepare-buffers files)
+        (cat-benchmark 'end (format "preload %s org agenda files." (length files))))
+    (message "Org agenda files not set, skipping preload.")))
+
+(add-hook 'cat-idle-preload-hook #'cat-preload-org-agenda)

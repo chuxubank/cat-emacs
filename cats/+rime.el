@@ -56,3 +56,12 @@
         (list left right face-prefix))))
 
   (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-rime-indicator))
+
+(defun cat-preload-rime ()
+  "Preload rime, also sync the data."
+  (cat-benchmark 'beg "preload rime.")
+  (rime-activate "preload")
+  (cat-benchmark 'end "preload rime.")
+  (rime-sync))
+
+(add-hook 'cat-idle-preload-hook #'cat-preload-rime)
