@@ -1,8 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package kotlin-mode
-  :ensure-system-package
-  (kotlin-language-server))
+(use-package kotlin-mode)
 
 (use-package kotlin-ts-mode
   :when EMACS29+
