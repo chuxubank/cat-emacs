@@ -41,6 +41,7 @@
   "l" #'elogcat
   "m" #'cat-mail/body
   "n" #'deft
+  "o" #'cat-oj/body
   "p" #'pass
   "P" #'password-store-menu
   "r" #'elfeed
