@@ -5,11 +5,15 @@
   ("" ()))
 
 (use-package leetcode
+  :custom
+  (leetcode-python-environment (concat cat-etc-dir "leetcode-env"))
+  (leetcode-prefer-language "kotlin")
   :pretty-hydra
   (cat-oj
    ("leetcode"
     (("l" #'leetcode "leetcode")
-     ("d" #'leetcode-daily "leetcode daily")))))
+     ("d" #'leetcode-daily "leetcode daily")
+     ("k" #'leetcode-quit "leetcode quit")))))
 
 (use-package oj
   :disabled
