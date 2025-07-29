@@ -22,6 +22,7 @@
   (mu4e-sent-messages-behavior 'delete)
   (mu4e-read-option-use-builtin nil)
   (mu4e-completing-read-function 'completing-read)
+  (mu4e-attachment-dir (expand-file-name "~/Downloads/"))
   :pretty-hydra
   (cat-mail
    ("Mu4e"
