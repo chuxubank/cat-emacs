@@ -23,7 +23,7 @@
   (org-tags-column 0)
   (org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
   (org-export-backends '(ascii beamer html icalendar latex md odt))
-  (org-highlight-latex-and-related '(native latex script entities))
+  (org-highlight-latex-and-related '(native script entities))
   (org-image-actual-width 500)
   (org-display-remote-inline-images 'cache)
   (org-insert-heading-respect-content t)
