@@ -26,4 +26,7 @@
         (browse-url (match-string 1 output)))))
 
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '(beancount-mode . ("beancount-language-server" "--stdio"))))
+  (add-to-list 'eglot-server-programs
+               '(beancount-mode . ("beancount-language-server" "--stdio"
+                                   :initializationOptions
+                                   (:journal_file "ledger/ledger.beancount.gpg")))))
