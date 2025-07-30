@@ -216,6 +216,11 @@
   :custom
   (epa-file-name-regexp "\\.\\(gpg\\|asc\\)\\(~\\|\\.~[0-9]+~\\)?\\'"))
 
+(defun cat-epa-file-p ()
+  (and buffer-file-name
+       (bound-and-true-p epa-file-name-regexp)
+       (string-match-p epa-file-name-regexp buffer-file-name)))
+
 (use-package epg-config
   :ensure nil
   :custom

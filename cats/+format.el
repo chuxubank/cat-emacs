@@ -20,4 +20,5 @@
                #'cat-chezmoi-mode-p)
   (+add-to-list-multi 'apheleia-inhibit-functions
                       #'cat-type-break-buffer-p
-                      #'cat-node-package-lock-buffer-p))
+                      #'cat-node-package-lock-buffer-p
+                      #'cat-epa-file-p))
