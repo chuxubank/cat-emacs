@@ -1,6 +1,7 @@
 [language-server]
 kotlin-lsp = { command = "kotlin-lsp", args = ["--stdio"] }
-beancount-language-server = { command = "beancount-language-server", config = { journal_file = "ledger/ledger.beancount.gpg" } }
+beancount-language-server = { command = "beancount-language-server", config = { journal_file = "ledger/ledger.beancount" } }
+
 [[language]]
 name = "kotlin"
 language-id = "kotlin"

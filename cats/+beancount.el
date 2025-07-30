@@ -29,4 +29,4 @@
   (add-to-list 'eglot-server-programs
                '(beancount-mode . ("beancount-language-server" "--stdio"
                                    :initializationOptions
-                                   (:journal_file "ledger/ledger.beancount.gpg")))))
+                                   (:journal_file "ledger/ledger.beancount")))))
