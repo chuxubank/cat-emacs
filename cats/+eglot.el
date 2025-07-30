@@ -74,7 +74,7 @@
     "Code Actions"
     (("a" #'lsp-proxy-execute-code-action "actions")
      ("e" #'lsp-proxy-execute-command "execute command")
-     ("s" #'lsp-proxy-show-project-diagnostics "show diagnostics"))))
+     ("p" #'lsp-proxy-show-project-diagnostics "show diagnostics"))))
   :mode-hydra
   ((prog-mode
     python-base-mode
