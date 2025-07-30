@@ -30,7 +30,13 @@
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
           . (lambda (node offset)
-              (treesit-fold-range-line-comment node offset "import "))) (alist-get 'java-ts-mode treesit-fold-range-alist)))
+              (treesit-fold-range-line-comment node offset "import ")))
+        (alist-get 'java-ts-mode treesit-fold-range-alist)))
+
+(use-package treesit-langs
+  :demand
+  :config
+  (treesit-langs-major-mode-setup))
 
 (use-package treesit-auto
   :hook (after-init . global-treesit-auto-mode)
@@ -38,8 +44,7 @@
   (treesit-auto-install 'prompt)
   :config
   (dolist (lang '(cmake cpp bash))
-    (setq treesit-auto-langs (delete lang treesit-auto-langs)))
-  (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist)))
+    (setq treesit-auto-langs (delete lang treesit-auto-langs))))
 
 (with-eval-after-load 'meow
   (use-package meow-tree-sitter
