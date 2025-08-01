@@ -27,7 +27,10 @@
       (concat "plutil -p"))
      ("\\.md\\'"
       (concat "pandoc ? -o $(basename `?` .md).org --lua-filter=remove-header-attr.lua")
-      (concat "pandoc ? -o $(basename `?` .md).org"))))
+      (concat "pandoc ? -o $(basename `?` .md).org"))
+     ("\\.csv\\'"
+      "double-entry-generator translate"
+      "double-entry-generator translate --provider ")))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
