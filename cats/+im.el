@@ -42,6 +42,9 @@
   :custom
   (ement-save-sessions t))
 
+(use-package jabber
+  :disabled)
+
 (defvar-keymap cat-im-map
   :doc "Keymap for IM plugins."
   :name "Instant messaging"
