@@ -53,22 +53,25 @@ like `org-agenda' and `org-table', as well as make spatial efficient.")
   "Hook runs after setup fonts.")
 
 (defun +safe-set-fontset-fonts (fontset characters font-list &optional frame add)
-  "Safely set fontset fonts."
+  "Safely set fontset fonts.
+If ADD is non-nil, all fonts in FONT-LIST are set with given ADD parameter.
+If ADD is nil, the first existing font is set as replacement, and others are appended."
   (when (display-graphic-p)
-    (if add
-        (dolist (font (ensure-list font-list))
-          (if (member font (font-family-list))
-              (progn
-                (set-fontset-font fontset characters font frame add)
-                (message "Set %s fontset font to %s" characters font))
-            (warn "Font %s not found" font)))
-      (let ((find nil))
-        (dolist (font (ensure-list font-list))
-          (if (member font (font-family-list))
-              (progn (set-fontset-font fontset characters font frame (if find 'append nil))
-                     (setq find t)
-                     (message "Set %s fontset font to %s" characters font))
-            (warn "Font %s not found" font)))))))
+    (let ((fonts (ensure-list font-list))
+          (first-set nil))
+      (dolist (font fonts)
+        (if (member font (font-family-list))
+            (progn
+              (set-fontset-font
+               fontset characters font frame
+               (cond
+                (add add) ; use whatever was passed in
+                (first-set 'append) ; already set one => append
+                (t nil))) ; first time => replace
+              (setq first-set t)
+              (message "Set %s fontset font to %s" characters font))
+          (warn "Font %s not found" font))))))
+
 
 (defun +safe-set-face-fonts (face font-list &optional frame)
   "Safely set face fonts."
