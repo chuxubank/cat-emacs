@@ -10,7 +10,7 @@
   (leetcode-prefer-language "kotlin")
   :pretty-hydra
   (cat-oj
-   ("leetcode"
+   ("LeetCode"
     (("l" #'leetcode "leetcode")
      ("d" #'leetcode-daily "leetcode daily")
      ("k" #'leetcode-quit "leetcode quit")))))

@@ -36,7 +36,7 @@
   "d" 'cat-dev-doc-prefix
   "D" 'docker
   "g" #'cat-github/body
-  "i" 'cat-im-prefix
+  "i" #'cat-im/body
   "j" #'jira-issues
   "l" #'elogcat
   "m" #'cat-mail/body

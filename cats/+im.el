@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-im
+  (:color teal :title (+with-icon "nf-md-chat" "Instant Messaging"))
+  ("" ()))
+
 (use-package telega
   :hook
   (telega-mode . telega-mode-line-mode)
@@ -26,6 +30,10 @@
   (telega-chat-input-markups '("markdown2" nil))
   (telega-open-file-function #'org-open-file)
   (telega-completing-read-function completing-read-function)
+  :pretty-hydra
+  (cat-im
+   ("Telegram"
+    (("t" #'telega-prefix "telega"))))
   :config
   (require 'telega-mnz)
   (global-telega-mnz-mode))
@@ -40,14 +48,11 @@
     "k" #'ement-kill-buffers
     "l" #'ement-list-rooms)
   :custom
-  (ement-save-sessions t))
+  (ement-save-sessions t)
+  :pretty-hydra
+  (cat-im
+   ("Matrix"
+    (("e" #'ement-prefix "ement")))))
 
 (use-package jabber
   :disabled)
-
-(defvar-keymap cat-im-map
-  :doc "Keymap for IM plugins."
-  :name "Instant messaging"
-  :prefix 'cat-im-prefix
-  "t" #'telega-prefix
-  "e" #'ement-prefix)
