@@ -98,6 +98,7 @@
 
 ;;; buffer
 (defalias 'list-buffers 'ibuffer)
+(setq-default indicate-buffer-boundaries 'left)
 
 (use-package url
   :ensure nil
