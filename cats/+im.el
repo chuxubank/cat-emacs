@@ -48,20 +48,17 @@
   :hook (telega-load . global-telega-mnz-mode))
 
 (use-package ement
-  :init
-  (defvar-keymap ement-prefix-map
-    :doc "Keymap for ement."
-    :name "Ement"
-    :prefix 'ement-prefix
-    "e" #'ement-connect
-    "k" #'ement-kill-buffers
-    "l" #'ement-list-rooms)
   :custom
   (ement-save-sessions t)
   :pretty-hydra
+  ((:color teal :title "Ement")
+   ("Action"
+    (("e" #'ement-connect "connect")
+     ("k" #'ement-kill-buffers "kill")
+     ("l" #'ement-list-rooms "rooms"))))
   (cat-im
    ("Matrix"
-    (("e" #'ement-prefix "ement")))))
+    (("e" #'ement-hydra/body "ement")))))
 
 (use-package jabber
   :disabled)
