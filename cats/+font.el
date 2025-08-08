@@ -39,6 +39,8 @@
 
 (defvar cat-symbol-fonts '("Apple Symbols"))
 
+(defvar cat-unicode-fonts '("Apple Color Emoji" "Symbola"))
+
 (defvar cat-default-font (car cat-mono-thin-fonts)
   "Cat default font.
 
@@ -104,6 +106,9 @@ If ADD is nil, the first existing font is set as replacement, and others are app
     ;; (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
 
     ;; (+safe-set-fontset-fonts t 'symbol cat-symbol-fonts frame)
+
+    ;; 🐾
+    (+safe-set-fontset-fonts t 'unicode cat-unicode-fonts frame 'append)
 
     ;; 猫，ネコ，ねこ，고양이，ㄇㄠ
     (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts frame)
