@@ -17,6 +17,7 @@
 (use-package tab-bar
   :ensure nil
   :hook
+  (after-init . tab-bar-mode)
   (tab-bar-mode . tab-bar-history-mode)
   :custom
   (tab-bar-close-button-show t)

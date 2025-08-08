@@ -16,7 +16,8 @@
         (select-frame-set-input-focus (selected-frame))
         (add-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
         (unless eldoc-box-hover-at-point-mode
-          (eldoc-box-hover-at-point-mode 1)))
+          (eldoc-box-hover-at-point-mode 1))
+        (tab-bar--load-buttons))
     (message "In TUI.")
     (remove-hook 'eldoc-mode-hook #'eldoc-box-hover-at-point-mode)
     (when eldoc-box-hover-at-point-mode
