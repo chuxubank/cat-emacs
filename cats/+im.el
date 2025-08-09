@@ -21,9 +21,9 @@
   (when IS-WSL
     (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
   :custom
-  (telega-use-docker "podman")
+  (telega-use-docker (if (eq HOST_TYPE 'home) "docker" "podman"))
   (telega-docker-volumes nil)
-  (telega-docker-run-arguments "--platform linux/amd64 --userns=keep-id")
+  (telega-docker-run-arguments (concat "--platform linux/amd64" (when (eq "podman" telega-use-docker) " --userns=keep-id")))
   (telega-use-images t)
   (telega-emoji-use-images nil)
   (telega-symbol-video-chat-active "🔊")

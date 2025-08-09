@@ -14,6 +14,10 @@
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
 (defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
 (defconst IS-CI      (getenv "CI"))
+(defconst HOST_TYPE  (pcase (getenv "HOST_TYPE")
+                       ("home" 'home)
+                       ("work" 'work)
+                       ("ci"   'ci)))
 
 (defconst cat-emacs-name "Cat Emacs")
 
