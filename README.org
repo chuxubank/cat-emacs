@@ -68,3 +68,10 @@ allow-emacs-pinentry
 #+begin_src sh
   sudo cpan -i File::HomeDir
 #+end_src
+
+** Org
+Use [[https://code.tecosaur.net/tec/org-mode]] for org latex preview.
+If autoloads have problem, use following command to re-build
+#+begin_src sh
+  make -C ~/.config/emacs/elpa/org-mode compile autoloads
+#+end_src
