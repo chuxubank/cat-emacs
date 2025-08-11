@@ -164,6 +164,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
    ("Math" . 0.7)
    ("Noto Sans .+" . 0.7)
    ("Apple Color Emoji" . 0.8)
+   ("Sinhala Sangam MN". 0.8)
    ("Apple Symbols" . 0.9)
    ("Noto Serif .+" . 0.9)
    ("Source Han Sans" . 0.9)
