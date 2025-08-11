@@ -98,3 +98,25 @@
                                (url-host (url-generic-parse-url url))
                                (if (eq symbol-status 'success)
                                    (request-response-header response "Last-Modified"))))))))))))
+
+(defun cat/package-vc-skip-if-same-hash (orig-fn pkg-desc)
+  "Skip `package-vc-upgrade' if PKG-DESC is already at the latest commit.
+Only applies to Git VC packages; otherwise, run ORIG-FN."
+  (let* ((pkg-dir (package-desc-dir pkg-desc))
+         (backend (vc-responsible-backend pkg-dir)))
+    (if (and (eq backend 'Git)
+             (let ((local (with-temp-buffer
+                            (let ((default-directory pkg-dir))
+                              (ignore-errors
+                                (vc-git-command t 0 nil "rev-parse" "HEAD")
+                                (string-trim (buffer-string))))))
+                   (remote (with-temp-buffer
+                             (let ((default-directory pkg-dir))
+                               (ignore-errors
+                                 (vc-git-command t 0 nil "ls-remote" "origin" "HEAD")
+                                 (car (split-string (string-trim (buffer-string)))))))))
+               (and local remote (string= local remote))))
+        (message "Package %s already up-to-date" (package-desc-name pkg-desc))
+      (funcall orig-fn pkg-desc))))
+
+(advice-add 'package-vc-upgrade :around #'cat/package-vc-skip-if-same-hash)
