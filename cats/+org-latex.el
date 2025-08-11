@@ -2,7 +2,7 @@
 
 (use-package org-latex-preview
   :ensure nil
-  :hook (org-mode . org-latex-preview-auto-mode)
+  :hook (org-mode . org-latex-preview-mode)
   :custom
   (org-latex-preview-live t)
   (org-latex-preview-live-debounce 0.25)

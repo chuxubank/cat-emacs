@@ -3,7 +3,7 @@
 (use-package org
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode"
                 :lisp-dir "lisp/"
-                :rev "bbf7d8cd94af2aef2241cdcf45bfb09140926f19")
+                :rev "dev")
   :delight
   (org-cdlatex-mode " ")
   :commands
