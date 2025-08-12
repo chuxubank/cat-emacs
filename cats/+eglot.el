@@ -14,7 +14,6 @@
           js-base-mode
           ;; kotlin-mode
           ;; kotlin-ts-mode
-          beancount-mode
           )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
@@ -54,6 +53,8 @@
 (use-package lsp-proxy
   :delight " 󰑣"
   :ensure nil
+  :hook
+  (beancount-mode . lsp-proxy-mode)
   :commands
   (lsp-proxy-mode
    lsp-proxy-open-config-file)
