@@ -5,13 +5,13 @@
             (display-graphic-p))
   :hook (after-init . ns-auto-titlebar-mode))
 
+(defun cat/set-calendar-geo-from-osx-location ()
+  (setq calendar-latitude osx-location-latitude
+        calendar-longitude osx-location-longitude))
+
 (use-package osx-location
-  :config
-  (add-hook 'osx-location-changed-hook
-            (lambda ()
-              (setq calendar-latitude osx-location-latitude
-                    calendar-longitude osx-location-longitude
-                    calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude)))))
+  :hook
+  (osx-location-changed . cat/set-calendar-geo-from-osx-location))
 
 (when IS-MACPORT
   (when (display-graphic-p)
