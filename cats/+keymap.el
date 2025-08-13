@@ -61,6 +61,7 @@
   "l" #'cat-language/body
   "L" #'org-store-link
   "n" #'major-mode-hydra
+  "M" #'osm-prefix-map
   "o" #'ace-window
   "p" 'cat-plugin-prefix
   "P" #'profiler-hydra/body

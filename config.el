@@ -125,6 +125,7 @@
 (cat! "+toc")
 (cat! "+elfeed")
 (cat! "+language")
+(cat! "+map")
 (cat! "+mail")
 (cat! "+music")
 (cat! "+pass")
