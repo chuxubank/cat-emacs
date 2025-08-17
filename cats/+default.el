@@ -277,3 +277,7 @@
 (use-package table
   :config
   (+safe-set-face-fonts 'table-cell cat-mono-thin-fonts))
+
+(use-package comp-run
+  :custom
+  (native-comp-async-report-warnings-errors 'silent))
