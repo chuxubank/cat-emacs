@@ -16,7 +16,8 @@
   :hook (after-init . doom-modeline-mode)
   :custom
   (doom-modeline-minor-modes t)
-  (doom-modeline-enable-word-count t))
+  (doom-modeline-enable-word-count t)
+  (doom-modeline-support-imenu t))
 
 (defun cat-enable-doom-modeline-minor-modes ()
   (setq-local doom-modeline-minor-modes t))
