@@ -7,6 +7,9 @@
 
 (use-package mustache)
 
+(use-package markdown-mode
+  :pin melpa-stable)
+
 (use-package markdown-xwidget
   :vc (markdown-xwidget
        :url "https://github.com/cfclrk/markdown-xwidget"
