@@ -261,10 +261,12 @@
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator))
 
 (use-package xref
+  :ensure nil
   :custom
   (xref-search-program 'ripgrep))
 
 (use-package outline
+  :ensure nil
   :delight (outline-minor-mode " 󰠶"))
 
 (defun cat-disable-electric-indent-chars ()
@@ -272,12 +274,15 @@
   (setq-local electric-indent-chars nil))
 
 (use-package follow
+  :ensure nil
   :custom (follow-mode-line-text " "))
 
 (use-package table
+  :ensure nil
   :config
   (+safe-set-face-fonts 'table-cell cat-mono-thin-fonts))
 
 (use-package comp-run
+  :ensure nil
   :custom
   (native-comp-async-report-warnings-errors 'silent))
