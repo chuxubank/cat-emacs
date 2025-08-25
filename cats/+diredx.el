@@ -16,7 +16,7 @@
   (dired-guess-shell-alist-user
    '(("^app_logs.*\\.zip\\'"
       (format "7z x -o\\* -p%s" (password-store-get "Work/AA/Luna/Log")))
-     (".*codecov.ya?ml\\'"
+     ("\.?codecov.ya?ml\\'"
       "curl -X POST --data-binary @`?` https://codecov.io/validate")
      ("\\.tmpl\\'"
       "cat * | chezmoi execute-template")
