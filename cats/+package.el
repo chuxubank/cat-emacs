@@ -101,22 +101,33 @@
 
 (defun cat/package-vc-skip-if-same-hash (orig-fn pkg-desc)
   "Skip `package-vc-upgrade' if PKG-DESC is already at the latest commit.
-Only applies to Git VC packages; otherwise, run ORIG-FN."
+Only applies to Git VC packages; otherwise, run ORIG-FN.
+
+This version safely handles branches without upstream and can optionally fetch."
   (let* ((pkg-dir (package-desc-dir pkg-desc))
          (backend (vc-responsible-backend pkg-dir)))
-    (if (and (eq backend 'Git)
-             (let ((local (with-temp-buffer
-                            (let ((default-directory pkg-dir))
-                              (ignore-errors
-                                (vc-git-command t 0 nil "rev-parse" "HEAD")
-                                (string-trim (buffer-string))))))
-                   (remote (with-temp-buffer
-                             (let ((default-directory pkg-dir))
-                               (ignore-errors
-                                 (vc-git-command t 0 nil "ls-remote" "origin" "HEAD")
-                                 (car (split-string (string-trim (buffer-string)))))))))
-               (and local remote (string= local remote))))
-        (message "Package %s already up-to-date" (package-desc-name pkg-desc))
-      (funcall orig-fn pkg-desc))))
+    (if (not (eq backend 'Git))
+        (funcall orig-fn pkg-desc)
+      (let ((default-directory pkg-dir))
+        (condition-case err
+            (let* ((upstream (string-trim
+                              (with-output-to-string
+                                (vc-git-command standard-output nil nil
+                                                "rev-parse" "--abbrev-ref" "@{u}")))))
+              (if (string-empty-p upstream)
+                  (funcall orig-fn pkg-desc)
+                (vc-git-command t 0 nil "fetch" "--quiet")
+                (let* ((local (string-trim
+                               (with-output-to-string
+                                 (vc-git-command standard-output nil nil "rev-parse" "HEAD"))))
+                       (remote (string-trim
+                                (with-output-to-string
+                                  (vc-git-command standard-output nil nil "rev-parse" "@{u}")))))
+                  (if (string= local remote)
+                      (message "Package %s already up-to-date" (package-desc-name pkg-desc))
+                    (funcall orig-fn pkg-desc)))))
+          (error
+           (funcall orig-fn pkg-desc)))))))
+
 
 (advice-add 'package-vc-upgrade :around #'cat/package-vc-skip-if-same-hash)
