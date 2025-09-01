@@ -1,0 +1,14 @@
+gradle.projectsEvaluated {
+    println "===FLAVORS_START==="
+    gradle.rootProject.allprojects.each { proj ->
+        if (proj.plugins.hasPlugin('com.android.application')) {
+            def android = proj.extensions.findByName("android")
+            if (android != null) {
+                android.applicationVariants.all { variant ->
+                    println "${proj.name}:${variant.name}=${variant.applicationId}"
+                }
+            }
+        }
+    }
+    println "===FLAVORS_END==="
+}

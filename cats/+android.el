@@ -1,5 +1,16 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package android-mode
+  :ensure nil
+  :delight " 󰀲"
+  :commands #'android-root
+  :init
+  (defun +android-mode ()
+    (when (android-root) (android-mode t)))
+  :hook ((find-file dired-mode) . +android-mode)
+  :custom
+  (android-mode-key-prefix "\C-c p a"))
+
 (use-package elogcat
   :commands #'elogcat
   :init
