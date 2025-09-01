@@ -1,12 +1,13 @@
+;;; -*- lexical-binding: t; -*-
 ;;; android-mode.el --- Minor mode for Android application development
 
 ;; Copyright (C) 2009-2018 R.W van 't Veer
-;; Copyright (C) 2025 Gemini (Code optimizations)
+;; Copyright (C) 2025 Gemini (Code optimizations and warning fixes)
 
 ;; Author: R.W. van 't Veer
 ;; Created: 20 Feb 2009
 ;; Keywords: tools processes
-;; Version: 0.6.0 (Optimized)
+;; Version: 0.7.0 (Optimized & Warnings Fixed)
 ;; URL: https://codeberg.org/rwv/android-mode
 
 ;; This program is free software; you can redistribute it and/or
@@ -161,7 +162,7 @@ way.")
 (defun android-root ()
   "Find the root directory of the Android project.
 The root is the directory containing the project's build file
-(e.g., 'gradlew' or 'AndroidManifest.xml'). Uses `locate-dominating-file`
+(e.g., `gradlew` or `AndroidManifest.xml`). Uses `locate-dominating-file`
 for an efficient upward search from the current directory."
   (let ((root-file-name (plist-get android-mode-root-file-plist android-mode-builder)))
     (when root-file-name
@@ -447,10 +448,10 @@ Filter on CATEGORY intent when supplied."
                   (equal "android.intent.action.MAIN"
                          (xml-get-attribute el 'android:name))))
               (category-p (activity)
-                (some (lambda (cat-el)
-                        (equal (concat "android.intent.category." category)
-                               (xml-get-attribute cat-el 'android:name)))
-                      (xml-get-children (first-xml-child activity 'intent-filter) 'category))))
+                (cl-some (lambda (cat-el)
+                           (equal (concat "android.intent.category." category)
+                                  (xml-get-attribute cat-el 'android:name)))
+                         (xml-get-children (first-xml-child activity 'intent-filter) 'category))))
      (let* ((root (car (xml-parse-file "AndroidManifest.xml")))
             (package (xml-get-attribute root 'package))
             (application (first-xml-child root 'application))
@@ -470,7 +471,7 @@ Filter on CATEGORY intent when supplied."
   "Start activity in the running emulator.
 When the current buffer holds an activity class specified in the
 manifest as a main action intent it will be run.  Otherwise
-start the first activity in the 'LAUNCHER' category."
+start the first activity in the `LAUNCHER` category."
   (interactive)
   (let* ((package (android-project-package))
          (current (android-current-buffer-class-name))
@@ -563,7 +564,7 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
   `(defun ,(intern (concat "android-ant-"
                            (replace-regexp-in-string "[[:space:]]" "-" task)))
        ()
-     ,(concat "Run 'ant " task "' in the project root directory.")
+     ,(concat "Run `ant " task "` in the project root directory.")
      (interactive)
      (android-ant ,task)))
 
@@ -578,7 +579,7 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
   `(defun ,(intern (concat "android-maven-"
                            (replace-regexp-in-string "[[:space:]:]" "-" task)))
        ()
-     ,(concat "Run maven " task " in the project root directory.")
+     ,(concat "Run `maven " task "` in the project root directory.")
      (interactive)
      (android-maven ,task)))
 
@@ -594,7 +595,7 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
   `(defun ,(intern (concat "android-gradle-"
                            (replace-regexp-in-string "[[:space:]:]" "-" task)))
        ()
-     ,(concat "Run gradle " task " in the project root directory.")
+     ,(concat "Run `gradle " task "` in the project root directory.")
      (interactive)
      (android-gradle ,task)))
 
@@ -609,50 +610,51 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
 (defun android-build-clean ()
   "Remove output files created by building."
   (interactive)
-  (funcall (case android-mode-builder
-             ('ant 'android-ant-clean)
-             ('gradle 'android-gradle-clean)
-             ('maven 'android-maven-clean))))
+  (cl-case android-mode-builder
+    (ant 'android-ant-clean)
+    (gradle 'android-gradle-clean)
+    (maven 'android-maven-clean)
+    (t (error "Unsupported builder for clean: %s" android-mode-builder))))
 
 (defun android-build-test ()
   "Run the tests."
   (interactive)
-  (funcall (case android-mode-builder
-             ('ant 'android-ant-test)
-             ('gradle 'android-gradle-test)
-             ('maven 'android-maven-test))))
+  (funcall (cl-case android-mode-builder
+             (ant 'android-ant-test)
+             (gradle 'android-gradle-test)
+             (maven 'android-maven-test))))
 
 (defun android-build-debug ()
   "Build the application in a debug mode."
   (interactive)
-  (funcall (case android-mode-builder
-             ('ant 'android-ant-debug)
-             ('gradle 'android-gradle-assembleDebug)
-             ('maven 'android-maven-install))))
+  (funcall (cl-case android-mode-builder
+             (ant 'android-ant-debug)
+             (gradle 'android-gradle-assembleDebug)
+             (maven 'android-maven-install))))
 
 (defun android-build-install ()
   "Install a generated apk file to the device."
   (interactive)
-  (funcall (case android-mode-builder
-             ('ant 'android-ant-installd)
-             ('gradle 'android-gradle-installDebug)
-             ('maven 'android-maven-android-deploy))))
+  (funcall (cl-case android-mode-builder
+             (ant 'android-ant-installd)
+             (gradle 'android-gradle-installDebug)
+             (maven 'android-maven-android-deploy))))
 
 (defun android-build-reinstall ()
   "Reinstall a generated apk file to the device."
   (interactive)
-  (funcall (case android-mode-builder
-             ('maven 'android-maven-android-redeploy)
+  (funcall (cl-case android-mode-builder
+             (maven 'android-maven-android-redeploy)
              (t (error "%s builder does not support reinstall"
                        android-mode-builder)))))
 
 (defun android-build-uninstall ()
   "Uninstall a generated apk file from the device."
   (interactive)
-  (funcall (case android-mode-builder
-             ('ant 'android-ant-uninstall)
-             ('gradle 'android-gradle-uninstallDebug)
-             ('maven 'android-maven-android-undeploy))))
+  (funcall (cl-case android-mode-builder
+             (ant 'android-ant-uninstall)
+             (gradle 'android-gradle-uninstallDebug)
+             (maven 'android-maven-android-undeploy))))
 
 (defconst android-mode-keys
   '(("d" . android-start-ddms)
