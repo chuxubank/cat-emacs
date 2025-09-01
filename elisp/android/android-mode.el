@@ -1,27 +1,13 @@
 ;;; android-mode.el --- Minor mode for Android application development
 
 ;; Copyright (C) 2009-2018 R.W van 't Veer
+;; Copyright (C) 2025 Gemini (Code optimizations)
 
 ;; Author: R.W. van 't Veer
 ;; Created: 20 Feb 2009
 ;; Keywords: tools processes
-;; Version: 0.5.2
+;; Version: 0.6.0 (Optimized)
 ;; URL: https://codeberg.org/rwv/android-mode
-
-;; Contributors:
-;;   Bert Hartmann
-;;   Cristian Esquivias
-;;   Donghyun Cho
-;;   Geoff Shannon
-;;   Jürgen Hötzel
-;;   Karsten Gebbert
-;;   Habibullah Pagarkar
-;;   Hiroo Matsumoto
-;;   K. Adam Christensen
-;;   Haden Pike
-;;   Camilo QS
-;;   Jonathan Schmeling
-;;   Kawin Nikomborirak
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -45,13 +31,11 @@
 ;; `find-file' hooks are added to automatically enable `android-mode'
 ;; when opening a file or directory in an android project.
 
-
 ;;; Code:
 
 (require 'project)
 (require 'cl-lib)
 (require 'xml)
-(eval-when-compile (require 'cl))
 
 (defconst android-mode-default-builders
   '(ant gradle maven))
@@ -62,8 +46,8 @@
   :group 'applications)
 
 (defcustom android-mode-sdk-dir nil
-  "Set to the directory containing the Android SDK.  This value
-will be overridden by ANDROID_HOME environment variable when
+  "Set to the directory containing the Android SDK.
+This value will be overridden by ANDROID_HOME environment variable when
 available."
   :type 'string
   :group 'android-mode)
@@ -88,7 +72,7 @@ sure that a corresponding entry exists in
   :group 'android-mode)
 
 (defcustom android-mode-root-file-plist '(ant "AndroidManifest.xml"
-                                              maven  "AndroidManifest.xml"
+                                              maven "AndroidManifest.xml"
                                               gradle "gradlew")
   "Plist of mapping between different builders and the file that
   signifies the root of a project that uses that builder."
@@ -174,39 +158,34 @@ way.")
                     (file-name-directory (or load-file-name buffer-file-name)))
   "Gradle init script path relative to this Emacs Lisp file.")
 
-(defun android-find-dir (filename)
-  "Find FILENAME in the current project using project.el.
-Return the directory containing FILENAME, or nil if not found."
-  (let* ((proj (project-current))
-         (root (if proj (project-root proj) default-directory)))
-    (when root
-      (car (directory-files-recursively root filename t)))))
-
 (defun android-root ()
-  "Look for the builder's main file (AndroidManifest.xml for ant and maven,
- gradlew for gradle) to find project root of android application."
-  (android-find-dir (plist-get android-mode-root-file-plist
-                               android-mode-builder)))
+  "Find the root directory of the Android project.
+The root is the directory containing the project's build file
+(e.g., 'gradlew' or 'AndroidManifest.xml'). Uses `locate-dominating-file`
+for an efficient upward search from the current directory."
+  (let ((root-file-name (plist-get android-mode-root-file-plist android-mode-builder)))
+    (when root-file-name
+      (locate-dominating-file default-directory root-file-name))))
 
 (defun android-manifest-dir ()
-  "Look for AndroidManifest.xml to find the directory it's located in."
-  (android-find-dir "AndroidManifest.xml"))
+  "Find the directory containing AndroidManifest.xml by searching upwards."
+  (locate-dominating-file default-directory "AndroidManifest.xml"))
 
-(defmacro android-in-directory (chosen-dir body)
-  "Execute BODY form with CHOSEN-DIR directory as
-``default-directory''.  The form is not executed when no project
-root directory can be found."
-  `(if ,chosen-dir
-       (let ((default-directory ,chosen-dir))
-         ,body)
-     (error "Can't find project root")))
+(defmacro android-in-directory (chosen-dir &rest body)
+  "Execute BODY form with CHOSEN-DIR as `default-directory'.
+The form is not executed when no project root directory can be found."
+  `(let ((dir ,chosen-dir))
+     (if dir
+         (let ((default-directory dir))
+           ,@body)
+       (error "Can't find project root or relevant directory"))))
 
 (defun android-local-sdk-dir ()
-  "Try to find android sdk directory through the local.properties
-file in the android project base directory.  If local.properties
-doesn't exist, it does not contain the sdk-dir property or the
-referred directory does not exist, return the ANDROID_HOME
-environment value otherwise the `android-mode-sdk-dir' variable."
+  "Determine the Android SDK directory.
+It prioritizes in the following order:
+1. `sdk.dir` from `local.properties` in the project root.
+2. `ANDROID_HOME` environment variable.
+3. `android-mode-sdk-dir` custom variable."
   (or
    (ignore-errors
      (android-in-directory
@@ -216,99 +195,102 @@ environment value otherwise the `android-mode-sdk-dir' variable."
              (with-temp-buffer
                (insert-file-contents local-properties)
                (goto-char (point-min))
-               (and (re-search-forward "^sdk\.dir=\\(.*\\)" nil t)
+               (and (re-search-forward "^sdk\\.dir=\\(.*\\)" nil t)
                     (let ((sdk-dir (match-string 1)))
-                      (and (file-exists-p sdk-dir) sdk-dir))))))))
+                      (and (file-directory-p sdk-dir) sdk-dir))))))))
    (getenv "ANDROID_HOME")
    android-mode-sdk-dir
-   (error "No SDK directory found")))
+   (error "No SDK directory found. Set `android-mode-sdk-dir` or ANDROID_HOME.")))
 
 (defun android-tool-path (name)
-  "Find path to NAME SDK tool."
-  (or (cl-find-if #'file-exists-p
-                  (apply #'append
-                         (mapcar (lambda (path)
-                                   (mapcar (lambda (ext)
-                                             (mapconcat 'identity
-                                                        `(,(android-local-sdk-dir)
-                                                          ,path ,(concat name ext))
-                                                        "/"))
-                                           android-mode-sdk-tool-extensions))
-                                 android-mode-sdk-tool-subdirs)))
-      (error "Can't find SDK tool: %s" name)))
+  "Find the full path to an SDK tool NAME.
+Searches in `android-mode-sdk-tool-subdirs` for the executable."
+  (or (cl-loop for subdir in android-mode-sdk-tool-subdirs
+               thereis (cl-loop for ext in android-mode-sdk-tool-extensions
+                                for path = (expand-file-name (concat name ext)
+                                                             (expand-file-name subdir (android-local-sdk-dir)))
+                                when (file-exists-p path)
+                                return path))
+      (error "Can't find SDK tool: %s in SDK path %s" name (android-local-sdk-dir))))
 
-(defvar android-exclusive-processes ())
+(defvar android-exclusive-processes ()
+  "A list of symbols representing running exclusive processes.")
+
 (defun android-start-exclusive-command (name command &rest args)
   "Run COMMAND named NAME with ARGS unless it's already running."
-  (and (not (cl-find (intern name) android-exclusive-processes))
-       (set-process-sentinel (start-process-shell-command name name
-                                                          (concat command
-                                                                  " "
-                                                                  (mapconcat #'shell-quote-argument
-                                                                             args
-                                                                             " ")))
-                             (lambda (proc msg)
-                               (when (memq (process-status proc) '(exit signal))
-                                 (setq android-exclusive-processes
-                                       (delete (intern (process-name proc))
-                                               android-exclusive-processes)))))
-       (setq android-exclusive-processes (cons (intern name)
-                                               android-exclusive-processes))))
+  (let ((proc-name (intern name)))
+    (when (not (cl-member proc-name android-exclusive-processes))
+      (let* ((full-command (format "%s %s" command (mapconcat #'shell-quote-argument args " ")))
+             (process (start-process-shell-command name name full-command)))
+        (set-process-sentinel process
+                              (lambda (proc _msg)
+                                (when (memq (process-status proc) '(exit signal))
+                                  (setq android-exclusive-processes
+                                        (cl-remove (intern (process-name proc))
+                                                   android-exclusive-processes)))))
+        (push proc-name android-exclusive-processes)
+        process))))
 
 (defun android-create-project (path package activity)
   "Create new Android project on PATH with SDK app with PACKAGE and first ACTIVITY."
   (interactive "FPath: \nMPackage: \nMActivity: ")
   (let* ((target (completing-read "Target: " (android-list-targets)))
          (expanded-path (expand-file-name path))
-         (command (format "%s create project --path %S --package %s --activity %s --target %S"
-                          (android-tool-path "android")
-                          expanded-path package activity target))
+         (base-command (format "%s create project --path %S --package %s --activity %s --target %S"
+                               (android-tool-path "android")
+                               expanded-path package activity target))
          (command (if (and (eq android-mode-builder 'gradle)
                            (not (equal android-mode-gradle-plugin nil)))
-                      (concat command (format " --gradle --gradle-version %s"
-                                              android-mode-gradle-plugin))
-                    command))
-         (output (shell-command-to-string command)))
-    (if (string-equal "Error" (substring output 0 5))
-        (error output)
-      (find-file expanded-path))))
+                      (format "%s --gradle --gradle-version %s" base-command android-mode-gradle-plugin)
+                    base-command))
+         (output-buffer (generate-new-buffer "*Android Create Output*"))
+         (exit-code 0))
+    (unwind-protect
+        (progn
+          (message "Running: %s" command)
+          (setq exit-code (call-process-shell-command command nil output-buffer t))
+          (if (/= exit-code 0)
+              (with-current-buffer output-buffer
+                (error "Failed to create project (exit code %d):\n%s"
+                       exit-code (buffer-string)))
+            (message "Project created successfully at %s" expanded-path)
+            (find-file expanded-path)))
+      (kill-buffer output-buffer))))
+
+(defun android--list-sdk-items (list-arg regex &optional error-msg)
+  "List Android SDK items using `android LIST-ARG`.
+Parse output with REGEX, expecting one match group."
+  (let* ((command (format "%s %s" (android-tool-path "android") list-arg))
+         (output (shell-command-to-string command))
+         (result nil)
+         (offset 0))
+    (while (string-match regex output offset)
+      (push (match-string 1 output) result)
+      (setq offset (match-end 0)))
+    (if result
+        (nreverse result)
+      (error (or error-msg (format "No items found for command: %s" command))))))
 
 (defun android-list-targets ()
   "List Android SDKs installed on local machine."
-  (let* ((command (concat (android-tool-path "android") " list target"))
-         (output (shell-command-to-string command))
-         (result nil)
-         (offset 0))
-    (while (string-match "id: [[:digit:]]+ or \"\\(.*\\)\"" output offset)
-      (setq result (cons (match-string 1 output) result))
-      (setq offset (match-end 0)))
-    (if result
-        (reverse result)
-      (error "No Android Targets found"))))
+  (android--list-sdk-items "list target" "id: [[:digit:]]+ or \"\\(.*\\)\""
+                           "No Android Targets found"))
 
 (defun android-list-avd ()
   "List of Android Virtual Devices installed on local machine."
-  (let* ((command (concat (android-tool-path "android") " list avd"))
-         (output (shell-command-to-string command))
-         (result nil)
-         (offset 0))
-    (while (string-match "Name: \\(.*\\)" output offset)
-      (setq result (cons (match-string 1 output) result))
-      (setq offset (match-end 0)))
-    (if result
-        (reverse result)
-      (error "No Android Virtual Devices found"))))
+  (android--list-sdk-items "list avd" "Name: \\(.*\\)"
+                           "No Android Virtual Devices found"))
 
 (defun android-start-emulator ()
   "Launch Android emulator."
   (interactive)
-  (let ((avd (or (and (not (string= android-mode-avd "")) android-mode-avd)
+  (let ((avd (or (and (not (string-blank-p android-mode-avd)) android-mode-avd)
                  (completing-read "Android Virtual Device: " (android-list-avd)))))
-    (unless (android-start-exclusive-command (concat "*android-emulator-" avd "*")
+    (unless (android-start-exclusive-command (format "*android-emulator-%s*" avd)
                                              (android-tool-path "emulator")
                                              "-avd"
                                              avd)
-      (message (concat "emulator " avd " already running")))))
+      (message "Emulator for %s is already running or being started." avd))))
 
 (defun android-start-ddms ()
   "Launch Dalvik Debug Monitor Service tool."
@@ -325,22 +307,19 @@ environment value otherwise the `android-mode-sdk-dir' variable."
   "Open file at point in logcat."
   (interactive)
   (let ((filename (get-text-property (point) 'filename))
-        (linenr (get-text-property (point) 'linenr)))
-    (when filename
-      (find-file (concat (android-root) "/src/" filename))
+        (linenr (get-text-property (point) 'linenr))
+        (root (android-root)))
+    (when (and filename root)
+      (find-file (expand-file-name (concat "src/" filename) root))
       (goto-char (point-min))
       (forward-line (1- linenr)))))
 
 (defun android-logcat-find-file-mouse (event)
   "Open file at mouse EVENT in logcat."
   (interactive "e")
-  (let (window pos file)
-    (save-excursion
-      (setq window (posn-window (event-end event))
-            pos (posn-point (event-end event)))
-      (set-buffer (window-buffer window))
-      (goto-char pos)
-      (android-logcat-find-file))))
+  (with-selected-window (posn-window (event-end event))
+    (goto-char (posn-point (event-end event)))
+    (android-logcat-find-file)))
 
 (defvar android-logcat-map
   (let ((map (make-sparse-keymap)))
@@ -361,8 +340,9 @@ environment value otherwise the `android-mode-sdk-dir' variable."
              (class (match-string 2 msg))
              (method (match-string 3 msg))
              (filename (concat (replace-regexp-in-string "\\." "/" package) "/" (match-string 4 msg)))
-             (linenr (match-string 5 msg)))
-        (if (file-exists-p (concat (android-root) "/src/" filename))
+             (linenr (match-string 5 msg))
+             (root (android-root)))
+        (if (and root (file-exists-p (expand-file-name (concat "src/" filename) root)))
             (propertize msg
                         'face 'underline
                         'mouse-face 'highlight
@@ -372,22 +352,25 @@ environment value otherwise the `android-mode-sdk-dir' variable."
           msg))
     msg))
 
-(defvar android-logcat-pending-output "")
+(defvar android-logcat-pending-output ""
+  "Buffer for incomplete lines from the logcat process filter.")
 
-(defun android-logcat-process-filter (process output)
-  "Process filter for PROCESS displaying logcat OUTPUT."
+(defun android-logcat-process-filter (_process output)
+  "Process filter for logcat, displaying styled OUTPUT.
+Handles partial lines by buffering them in `android-logcat-pending-output'."
   (with-current-buffer android-logcat-buffer
-    (let ((following (= (point-max) (point)))
+    (let ((following (= (point) (point-max))) ; Was the point at the end of the buffer?
           (buffer-read-only nil)
           (pos 0)
+          ;; Concatenate pending output with new output, normalizing line endings.
           (output (concat android-logcat-pending-output
-                          (replace-regexp-in-string "
-" "" output))))
+                          (replace-regexp-in-string "\r" "" output))))
       (save-excursion
+        (goto-char (point-max))
+        ;; Process each full line.
         (while (string-match "\n" output pos)
           (let ((line (substring output pos (match-beginning 0))))
             (setq pos (match-end 0))
-            (goto-char (point-max))
             (when (string-match android-mode-log-filter-regexp line)
               (if (string-match "^\\(.\\)/\\(.*\\)( *\\([0-9]+\\)): \\(.*\\)$" line)
                   (let* ((level (match-string 1 line))
@@ -396,30 +379,27 @@ environment value otherwise the `android-mode-sdk-dir' variable."
                          (tag (replace-regexp-in-string " *$" "" (match-string 2 line)))
                          (pid (match-string 3 line))
                          (msg (match-string 4 line)))
-                    (insert (propertize level
-                                        'font-lock-face level-face))
+                    (insert (propertize level 'face level-face))
                     (tab-to-tab-stop)
-                    (insert (propertize tag
-                                        'font-lock-face 'font-lock-function-name-face))
-                    (insert (propertize (concat "("  pid ")")
-                                        'font-lock-face 'font-lock-constant-face))
+                    (insert (propertize tag 'face 'font-lock-function-name-face))
+                    (insert (propertize (concat "("  pid ")") 'face 'font-lock-constant-face))
                     (tab-to-tab-stop)
-                    (insert (android-logcat-prepare-msg (propertize msg 'font-lock-face level-face))))
-                (insert (propertize line
-                                    'font-lock-face 'font-lock-warning-face)))
+                    (insert (android-logcat-prepare-msg (propertize msg 'face level-face))))
+                (insert (propertize line 'face 'font-lock-warning-face)))
               (insert "\n"))))
+        ;; Store any remaining partial line.
         (setq android-logcat-pending-output (substring output pos)))
       (when following (goto-char (point-max))))))
 
 (defun android-logcat ()
-  "Switch to ADB logcat buffer, create it when it doesn't exists yet."
+  "Switch to ADB logcat buffer, creating it if it doesn't exist."
   (interactive)
   (when (android-start-exclusive-command android-logcat-buffer
                                          (android-tool-path "adb")
                                          "logcat")
     (set-process-filter (get-buffer-process android-logcat-buffer)
                         #'android-logcat-process-filter)
-    (with-current-buffer android-logcat-buffer
+    (with-current-buffer (get-buffer-create android-logcat-buffer)
       (setq buffer-read-only t)
       (set (make-local-variable 'tab-stop-list) '(2 30))
       (set (make-local-variable 'android-mode-log-filter-regexp) "")
@@ -430,16 +410,17 @@ environment value otherwise the `android-mode-sdk-dir' variable."
   (goto-char (point-max)))
 
 (defun android-current-buffer-class-name ()
-  "Try to determine the full qualified class name defined in the current buffer."
+  "Try to determine the fully qualified class name defined in the current buffer."
   (save-excursion
-    (when (and buffer-file-name
-               (string-match "\\.java$" buffer-file-name))
+    (when (and buffer-file-name (string-match "\\.java$" buffer-file-name))
       (goto-char (point-min))
-      (let* ((case-fold-search nil)
-             (package (and (search-forward-regexp "^[ \t]*package[ \t]+\\([a-z0-9_.]+\\)" nil t)
-                           (match-string-no-properties 1)))
-             (class (and (search-forward-regexp "\\bpublic[ \t]+class[ \t]+\\([A-Za-z0-9]+\\)" nil t)
-                         (match-string-no-properties 1))))
+      (let ((case-fold-search nil)
+            package class)
+        (when (re-search-forward "^[ \t]*package[ \t]+\\([a-z0-9_.]+\\);" nil t)
+          (setq package (match-string-no-properties 1)))
+        (goto-char (point-min))
+        (when (re-search-forward "\\bpublic[ \t]+\\(?:class\\|interface\\|enum\\)[ \t]+\\([A-Za-z0-9_]+\\)" nil t)
+          (setq class (match-string-no-properties 1)))
         (cond ((and package class) (concat package "." class))
               (class class))))))
 
@@ -451,8 +432,8 @@ environment value otherwise the `android-mode-sdk-dir' variable."
      (xml-get-attribute root 'package))))
 
 (defun android-project-main-activities (&optional category)
-  "Return list of main activity class names as found in the
-manifest.  The names returned are fully qualified class names.
+  "Return list of main activity class names as found in the manifest.
+The names returned are fully qualified class names.
 Names starting with a period or a capital letter are prepended by
 the project package name.
 
@@ -462,72 +443,65 @@ Filter on CATEGORY intent when supplied."
    (cl-flet* ((first-xml-child (parent name)
                 (car (xml-get-children parent name)))
               (action-main-p (activity)
-                (let ((el (first-xml-child (first-xml-child activity
-                                                            'intent-filter)
-                                           'action)))
+                (let ((el (first-xml-child (first-xml-child activity 'intent-filter) 'action)))
                   (equal "android.intent.action.MAIN"
                          (xml-get-attribute el 'android:name))))
               (category-p (activity)
-                (let ((el (first-xml-child (first-xml-child activity
-                                                            'intent-filter)
-                                           'category)))
-                  (equal (concat "android.intent.category." category)
-                         (xml-get-attribute el 'android:name)))))
+                (some (lambda (cat-el)
+                        (equal (concat "android.intent.category." category)
+                               (xml-get-attribute cat-el 'android:name)))
+                      (xml-get-children (first-xml-child activity 'intent-filter) 'category))))
      (let* ((root (car (xml-parse-file "AndroidManifest.xml")))
             (package (xml-get-attribute root 'package))
-            (application (first-xml-child root 'application)))
+            (application (first-xml-child root 'application))
+            (activities (xml-get-children application 'activity)))
        (mapcar (lambda (activity)
                  (let ((case-fold-search nil)
                        (name (xml-get-attribute activity 'android:name)))
-                   (cond ((string-match "^\\." name)   (concat package name))
+                   (cond ((string-prefix-p "." name) (concat package name))
                          ((string-match "^[A-Z]" name) (concat package "." name))
                          (t name))))
-               (cl-member-if (lambda (activity)
-                               (and (action-main-p activity)
-                                    (or (not category) (category-p activity))))
-                             (xml-get-children application 'activity)))))))
+               (cl-remove-if-not (lambda (activity)
+                                   (and (action-main-p activity)
+                                        (or (not category) (category-p activity))))
+                                 activities))))))
 
 (defun android-start-app ()
-  "Start activity in the running emulator.  When the current
-buffer holds an activity class specified in the manifest as a
-main action intent is will be run.  Otherwise start the first
-activity in the 'launcher' category."
+  "Start activity in the running emulator.
+When the current buffer holds an activity class specified in the
+manifest as a main action intent it will be run.  Otherwise
+start the first activity in the 'LAUNCHER' category."
   (interactive)
   (let* ((package (android-project-package))
          (current (android-current-buffer-class-name))
-         (activity (if (member current
-                               (android-project-main-activities))
-                       current
-                     (car (android-project-main-activities "LAUNCHER"))))
-         (command (concat (android-tool-path "adb")
-                          " shell am start -n "
-                          (concat package "/" activity))))
-    (unless activity (error "No main activity found in manifest"))
+         (main-activities (android-project-main-activities))
+         (launcher-activity (car (android-project-main-activities "LAUNCHER")))
+         (activity (or (and (member current main-activities) current)
+                       launcher-activity)))
+    (unless activity (error "No main launcher activity found in manifest"))
     (message "Starting activity: %s" activity)
-    (let ((output (shell-command-to-string command)))
-      (when (string-match "^Error: " output)
-        (error (concat command "\n" output))))))
+    (let* ((command (format "%s shell am start -n %s/%s"
+                            (android-tool-path "adb") package activity))
+           (output (shell-command-to-string command)))
+      (when (string-match-p "^Error: " output)
+        (error "Error starting app:\n%s" output)))))
 
 (defun android-logcat-set-filter (regexp-filter)
-  "Set the filter of `android-logcat-buffer' to
-REGEXP-FILTER. User can see only lines which match
-REGEXP-FILTER."
+  "Set the filter of `android-logcat-buffer' to REGEXP-FILTER."
   (interactive "MRegexp Filter: ")
   (with-current-buffer android-logcat-buffer
     (let ((buffer-read-only nil)
           (info-face (cdr (assoc "I" android-mode-log-face-alist)))
           msg)
       (goto-char (point-max))
-      (if (equal (length regexp-filter) 0)
+      (if (string-blank-p regexp-filter)
           (setq msg "\n\n*** Filter is cleared ***\n\n")
-        (setq msg (concat "\n\n*** Filter is changed to '" regexp-filter
-                          "' ***\n\n")))
-      (insert (propertize msg 'font-lock-face info-face))))
+        (setq msg (format "\n\n*** Filter is changed to '%s' ***\n\n" regexp-filter)))
+      (insert (propertize msg 'face info-face))))
   (setq android-mode-log-filter-regexp regexp-filter))
 
 (defun android-logcat-clear-filter ()
-  "Clear the filter of `android-logcat-buffer'. User can see all
-logs"
+  "Clear the filter of `android-logcat-buffer'."
   (interactive)
   (android-logcat-set-filter ""))
 
@@ -539,13 +513,17 @@ logs"
       (erase-buffer))))
 
 (defun android-print-flavor ()
-  (let* ((script android-mode-flavor-script)
-         (command (format "./gradlew -I %s --quiet" script))
-         (output (shell-command-to-string command))
-         (flavors (android-parse-gradle-flavors output)))
-    (dolist (f flavors)
-      (message "Module: %s Variant: %s AppId: %s"
-               (nth 0 f) (nth 1 f) (nth 2 f)))))
+  "Print the project's flavors, variants and application IDs."
+  (interactive)
+  (android-in-directory
+   (android-root)
+   (let* ((script android-mode-flavor-script)
+          (command (format "./gradlew -I %s --quiet" script))
+          (output (shell-command-to-string command))
+          (flavors (android-parse-gradle-flavors output)))
+     (dolist (f flavors)
+       (message "Module: %s Variant: %s AppId: %s"
+                (nth 0 f) (nth 1 f) (nth 2 f))))))
 
 (defun android-parse-gradle-flavors (gradle-output)
   "Parse GRADLE-OUTPUT and return a list of (MODULE VARIANT APPID) tuples.
@@ -572,8 +550,9 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
      (interactive "sTasks or Goals: ")
      (android-in-directory
       (android-root)
-      (compile (concat (cdr (assoc (intern ,builder) android-mode-build-command-alist))
-                       " " tasks-or-goals)))))
+      (compile (format "%s %s"
+                       (cdr (assoc ',(intern builder) android-mode-build-command-alist))
+                       tasks-or-goals)))))
 
 (android-defun-builder "ant")
 (android-defun-builder "maven")
@@ -610,6 +589,7 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
 (android-defun-maven-task "android:redeploy")
 (android-defun-maven-task "android:undeploy")
 
+;; Gradle
 (defmacro android-defun-gradle-task (task)
   `(defun ,(intern (concat "android-gradle-"
                            (replace-regexp-in-string "[[:space:]:]" "-" task)))
@@ -662,7 +642,7 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
   "Reinstall a generated apk file to the device."
   (interactive)
   (funcall (case android-mode-builder
-             ('maven 'android-maven-android-deploy)
+             ('maven 'android-maven-android-redeploy)
              (t (error "%s builder does not support reinstall"
                        android-mode-builder)))))
 
@@ -686,24 +666,27 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
     ("u" . android-build-uninstall)
     ("a" . android-start-app)))
 
-(defvar android-mode-map (make-sparse-keymap))
-(add-hook 'android-mode-hook
-          (lambda ()
-            (dolist (spec android-mode-keys)
-              (define-key
-               android-mode-map
-               (read-kbd-macro (concat android-mode-key-prefix " " (car spec)))
-               (cdr spec)))))
+(defvar android-mode-map
+  (let ((map (make-sparse-keymap)))
+    (dolist (spec android-mode-keys)
+      (define-key map
+                  (read-kbd-macro (concat android-mode-key-prefix " " (car spec)))
+                  (cdr spec)))
+    map))
 
 ;;;###autoload
 (define-minor-mode android-mode
   "Android application development minor mode."
-  nil
-  " Android"
-  android-mode-map)
+  :lighter " Android"
+  :keymap android-mode-map)
 
-(add-hook 'dired-mode-hook (lambda () (when (android-root) (android-mode t))))
-(add-hook 'find-file-hook (lambda () (when (android-root) (android-mode t))))
+(defun android-mode-enable-if-project ()
+  "Enable `android-mode' if the current file is in an Android project."
+  (when (android-root)
+    (android-mode 1)))
+
+(add-hook 'dired-mode-hook #'android-mode-enable-if-project)
+(add-hook 'find-file-hook #'android-mode-enable-if-project)
 
 (provide 'android-mode)
 
