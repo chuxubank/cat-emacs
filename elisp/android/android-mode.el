@@ -538,6 +538,34 @@ logs"
     (let ((buffer-read-only nil))
       (erase-buffer))))
 
+(defun android-print-flavor ()
+  (let* ((script android-mode-flavor-script)
+         (command (format "./gradlew -I %s --quiet" script))
+         (output (shell-command-to-string command))
+         (flavors (android-parse-gradle-flavors output)))
+    (dolist (f flavors)
+      (message "Module: %s Variant: %s AppId: %s"
+               (nth 0 f) (nth 1 f) (nth 2 f)))))
+
+(defun android-parse-gradle-flavors (gradle-output)
+  "Parse GRADLE-OUTPUT and return a list of (MODULE VARIANT APPID) tuples.
+Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
+  (let ((in-flavors nil)
+        (result '()))
+    (dolist (line (split-string gradle-output "\n" t))
+      (cond
+       ((string-match-p "===FLAVORS_START===" line)
+        (setq in-flavors t))
+       ((string-match-p "===FLAVORS_END===" line)
+        (setq in-flavors nil))
+       (in-flavors
+        (when (string-match "^\\([^:]+\\):\\([^=]+\\)=\\(.+\\)$" line)
+          (let ((module (match-string 1 line))
+                (variant (match-string 2 line))
+                (appid (match-string 3 line)))
+            (push (list module variant appid) result))))))
+    (nreverse result)))
+
 (defmacro android-defun-builder (builder)
   `(defun ,(intern (concat "android-" builder)) (tasks-or-goals)
      ,(concat "Run " builder " TASKS-OR-GOALS in the project root directory.")
