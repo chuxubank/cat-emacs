@@ -105,6 +105,7 @@
 (use-package minimap
   :delight " "
   :custom
+  (minimap-major-modes '(prog-mode text-mode))
   (minimap-width-fraction 0.1)
   (minimap-minimum-width 15)
   (minimap-window-location 'right))
