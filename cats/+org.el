@@ -265,6 +265,7 @@
                         ("call" . "")
                         ("include" . ,(+with-icon "nf-oct-cross_reference"))
                         ("macro" . "")
+                        ("results" . ":")
                         (t . t)))
   :mode-hydra
   (org-mode
