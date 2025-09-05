@@ -99,6 +99,7 @@
 (cat! "+gradle")
 (cat! "+js")
 (cat! "+jvm")
+(cat! "+kdl")
 (cat! "+lua")
 (cat! "+makefile")
 (cat! "+mermaid")
