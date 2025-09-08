@@ -227,9 +227,24 @@
   :custom
   (epg-pinentry-mode 'loopback))
 
+(defun cat-colorize-buffer ()
+  "Apply ANSI colors to the current buffer."
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
+(defun cat-colorize-after-shell-command-on-region (&rest _args)
+  "Apply ANSI colors to the `shell-command-buffer-name' buffer after `shell-command-on-region'."
+  (when (get-buffer shell-command-buffer-name)
+    (with-current-buffer shell-command-buffer-name
+      (cat-colorize-buffer))))
+
+(advice-add 'shell-command-on-region :after #'cat-colorize-after-shell-command-on-region)
+
 (use-package ansi-color
   :ensure nil
-  :hook (compilation-filter . ansi-color-compilation-filter))
+  :hook
+  (compilation-filter . ansi-color-compilation-filter)
+  (shell-mode . ansi-color-for-comint-mode-on))
 
 (use-package compile
   :ensure nil
