@@ -55,6 +55,7 @@
 
 ;;; org
 (cat! "+org")
+(cat! "+org-babel")
 (cat! "+org-todo")
 (cat! "+org-roam")
 (cat! "+org-notes")
