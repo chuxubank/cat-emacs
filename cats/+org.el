@@ -175,27 +175,6 @@
                (cons org-crypt-tag-matcher ?c))
   (org-crypt-use-before-save-magic))
 
-(use-package ol
-  :demand t
-  :after org
-  :ensure nil
-  :bind
-  (:map org-mode-map
-        ("M-n" . org-next-link)
-        ("M-p" . org-previous-link))
-  :custom
-  (org-link-abbrev-alist '(("wiki-zh" . "https://zh.wikipedia.org/wiki/%h")
-                           ("wiki-en" . "https://en.wikipedia.org/wiki/%s")
-                           ("github" . "https://github.com/%s")
-                           ("google" . "https://goo.gle/%s")
-                           ("bitbucket" . "https://bitbucket.org/%s")
-                           ("bili". "https://bilibili.com/video/%s")
-                           ("coursera". "https://www.coursera.org/%s")))
-  :mode-hydra
-  (org-mode
-   ("Link"
-    (("l" org-toggle-link-display "link display")))))
-
 (use-package org-modern
   :demand
   :after org
