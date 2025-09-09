@@ -233,10 +233,15 @@
     (ansi-color-apply-on-region (point-min) (point-max))))
 
 (defun cat-colorize-after-shell-command-on-region (&rest _args)
-  "Apply ANSI colors to the `shell-command-buffer-name' buffer after `shell-command-on-region'."
-  (when (get-buffer shell-command-buffer-name)
-    (with-current-buffer shell-command-buffer-name
-      (cat-colorize-buffer))))
+  "Apply ANSI colors to the `shell-command-buffer-name' buffer and `minibuffer' after `shell-command-on-region'."
+  (let ((bufs (seq-filter
+               (lambda (x)
+                 (or (string-prefix-p " *Echo Area" (buffer-name x))
+                     (string-match-p shell-command-buffer-name (buffer-name x))))
+               (buffer-list))))
+    (dolist (buf bufs)
+      (with-current-buffer buf
+        (cat-colorize-buffer)))))
 
 (advice-add 'shell-command-on-region :after #'cat-colorize-after-shell-command-on-region)
 
