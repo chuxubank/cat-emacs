@@ -28,7 +28,7 @@
            :limit 50
            :filename "cur-sprint")))
   (org-jira-progress-issue-flow
-   '(("Open" . "Start Dev Work")
+   '(("Open" . "Work Started")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
   :mode-hydra
