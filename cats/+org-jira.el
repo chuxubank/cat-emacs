@@ -71,7 +71,7 @@
   (let ((root (magit-read-repository)))
     (magit-status root)
     (if (string= source-branch (magit-get-current-branch))
-        (magit-pull-branch "develop" nil)
+        (magit-pull-branch source-branch nil)
       (magit-fetch-refspec "origin" (format "%s:%s" source-branch source-branch) nil))
     (magit-branch-and-checkout
      (read-string "Branch name: "
