@@ -75,7 +75,7 @@
       (magit-fetch-refspec "origin" (format "%s:%s" source-branch source-branch) nil))
     (magit-branch-and-checkout
      (read-string "Branch name: "
-                  (concat key (downcase (cat-generate-branch-name text))))
+                  (concat key "-" (downcase (cat-generate-branch-name text))))
      source-branch)))
 
 (defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
