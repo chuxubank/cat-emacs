@@ -4,6 +4,9 @@
   :demand t
   :after org)
 
+(use-package task
+  :ensure nil)
+
 (use-package org-jira
   :delight " 󰌃"
   :after org
@@ -62,24 +65,8 @@
                                (expand-file-name org-jira-working-dir)
                                (file-name-directory (buffer-file-name)))))))
 
-(defun cat-generate-branch-name (text)
-  "Make TEXT a valid branch name."
-  (replace-regexp-in-string "[^A-Za-z]+" "-" text))
-
-(defun cat-create-branch-with-key-and-text (source-branch key text)
-  "Use KEY and TEXT as name to create branch from SOURCE-BRANCH."
-  (let ((root (magit-read-repository)))
-    (magit-status root)
-    (if (string= source-branch (magit-get-current-branch))
-        (magit-pull-branch source-branch nil)
-      (magit-fetch-refspec "origin" (format "%s:%s" source-branch source-branch) nil))
-    (magit-branch-and-checkout
-     (read-string "Branch name: "
-                  (concat key "-" (downcase (cat-generate-branch-name text))))
-     source-branch)))
-
-(defun cat-org-jira-start-dev-work (issue-key action-id params &optional callback)
-  "Helper function to create a branch with ISSUE-KEY and current org heading content."
+(defun +org-jira-start-dev-work (issue-key action-id &rest _args)
+  "Create a branch with ISSUE-KEY and current org heading content if ACTION-ID is to start work."
   (let* ((open-next (cdr (assoc "Open" jiralib-available-actions-cache)))
          (start-action '("Start Dev Work" "Work Started"))
          (start-action-id (mapcar (lambda (pair)
@@ -88,8 +75,9 @@
                                   open-next))
          (org-heading (nth 4 (org-heading-components))))
     (when (member action-id start-action-id)
-      (cat-create-branch-with-key-and-text "develop" issue-key org-heading))))
-(advice-add 'jiralib-progress-workflow-action :after #'cat-org-jira-start-dev-work)
+      (task-create-branch-with-key-and-text (magit-read-repository) "develop" issue-key org-heading))))
+
+(advice-add 'jiralib-progress-workflow-action :after #'+org-jira-start-dev-work)
 
 (defun cat-org-jira-dispatch ()
   "If `org-jira-mode' is active, show Hydra; else push current TODO to JIRA."
@@ -109,7 +97,9 @@
   "I" #'org-jira-get-issues
   "j" #'org-jira-get-issues-from-custom-jql
   "p" #'org-jira-get-projects
-  "v" #'org-jira-get-issues-by-fixversion)
+  "v" #'org-jira-get-issues-by-fixversion
+  "s" #'+org-jira-save-jql-files
+  "d" #'+org-jira-delete-custom-jql-files)
 
 (pretty-hydra-define cat-org-jira-issue
   (:title "Org-Jira Issue" :color teal :quit-key "q" :foreign-keys warn)
