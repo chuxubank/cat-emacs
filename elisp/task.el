@@ -16,16 +16,22 @@
   "Make TEXT a valid branch name."
   (replace-regexp-in-string "[^A-Za-z]+" "-" text))
 
-(defun task-create-branch-with-key-and-text (repo source-branch key text)
-  "Use KEY and TEXT as name to create branch from SOURCE-BRANCH in REPO."
-  (magit-status repo)
-  (if (string= source-branch (magit-get-current-branch))
-      (magit-pull-branch source-branch nil)
-    (magit-fetch-refspec "origin" (format "%s:%s" source-branch source-branch) nil))
-  (magit-branch-and-checkout
-   (read-string "Branch name: "
-                (concat key "-" (downcase (task--generate-branch-name text))))
-   source-branch))
+(defun task-create-branch-with-key-and-text (repo key text &optional remote source-branch)
+  "Use KEY and TEXT as name to create branch from REMOTE's SOURCE-BRANCH in REPO."
+  (magit-status-setup-buffer repo)
+  (let* ((remote (or remote
+                     (magit-read-remote "Select remote")))
+         (branch (or source-branch
+                     (magit-read-branch "Select source branch"))))
+    (if (string= branch (magit-get-current-branch))
+        (magit-pull-branch branch nil)
+      (magit-fetch-refspec remote (format "%s:%s" branch branch) nil))
+    (with-suppressed-warnings ((interactive-only magit-branch-and-checkout))
+      (magit-branch-and-checkout
+       (read-string
+        "Branch name: "
+        (concat key "-" (downcase (task--generate-branch-name text))))
+       branch))))
 
 (defun task--jira-issues-candidates (jql limit)
   "Return an alist of (ISSUE-KEY . ISSUE-DATA) for JQL with LIMIT."
