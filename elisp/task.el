@@ -3,6 +3,12 @@
 (require 'magit)
 (require 'jiralib)
 
+(defcustom task-icon-cache-dir "~/.cache/emacs/task/icon"
+  "Cache dir for task icon")
+
+(unless (file-exists-p task-icon-cache-dir)
+  (make-directory task-icon-cache-dir t))
+
 (defvar task--jira-candidates nil
   "Cache for last JIRA candidates.")
 
@@ -28,6 +34,13 @@
               (cons (cdr (assoc 'key issue)) issue))
             issues)))
 
+(defun task--get-icon (url key)
+  "Get image icon from URL with KEY for cache."
+  (let* ((cache-file (expand-file-name key task-icon-cache-dir)))
+    (unless (file-exists-p cache-file)
+      (url-copy-file url cache-file t))
+    (create-image cache-file nil nil :ascent 'center)))
+
 (defun task-jira-select-issue (jql)
   "Prompt user to select a JIRA issue using JQL, with affixation (date/summary)."
   (interactive "sJQL: ")
@@ -42,9 +55,14 @@
                                   (updated (cdr (assoc 'updated fields)))
                                   (summary (cdr (assoc 'summary fields)))
                                   (issuetype (cdr (assoc 'issuetype fields)))
+                                  (iconUrl (cdr (assoc 'iconUrl issuetype)))
+                                  (typeId (cdr (assoc 'id issuetype)))
                                   (typename (cdr (assoc 'name issuetype))))
                         (list (format "%-10s" cand)
-                              (format "%-10s" (or typename ""))
+                              (concat
+                               (when-let ((img (task--get-icon iconUrl (concat "jira-" typeId))))
+                                 (propertize " " 'display img))
+                               " ")
                               (format " %-10s  %-10s  %s"
                                       (or created "")
                                       (or updated "")
