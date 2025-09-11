@@ -54,17 +54,15 @@
          (affix-fn
           (lambda (completions)
             (mapcar (lambda (cand)
-                      (when-let* ((pair (assoc cand cands))
-                                  (issue (cdr pair))
+                      (when-let* ((issue (cdr (assoc cand cands)))
                                   (fields (cdr (assoc 'fields issue)))
                                   (created (cdr (assoc 'created fields)))
                                   (updated (cdr (assoc 'updated fields)))
                                   (summary (cdr (assoc 'summary fields)))
                                   (issuetype (cdr (assoc 'issuetype fields)))
                                   (iconUrl (cdr (assoc 'iconUrl issuetype)))
-                                  (typeId (cdr (assoc 'id issuetype)))
-                                  (typename (cdr (assoc 'name issuetype))))
-                        (list (format "%-10s" cand)
+                                  (typeId (cdr (assoc 'id issuetype))))
+                        (list (propertize cand 'display (format "%-10s" cand))
                               (concat
                                (when-let ((img (task--get-icon iconUrl (concat "jira-" typeId))))
                                  (propertize " " 'display img))
@@ -74,9 +72,20 @@
                                       (or updated "")
                                       (or summary "")))))
                     completions)))
+         (group-fn
+          (lambda (cand trans)
+            (let* ((issue (cdr (assoc cand cands)))
+                   (fields (cdr (assoc 'fields issue)))
+                   (issuetype (cdr (assoc 'issuetype fields)))
+                   (typename (cdr (assoc 'name issuetype)))
+                   (desc (cdr (assoc 'description issuetype))))
+              (if trans
+                  cand
+                (format "%s - %s" typename desc)))))
          (completion-extra-properties
-          `(:affixation-function ,affix-fn)))
-    (completing-read "Select JIRA issue: " cands nil t)))
+          `(:affixation-function ,affix-fn :group-function ,group-fn)))
+    (setq task--jira-candidates cands)
+    (completing-read "Select JIRA issue: " task--jira-candidates nil t)))
 
 (provide 'task)
 
