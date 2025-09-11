@@ -5,6 +5,7 @@
   :after org)
 
 (use-package task
+  :commands #'task-create-branch-with-key-and-text
   :ensure nil)
 
 (use-package org-jira
@@ -75,7 +76,8 @@
                                   open-next))
          (org-heading (nth 4 (org-heading-components))))
     (when (member action-id start-action-id)
-      (task-create-branch-with-key-and-text (magit-read-repository) issue-key org-heading))))
+      (magit-read-repository)
+      (task-create-branch-with-key-and-text issue-key org-heading))))
 
 (advice-add 'jiralib-progress-workflow-action :after #'+org-jira-start-dev-work)
 
