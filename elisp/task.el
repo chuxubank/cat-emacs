@@ -64,9 +64,14 @@
   :type 'directory
   :group 'task)
 
-(defcustom task-jira-default-jql "assignee = currentUser() and resolution = Unresolved order by updated"
-  "The default jql to filter task."
+(defcustom task-jira-default-jql "assignee = currentUser() and resolution = Unresolved"
+  "The default JQL to filter Jira tasks."
   :type 'string
+  :group 'task)
+
+(defcustom task-jira-search-limit 20
+  "The Jira search limit."
+  :type 'number
   :group 'task)
 
 (unless (file-exists-p task-icon-cache-dir)
@@ -93,14 +98,29 @@
       (url-copy-file url cache-file t))
     (create-image cache-file nil nil :ascent 'center)))
 
-(defun task-jira-select-issue (jql)
+(defun task--jira-completion-table (input)
+  "Return a completion table for Jira issues with INPUT.
+Dynamically queries JIRA by combining default JQL with user input."
+  (let* ((filter (when (and input (not (string-empty-p input)))
+                   (format " AND (summary ~ \"%s\" OR key ~ \"%s\")"
+                           input input)))
+         (jql (concat task-jira-default-jql filter))
+         (issues (task--jira-issues-candidates jql task-jira-search-limit)))
+    (setq task--jira-candidates issues)
+    (mapcar (lambda (pair)
+              (let* ((key (car pair))
+                     (fields (cdr (assoc 'fields (cdr pair))))
+                     (summary (or (cdr (assoc 'summary fields)) "")))
+                (propertize key 'invisible summary)))
+            issues)))
+
+(defun task-jira-select-issue ()
   "Prompt user to select a JIRA issue using JQL, with affixation (date/summary)."
-  (interactive "sJQL: ")
-  (let* ((cands (task--jira-issues-candidates jql 50))
-         (affix-fn
+  (interactive)
+  (let* ((affix-fn
           (lambda (completions)
             (mapcar (lambda (cand)
-                      (when-let* ((issue (cdr (assoc cand cands)))
+                      (when-let* ((issue (cdr (assoc cand task--jira-candidates)))
                                   (fields (cdr (assoc 'fields issue)))
                                   (created (cdr (assoc 'created fields)))
                                   (updated (cdr (assoc 'updated fields)))
@@ -120,7 +140,7 @@
                     completions)))
          (group-fn
           (lambda (cand trans)
-            (let* ((issue (cdr (assoc cand cands)))
+            (let* ((issue (cdr (assoc cand task--jira-candidates)))
                    (fields (cdr (assoc 'fields issue)))
                    (issuetype (cdr (assoc 'issuetype fields)))
                    (typename (cdr (assoc 'name issuetype)))
@@ -130,8 +150,10 @@
                 (format "%s - %s" typename desc)))))
          (completion-extra-properties
           `(:affixation-function ,affix-fn :group-function ,group-fn)))
-    (setq task--jira-candidates cands)
-    (completing-read "Select JIRA issue: " task--jira-candidates nil t)))
+    (completing-read "Select JIRA issue: "
+                     (completion-table-with-cache #'task--jira-completion-table)
+                     nil
+                     t)))
 
 (defun task-create-branch-with-key-and-text (key text &optional remote source-branch)
   "Use KEY and TEXT as name to create branch from REMOTE's SOURCE-BRANCH in REPO."
@@ -153,7 +175,7 @@
 (defun task-start-dev-work ()
   "Start the development with task."
   (interactive)
-  (let* ((key (task-jira-select-issue task-jira-default-jql))
+  (let* ((key (task-jira-select-issue))
          (issue (cdr (assoc key task--jira-candidates)))
          (fields (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
