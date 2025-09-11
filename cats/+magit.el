@@ -11,7 +11,19 @@
                                   (,cat-pass-directory . 0)))
   (magit-diff-refine-hunk t)
   (magit-diff-refine-ignore-whitespace nil)
-  (magit-format-file-function #'magit-format-file-nerd-icons))
+  (magit-format-file-function #'magit-format-file-nerd-icons)
+  :config
+  (transient-append-suffix 'magit-branch #'magit-branch-rename
+    '("w" "copy" magit-add-current-branch-to-kill-ring)))
+
+(defun magit-add-current-branch-to-kill-ring ()
+  "Show the current branch in the echo-area and add it to the `kill-ring'."
+  (interactive)
+  (let ((branch (magit-get-current-branch)))
+    (if branch
+        (progn (kill-new branch)
+               (message "%s" branch))
+      (user-error "There is not current branch"))))
 
 (use-package magit-section
   :pin melpa-stable)
