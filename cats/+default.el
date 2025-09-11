@@ -227,10 +227,31 @@
   :custom
   (epg-pinentry-mode 'loopback))
 
-(defun cat-colorize-buffer ()
-  "Apply ANSI colors to the current buffer."
-  (let ((inhibit-read-only t))
-    (ansi-color-apply-on-region (point-min) (point-max))))
+(defun cat-clean-buffer-output (&optional beg end)
+  "Clear buffer's ANSI color and control characters from BEG to END."
+  (interactive "r")
+  (save-excursion
+    (let* ((beg (or beg (point-min)))
+           (end (or end (point-max)))
+           (text (buffer-substring-no-properties beg end)))
+      (setq text (cat-handle-backspace text))
+      (setq text (ansi-color-apply text))
+      (let ((inhibit-read-only t))
+        (delete-region beg end)
+        (goto-char beg)
+        (insert text)))))
+
+(defun cat-handle-backspace (string)
+  "Interpret backspaces (^H) in STRING like a terminal would."
+  (let ((i 0)
+        (res ""))
+    (while (< i (length string))
+      (let ((c (aref string i)))
+        (if (and (= c ?\b) (> (length res) 0))
+            (setq res (substring res 0 -1))
+          (setq res (concat res (string c)))))
+      (setq i (1+ i)))
+    res))
 
 (defun cat-colorize-after-shell-command-on-region (&rest _args)
   "Apply ANSI colors to the `shell-command-buffer-name' buffer and `minibuffer' after `shell-command-on-region'."
@@ -241,7 +262,7 @@
                (buffer-list))))
     (dolist (buf bufs)
       (with-current-buffer buf
-        (cat-colorize-buffer)))))
+        (cat-clean-buffer-output)))))
 
 (advice-add 'shell-command-on-region :after #'cat-colorize-after-shell-command-on-region)
 
