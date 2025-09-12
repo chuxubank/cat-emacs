@@ -84,6 +84,13 @@
   "Make TEXT a valid branch name."
   (replace-regexp-in-string "[^A-Za-z]+" "-" text))
 
+(defun task--get-icon (url key)
+  "Get image icon from URL with KEY for cache."
+  (let* ((cache-file (expand-file-name key task-icon-cache-dir)))
+    (unless (file-exists-p cache-file)
+      (url-copy-file url cache-file t))
+    (create-image cache-file nil nil :ascent 'center)))
+
 (defun task--jira-issues-candidates (jql limit)
   "Return an alist of (ISSUE-KEY . ISSUE-DATA) for JQL with LIMIT."
   (let ((issues (jiralib-do-jql-search jql limit)))
@@ -91,12 +98,12 @@
               (cons (cdr (assoc 'key issue)) issue))
             issues)))
 
-(defun task--get-icon (url key)
-  "Get image icon from URL with KEY for cache."
-  (let* ((cache-file (expand-file-name key task-icon-cache-dir)))
-    (unless (file-exists-p cache-file)
-      (url-copy-file url cache-file t))
-    (create-image cache-file nil nil :ascent 'center)))
+(defun task--jira-format-candidates ()
+  "Format completion candidates for Jira issues.
+
+Return a hash table with the keys being completion candidate
+strings and values being issue id."
+  (when-let (())))
 
 (defun task--jira-completion-table (input)
   "Return a completion table for Jira issues with INPUT.
