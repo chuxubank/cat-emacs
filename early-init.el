@@ -40,8 +40,6 @@
 (+mkdir-p cat-cache-dir)
 (+mkdir-p cat-etc-dir)
 
-(defconst cat-default-bibliography-files '("~/Zotero/My Library.bib"))
-
 ;;; path
 (when IS-ANDROID
   ;; Add Termux binaries to PATH environment

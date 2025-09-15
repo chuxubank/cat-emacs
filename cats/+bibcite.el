@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-default-bibliography-files
+  `(,(expand-file-name "My Library.bib" cat-org-roam-directory))
+  "Default bibliography files."
+  :type 'directory
+  :group 'cat-emacs)
+
 (defcustom cat-default-csl-styles-dir
   (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
   "Filename of the default csl styles folder.
