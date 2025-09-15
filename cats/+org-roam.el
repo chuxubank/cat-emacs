@@ -79,7 +79,7 @@ If called interactively, open the selected template file.
 If called non-interactively, return the file name of the selected template.
 DIR specifies a subdirectory under `cat-org-roam-templates-directory'."
   (interactive)
-  (let ((template-dir (expand-file-name (concat cat-org-roam-templates-directory dir) cat-org-roam-directory)))
+  (let ((template-dir (concat cat-org-roam-directory cat-org-roam-templates-directory dir)))
     (if-let* ((dir-exists (file-directory-p template-dir))
               (files (directory-files-recursively template-dir ".*\\.org")))
         (let ((chosen-file (completing-read "Choose template: " files nil t)))
