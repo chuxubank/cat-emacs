@@ -1,9 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (defcustom cat-default-bibliography-files
-  `(,(expand-file-name "My Library.bib" cat-org-roam-directory))
+  (directory-files (expand-file-name "bibliography" cat-org-roam-directory)
+                   t "\\.bib\\'")
   "Default bibliography files."
-  :type 'directory
+  :type '(repeat file)
   :group 'cat-emacs)
 
 (defcustom cat-default-roam-dir
