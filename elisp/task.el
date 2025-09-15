@@ -98,69 +98,57 @@
               (cons (cdr (assoc 'key issue)) issue))
             issues)))
 
-(defun task--jira-format-candidates ()
-  "Format completion candidates for Jira issues.
-
-Return a hash table with the keys being completion candidate
-strings and values being issue id."
-  (when-let (())))
-
-(defun task--jira-completion-table (input)
-  "Return a completion table for Jira issues with INPUT.
-Dynamically queries JIRA by combining default JQL with user input."
-  (let* ((filter (when (and input (not (string-empty-p input)))
-                   (format " AND (summary ~ \"%s\" OR key ~ \"%s\")"
-                           input input)))
-         (jql (concat task-jira-default-jql filter))
-         (issues (task--jira-issues-candidates jql task-jira-search-limit)))
-    (setq task--jira-candidates issues)
-    (mapcar (lambda (pair)
-              (let* ((key (car pair))
-                     (fields (cdr (assoc 'fields (cdr pair))))
-                     (summary (or (cdr (assoc 'summary fields)) "")))
-                (propertize key 'invisible summary)))
-            issues)))
-
-(defun task-jira-select-issue ()
-  "Prompt user to select a JIRA issue using JQL, with affixation (date/summary)."
-  (interactive)
-  (let* ((affix-fn
-          (lambda (completions)
-            (mapcar (lambda (cand)
-                      (when-let* ((issue (cdr (assoc cand task--jira-candidates)))
-                                  (fields (cdr (assoc 'fields issue)))
-                                  (created (cdr (assoc 'created fields)))
-                                  (updated (cdr (assoc 'updated fields)))
-                                  (summary (cdr (assoc 'summary fields)))
+(defun task--jira-completion-table (candidates)
+  "Return a completion table for Jira CANDIDATES."
+  (let* ((metadata `(metadata
+                     (category . jira-issue)
+                     (affixation-function
+                      . ,(lambda (completions)
+                           (mapcar (lambda (cand)
+                                     (let* ((issue     (cdr (assoc cand candidates)))
+                                            (fields    (cdr (assoc 'fields issue)))
+                                            (created   (cdr (assoc 'created fields)))
+                                            (updated   (cdr (assoc 'updated fields)))
+                                            (summary   (cdr (assoc 'summary fields)))
+                                            (issuetype (cdr (assoc 'issuetype fields)))
+                                            (iconUrl   (cdr (assoc 'iconUrl issuetype)))
+                                            (typeId    (cdr (assoc 'id issuetype))))
+                                       (list (propertize cand
+                                                         'display (format "%-10s %s" cand summary)
+                                                         'jira-key cand
+                                                         'jira-issue issue)
+                                             (concat
+                                              (when-let ((img (task--get-icon iconUrl (concat "jira-" typeId))))
+                                                (propertize " " 'display img))
+                                              " ")
+                                             (format " %-10s  %-10s"
+                                                     (or created "")
+                                                     (or updated "")))))
+                                   completions)))
+                     (group-function
+                      . ,(lambda (cand transform)
+                           (let* ((issue     (cdr (assoc cand candidates)))
+                                  (fields    (cdr (assoc 'fields issue)))
                                   (issuetype (cdr (assoc 'issuetype fields)))
-                                  (iconUrl (cdr (assoc 'iconUrl issuetype)))
-                                  (typeId (cdr (assoc 'id issuetype))))
-                        (list (propertize cand 'display (format "%-10s" cand))
-                              (concat
-                               (when-let ((img (task--get-icon iconUrl (concat "jira-" typeId))))
-                                 (propertize " " 'display img))
-                               " ")
-                              (format " %-10s  %-10s  %s"
-                                      (or created "")
-                                      (or updated "")
-                                      (or summary "")))))
-                    completions)))
-         (group-fn
-          (lambda (cand trans)
-            (let* ((issue (cdr (assoc cand task--jira-candidates)))
-                   (fields (cdr (assoc 'fields issue)))
-                   (issuetype (cdr (assoc 'issuetype fields)))
-                   (typename (cdr (assoc 'name issuetype)))
-                   (desc (cdr (assoc 'description issuetype))))
-              (if trans
-                  cand
-                (format "%s - %s" typename desc)))))
-         (completion-extra-properties
-          `(:affixation-function ,affix-fn :group-function ,group-fn)))
-    (completing-read "Select JIRA issue: "
-                     (completion-table-with-cache #'task--jira-completion-table)
-                     nil
-                     t)))
+                                  (typename  (cdr (assoc 'name issuetype)))
+                                  (desc      (cdr (assoc 'description issuetype))))
+                             (if transform
+                                 cand
+                               (format "%s - %s" typename desc))))))))
+    (lambda (string pred action)
+      (if (eq action 'metadata)
+          metadata
+        (complete-with-action action candidates string pred)))))
+
+(defun task-jira-select-issue (jql)
+  "Prompt user to select a JIRA issue using JQL.
+Both key and summary participate in completion matching, but the
+return value is always the issue key."
+  (interactive "sJQL: ")
+  (let* ((table (task--jira-completion-table
+                 (task--jira-issues-candidates jql task-jira-search-limit)))
+         (choice (completing-read "Select JIRA issue: " table)))
+    (get-text-property 0 'jira-key choice)))
 
 (defun task-create-branch-with-key-and-text (key text &optional remote source-branch)
   "Use KEY and TEXT as name to create branch from REMOTE's SOURCE-BRANCH in REPO."
