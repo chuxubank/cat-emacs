@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(defcustom cat-startup-idle-preload-delay 10
+(defcustom cat-startup-idle-preload-delay 30
   "Idle time before startup preload."
   :type 'integer
   :group 'cat-emacs)
