@@ -80,9 +80,9 @@
 (defvar task--jira-candidates nil
   "Cache for last JIRA candidates.")
 
-(defun task--generate-branch-name (text)
-  "Make TEXT a valid branch name."
-  (replace-regexp-in-string "[^A-Za-z]+" "-" text))
+(defun task--generate-branch-name (key text)
+  "Make KEY and TEXT a valid branch name."
+  (concat key "-" (downcase (replace-regexp-in-string "[^A-Za-z]+" "-" text))))
 
 (defun task--get-icon (url key)
   "Get image icon from URL with KEY for cache."
@@ -151,30 +151,36 @@ return value is always the issue key."
          (cand (completing-read "Select JIRA issue: " table)))
     (gethash cand cands)))
 
-(defun task-create-branch-with-key-and-text (key text &optional remote source-branch)
-  "Use KEY and TEXT as name to create branch from REMOTE's SOURCE-BRANCH in REPO."
-  (let* ((remote (or remote
-                     (magit-read-remote "Select remote")))
-         (branch (or source-branch
-                     (magit-read-branch "Select source branch"))))
-    (if (string= branch (magit-get-current-branch))
-        (magit-pull-branch branch nil)
-      (magit-fetch-refspec remote (format "%s:%s" branch branch) nil))
-    (with-suppressed-warnings ((interactive-only magit-branch-and-checkout))
-      (magit-branch-and-checkout
-       (read-string
-        "Branch name: "
-        (concat key "-" (downcase (task--generate-branch-name text))))
-       branch))))
+(defun task-create-branch-with-key-and-text (key text)
+  "Use KEY and TEXT as name to create branch."
+  (let* ((branch (magit-read-other-branch
+                  "Branch name: "
+                  nil
+                  (task--generate-branch-name key text))))
+    (with-suppressed-warnings ((interactive-only magit-branch-or-checkout))
+      (magit-branch-or-checkout branch))))
+
+(defun task-pull-remote-branch (&optional remote branch)
+  "Pull BRANCH from REMOTE."
+  (interactive
+   (list (magit-read-remote "Select remote: ")
+         (magit-read-starting-point "Branch")))
+  (if (string= branch (magit-get-current-branch))
+      (magit-pull-branch branch nil)
+    (magit-fetch-refspec remote (format "%s:%s" branch branch) nil)))
 
 ;;;###autoload
-(defun task-start-dev-work ()
-  "Start the development with task."
+(defun task-start-dev-work (&optional pull-first)
+  "Start the development with task.
+
+If PULL-FIRST, will run task to pull the remote branch first."
   (interactive)
   (let* ((issue   (task-jira-select-issue task-jira-default-jql))
          (key     (cdr (assoc 'key issue)))
          (fields  (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
+    (when pull-first
+      (task-pull-remote-branch))
     (task-create-branch-with-key-and-text key summary)))
 
 (provide 'task)

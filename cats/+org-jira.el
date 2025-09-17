@@ -77,6 +77,7 @@
          (org-heading (nth 4 (org-heading-components))))
     (when (member action-id start-action-id)
       (magit-read-repository)
+      (task-pull-remote-branch)
       (task-create-branch-with-key-and-text issue-key org-heading))))
 
 (advice-add 'jiralib-progress-workflow-action :after #'+org-jira-start-dev-work)
