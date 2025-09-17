@@ -91,18 +91,24 @@
       (url-copy-file url cache-file t))
     (create-image cache-file nil nil :ascent 'center)))
 
+(defun task--format-time (time-str)
+  "Parse and format the TIME-STR with format string."
+  (format-time-string "%Y-%m-%d %H:%M" (parse-iso8601-time-string time-str)))
+
 (defun task--jira-format-candidates (issues)
   "Format completion candidates for Jira ISSUES."
   (let ((table (make-hash-table :test 'equal)))
     (dolist (issue issues)
-      (let* ((key       (cdr (assoc 'key issue)))
-             (fields    (cdr (assoc 'fields issue)))
-             (created   (cdr (assoc 'created fields)))
-             (updated   (cdr (assoc 'updated fields)))
-             (summary   (cdr (assoc 'summary fields)))
+      (let* ((key         (cdr (assoc 'key issue)))
+             (fields      (cdr (assoc 'fields issue)))
+             (created     (cdr (assoc 'created fields)))
+             (updated     (cdr (assoc 'updated fields)))
+             (summary     (cdr (assoc 'summary fields)))
+             (created-fmt (task--format-time created))
+             (updated-fmt (task--format-time updated))
              (display (format
-                       "%-10s %-10s %-10s %s"
-                       key created updated summary)))
+                       "%-10s %-12s %-12s %s"
+                       key created-fmt updated-fmt summary)))
         (puthash display issue table)))
     table))
 

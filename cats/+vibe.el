@@ -68,7 +68,8 @@
   ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
    ("Send"
     (("g" #'gptel "gptel")
-     ("s" #'gptel-send "send"))
+     ("s" #'gptel-send "send")
+     ("r" #'gptel-rewrite "rewrite"))
     "Tweak"
     (("m" #'gptel-menu "menu"))
     "Context"
