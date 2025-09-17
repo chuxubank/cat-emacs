@@ -107,10 +107,23 @@
              (created-fmt (task--format-time created))
              (updated-fmt (task--format-time updated))
              (display (format
-                       "%-10s %-12s %-12s %s"
-                       key created-fmt updated-fmt summary)))
+                       "%-12s [%s | %s]  %s"
+                       key
+                       created-fmt
+                       updated-fmt
+                       summary)))
         (puthash display issue table)))
     table))
+
+(defun task--jira-get-icon (type)
+  "Get icon for TYPE in Jira."
+  (when-let* ((typename (car type))
+              (fields   (cdr type))
+              (name     (cdr (assoc 'name fields)))
+              (iconUrl  (cdr (assoc 'iconUrl fields)))
+              (id       (cdr (assoc 'id fields)))
+              (img (task--get-icon iconUrl (format "jira-%s-%s" typename id))))
+    (propertize name 'display img)))
 
 (defun task--jira-completion-table (candidates)
   "Return a completion table for Jira CANDIDATES."
@@ -121,13 +134,13 @@
                            (mapcar (lambda (cand)
                                      (let* ((issue     (gethash cand candidates))
                                             (fields    (cdr (assoc 'fields issue)))
-                                            (issuetype (cdr (assoc 'issuetype fields)))
-                                            (iconUrl   (cdr (assoc 'iconUrl issuetype)))
-                                            (typeId    (cdr (assoc 'id issuetype))))
+                                            (issuetype (assoc 'issuetype fields))
+                                            (priority  (assoc 'priority fields)))
                                        (list cand
                                              (concat
-                                              (when-let ((img (task--get-icon iconUrl (concat "jira-" typeId))))
-                                                (propertize " " 'display img))
+                                              (task--jira-get-icon priority)
+                                              " "
+                                              (task--jira-get-icon issuetype)
                                               " ")
                                              "")))
                                    completions)))
