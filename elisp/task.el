@@ -174,13 +174,24 @@ return value is always the issue key."
     (gethash cand cands)))
 
 (defun task-create-branch-with-key-and-text (key text)
-  "Use KEY and TEXT as name to create branch."
-  (let* ((branch (magit-read-other-branch
-                  "Branch name: "
-                  nil
-                  (task--generate-branch-name key text))))
-    (with-suppressed-warnings ((interactive-only magit-branch-or-checkout))
-      (magit-branch-or-checkout branch))))
+  "Use KEY and TEXT as name to create branch.
+
+See `magit-branch-or-checkout'"
+  (let* ((boc
+          (magit-read-other-branch-or-commit
+           "Checkout"
+           nil
+           (task--generate-branch-name key text)))
+         (start-point
+          (and (not (magit-commit-p boc))
+               (magit-read-starting-point "Create and checkout branch" boc))))
+    (when (string-match "\\`heads/\\(.+\\)" boc)
+      (setq boc (match-string-no-properties 1 boc)))
+    (if start-point
+        (with-suppressed-warnings ((interactive-only magit-branch-and-checkout))
+          (magit-branch-and-checkout boc start-point))
+      (magit--checkout boc)
+      (magit-refresh))))
 
 (defun task-pull-remote-branch (&optional remote branch)
   "Pull BRANCH from REMOTE."
