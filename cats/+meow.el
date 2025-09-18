@@ -16,6 +16,7 @@
   (meow-expand-exclude-mode-list nil)
   :bind
   (:map meow-insert-state-keymap
+        ([remap corfu-quit] . meow-insert-exit)
         ([remap keyboard-quit] . meow-insert-exit)
         ("<escape>" . ESC-prefix))
   :config
