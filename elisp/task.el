@@ -82,7 +82,10 @@
 
 (defun task--generate-branch-name (key text)
   "Make KEY and TEXT a valid branch name."
-  (concat key "-" (downcase (replace-regexp-in-string "[^A-Za-z]+" "-" text))))
+  (let* ((base-name (concat key "-" (downcase (replace-regexp-in-string "[^A-Za-z]+" "-" text))))
+         (no-double-hyphens (replace-regexp-in-string "\\-\\-+" "-" base-name))
+         (no-trailing-hyphen (replace-regexp-in-string "\\-$" "" no-double-hyphens)))
+    no-trailing-hyphen))
 
 (defun task--get-icon (url key)
   "Get image icon from URL with KEY for cache."
