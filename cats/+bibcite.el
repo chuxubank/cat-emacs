@@ -143,6 +143,7 @@ Hides template, daily directories."
   :commands (citar-get-files)
   :custom
   (citar-bibliography cat-default-bibliography-files)
+  (citar-open-entry-function #'citar-open-entry-in-zotero)
   :config
   (defvar citar-indicator-notes-icons
     (citar-indicator-create
