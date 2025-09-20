@@ -5,7 +5,7 @@
   :after org)
 
 (use-package task
-  :commands #'task-create-branch-with-key-and-text
+  :commands #'task-start-dev-work
   :ensure nil)
 
 (use-package org-jira
