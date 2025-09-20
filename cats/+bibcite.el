@@ -41,18 +41,11 @@ See `org-cite-csl-styles-dir'."
   "Use `citar' to open the CITEKEY note file."
   (citar-run-default-action (ensure-list citekey)))
 
-(defun cat-org-roam-allowed-directory-p (dir)
-  "Check whether a DIR should be listed as a filterable directory.
-Hides template, daily directories."
-  (and (not (string-match-p cat-org-roam-templates-directory (file-name-as-directory dir)))
-       (not (string-match-p cat-org-roam-dailies-directory (file-name-as-directory dir)))))
-
 (defun cat-org-roam-locate-file (name)
   "Choose directory and return with full file NAME."
   (let* ((default-directory cat-default-roam-dir)
          (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
-         (filter-dir-list (seq-filter #'cat-org-roam-allowed-directory-p dir-list))
-         (dir (completing-read "Choose org-roam sub directory: " filter-dir-list nil 'confirm))
+         (dir (completing-read "Choose org-roam sub directory: " dir-list nil 'confirm))
          (filename (file-name-with-extension name "org")))
     (unless (file-directory-p dir)
       (make-directory dir t))
