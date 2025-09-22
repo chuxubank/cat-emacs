@@ -29,13 +29,14 @@ See `org-roam-dailies-directory'."
                                          #'org-roam-reflinks-section
                                          #'org-roam-unlinked-references-section))
   (org-roam-dailies-directory cat-org-roam-dailies-directory)
-  (org-roam-capture-ref-templates `(("r" "Protocol Capture Reference"
-                                     plain "${body}%?" :target
-                                     (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
+  (org-roam-capture-ref-templates `(("r" "Protocol Capture Reference" plain "${body}%?"
+                                     :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
                                      :unnarrowed t)
-                                    ("c" "Course"
-                                     plain (file ,(concat cat-org-roam-templates-directory "course.org")) :target
-                                     (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
+                                    ("c" "Course" plain (file ,(concat cat-org-roam-templates-directory "course.org"))
+                                     :target (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
+                                     :unnarrowed t)
+                                    ("l" "LeetCode" plain (file ,(concat cat-org-roam-templates-directory "leetcode.org"))
+                                     :target (file "leetcode/${id}-${slug}.org")
                                      :unnarrowed t)))
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-map_marker_path" "Org Roam"))
