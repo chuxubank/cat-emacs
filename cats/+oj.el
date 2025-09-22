@@ -12,12 +12,13 @@
   (cat-oj
    ("LeetCode"
     (("l" #'leetcode "leetcode")
-     ("d" #'leetcode-daily "leetcode daily")
-     ("k" #'leetcode-quit "leetcode quit")))))
+     ("d" #'leetcode-daily "daily")
+     ("s" #'leetcode-show-problem "show problem")
+     ("k" #'leetcode-quit "quit")))))
 
 (use-package oj
   :disabled
   :pretty-hydra
   (cat-oj
    ("Online Judge Tools"
-    (("o" #'oj-prepare "oj prepare")))))
+    (("o" #'oj-prepare "prepare")))))
