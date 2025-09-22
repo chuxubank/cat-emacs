@@ -108,6 +108,7 @@
 (cat! "+powershell")
 (cat! "+protobuf")
 (cat! "+python")
+(cat! "+rust")
 (cat! "+swift")
 (cat! "+vb")
 (cat! "+web")
