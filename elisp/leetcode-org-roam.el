@@ -27,7 +27,6 @@
 ;; Usage:
 ;;
 ;;   (require 'leetcode-org-roam)
-;;   (leetcode)
 ;;
 ;;   ;; Then run interactively:
 ;;   M-x leetcode-org-roam-capture
@@ -90,6 +89,9 @@ Properties stored in the node:
   (interactive (list (read-string "Org roam capture leetcode problem by problem id: "
                                   (when (derived-mode-p 'leetcode--problems-mode)
                                     (leetcode--get-current-problem-id)))))
+  (unless (get-buffer leetcode--buffer-name)
+    (aio-await (leetcode--ensure-login))
+    (aio-await (leetcode-refresh-fetch)))
   (let* ((problem (leetcode--get-problem-by-id id))
          (slug (leetcode-problem-title-slug problem))
          (problem-with-title (aio-await (leetcode--ensure-question-title problem)))
