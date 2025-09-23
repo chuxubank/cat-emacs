@@ -58,7 +58,7 @@
    (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
    ("Notes"
     (("i" #'org-id-get-create "id"))
-    "Display"
+    "Toggle"
     (("tp" org-toggle-pretty-entities "pretty entities" :color red)
      ("te" +org-toggle-emphasis "emphasis" :color red)
      ("tm" +org-toggle-macro "macro" :color red))))
@@ -230,8 +230,8 @@
                         (t . t)))
   :mode-hydra
   (org-mode
-   ("Display"
-    (("m" org-modern-mode "modern mode" :color red))))
+   ("Mode"
+    (("m" org-modern-mode "modern" :color red))))
   :config
   (global-org-modern-mode))
 
@@ -248,8 +248,8 @@
   (org-appear-autoentities t)
   :mode-hydra
   (org-mode
-   ("Display"
-    (("a" org-appear-mode "appear mode" :color red)))))
+   ("Mode"
+    (("a" org-appear-mode "appear" :color red)))))
 
 (defun +org-toggle-emphasis ()
   "Toggle org emphasize markers."

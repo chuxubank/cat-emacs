@@ -18,7 +18,7 @@
                            ("coursera". "https://www.coursera.org/%s")))
   :mode-hydra
   (org-mode
-   ("Display"
+   ("Toggle"
     (("tl" org-toggle-link-display "link display" :color red)))))
 
 (use-package org-yt
@@ -72,8 +72,8 @@
   (org-link-beautify-image-preview t)
   :mode-hydra
   (org-mode
-   ("Display"
-    (("b" org-link-beautify-mode "link beautify mode" :color red))))
+   ("Mode"
+    (("b" org-link-beautify-mode "link beautify" :color red))))
   :config
   (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
   (defun org-link-beautify--display-icon (start end description icon)
