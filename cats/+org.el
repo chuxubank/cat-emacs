@@ -16,6 +16,9 @@
   (org-auto-align-tags nil)
   (org-startup-indented t)
   (org-startup-with-link-previews t)
+  (org-highlight-latex-and-related '(native script entities))
+  (org-hide-emphasis-markers t)
+  (org-hide-macro-markers t)
   (org-pretty-entities t)
   (org-use-sub-superscripts '{})
   (org-export-with-sub-superscripts '{})
@@ -23,7 +26,6 @@
   (org-tags-column 0)
   (org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
   (org-export-backends '(ascii beamer html icalendar latex md odt))
-  (org-highlight-latex-and-related '(native script entities))
   (org-image-actual-width 500)
   (org-display-remote-inline-images 'cache)
   (org-insert-heading-respect-content t)
@@ -236,6 +238,18 @@
 (use-package org-modern-indent
   :pin jcs-elpa
   :hook (org-modern-mode . org-modern-indent-mode))
+
+(use-package org-appear
+  :hook (org-mode . org-appear-mode)
+  :custom
+  (org-appear-autoemphasis t)
+  (org-appear-autolinks t)
+  (org-appear-autosubmarkers t)
+  (org-appear-autoentities t)
+  :mode-hydra
+  (org-mode
+   ("Display"
+    (("a" org-appear-mode "appear mode" :color red)))))
 
 (defun +org-toggle-emphasis ()
   "Toggle org emphasize markers."

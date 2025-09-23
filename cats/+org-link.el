@@ -18,8 +18,8 @@
                            ("coursera". "https://www.coursera.org/%s")))
   :mode-hydra
   (org-mode
-   ("Link"
-    (("l" org-toggle-link-display "link display")))))
+   ("Display"
+    (("tl" org-toggle-link-display "link display" :color red)))))
 
 (use-package org-yt
   :vc (org-yt
@@ -61,10 +61,9 @@
 (use-package org-cliplink
   :mode-hydra
   (org-mode
-   ("Link"
+   ("Plugin"
     (("c" org-cliplink "cliplink")))))
 
-;; Remember to install latest org via https://orgmode.org/org.html#Installation
 (use-package org-link-beautify
   :after org
   :custom
@@ -73,8 +72,8 @@
   (org-link-beautify-image-preview t)
   :mode-hydra
   (org-mode
-   ("Link"
-    (("b" org-link-beautify-mode "link beautify"))))
+   ("Display"
+    (("b" org-link-beautify-mode "link beautify mode" :color red))))
   :config
   (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
   (defun org-link-beautify--display-icon (start end description icon)
