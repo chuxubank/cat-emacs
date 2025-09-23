@@ -100,6 +100,10 @@ See `org-cite-csl-styles-dir'."
      ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat-org-roam-template "exam")))
       :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)))
+  :pretty-hydra
+  (org-roam-hydra
+   ("BibTex"
+    (("b" orb-note-actions "orb action"))))
   :config
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
   (+add-to-list-multi 'orb-preformat-keywords "title" "url" "annotation")

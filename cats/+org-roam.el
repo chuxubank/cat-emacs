@@ -59,9 +59,7 @@ See `org-roam-dailies-directory'."
      ("da" #'org-roam-alias-remove "remove alias"))
     "Reference"
     (("ar" #'org-roam-ref-add "add ref")
-     ("dr" #'org-roam-ref-remove "remove ref"))
-    "BibTex"
-    (("b" orb-note-actions "orb action"))))
+     ("dr" #'org-roam-ref-remove "remove ref"))))
   :mode-hydra
   (org-mode
    ("Notes"
