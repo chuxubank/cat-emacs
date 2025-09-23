@@ -9,14 +9,15 @@ See `org-roam-directory'."
 
 (defcustom cat-org-roam-dailies-directory
   (or (getenv "ORG_ROAM_DAILIES_DIR") "daily/")
-  "Filename of the `org-roam' dailies folder.
+  "Path to daily-notes.
+This path is relative to `org-roam-directory'.
 See `org-roam-dailies-directory'."
   :type 'directory
   :group 'cat-emacs)
 
 (defcustom cat-org-roam-templates-directory
-  (or (getenv "ORG_ROAM_TEMPLATES_DIR") "templates/")
-  "Filename of the `org-roam-bibtex' templates folder."
+  (concat cat-org-roam-directory (or (getenv "ORG_ROAM_TEMPLATES_DIR") "templates/"))
+  "Path to `org-roam' templates."
   :type 'directory
   :group 'cat-emacs)
 
@@ -33,10 +34,10 @@ See `org-roam-dailies-directory'."
                                      :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
                                      :unnarrowed t)
                                     ("c" "Course" plain (file ,(concat cat-org-roam-templates-directory "course.org"))
-                                     :target (file "course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
+                                     :target (file "roam/course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)
                                     ("l" "LeetCode" plain (file ,(concat cat-org-roam-templates-directory "leetcode.org"))
-                                     :target (file "leetcode/${id}-${slug}.org")
+                                     :target (file "roam/cs/oj/leetcode/${id}-${slug}.org")
                                      :unnarrowed t)))
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-map_marker_path" "Org Roam"))
@@ -80,7 +81,7 @@ If called interactively, open the selected template file.
 If called non-interactively, return the file name of the selected template.
 DIR specifies a subdirectory under `cat-org-roam-templates-directory'."
   (interactive)
-  (let ((template-dir (concat cat-org-roam-directory cat-org-roam-templates-directory dir)))
+  (let ((template-dir (concat cat-org-roam-templates-directory dir)))
     (if-let* ((dir-exists (file-directory-p template-dir))
               (files (directory-files-recursively template-dir ".*\\.org")))
         (let ((chosen-file (completing-read "Choose template: " files nil t)))
