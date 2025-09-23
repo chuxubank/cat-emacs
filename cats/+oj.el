@@ -13,8 +13,13 @@
    ("LeetCode"
     (("l" #'leetcode "leetcode")
      ("d" #'leetcode-daily "daily")
-     ("s" #'leetcode-show-problem "show problem")
      ("k" #'leetcode-quit "quit")))))
+
+(use-package leetcode-org-roam
+  :ensure nil
+  :bind
+  (:map leetcode--problems-mode-map
+        ("C-c C-c" . leetcode-org-roam-capture)))
 
 (use-package oj
   :disabled
