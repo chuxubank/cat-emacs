@@ -19,7 +19,8 @@
   :mode-hydra
   (org-mode
    ("Toggle"
-    (("tl" org-toggle-link-display "link display" :color red)))))
+    (("tl" org-toggle-link-display "link display" :color red)
+     ("tL" org-link-preview "link preview" :color red)))))
 
 (use-package org-yt
   :vc (org-yt
