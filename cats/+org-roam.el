@@ -37,7 +37,7 @@ See `org-roam-dailies-directory'."
                                      :target (file "roam/course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)
                                     ("l" "LeetCode" plain (file ,(concat cat-org-roam-templates-directory "leetcode.org"))
-                                     :target (file "roam/cs/oj/leetcode/${number}-${slug}.org")
+                                     :target (file "roam/cs/oj/leetcode/${number}-${title-slug}.org")
                                      :unnarrowed t)))
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-md-map_marker_path" "Org Roam"))

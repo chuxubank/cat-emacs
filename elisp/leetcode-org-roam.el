@@ -1,10 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'leetcode)
-(require 'dom)
-(require 'shr)
+(require 'org-roam-capture)
 
-(defun leetcode--html-to-org (html)
+(defun leetcode-org-roam--html-to-org (html)
   "Convert LeetCode HTML problem content to org format using pandoc."
   (let* ((infile  (make-temp-file "leetcode-html-" nil ".html"))
          (outfile (make-temp-file "leetcode-org-" nil ".org")))
@@ -19,15 +18,18 @@
       (insert-file-contents outfile)
       (buffer-string))))
 
-(aio-defun roam-capture-leetcode (id)
+(aio-defun leetcode-org-roam-capture (id)
   "Capture a LeetCode problem into org-roam by problem ID."
-  (interactive "sEnter LeetCode problem ID: ")
+  (interactive (list (read-string "Org roam capture leetcode problem by problem id: "
+                                  (when (derived-mode-p 'leetcode--problems-mode)
+                                    (leetcode--get-current-problem-id)))))
   (let* ((problem (leetcode--get-problem-by-id id))
          (slug (leetcode-problem-title-slug problem))
          (problem-with-title (aio-await (leetcode--ensure-question-title problem)))
          (problem-with-content (aio-await (leetcode--ensure-question-content problem)))
          (problem-with-snippets (aio-await (leetcode--ensure-question-snippets problem)))
          (title (leetcode-problem-title problem-with-title))
+         (title-slug (leetcode--slugify-title title))
          (difficulty (leetcode-problem-difficulty problem))
          (tags (string-join (leetcode-problem-tags problem) ":"))
          (content (leetcode--html-to-org (leetcode-problem-content problem-with-content)))
@@ -40,8 +42,9 @@
          (template-code (leetcode-snippet-code snippet))
          (data `(
                  :number ,id
-                 :title ,title
                  :slug ,slug
+                 :title ,title
+                 :title-slug ,title-slug
                  :difficulty ,difficulty
                  :tags ,tags
                  :content ,content
