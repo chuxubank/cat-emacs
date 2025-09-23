@@ -57,11 +57,12 @@ See `org-roam-dailies-directory'."
     "Alias"
     (("aa" #'org-roam-alias-add "add alias")
      ("da" #'org-roam-alias-remove "remove alias"))
-    "BibTex"
-    (("b" orb-note-actions "orb action"))
     "Reference"
     (("ar" #'org-roam-ref-add "add ref")
-     ("dr" #'org-roam-ref-remove "remove ref"))))
+     ("dr" #'org-roam-ref-remove "remove ref"))
+    "BibTex"
+    (("b" orb-note-actions "orb action"))))
+  :mode-hydra
   (org-mode
    ("Notes"
     (("r" org-roam-hydra/body "roam"))))
