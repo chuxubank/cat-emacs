@@ -7,12 +7,6 @@
   :type '(repeat file)
   :group 'cat-emacs)
 
-(defcustom cat-default-roam-dir
-  (concat cat-org-roam-directory "roam/")
-  "Default roam files."
-  :type 'directory
-  :group 'cat-emacs)
-
 (defcustom cat-default-csl-styles-dir
   (or (getenv "DEFAULT_CSL_STYLES_DIR") "~/Zotero/styles/")
   "Filename of the default csl styles folder.
@@ -43,7 +37,7 @@ See `org-cite-csl-styles-dir'."
 
 (defun cat-org-roam-locate-file (name)
   "Choose directory and return with full file NAME."
-  (let* ((default-directory cat-default-roam-dir)
+  (let* ((default-directory cat-org-roam-default-roam-dir)
          (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
          (dir (completing-read "Choose org-roam sub directory: " dir-list nil 'confirm))
          (filename (file-name-with-extension name "org")))
@@ -58,7 +52,7 @@ See `org-cite-csl-styles-dir'."
 (defun cat-org-roam-relocate-file ()
   "Relocate and rename the Org-roam file."
   (interactive)
-  (let* ((default-directory cat-default-roam-dir)
+  (let* ((default-directory cat-org-roam-default-roam-dir)
          (node (or (org-roam-node-at-point)
                    (let ((node (org-roam-node-read)))
                      (org-roam-node-open node)

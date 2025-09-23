@@ -15,9 +15,15 @@ See `org-roam-dailies-directory'."
   :type 'directory
   :group 'cat-emacs)
 
-(defcustom cat-org-roam-templates-directory
+(defcustom cat-org-roam-default-templates-dir
   (concat cat-org-roam-directory (or (getenv "ORG_ROAM_TEMPLATES_DIR") "templates/"))
   "Path to `org-roam' templates."
+  :type 'directory
+  :group 'cat-emacs)
+
+(defcustom cat-org-roam-default-roam-dir
+  (concat cat-org-roam-directory (or (getenv "ORG_ROAM_ROAM_DIR") "roam/"))
+  "Default roam files."
   :type 'directory
   :group 'cat-emacs)
 
@@ -33,10 +39,10 @@ See `org-roam-dailies-directory'."
   (org-roam-capture-ref-templates `(("r" "Protocol Capture Reference" plain "${body}%?"
                                      :target (file+head "capture/${Input file name}.org" "#+title: ${title}\n")
                                      :unnarrowed t)
-                                    ("c" "Course" plain (file ,(concat cat-org-roam-templates-directory "course.org"))
+                                    ("c" "Course" plain (file ,(concat cat-org-roam-default-templates-dir "course.org"))
                                      :target (file "roam/course/${SOURCE|cmu|mit}/${COURSE-ID}.org")
                                      :unnarrowed t)
-                                    ("l" "LeetCode" plain (file ,(concat cat-org-roam-templates-directory "leetcode.org"))
+                                    ("l" "LeetCode" plain (file ,(concat cat-org-roam-default-templates-dir "leetcode.org"))
                                      :target (file "roam/cs/oj/leetcode/${number}-${title-slug}.org")
                                      :unnarrowed t)))
   :pretty-hydra
@@ -72,16 +78,16 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
     (condition-case nil
         (directory-file-name
          (file-name-directory
-          (file-relative-name (org-roam-node-file node) org-roam-directory)))
+          (file-relative-name (org-roam-node-file node) cat-org-roam-default-roam-dir)))
       (error ""))))
 
 (defun cat-org-roam-get-template (&optional dir)
   "Locate a template file based on DIR.
 If called interactively, open the selected template file.
 If called non-interactively, return the file name of the selected template.
-DIR specifies a subdirectory under `cat-org-roam-templates-directory'."
+DIR specifies a subdirectory under `cat-org-roam-default-templates-dir'."
   (interactive)
-  (let ((template-dir (concat cat-org-roam-templates-directory dir)))
+  (let ((template-dir (concat cat-org-roam-default-templates-dir dir)))
     (if-let* ((dir-exists (file-directory-p template-dir))
               (files (directory-files-recursively template-dir ".*\\.org")))
         (let ((chosen-file (completing-read "Choose template: " files nil t)))
