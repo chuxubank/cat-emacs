@@ -53,6 +53,11 @@
   :type 'string
   :group 'leetcode-org-roam)
 
+(defcustom leetcode-org-roam-capture-key "l"
+  "The key to use when do Org-roam capture."
+  :type 'string
+  :group 'leetcode-org-roam)
+
 (defun leetcode-org-roam--html-to-org (html)
   "Convert LeetCode HTML problem content to Org format using Pandoc.
 Requires `pandoc` to be installed and available in PATH."
@@ -83,6 +88,7 @@ Fetches metadata, problem statement, and code snippet using
          (problem-with-content (aio-await (leetcode--ensure-question-content problem)))
          (problem-with-snippets (aio-await (leetcode--ensure-question-snippets problem)))
          (title (leetcode-problem-title problem-with-title))
+         (link (leetcode--problem-link title))
          (title-slug (leetcode--slugify-title title))
          (difficulty (leetcode-problem-difficulty problem))
          (tags (string-join (leetcode-problem-tags problem) ":"))
@@ -96,6 +102,7 @@ Fetches metadata, problem statement, and code snippet using
          (template-code (leetcode-snippet-code snippet))
          (data `(
                  :number ,id
+                 :ref ,link
                  :slug ,slug
                  :title ,title
                  :title-slug ,title-slug
@@ -105,7 +112,7 @@ Fetches metadata, problem statement, and code snippet using
                  :template-code ,template-code
                  :lang ,leetcode--lang)))
     (org-roam-capture-
-     :keys "l"
+     :keys leetcode-org-roam-capture-key
      :info data
      :node (org-roam-node-create :title title)
      :props data
