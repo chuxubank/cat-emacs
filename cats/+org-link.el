@@ -26,9 +26,9 @@
        :url "https://github.com/TobiasZawada/org-yt"
        :rev :newest)
   :demand t
+  :after org
   :custom
-  (org-yt-cache-directory (concat cat-cache-dir "yt-cache"))
-  :after org)
+  (org-yt-cache-directory (concat cat-cache-dir "yt-cache")))
 
 (use-package org-remoteimg
   :vc (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
@@ -65,8 +65,8 @@
     (("c" org-cliplink "cliplink")))))
 
 (use-package org-link-beautify
-  :after org
   :demand t
+  :after org
   :custom
   (org-link-beautify-thumbnails-dir 'user-home)
   :mode-hydra
