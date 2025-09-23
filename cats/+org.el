@@ -57,7 +57,9 @@
    ("Notes"
     (("i" #'org-id-get-create "id"))
     "Display"
-    (("p" org-toggle-pretty-entities "pretty entities"))))
+    (("tp" org-toggle-pretty-entities "pretty entities" :color red)
+     ("te" +org-toggle-emphasis "emphasis" :color red)
+     ("tm" +org-toggle-macro "macro" :color red))))
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
@@ -227,13 +229,25 @@
   :mode-hydra
   (org-mode
    ("Display"
-    (("m" org-modern-mode "modern mode"))))
+    (("m" org-modern-mode "modern mode" :color red))))
   :config
   (global-org-modern-mode))
 
 (use-package org-modern-indent
   :pin jcs-elpa
   :hook (org-modern-mode . org-modern-indent-mode))
+
+(defun +org-toggle-emphasis ()
+  "Toggle org emphasize markers."
+  (interactive)
+  (setq-local org-hide-emphasis-markers (not org-hide-emphasis-markers))
+  (org-restart-font-lock))
+
+(defun +org-toggle-macro ()
+  "Toggle org macro markers."
+  (interactive)
+  (setq-local org-hide-macro-markers (not org-hide-macro-markers))
+  (org-restart-font-lock))
 
 (defun +find-org-files ()
   (interactive)
