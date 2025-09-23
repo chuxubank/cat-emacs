@@ -34,7 +34,7 @@
 ;;
 ;; You will be prompted for the LeetCode problem ID, and the
 ;; corresponding problem will be inserted into Org-roam using your
-;; `org-roam-capture-ref-templates`.
+;; `org-roam-capture-ref-templates'.
 
 ;;; Code:
 
@@ -77,8 +77,16 @@ Requires `pandoc` to be installed and available in PATH."
 ;;;###autoload
 (aio-defun leetcode-org-roam-capture (id)
   "Capture a LeetCode problem into Org-roam by problem ID.
-Fetches metadata, problem statement, and code snippet using
-`leetcode', and creates a new Org-roam node."
+
+Fetches metadata, problem statement, and starter code using `leetcode'.
+Converts content to Org format and creates or updates an Org-roam node.
+
+If a node with the same :ref (problem URL) exists, the capture will open
+that node instead of creating a new one.
+
+Properties stored in the node:
+  :number, :ref, :slug, :title, :title-slug, :difficulty, :tags,
+  :content, :template-code, :lang"
   (interactive (list (read-string "Org roam capture leetcode problem by problem id: "
                                   (when (derived-mode-p 'leetcode--problems-mode)
                                     (leetcode--get-current-problem-id)))))
@@ -110,13 +118,16 @@ Fetches metadata, problem statement, and code snippet using
                  :tags ,tags
                  :content ,content
                  :template-code ,template-code
-                 :lang ,leetcode--lang)))
+                 :lang ,leetcode--lang))
+         (node (org-roam-node-from-ref link))
+         (goto (when node '(4))))
     (org-roam-capture-
-     :keys leetcode-org-roam-capture-key
+     :goto goto
      :info data
-     :node (org-roam-node-create :title title)
-     :props data
-     :templates org-roam-capture-ref-templates)))
+     :keys leetcode-org-roam-capture-key
+     :templates org-roam-capture-ref-templates
+     :node (or node (org-roam-node-create :title title))
+     :props data)))
 
 (provide 'leetcode-org-roam)
 
