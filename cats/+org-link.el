@@ -66,34 +66,10 @@
 
 (use-package org-link-beautify
   :after org
+  :demand t
   :custom
   (org-link-beautify-thumbnails-dir 'user-home)
-  (org-link-beautify-display-overlay-info t)
-  (org-link-beautify-image-preview t)
   :mode-hydra
   (org-mode
    ("Mode"
-    (("b" org-link-beautify-mode "link beautify" :color red))))
-  :config
-  (advice-add 'org-agenda-finalize :before #'org-link-beautify-disable)
-  (defun org-link-beautify--display-icon (start end description icon)
-    "Display ICON for link on START and END with DESCRIPTION."
-    (put-text-property
-     start end
-     'display
-     (concat
-      (propertize icon 'face `(:inherit ,(or (plist-get (get-text-property 0 'face icon) :inherit)
-                                             'org-link-beautify-link-icon-face)
-                                        :underline nil))
-      (propertize " " 'face 'org-link-beautify-link-decorator-face)
-      (propertize description 'face 'org-link-beautify-link-description-face))))
-
-  (defun org-link-beautify--display-not-exist (start end description icon)
-    "Display error color and ICON on START and END with DESCRIPTION."
-    (put-text-property
-     start end
-     'display
-     (concat
-      (propertize icon 'face '(:inherit nil :underline nil :foreground "orange red"))
-      (propertize " " 'face '(:inherit nil :underline nil :foreground "black"))
-      (propertize description 'face '(:underline t :foreground "red" :strike-through t))))))
+    (("b" org-link-beautify-mode "link beautify" :color red)))))
