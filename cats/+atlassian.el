@@ -15,7 +15,7 @@
   :commands #'task-start-dev-work
   :ensure nil
   :custom
-  (task-jira-default-jql nil))
+  (task-jira-default-jql "assignee = currentUser() AND Sprint in (openSprints(), futureSprints()) AND resolution = Unresolved order by updated DESC"))
 
 (use-package confluence
   :disabled

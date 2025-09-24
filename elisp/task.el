@@ -86,7 +86,7 @@
 Returns the issues list from the API response."
   (let* ((response (jira-api-search :params `(("jql" . ,jql)
                                               ("maxResults" . ,max-results)
-                                              ("fields" . "key,summary,created,updated,issuetype,priority"))
+                                              ("fields" . "key,summary,created,updated,issuetype,priority,status"))
                                     :sync t))
          (data (request-response-data response)))
     (cdr (assoc 'issues data))))
@@ -109,23 +109,40 @@ Returns the issues list from the API response."
   "Parse and format the TIME-STR with format string."
   (format-time-string "%Y-%m-%d %H:%M" (parse-iso8601-time-string time-str)))
 
+(defun task--format-jira-status (status)
+  "Format JIRA STATUS with appropriate color."
+  (let* ((status-name (cdr (assoc 'name status)))
+         (color-name (cdr (assoc 'colorName (cdr (assoc 'statusCategory status)))))
+         (face (pcase color-name
+                 ("green" 'success)
+                 ("yellow" 'warning)
+                 ("red" 'error)
+                 ("blue-gray" 'font-lock-comment-face)
+                 (_ 'default))))
+    (propertize status-name 'face face)))
+
 (defun task--jira-format-candidates (issues)
   "Format completion candidates for Jira ISSUES."
   (let ((table (make-hash-table :test 'equal)))
     (cl-loop for issue across issues
-             do (let* ((key         (cdr (assoc 'key issue)))
-                       (fields      (cdr (assoc 'fields issue)))
-                       (created     (cdr (assoc 'created fields)))
-                       (updated     (cdr (assoc 'updated fields)))
-                       (summary     (cdr (assoc 'summary fields)))
-                       (created-fmt (task--format-time created))
-                       (updated-fmt (task--format-time updated))
+             do (let* ((key          (cdr (assoc 'key issue)))
+                       (key-fmt      (propertize key 'face 'font-lock-number-face))
+                       (fields       (cdr (assoc 'fields issue)))
+                       (created      (cdr (assoc 'created fields)))
+                       (updated      (cdr (assoc 'updated fields)))
+                       (status       (cdr (assoc 'status fields)))
+                       (status-fmt   (task--format-jira-status status))
+                       (summary      (cdr (assoc 'summary fields)))
+                       (summary-fmt  (propertize summary 'face 'font-lock-string-face))
+                       (created-fmt  (task--format-time created))
+                       (updated-fmt  (task--format-time updated))
+                       (time-fmt     (propertize (format "[%s | %s]" created-fmt updated-fmt) 'face 'font-lock-comment-face))
                        (display (format
-                                 "%-12s [%s | %s]  %s"
-                                 key
-                                 created-fmt
-                                 updated-fmt
-                                 summary)))
+                                 "%-12s %-12s %s  %s"
+                                 key-fmt
+                                 status-fmt
+                                 time-fmt
+                                 summary-fmt)))
                   (puthash display issue table)))
     table))
 
@@ -219,8 +236,7 @@ See `magit-branch-or-checkout'"
 
 If PULL-FIRST, will run task to pull the remote branch first."
   (interactive)
-  (let* ((issue   (task-jira-select-issue (or task-jira-default-jql
-                                              jira-issues--current-jql)))
+  (let* ((issue   (task-jira-select-issue task-jira-default-jql))
          (key     (cdr (assoc 'key issue)))
          (fields  (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
