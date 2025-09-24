@@ -3,7 +3,7 @@
 ;; Author: Misaka <chuxubank@qq.com>
 ;; Maintainer: Misaka <chuxubank@qq.com>
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "27.1") (magit "3.0.0") (jiralib "0.3"))
+;; Package-Requires: ((emacs "27.1") (magit "3.0.0") (jira "2.0"))
 ;; Keywords: tools, git, jira
 ;; URL: https://github.com/chuxubank/task.el
 
@@ -36,7 +36,7 @@
 ;;
 ;; Requirements:
 ;; - `magit' for Git operations.
-;; - `jiralib' for JIRA integration.
+;; - `jira' for JIRA integration.
 ;;
 ;; Configuration:
 ;; - `task-jira-default-jql' defines the default query for fetching issues.
@@ -57,7 +57,7 @@
 ;;; Code:
 
 (require 'magit)
-(require 'jiralib)
+(require 'jira-api)
 
 (defcustom task-icon-cache-dir "~/.cache/emacs/task/icon"
   "Cache directory for task icon."
@@ -80,6 +80,16 @@
 (defvar task--jira-candidates nil
   "Cache for last JIRA candidates.")
 
+(defun task--jira-api-search-sync (jql max-results)
+  "Synchronously search JIRA issues using JQL.
+Returns the issues list from the API response."
+  (let* ((response (jira-api-search :params `(("jql" . ,jql)
+                                               ("maxResults" . ,max-results)
+                                               ("fields" . "key,summary,created,updated,issuetype,priority"))
+                                    :sync t))
+         (data (request-response-data response)))
+    (cdr (assoc 'issues data))))
+
 (defun task--generate-branch-name (key text)
   "Make KEY and TEXT a valid branch name."
   (let* ((base-name (concat key "-" (downcase (replace-regexp-in-string "[^A-Za-z]+" "-" text))))
@@ -101,21 +111,21 @@
 (defun task--jira-format-candidates (issues)
   "Format completion candidates for Jira ISSUES."
   (let ((table (make-hash-table :test 'equal)))
-    (dolist (issue issues)
-      (let* ((key         (cdr (assoc 'key issue)))
-             (fields      (cdr (assoc 'fields issue)))
-             (created     (cdr (assoc 'created fields)))
-             (updated     (cdr (assoc 'updated fields)))
-             (summary     (cdr (assoc 'summary fields)))
-             (created-fmt (task--format-time created))
-             (updated-fmt (task--format-time updated))
-             (display (format
-                       "%-12s [%s | %s]  %s"
-                       key
-                       created-fmt
-                       updated-fmt
-                       summary)))
-        (puthash display issue table)))
+    (cl-loop for issue across issues
+             do (let* ((key         (cdr (assoc 'key issue)))
+                       (fields      (cdr (assoc 'fields issue)))
+                       (created     (cdr (assoc 'created fields)))
+                       (updated     (cdr (assoc 'updated fields)))
+                       (summary     (cdr (assoc 'summary fields)))
+                       (created-fmt (task--format-time created))
+                       (updated-fmt (task--format-time updated))
+                       (display (format
+                                 "%-12s [%s | %s]  %s"
+                                 key
+                                 created-fmt
+                                 updated-fmt
+                                 summary)))
+                  (puthash display issue table)))
     table))
 
 (defun task--jira-get-icon (type)
@@ -168,7 +178,7 @@ Both key and summary participate in completion matching, but the
 return value is always the issue key."
   (interactive "sJQL: ")
   (let* ((cands (task--jira-format-candidates
-                 (jiralib-do-jql-search jql task-jira-search-limit)))
+                 (task--jira-api-search-sync jql task-jira-search-limit)))
          (table (task--jira-completion-table cands))
          (cand (completing-read "Select JIRA issue: " table)))
     (gethash cand cands)))
