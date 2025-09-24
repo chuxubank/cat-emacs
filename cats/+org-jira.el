@@ -4,10 +4,6 @@
   :demand t
   :after org)
 
-(use-package task
-  :commands #'task-start-dev-work
-  :ensure nil)
-
 (use-package org-jira
   :delight " 󰌃"
   :after org

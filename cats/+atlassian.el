@@ -11,6 +11,12 @@
   (jira-base-url (getenv "JIRA_URL"))
   (jira-detail-show-announcements nil))
 
+(use-package task
+  :commands #'task-start-dev-work
+  :ensure nil
+  :custom
+  (task-jira-default-jql nil))
+
 (use-package confluence
   :disabled
   :vc (confluence

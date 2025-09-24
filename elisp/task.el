@@ -58,6 +58,7 @@
 
 (require 'magit)
 (require 'jira-api)
+(require 'jira-issues)
 
 (defcustom task-icon-cache-dir "~/.cache/emacs/task/icon"
   "Cache directory for task icon."
@@ -84,8 +85,8 @@
   "Synchronously search JIRA issues using JQL.
 Returns the issues list from the API response."
   (let* ((response (jira-api-search :params `(("jql" . ,jql)
-                                               ("maxResults" . ,max-results)
-                                               ("fields" . "key,summary,created,updated,issuetype,priority"))
+                                              ("maxResults" . ,max-results)
+                                              ("fields" . "key,summary,created,updated,issuetype,priority"))
                                     :sync t))
          (data (request-response-data response)))
     (cdr (assoc 'issues data))))
@@ -218,7 +219,8 @@ See `magit-branch-or-checkout'"
 
 If PULL-FIRST, will run task to pull the remote branch first."
   (interactive)
-  (let* ((issue   (task-jira-select-issue task-jira-default-jql))
+  (let* ((issue   (task-jira-select-issue (or task-jira-default-jql
+                                              jira-issues--current-jql)))
          (key     (cdr (assoc 'key issue)))
          (fields  (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
