@@ -8,7 +8,8 @@
 (use-package jira
   :pin melpa-stable
   :custom
-  (jira-base-url (getenv "JIRA_URL")))
+  (jira-base-url (getenv "JIRA_URL"))
+  (jira-detail-show-announcements nil))
 
 (use-package confluence
   :disabled
