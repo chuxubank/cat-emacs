@@ -63,7 +63,8 @@
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-link")
-(cat! "+org-jira")
+;; (cat! "+org-jira")
+;; (cat! "+ejira")
 
 ;;; latex
 (cat! "+bibcite")

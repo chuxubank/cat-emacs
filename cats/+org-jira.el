@@ -37,7 +37,7 @@
      ("Code Review" . "Ready for testing")))
   :mode-hydra
   (org-mode
-   ("Jira"
+   ("Plugin"
     (("j" cat-org-jira-dispatch "org jira dispatch"))))
   :config
   (+mkdir-p org-jira-working-dir)
