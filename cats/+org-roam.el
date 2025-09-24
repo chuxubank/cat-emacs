@@ -91,12 +91,18 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
       (format "[%d]" count)))
 
   (cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
-    (let ((mark " > ")
-          (level (org-roam-node-level node)))
-      (concat
-       (when (> level 0) (concat (org-roam-node-file-title node) mark))
-       (when (> level 1) (concat (string-join (org-roam-node-olp node) mark) mark))
-       (org-roam-node-title node)))))
+    (let ((level (org-roam-node-level node)))
+      (if (= level 0)
+          (org-roam-node-title node)
+        (let* ((file-title (org-roam-node-file-title node))
+               (olp (org-roam-node-olp node))
+               (title (org-roam-node-title node))
+               (effective-olp (if (and (> level 1)
+                                       (string= file-title (car olp)))
+                                  (cdr olp)
+                                olp)))
+          (string-join (cons file-title (append effective-olp (list title)))
+                       " > "))))))
 
 (defun cat-org-roam-get-template (&optional dir)
   "Locate a template file based on DIR.
