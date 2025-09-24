@@ -235,13 +235,13 @@ See `magit-branch-or-checkout'"
   "Start the development with task.
 
 If PULL-FIRST, will run task to pull the remote branch first."
-  (interactive)
+  (interactive "P")
+  (when pull-first
+    (call-interactively #'task-pull-remote-branch))
   (let* ((issue   (task-jira-select-issue task-jira-default-jql))
          (key     (cdr (assoc 'key issue)))
          (fields  (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
-    (when pull-first
-      (task-pull-remote-branch))
     (task-create-branch-with-key-and-text key summary)))
 
 (provide 'task)
