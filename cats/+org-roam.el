@@ -31,7 +31,8 @@ See `org-roam-dailies-directory'."
   :custom
   (org-roam-directory cat-org-roam-directory)
   (org-roam-completion-everywhere t)
-  (org-roam-node-display-template (concat "${type:30} " (propertize "${tags:15} " 'face 'org-tag) "${title:*} "))
+  (org-roam-node-display-template (concat "${type:35} " (propertize "${tags:15} " 'face 'org-tag) "${hierarchy:*} ${backlinkscount:6}"))
+  (org-roam-node-annotation-function (lambda (node) (marginalia--time (org-roam-node-file-mtime node))))
   (org-roam-mode-section-functions (list #'org-roam-backlinks-section
                                          #'org-roam-reflinks-section
                                          #'org-roam-unlinked-references-section))
@@ -78,7 +79,24 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
         (directory-file-name
          (file-name-directory
           (file-relative-name (org-roam-node-file node) cat-org-roam-default-roam-dir)))
-      (error ""))))
+      (error "")))
+
+  (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
+    (let* ((count (caar (org-roam-db-query
+                         [:select (funcall count source)
+                                  :from links
+                                  :where (= dest $s1)
+                                  :and (= type "id")]
+                         (org-roam-node-id node)))))
+      (format "[%d]" count)))
+
+  (cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
+    (let ((mark " > ")
+          (level (org-roam-node-level node)))
+      (concat
+       (when (> level 0) (concat (org-roam-node-file-title node) mark))
+       (when (> level 1) (concat (string-join (org-roam-node-olp node) mark) mark))
+       (org-roam-node-title node)))))
 
 (defun cat-org-roam-get-template (&optional dir)
   "Locate a template file based on DIR.
