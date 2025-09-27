@@ -28,7 +28,47 @@
    ("Mu4e"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
-     ("u" #'mu4e-update-index "update")))))
+     ("u" #'mu4e-update-index "update"))))
+  :config
+  (+add-to-list-multi 'mu4e-view-mime-part-actions
+                      '(:name "print"
+                              :handler (lambda (file)
+                                         (call-process-shell-command lpr-command file))
+                              :receives temp)
+                      '(:name "url-print"
+                              :handler cat/mu4e--print-pdf-url
+                              :receives pipe)))
+
+(defun cat/mu4e--print-pdf-url (str)
+  "Find PDF URLs in the STR, detect PDFs, download and send to printer."
+  (let* ((urls (let (results)
+                 (let ((pos 0))
+                   (while (string-match goto-address-url-regexp str pos)
+                     (push (match-string 0 str) results)
+                     (setq pos (match-end 0))))
+                 (nreverse results)))
+         (pdf-urls-fast (cl-remove-if-not
+                         (lambda (url)
+                           (string-match-p "\\.pdf" url))
+                         urls))
+         (pdf-urls-checked (append
+                            pdf-urls-fast
+                            (cl-remove-if-not
+                             (lambda (url)
+                               (with-temp-buffer
+                                 (when (eq 0 (call-process "curl" nil t nil "-sI" "-L" url))
+                                   (goto-char (point-min))
+                                   (re-search-forward "Content-Type: *application/pdf" nil t))))
+                             (cl-set-difference urls pdf-urls-fast :test #'equal))))
+         (url (cl-case (length pdf-urls-checked)
+                (0 (user-error "No PDF URLs detected in this message"))
+                (1 (car pdf-urls-checked))
+                (t (completing-read "Print PDF URL: " pdf-urls-checked nil t))))
+         (cmd (format "curl -sL %s | %s"
+                      (shell-quote-argument url)
+                      lpr-command)))
+    (start-process-shell-command "mu4e-print-pdf" nil cmd)
+    (message "Sent %s to printer via %s" url lpr-command)))
 
 (defun cat/mu4e--update-mail-and-index-real-around (orig-fun run-in-background)
   "Temporarily set `mu4e-get-mail-command' to \"true\".
