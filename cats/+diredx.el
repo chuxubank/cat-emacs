@@ -32,7 +32,9 @@
       (concat "pandoc ? -o $(basename `?` .md).org"))
      ("\\.csv\\'"
       "double-entry-generator translate"
-      "double-entry-generator translate --provider ")))
+      "double-entry-generator translate --provider ")
+     ("\\.yaml\\'"
+      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) validate-pipeline --enable-across-step --config")))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
