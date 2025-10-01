@@ -19,6 +19,7 @@
         ("M-w" . #'mu4e-copy-thing-at-point))
   :custom
   (mu4e-get-mail-command "mbsync -a")
+  (mu4e-change-filenames-when-moving t)
   (mu4e-update-interval 300)
   (mu4e-use-fancy-chars t)
   (mu4e-sent-messages-behavior 'delete)
