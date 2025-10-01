@@ -25,6 +25,22 @@
   (mu4e-read-option-use-builtin nil)
   (mu4e-completing-read-function 'completing-read)
   (mu4e-attachment-dir (expand-file-name "~/Downloads/"))
+  (mu4e-headers-fields '( (:human-date    .   12)
+                          (:labels        .    8)
+                          (:flags         .    6)
+                          (:mailing-list  .   10)
+                          (:from          .   22)
+                          (:subject       .   nil)))
+  (mu4e-view-fields '(:from
+                      :to
+                      :cc
+                      :subject
+                      :label
+                      :flags
+                      :date
+                      :maildir
+                      :mailing-list
+                      :tags))
   :pretty-hydra
   (cat-mail
    ("Mu4e"
