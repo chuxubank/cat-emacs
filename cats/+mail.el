@@ -20,6 +20,7 @@
   :custom
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-change-filenames-when-moving t)
+  (mu4e-trash-without-flag t)
   (mu4e-update-interval 300)
   (mu4e-use-fancy-chars t)
   (mu4e-sent-messages-behavior 'delete)
@@ -29,6 +30,7 @@
   (mu4e-headers-fields '( (:human-date    .   12)
                           (:labels        .    8)
                           (:flags         .    6)
+                          (:tags          .   20)
                           (:mailing-list  .   10)
                           (:from          .   22)
                           (:subject       .   nil)))
@@ -42,6 +44,11 @@
                       :maildir
                       :mailing-list
                       :tags))
+  (mu4e-headers-actions '(("capture message"  . mu4e-action-capture-message)
+                          ("retag message" . mu4e-action-retag-message)
+                          ("browse online archive" . mu4e-action-browse-list-archive)
+                          ("show this thread" . mu4e-action-show-thread)))
+  (mu4e-action-tags-completion-list '("printed"))
   :pretty-hydra
   (cat-mail
    ("Mu4e"
@@ -56,7 +63,17 @@
                               :receives temp)
                       '(:name "url-print"
                               :handler cat/mu4e--print-pdf-url
-                              :receives pipe)))
+                              :receives pipe))
+  (+add-to-list-multi 'mu4e-marks
+                      '(tag
+                        :char ("t" . "")
+                        :prompt "tag"
+                        :ask-target (lambda () (read-string "Add tag: "))
+                        :action (lambda (docid msg target)
+                                  (mu4e-action-retag-message msg target)
+                                  (mu4e--server-move docid
+                                                     (mu4e-msg-field msg :maildir)))))
+  (mu4e~headers-defun-mark-for tag))
 
 (defun cat/mu4e--print-pdf-url (str)
   "Find PDF URLs in the STR, detect PDFs, download and send to printer."
