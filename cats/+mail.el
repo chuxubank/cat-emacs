@@ -62,10 +62,9 @@
                       '(:name "print"
                               :handler (lambda (file)
                                          (call-process-shell-command lpr-command file))
-                              :receives temp)
-                      '(:name "url-print"
-                              :handler cat/mu4e--print-pdf-url
-                              :receives pipe))
+                              :receives temp))
+  (+add-to-list-multi 'mu4e-view-actions
+                      '("print pdf url" . cat/mu4e-action-print-pdf-url))
   (+add-to-list-multi 'mu4e-marks
                       '(tag
                         :char ("t" . "")
@@ -77,14 +76,9 @@
                                                      (mu4e-msg-field msg :maildir)))))
   (mu4e~headers-defun-mark-for tag))
 
-(defun cat/mu4e--print-pdf-url (str)
-  "Find PDF URLs in the STR, detect PDFs, download and send to printer."
-  (let* ((urls (let (results)
-                 (let ((pos 0))
-                   (while (string-match goto-address-url-regexp str pos)
-                     (push (match-string 0 str) results)
-                     (setq pos (match-end 0))))
-                 (nreverse results)))
+(defun cat/mu4e-action-print-pdf-url (&optional msg)
+  "Find PDF URLs in the MSG or current buffer, detect PDFs then download and send to printer."
+  (let* ((urls (gnus-collect-urls))
          (pdf-urls-fast (cl-remove-if-not
                          (lambda (url)
                            (string-match-p "\\.pdf" url))
