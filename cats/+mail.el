@@ -31,6 +31,7 @@
                           (:labels        .    8)
                           (:flags         .    6)
                           (:tags          .   20)
+                          (:maildir       .   10)
                           (:mailing-list  .   10)
                           (:from          .   22)
                           (:subject       .   nil)))
@@ -38,7 +39,7 @@
                       :to
                       :cc
                       :subject
-                      :label
+                      :labels
                       :flags
                       :date
                       :maildir
@@ -54,7 +55,8 @@
    ("Mu4e"
     (("m" #'mu4e "mu4e")
      ("k" #'mu4e-quit "quit")
-     ("u" #'mu4e-update-index "update"))))
+     ("u" #'mu4e-update-index "update index")
+     ("U" #'mu4e-update-mail-and-index "update mail and index"))))
   :config
   (+add-to-list-multi 'mu4e-view-mime-part-actions
                       '(:name "print"
