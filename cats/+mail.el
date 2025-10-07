@@ -16,7 +16,7 @@
         ("Q" . #'mu4e-quit)
         ("u" . #'mu4e-update-index))
   (:map mu4e-view-mode-map
-        ("M-w" . #'mu4e-copy-thing-at-point))
+        ("w" . #'mu4e-copy-thing-at-point))
   :custom
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-change-filenames-when-moving t)
