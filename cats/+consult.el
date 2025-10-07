@@ -52,6 +52,9 @@
         xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
+  :custom
+  (consult-narrow-key "<")
+  (consult-async-min-input 2)
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
@@ -60,7 +63,6 @@
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
    :preview-key '(:debounce 0.4 any))
-  (setq consult-narrow-key "<")
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   :mode-hydra
   (org-mode
