@@ -31,7 +31,7 @@
                           (:labels        .    8)
                           (:flags         .    6)
                           (:tags          .   20)
-                          (:maildir       .   10)
+                          (:maildir       .   20)
                           (:mailing-list  .   10)
                           (:from          .   22)
                           (:subject       .   nil)))
