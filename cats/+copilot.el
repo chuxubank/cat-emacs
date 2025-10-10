@@ -32,6 +32,7 @@
           (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion)))))
 
 (use-package copilot
+  :unless IS-CI
   :delight " "
   :hook (prog-mode . copilot-mode)
   :bind
@@ -41,5 +42,4 @@
         ("C-TAB" . 'copilot-accept-completion-by-word)
         ("C-<tab>" . 'copilot-accept-completion-by-word))
   :custom
-  (copilot-disable-predicates '((lambda () IS-CI)))
   (copilot-enable-predicates '(meow-insert-mode-p copilot--buffer-changed)))
