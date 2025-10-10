@@ -122,6 +122,7 @@
 
 ;;; plugins
 (cat! "+vibe")
+(cat! "+copilot")
 (cat! "+log")
 (cat! "+im")
 (cat! "+pdf")
