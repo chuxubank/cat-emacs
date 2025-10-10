@@ -62,7 +62,7 @@
 (use-package gptel
   :delight " 󱡄"
   :custom
-  (gptel-model 'gemini-2.5-pro-preview-06-05)
+  (gptel-model 'gemini-2.5-pro)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
@@ -82,12 +82,21 @@
    ("Fundamental"
     (("g" #'gptel-hydra/body "gptel"))))
   :config
-  (setq gptel-backend (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)))
+  (setq gptel--gemini
+        (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)
+        gptel--openrouter
+        (gptel-make-openai "OpenRouter"
+          :host "openrouter.ai"
+          :endpoint "/api/v1/chat/completions"
+          :stream t
+          :key 'gptel-api-key
+          :models '(deepseek/deepseek-chat-v3.1:free)))
+  (setq gptel-backend gptel--openrouter))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-model 'gemini-2.0-flash)
+  (gptel-magit-model 'deepseek/deepseek-chat-v3.1:free)
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
 
