@@ -39,4 +39,7 @@
         ("<tab>" . 'copilot-accept-completion)
         ("TAB" . 'copilot-accept-completion)
         ("C-TAB" . 'copilot-accept-completion-by-word)
-        ("C-<tab>" . 'copilot-accept-completion-by-word)))
+        ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :custom
+  (copilot-disable-predicates '((lambda () IS-CI)))
+  (copilot-enable-predicates '(meow-insert-mode-p copilot--buffer-changed)))

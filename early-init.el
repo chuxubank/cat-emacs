@@ -21,8 +21,8 @@
 
 (defconst cat-emacs-name "Cat Emacs")
 
-(if IS-CI
-    (message "%s is running on CI" cat-emacs-name))
+(when IS-CI
+  (message "%s is running on CI" cat-emacs-name))
 
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
