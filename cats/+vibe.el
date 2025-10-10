@@ -90,13 +90,23 @@
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key 'gptel-api-key
-          :models '(deepseek/deepseek-chat-v3.1:free)))
+          :models '(alibaba/tongyi-deepresearch-30b-a3b:free
+                    deepseek/deepseek-chat-v3.1:free
+                    deepseek/deepseek-r1-0528:free
+                    deepseek/deepseek-r1:free
+                    meituan/longcat-flash-chat:free
+                    microsoft/mai-ds-r1:free
+                    moonshotai/kimi-k2:free
+                    moonshotai/kimi-dev-72b:free
+                    nvidia/nemotron-nano-9b-v2:free
+                    openai/gpt-oss-20b:free
+                    z-ai/glm-4.5-air:free)))
   (setq gptel-backend gptel--openrouter))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-model 'deepseek/deepseek-chat-v3.1:free)
+  (gptel-magit-model 'moonshotai/kimi-k2:free)
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
 
