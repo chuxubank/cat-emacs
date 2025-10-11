@@ -91,7 +91,7 @@
        :url "https://github.com/jwiegley/gptel-prompts"
        :rev :newest)
   :demand t
-  :after gptel
+  :after gptel magit
   :custom
   (gptel-prompts-directory cat-prompt-dir)
   (gptel-prompts-template-variables
