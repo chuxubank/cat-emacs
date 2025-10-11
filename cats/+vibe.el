@@ -31,6 +31,7 @@
 (use-package gptel
   :delight " 󱡄"
   :custom
+  (gptel-expert-commands t)
   (gptel-model 'gemini-2.5-pro)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
@@ -76,6 +77,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-model 'moonshotai/kimi-k2:free)
+  (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.poet" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
 
@@ -92,9 +94,15 @@
   :after gptel
   :custom
   (gptel-prompts-directory cat-prompt-dir)
+  (gptel-prompts-template-variables
+   `(("user_name" . ,(or (getenv "USER") (user-login-name)))
+     ("emacs_version" . ,(format "Emacs %s" emacs-version))
+     ("git_commit_subject_line_limit" . ,git-commit-summary-max-length)))
   :config
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))
+
+(use-package templatel)
 
 (use-package chatgpt-shell
   :custom
