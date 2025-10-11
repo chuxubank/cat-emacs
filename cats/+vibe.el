@@ -77,7 +77,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-model 'moonshotai/kimi-k2:free)
-  (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.poet" cat-prompt-dir)))
+  (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
 

@@ -114,6 +114,7 @@
 (cat! "+vb")
 (cat! "+web")
 (cat! "+yaml")
+(cat! "+poly")
 
 ;;; tools
 (cat! "+ansible")
