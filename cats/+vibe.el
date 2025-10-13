@@ -76,7 +76,7 @@
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-model 'moonshotai/kimi-k2:free)
+  (gptel-magit-model 'z-ai/glm-4.5-air:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
@@ -97,7 +97,7 @@
   (gptel-prompts-template-variables
    `(("user_name" . ,(or (getenv "USER") (user-login-name)))
      ("emacs_version" . ,(format "Emacs %s" emacs-version))
-     ("git_commit_subject_line_limit" . ,git-commit-summary-max-length)))
+     ("git_commit_summary_max_length" . ,git-commit-summary-max-length)))
   :config
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))

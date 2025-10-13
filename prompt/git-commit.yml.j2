@@ -1,5 +1,5 @@
 - role: system
-  content: >-
+  content: |
     You are an expert at writing Git commits. Your job is to write a short clear commit message that summarizes the changes.
 
     The commit message should be structured as follows:
@@ -37,7 +37,33 @@
 - role: user
   content: |
     Please generate the commit message for me:
-    - Try to limit the whole subject line(first line) to {{ git_commit_subject_line_limit }} characters
-    - Do not end the subject line with any punctuation
-    - Use the imperative mood in the subject line
+    - Try to limit the whole summary line(first line) to {{ git_commit_summary_max_length }} characters
+    - Do not end the summary line with any punctuation
+    - Use the imperative mood in the summary line
     - Keep the body short and concise (omit it entirely if not useful)
+
+- name: Commit message with description
+  role: assistant
+  content: |
+    feat: allow provided config object to extend other configs
+
+- name: Commit message with no body
+  role: assistant
+  content: |
+    docs: correct spelling of CHANGELOG
+
+- name: Commit message with scope
+  role: assistant
+  content: |
+    feat(lang): add Polish language
+
+- name: Commit message with multi-paragraph body
+  role: assistant
+  content: |
+    fix: prevent racing of requests
+
+    Introduce a request id and a reference to latest request. Dismiss
+    incoming responses other than from latest request.
+
+    Remove timeouts which were used to mitigate the racing issue but are
+    obsolete now.
