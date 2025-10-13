@@ -74,8 +74,6 @@
   (setq gptel-backend gptel--openrouter))
 
 (use-package gptel-magit
-  :demand t
-  :after gptel magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-backend gptel--openrouter)
@@ -93,8 +91,7 @@
   :vc (gptel-prompts
        :url "https://github.com/jwiegley/gptel-prompts"
        :rev :newest)
-  :demand t
-  :after gptel magit
+  :commands #'gptel-prompts-poet
   :custom
   (gptel-prompts-directory cat-prompt-dir)
   (gptel-prompts-template-variables
