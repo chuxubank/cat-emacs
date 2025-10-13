@@ -74,9 +74,12 @@
   (setq gptel-backend gptel--openrouter))
 
 (use-package gptel-magit
+  :demand t
+  :after gptel magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-model 'gemini-2.5-flash-lite)
+  (gptel-magit-backend gptel--openrouter)
+  (gptel-magit-model 'alibaba/tongyi-deepresearch-30b-a3b:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
