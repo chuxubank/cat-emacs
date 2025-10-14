@@ -33,7 +33,7 @@
 (use-package ob-kotlin
   :vc (ob-kotlin
        :url "https://github.com/chuxubank/ob-kotlin"
-       :rev patch-1)
+       :rev :newest)
   :demand
   :after org
   :config
