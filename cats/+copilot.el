@@ -39,7 +39,8 @@
   (:map copilot-completion-map
         ("<tab>" . 'copilot-accept-completion)
         ("TAB" . 'copilot-accept-completion)
-        ("C-TAB" . 'copilot-accept-completion-by-word)
-        ("C-<tab>" . 'copilot-accept-completion-by-word))
+        ("C-e" . 'copilot-accept-completion-by-line)
+        ("M-f" . 'copilot-accept-completion-by-word)
+        ("M-}" . 'copilot-accept-completion-by-paragraph))
   :custom
   (copilot-enable-predicates '(meow-insert-mode-p copilot--buffer-changed)))
