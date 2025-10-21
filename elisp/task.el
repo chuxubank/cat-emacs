@@ -231,15 +231,17 @@ See `magit-branch-or-checkout'"
     (magit-fetch-refspec remote (format "%s:%s" branch branch) nil)))
 
 ;;;###autoload
-(defun task-start-dev-work (&optional pull-first)
-  "Start the development with task.
+(defun task-start-dev-work (issue &optional pull-first)
+  "Start the development ISSUE with task.
 
 If PULL-FIRST, will run task to pull the remote branch first."
-  (interactive "P")
+  (interactive
+   (list (task-jira-select-issue task-jira-default-jql)
+         (or current-prefix-arg
+             (y-or-n-p "Pull remote branch first? "))))
   (when pull-first
     (call-interactively #'task-pull-remote-branch))
-  (let* ((issue   (task-jira-select-issue task-jira-default-jql))
-         (key     (cdr (assoc 'key issue)))
+  (let* ((key     (cdr (assoc 'key issue)))
          (fields  (cdr (assoc 'fields issue)))
          (summary (cdr (assoc 'summary fields))))
     (task-create-branch-with-key-and-text key summary)))
