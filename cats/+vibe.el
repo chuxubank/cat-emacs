@@ -84,7 +84,10 @@
 
 (defun cat/gptel-magit--generate-without-reasoning (orig-fn callback)
   "Advice around ORIG-FN to set `gptel-include-reasoning' to nil with CALLBACK."
-  (let ((gptel-include-reasoning nil))
+  (let ((gptel-include-reasoning nil)
+        (gptel--request-params (if (eq gptel-magit-backend gptel--openrouter)
+                                   (list :reasoning (list :exclude t))
+                                 nil)))
     (funcall orig-fn callback)))
 
 (use-package gptel-prompts
