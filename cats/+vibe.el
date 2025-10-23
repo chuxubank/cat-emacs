@@ -32,7 +32,7 @@
   :delight " 󱡄"
   :custom
   (gptel-expert-commands t)
-  (gptel-model 'gemini-2.5-pro)
+  (gptel-model 'moonshotai/kimi-k2:free)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
@@ -62,14 +62,22 @@
           :key 'gptel-api-key
           :models '(alibaba/tongyi-deepresearch-30b-a3b:free
                     deepseek/deepseek-chat-v3.1:free
+                    deepseek/deepseek-r1-0528-qwen3-8b:free
                     deepseek/deepseek-r1-0528:free
                     deepseek/deepseek-r1:free
+                    google/gemini-2.0-flash-exp:free
+                    google/gemma-3-27b-it:free
                     meituan/longcat-flash-chat:free
+                    meta-llama/llama-3.3-70b-instruct:free
                     microsoft/mai-ds-r1:free
                     moonshotai/kimi-k2:free
                     moonshotai/kimi-dev-72b:free
                     nvidia/nemotron-nano-9b-v2:free
                     openai/gpt-oss-20b:free
+                    qwen/qwen3-235b-a22b:free
+                    qwen/qwen3-30b-a3b:free
+                    qwen/qwen3-coder:free
+                    tngtech/deepseek-r1t2-chimera:free
                     z-ai/glm-4.5-air:free)))
   (setq gptel-backend gptel--openrouter))
 
@@ -77,7 +85,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-backend gptel--openrouter)
-  (gptel-magit-model 'alibaba/tongyi-deepresearch-30b-a3b:free)
+  (gptel-magit-model 'tngtech/deepseek-r1t2-chimera:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
