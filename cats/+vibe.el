@@ -86,7 +86,8 @@
   "Advice around ORIG-FN to set `gptel-include-reasoning' to nil with CALLBACK."
   (let ((gptel-include-reasoning nil)
         (gptel--request-params (if (eq gptel-magit-backend gptel--openrouter)
-                                   (list :reasoning (list :exclude t))
+                                   (list :reasoning (list :exclude t
+                                                          :effort "minimal"))
                                  nil)))
     (funcall orig-fn callback)))
 
