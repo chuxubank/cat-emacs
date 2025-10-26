@@ -133,6 +133,7 @@
 (cat! "+language")
 (cat! "+map")
 (cat! "+mail")
+(cat! "+media")
 (cat! "+music")
 (cat! "+pass")
 (cat! "+github")
