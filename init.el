@@ -3,9 +3,12 @@
 (cat-benchmark 'beg)
 
 ;;; custom
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq custom-file "~/.config/emacs-custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(add-hook 'kill-emacs-query-functions
+          'custom-prompt-customize-unsaved-options)
 
 (defgroup cat-emacs nil
   "A lightweight Emacs configuration works on Linux, macOS and Windows."
