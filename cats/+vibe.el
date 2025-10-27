@@ -118,6 +118,7 @@
 
 (use-package chatgpt-shell
   :custom
+  (chatgpt-shell-root-path (concat cat-local-dir "shell-maker/"))
   (chatgpt-shell-google-key
    (let ((found (car (auth-source-search
                       :host "generativelanguage.googleapis.com"
