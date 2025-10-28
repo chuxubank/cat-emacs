@@ -204,10 +204,11 @@
   (type-break-mode . type-break-mode-line-message-mode)
   :custom
   (type-break-query-function #'y-or-n-p)
+  (type-break-good-rest-interval (/ type-break-interval 10))
   (type-break-good-break-interval (* 5 60))
   (type-break-demo-boring-stats t)
   :config
-  (type-break-guesstimate-keystroke-threshold 30))
+  (type-break-guesstimate-keystroke-threshold 60))
 
 (defun cat-type-break-buffer-p ()
   (string= (buffer-file-name) type-break-file-name))
