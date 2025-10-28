@@ -59,6 +59,10 @@ Intended for `eldoc-documentation-functions' (which see)."
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
+(use-package dumb-jump
+  :init
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 (use-package devdocs)
 
 (defvar-keymap cat-dev-doc-map

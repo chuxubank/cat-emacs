@@ -90,7 +90,8 @@
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
-(cat! "+jump")
+(cat! "+vibe")
+(cat! "+copilot")
 
 ;;; program
 (cat! "+android")
@@ -122,8 +123,6 @@
 (cat! "+docker")
 
 ;;; plugins
-(cat! "+vibe")
-(cat! "+copilot")
 (cat! "+log")
 (cat! "+im")
 (cat! "+pdf")

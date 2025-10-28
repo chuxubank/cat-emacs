@@ -40,13 +40,13 @@
   "j" #'jira-issues
   "l" #'elogcat
   "m" #'cat-mail/body
+  "M" #'osm-prefix-map
   "n" #'deft
   "o" #'cat-oj/body
   "p" #'pass
   "P" #'password-store-menu
   "r" #'elfeed
   "R" #'magit-list-repositories
-  "t" #'cat-term/body
   "w" #'webjump)
 
 (defvar-keymap cat-map
@@ -61,13 +61,13 @@
   "l" #'cat-language/body
   "L" #'org-store-link
   "n" #'major-mode-hydra
-  "M" #'osm-prefix-map
   "o" #'ace-window
   "p" 'cat-plugin-prefix
   "P" #'profiler-hydra/body
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
-  "t" 'cat-toggle-prefix
+  "t" #'cat-term/body
+  "T" 'cat-toggle-prefix
   "v" #'cat-vibe/body
   "w" #'cat-workspace/body)
 
