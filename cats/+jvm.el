@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package kotlin-mode)
+(use-package kotlin-mode
+  :custom
+  (kotlin-args-repl '("-Xrepl")))
 
 (use-package kotlin-ts-mode
   :when EMACS29+
@@ -9,6 +11,15 @@
     (("t" kotlin-ts-mode-goto-test-file "go to test file")
      ("r" kotlin-ts-mode-run-current-test-function "run current test function")
      ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
+
+(use-package ob-kotlin
+  :vc (ob-kotlin
+       :url "https://github.com/chuxubank/ob-kotlin"
+       :rev :newest)
+  :demand
+  :after org
+  :config
+  (add-to-list 'org-babel-load-languages '(kotlin . t)))
 
 (use-package flycheck-kotlin
   :hook (flycheck-mode . flycheck-kotlin-setup))
@@ -29,12 +40,3 @@
   (eglot-java-junit-platform-console-standalone-jar (concat cat-etc-dir "junit-platform-console-standalone.jar"))
   ;; Prevent auto install java lsp server
   (eglot-java-server-install-dir cat-etc-dir))
-
-(use-package ob-kotlin
-  :vc (ob-kotlin
-       :url "https://github.com/chuxubank/ob-kotlin"
-       :rev :newest)
-  :demand
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(kotlin . t)))
