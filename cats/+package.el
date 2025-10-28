@@ -34,7 +34,6 @@
     ))
 
 (custom-set-variables
- '(package-check-signature nil)
  '(package-install-upgrade-built-in nil)
  '(package-native-compile IS-CI)
  '(package-archives (append
