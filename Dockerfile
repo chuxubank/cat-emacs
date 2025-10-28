@@ -14,20 +14,20 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     p7zip \
     tzdata
 
-COPY . /root/.emacs.d
+COPY . /root/.config/emacs
 
 RUN echo "(custom-set-variables \
     '(use-short-answers t) \
     '(package-native-compile t) \
     '(system-packages-use-sudo nil) \
-    )" > $HOME/.emacs.d/custom.el
+    )" > $HOME/.config/emacs-custom.el
 
-RUN --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/elpa \
-    --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/eln-cache \
+RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
+    --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
     yes | emacs --fg-daemon --debug-init -kill
 
-RUN --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/elpa \
-    --mount=type=cache,sharing=locked,target=$HOME/.emacs.d/eln-cache \
-    make -C $HOME/.emacs.d/elpa/org-mode compile autoloads
+RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
+    --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
+    make -C $HOME/.config/emacs/elpa/org-mode compile autoloads
 
 ENTRYPOINT ["emacs"]
