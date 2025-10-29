@@ -13,6 +13,8 @@
   :hook
   (osx-location-changed . cat/set-calendar-geo-from-osx-location))
 
+(use-package osx-plist)
+
 (when IS-MACPORT
   (when (display-graphic-p)
     (setq mac-system-move-file-to-trash-use-finder t))
