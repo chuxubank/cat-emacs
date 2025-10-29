@@ -33,15 +33,14 @@
      ("melpa". "https://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/"))
     ))
 
-(custom-set-variables
- '(package-install-upgrade-built-in nil)
- '(package-native-compile IS-CI)
- '(package-archives (append
-                     (assoc-default cat-package-mirror package-mirror-alist)
-                     '(("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/"))))
- '(package-archive-priorities '(("gnu" . 5)
-                                ("melpa" . 3)
-                                ("jcs-elpa" . 0))))
+(setq-default
+ package-native-compile IS-CI
+ package-archives (append
+                   (assoc-default cat-package-mirror package-mirror-alist)
+                   '(("jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/")))
+ package-archive-priorities '(("gnu" . 5)
+                              ("melpa" . 3)
+                              ("jcs-elpa" . 0)))
 
 (unless (or EMACS29+ (package-installed-p 'use-package))
   (package-refresh-contents)
@@ -50,9 +49,9 @@
 (require 'use-package)
 (require 'ignore-builtin)
 
-(custom-set-variables
- '(use-package-always-ensure t)
- '(use-package-always-defer t))
+(setq-default
+ use-package-always-ensure t
+ use-package-always-defer t)
 
 (use-package system-packages)
 (use-package delight)
