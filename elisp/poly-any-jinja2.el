@@ -65,7 +65,8 @@ before the .j2 or .jinja2 extension. For example, for a file named
     (unless (fboundp polymode-symbol)
       (eval `(define-polymode ,polymode-symbol
                :hostmode ',host-mode-symbol
-               :innermodes '(poly-jinja2-innermode)) t))
+               :innermodes '(poly-jinja2-innermode)
+               :lighter "  ") t))
 
     (funcall polymode-symbol)))
 
