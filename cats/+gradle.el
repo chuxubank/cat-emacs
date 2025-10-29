@@ -5,9 +5,7 @@
 
 (use-package gradle
   :demand t
-  :vc (gradle-el
-       :url "https://git.sr.ht/~vhallac/gradle-el"
-       :rev :newest)
+  :vc (gradle-el :url "https://git.sr.ht/~vhallac/gradle-el")
   :init
   (defun gradle--with-project-el-root (func)
     "Execute `func' inside eclim's project root"

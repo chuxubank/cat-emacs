@@ -24,8 +24,7 @@
   (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
 
 (use-package ob-async
-  :vc (ob-async
-       :url "https://github.com/ezchi/ob-async"
-       :rev "develop")
+  :vc (:url "https://github.com/ezchi/ob-async"
+            :rev "develop")
   :demand t
   :after org)

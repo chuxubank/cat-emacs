@@ -11,9 +11,7 @@
   :pin melpa-stable)
 
 (use-package markdown-xwidget
-  :vc (markdown-xwidget
-       :url "https://github.com/cfclrk/markdown-xwidget"
-       :rev :newest)
+  :vc (:url "https://github.com/cfclrk/markdown-xwidget")
   :demand t
   :after markdown-mode
   :bind

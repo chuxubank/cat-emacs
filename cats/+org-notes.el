@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org-media-note
-  :vc (org-media-note
-       :url "https://github.com/yuchen-lea/org-media-note"
-       :rev :newest)
+  :vc (:url "https://github.com/yuchen-lea/org-media-note")
   :hook (org-mode . org-media-note-mode)
   :mode-hydra
   (org-mode

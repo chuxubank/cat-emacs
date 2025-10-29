@@ -27,9 +27,7 @@
     (list filtered-list (cadr args))))
 
 (use-package org-agenda-count
-  :vc (org-agenda-count
-       :url "https://github.com/sid-kurias/org-agenda-count"
-       :rev :newest)
+  :vc (:url "https://github.com/sid-kurias/org-agenda-count")
   :demand t
   :after org-agenda
   :custom

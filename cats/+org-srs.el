@@ -21,9 +21,7 @@
 
 (use-package org-fc
   :disabled
-  :vc (org-fc
-       :url "https://github.com/l3kn/org-fc"
-       :rev :newest)
+  :vc (:url "https://github.com/l3kn/org-fc")
   :demand t
   :after org
   :custom

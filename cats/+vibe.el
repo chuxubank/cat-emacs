@@ -100,9 +100,7 @@
     (funcall orig-fn callback)))
 
 (use-package gptel-prompts
-  :vc (gptel-prompts
-       :url "https://github.com/jwiegley/gptel-prompts"
-       :rev :newest)
+  :vc (:url "https://github.com/jwiegley/gptel-prompts")
   :commands #'gptel-prompts-poet
   :custom
   (gptel-prompts-directory cat-prompt-dir)

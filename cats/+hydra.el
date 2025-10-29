@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package hydra-posframe
-  :vc (hydra-posframe
-       :url "https://github.com/Ladicle/hydra-posframe"
-       :rev :newest)
+  :vc (:url "https://github.com/Ladicle/hydra-posframe")
   :hook (after-init . hydra-posframe-mode)
   :custom
   (hydra-posframe-poshandler #'posframe-poshandler-window-bottom-center)

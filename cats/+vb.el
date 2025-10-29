@@ -6,9 +6,7 @@
 
 (use-package vbnet-mode
   :disabled
-  :vc (vbnet-mode
-       :url "https://github.com/lelit/vbnet-mode"
-       :rev :newest)
+  :vc (:url "https://github.com/lelit/vbnet-mode")
   :mode "\\.\\(frm\\|bas\\|cls\\|vb\\)$"
   :custom
   (vbnet-want-flymake-fixup nil))

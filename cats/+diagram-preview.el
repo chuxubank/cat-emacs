@@ -1,9 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package diagram-preview
-  :vc (diagram-preview
-       :url "https://github.com/natrys/diagram-preview"
-       :rev :newest)
+  :vc (:url "https://github.com/natrys/diagram-preview")
   :delight " "
   :hook (graphviz-dot-mode
          plantuml-mode

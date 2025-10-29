@@ -51,7 +51,8 @@
 
 (setq-default
  use-package-always-ensure t
- use-package-always-defer t)
+ use-package-always-defer t
+ use-package-vc-prefer-newest t)
 
 (use-package system-packages)
 (use-package delight)

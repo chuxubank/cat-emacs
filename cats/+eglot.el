@@ -51,9 +51,7 @@
         '("kotlin-lsp" "--stdio")))
 
 (use-package lsp-proxy
-  :vc (lsp-proxy
-       :url "https://github.com/jadestrong/lsp-proxy"
-       :rev :newest)
+  :vc (:url "https://github.com/jadestrong/lsp-proxy")
   :delight " 󰑣"
   :hook
   (beancount-mode . lsp-proxy-mode)

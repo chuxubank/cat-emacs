@@ -13,9 +13,7 @@
      ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
 
 (use-package ob-kotlin
-  :vc (ob-kotlin
-       :url "https://github.com/chuxubank/ob-kotlin"
-       :rev :newest)
+  :vc (:url "https://github.com/chuxubank/ob-kotlin")
   :demand
   :after org
   :config

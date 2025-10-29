@@ -23,9 +23,7 @@
      ("tL" org-link-preview "link preview" :color red)))))
 
 (use-package org-yt
-  :vc (org-yt
-       :url "https://github.com/TobiasZawada/org-yt"
-       :rev :newest)
+  :vc (:url "https://github.com/TobiasZawada/org-yt")
   :demand t
   :after org
   :custom
@@ -50,9 +48,7 @@
   (org-link-set-parameters "img" :image-data-fun #'+org-inline-image-data-fn))
 
 (use-package org-dial
-  :vc (org-dial
-       :url "https://github.com/mistrey/org-dial"
-       :rev :newest)
+  :vc (:url "https://github.com/mistrey/org-dial")
   :demand t
   :after org
   :config
