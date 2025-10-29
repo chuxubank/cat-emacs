@@ -4,10 +4,10 @@
   :ensure nil
   :hook (org-mode . org-latex-preview-mode)
   :custom
-  (org-latex-preview-live t)
-  (org-latex-preview-live-debounce 0.25)
-  (org-latex-preview-process-precompiled nil)
-  (org-latex-preview-auto-ignored-commands
+  (org-latex-preview-mode-display-live t)
+  (org-latex-preview-mode-update-delay 0.25)
+  (org-latex-preview-process-precompile nil)
+  (org-latex-preview-mode-ignored-commands
    '(next-line
      previous-line
      mwheel-scroll
