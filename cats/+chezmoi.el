@@ -3,10 +3,7 @@
 (use-package chezmoi
   :commands
   (chezmoi-mode
-   chezmoi-dired-add-marked-files
-   chezmoi-magit-status
    chezmoi-diff
-   chezmoi-ediff
    chezmoi-find
    chezmoi-sync-files))
 
@@ -16,7 +13,7 @@
 
 (when (package-installed-p 'company)
   (use-package chezmoi-company
-    :vc (chezmoi-company
+    :vc (chezmoi-extensions
          :url "https://github.com/tuh8888/chezmoi.el"
          :lisp-dir "extensions/")
     :demand t
@@ -29,33 +26,32 @@
     (add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend)))
 
 (use-package chezmoi-dired
-  :vc (chezmoi-dired
+  :vc (chezmoi-extensions
        :url "https://github.com/tuh8888/chezmoi.el"
        :lisp-dir "extensions/")
-  :demand t
-  :after chezmoi)
+  :commands #'chezmoi-dired-add-marked-files)
 
 (use-package chezmoi-ediff
   :init
   (setq age-default-identity nil
         age-default-recipient nil)
-  :vc (chezmoi-ediff
+  :vc (chezmoi-extensions
        :url "https://github.com/tuh8888/chezmoi.el"
-       :lisp-dir "extensions/")
-  :demand t
-  :after chezmoi)
+       :lisp-dir "extensions")
+  :commands #'chezmoi-ediff)
 
 (when (package-installed-p 'magit)
   (use-package chezmoi-magit
-    :vc (chezmoi-magit
+    :vc (chezmoi-extensions
          :url "https://github.com/tuh8888/chezmoi.el"
-         :lisp-dir "extensions/")
+         :lisp-dir "extensions")
     :demand t
-    :after chezmoi magit))
+    :after chezmoi magit
+    :commands #'chezmoi-magit-status))
 
 (when (package-installed-p 'cape)
   (use-package chezmoi-cape
-    :vc (chezmoi-cape
+    :vc (chezmoi-extensions
          :url "https://github.com/tuh8888/chezmoi.el"
          :lisp-dir "extensions/")
     :demand t
