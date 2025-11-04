@@ -11,7 +11,9 @@
      ("LogUtil"
       (java-pattern . "HH:mm:ss.SSS"))
      ("Zscaler"
-      (java-pattern . "yyyy-MM-dd HH:mm:ss.SSSSSS(Z)"))))
+      (java-pattern . "yyyy-MM-dd HH:mm:ss.SSSSSS(Z)"))
+     ("sing-box"
+      (java-pattern . "Z yyyy-MM-dd HH:mm:ss"))))
   (logview-additional-level-mappings
    '(("LogCat"
       (error "E" "F" "S")
@@ -49,6 +51,10 @@
      ("Xray"
       (format . "TIMESTAMP [LEVEL]<<RX:THREAD: \\[[^]]+\\] \\| >>NAME: MESSAGE")
       (levels . "Xray"))
+     ("sing-box"
+      (format . "TIMESTAMP LEVEL<<RX:THREAD: \\[[^]]+\\] \\| >>NAME: MESSAGE")
+      (levels . "SLF4J")
+      (timestamp "sing-box"))
      ("Zscaler"
       (format . "TIMESTAMP[IGNORED:THREAD] LEVEL MESSAGE")
       (levels . "Zscaler")
