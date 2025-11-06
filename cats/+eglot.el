@@ -40,10 +40,13 @@
      ("I" #'eglot-code-action-inline "inline")
      ("R" #'eglot-code-action-rewrite "rewrite"))))
   :mode-hydra
-  ((prog-mode
-    python-base-mode
+  ((
+    beancount-mode
     kotlin-ts-mode
-    beancount-mode)
+    python-base-mode
+    yaml-ts-mode
+    prog-mode
+    )
    ("LSP"
     (("e" eglot-hydra/body "eglot"))))
   :config
