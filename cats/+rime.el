@@ -10,10 +10,11 @@
   :commands #'toggle-input-method)
 
 (when IS-MAC
-  (setq rime-librime-root (concat cat-rime-directory "dist/")))
+  (setq rime-librime-root (getenv "HOMEBREW_PREFIX")
+        rime-emacs-module-header-root (concat (getenv "HOMEBREW_PREFIX") "/include")))
 
 (setq
- rime-user-data-dir (concat cat-rime-directory "data/")
+ rime-user-data-dir cat-rime-directory
  rime-disable-predicates
  '(rime-predicate-hydra-p
    rime-predicate-ace-window-p
