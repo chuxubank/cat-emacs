@@ -1,6 +1,7 @@
 [language-server]
 kotlin-lsp = { command = "kotlin-lsp", args = ["--stdio"] }
 beancount-language-server = { command = "beancount-language-server", config = { journal_file = "ledger/ledger.beancount" } }
+ansible-language-server = { command = "ansible-language-server" }
 
 [[language]]
 name = "kotlin"
@@ -12,4 +13,14 @@ language-servers = ["kotlin-lsp"]
 [[language]]
 name = "beancount"
 file-types = ["beancount", "bean", { glob = "*.beancount.gpg" }]
+language-servers = ["beancount-language-server"]
+
+[[language]]
+name = "ansible"
+file-types = [
+  { glob = "playbook.ya?ml" },
+  { glob = "roles/*.ya?ml" },
+  { glob = "*vars/*.ya?ml" },
+]
+roots = ["ansible.cfg"]
 language-servers = ["beancount-language-server"]
