@@ -6,6 +6,6 @@
   :demand t
   :custom
   (exec-path-from-shell-arguments '("-l"))
-  (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME"))
+  (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME" "HOMEBREW_PREFIX"))
   :config
   (exec-path-from-shell-initialize))
