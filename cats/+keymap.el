@@ -66,8 +66,8 @@
   "P" #'profiler-hydra/body
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
-  "t" #'cat-term/body
-  "T" 'cat-toggle-prefix
+  "t" 'cat-toggle-prefix
+  "T" #'cat-term/body
   "v" #'cat-vibe/body
   "w" #'cat-workspace/body)
 
