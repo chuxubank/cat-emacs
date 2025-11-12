@@ -11,14 +11,14 @@
   :pin melpa-stable)
 
 (use-package md-babel
+  :vc (:url "https://github.com/md-babel/md-babel.el")
   :demand t
   :after markdown-mode
-  :vc (:url "https://github.com/md-babel/md-babel.el")
   :bind
   (:map markdown-mode-command-map
         ("C-c" . md-babel-execute-block-at-point))
-  :custom
-  (md-babel-path (executable-find "md-babel")))
+  :config
+  (setq md-babel-path (executable-find "md-babel")))
 
 (use-package markdown-xwidget
   :vc (:url "https://github.com/cfclrk/markdown-xwidget")
