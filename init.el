@@ -10,6 +10,25 @@
 (add-hook 'kill-emacs-query-functions
           'custom-prompt-customize-unsaved-options)
 
+(defun custom-unsaved-options--only-variables-p (result vars)
+  "Return non-nil if RESULT only contain entries whose symbols are in VARS.
+VARS can be a symbol or a list of symbols."
+  (let ((vars (if (symbolp vars) (list vars) vars)))
+    (when result
+      (let ((symbols (mapcar #'car result)))
+        (and (= (length symbols) (length vars))
+             (null (cl-set-difference symbols vars)))))))
+
+(defun custom-unsaved-options--around (orig-fn &rest args)
+  "Advice around `custom-unsaved-options' to suppress trivial ORIG-FN results with ARGS."
+  (let ((result (apply orig-fn args)))
+    (if (custom-unsaved-options--only-variables-p
+         result '(mouse-wheel-progressive-speed))
+        nil
+      result)))
+
+(advice-add 'custom-unsaved-options :around #'custom-unsaved-options--around)
+
 (defgroup cat-emacs nil
   "A lightweight Emacs configuration works on Linux, macOS and Windows."
   :group 'Emacs
