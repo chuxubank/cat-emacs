@@ -39,6 +39,7 @@
   (treesit-langs-major-mode-setup))
 
 (use-package treesit-auto
+  :disabled
   :hook (after-init . global-treesit-auto-mode)
   :custom
   (treesit-auto-install 'prompt)
