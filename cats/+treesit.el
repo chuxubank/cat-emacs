@@ -34,9 +34,7 @@
         (alist-get 'java-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-langs
-  :demand
-  :config
-  (treesit-langs-major-mode-setup))
+  :hook ((text-mode prog-mode) . treesit-langs-major-mode-setup))
 
 (use-package treesit-auto
   :disabled
