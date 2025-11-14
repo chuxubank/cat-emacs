@@ -107,7 +107,7 @@
 (cat! "+makefile")
 (cat! "+mermaid")
 (cat! "+plantuml")
-(cat! "+powershell")
+(cat! "+shell")
 (cat! "+protobuf")
 (cat! "+python")
 (cat! "+rust")
