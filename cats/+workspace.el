@@ -9,10 +9,10 @@
   :pretty-hydra
   (cat-workspace
    ("Project"
-    (("p" #'project-remember-projects-under "remember all")
+    (("p" #'project-remember-projects-under "remember under")
      ("f" #'project-forget-project "forget")
      ("F" #'project-forget-zombie-projects "forget zombie")
-     ("D" #'project-forget-projects-under "forget all")))))
+     ("D" #'project-forget-projects-under "forget under")))))
 
 (use-package tab-bar
   :ensure nil
