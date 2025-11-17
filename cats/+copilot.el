@@ -33,6 +33,7 @@
 
 (use-package copilot
   :unless IS-CI
+  :pin melpa-stable
   :delight " "
   :hook (prog-mode . copilot-mode)
   :bind
