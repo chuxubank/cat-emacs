@@ -223,6 +223,8 @@ Unless `buffer-face-mode' already enabled."
                     '(("Symbols Nerd Font" . 1.2)))))
      ((derived-mode-p 'prog-mode)
       (+safe-buffer-face-set-fonts cat-mono-code-fonts))
+     ((string-match-p "Meow Cheatsheet" (buffer-name))
+      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'Info-mode
