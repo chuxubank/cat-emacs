@@ -91,6 +91,7 @@
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
 (cat! "+vibe")
+(cat! "+agent")
 (cat! "+copilot")
 
 ;;; program

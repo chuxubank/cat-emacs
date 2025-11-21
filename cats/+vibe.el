@@ -4,30 +4,6 @@
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
 
-(use-package aidermacs
-  :commands #'aidermacs-transient-menu
-  :custom
-  (aidermacs-backend 'vterm)
-  (aidermacs-watch-files t)
-  :pretty-hydra
-  (cat-vibe
-   ("Aider"
-    (("a" #'aidermacs-transient-menu "aidermacs")))))
-
-(use-package aider
-  :pretty-hydra
-  (cat-vibe
-   ("Aider"
-    (("A" #'aider-transient-menu "aider.el"))))
-  :config
-  (aider-magit-setup-transients))
-
-(use-package ob-aider
-  :demand t
-  :after org
-  :config
-  (add-to-list 'org-babel-load-languages '(aider . t)))
-
 (use-package gptel
   :delight " 󱡄"
   :custom

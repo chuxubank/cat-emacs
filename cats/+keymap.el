@@ -53,6 +53,7 @@
   :keymap mode-specific-map
   ":" #'avy-goto-char-timer
   "a" #'org-agenda
+  "A" #'cat-agent/body
   "c" #'org-capture
   "d" 'cat-org-roam-dailies-prefix
   "e" #'cat-eudc/body
