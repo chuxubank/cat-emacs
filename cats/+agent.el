@@ -28,4 +28,13 @@
   :config
   (add-to-list 'org-babel-load-languages '(aider . t)))
 
-(use-package agent-shell)
+(use-package agent-shell
+  :pretty-hydra
+  (agent-shell
+   (:color teal :title (+with-icon "nf-dev-terminal" "Agent Shell"))
+   ("Action"
+    (("s" #'agent-shell "agent-shell")
+     ("n" #'agent-shell-new-shell "new shell"))))
+  (cat-agent
+   ("Agent Shell"
+    (("s" #'agent-shell/body "agent-shell")))))
