@@ -29,6 +29,10 @@
   (add-to-list 'org-babel-load-languages '(aider . t)))
 
 (use-package agent-shell
+  :bind
+  (:map agent-shell-ui-mode-map
+        ("C-c C-p" . agent-shell-ui-backward-block)
+        ("C-c C-n" . agent-shell-ui-forward-block))
   :pretty-hydra
   (agent-shell
    (:color teal :title (+with-icon "nf-dev-terminal" "Agent Shell"))
