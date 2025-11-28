@@ -34,7 +34,8 @@
       "double-entry-generator translate"
       "double-entry-generator translate --provider ")
      ("\\.yaml\\'"
-      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) validate-pipeline --enable-across-step --config")))
+      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) validate-pipeline --enable-across-step --config"
+      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) set-pipeline --config ? --pipeline $(basename `?` .yaml)")))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
