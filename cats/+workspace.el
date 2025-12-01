@@ -6,6 +6,8 @@
 
 (use-package project
   :ensure nil
+  :custom
+  (project-vc-merge-submodules nil)
   :pretty-hydra
   (cat-workspace
    ("Project"
