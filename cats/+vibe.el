@@ -66,7 +66,8 @@
   (gptel-magit-model 'x-ai/grok-4.1-fast:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning))
+  (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning)
+  (advice-add 'gptel-magit--format-commit-message :around #'cat/gptel-magit--format-commit-message-skip))
 
 (defun cat/gptel-magit--generate-without-reasoning (orig-fn callback)
   "Advice around ORIG-FN to set `gptel-include-reasoning' to nil with CALLBACK."
@@ -76,6 +77,10 @@
                                                           :effort "minimal"))
                                  nil)))
     (funcall orig-fn callback)))
+
+(defun cat/gptel-magit--format-commit-message-skip (_ message)
+  "Advice to skip formatting, return MESSAGE as-is."
+  message)
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")
