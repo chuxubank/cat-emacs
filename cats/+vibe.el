@@ -55,7 +55,6 @@
                     qwen/qwen3-coder:free
                     tngtech/deepseek-r1t2-chimera:free
                     tngtech/tng-r1t-chimera:free
-                    x-ai/grok-4.1-fast:free
                     z-ai/glm-4.5-air:free)))
   (setq gptel-backend gptel--openrouter))
 
@@ -63,7 +62,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-backend gptel--openrouter)
-  (gptel-magit-model 'x-ai/grok-4.1-fast:free)
+  (gptel-magit-model 'openai/gpt-oss-20b:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning)
