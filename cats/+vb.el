@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package vbs-repl
+  :pin jcs-elpa)
+
+(use-package visual-basic-mode
+  :pin jcs-elpa)
+
 (use-package vbscript-mode
   :pin jcs-elpa
   :mode "\\.\\(bas\\|vb\\)$")
