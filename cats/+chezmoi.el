@@ -6,7 +6,13 @@
   (chezmoi-mode
    chezmoi-diff
    chezmoi-find
-   chezmoi-sync-files))
+   chezmoi-sync-files)
+  :config
+  (defun chezmoi-managed ()
+    "List all files and directories managed by chezmoi."
+    (thread-last "managed -x externals,scripts"
+	             chezmoi--dispatch
+	             (cl-map 'list (lambda (file) (concat "~/" file))))))
 
 (defun cat-chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
