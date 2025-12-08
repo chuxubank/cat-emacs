@@ -114,6 +114,7 @@
   (meow-setup-line-number)
   (+add-to-list-multi 'meow-mode-state-list
                       '(comint-mode . insert)
+                      '(Custom-mode . normal)
                       '(deft-mode . motion)
                       '(diary-mode . normal)
                       '(ement-room-mode . motion)
