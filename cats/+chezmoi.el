@@ -6,7 +6,8 @@
   (chezmoi-mode
    chezmoi-diff
    chezmoi-find
-   chezmoi-sync-files)
+   chezmoi-sync-files
+   chezmoi--completing-read)
   :config
   (defun chezmoi-managed ()
     "List all files and directories managed by chezmoi."
@@ -87,6 +88,7 @@
   "d" #'chezmoi-diff
   "e" #'chezmoi-ediff
   "f" #'chezmoi-find
+  "F" #'chezmoi-find-scripts
   "g" #'chezmoi-magit-status
   "o" #'chezmoi-open-other
   "s" #'chezmoi-write
