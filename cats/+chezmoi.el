@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi
+  :vc (chezmoi :url "https://github.com/Lillenne/chezmoi.el")
   :commands
   (chezmoi-mode
    chezmoi-diff
@@ -14,7 +15,7 @@
 (when (package-installed-p 'company)
   (use-package chezmoi-company
     :vc (chezmoi-extensions
-         :url "https://github.com/tuh8888/chezmoi.el"
+         :url "https://github.com/Lillenne/chezmoi.el"
          :lisp-dir "extensions/")
     :demand t
     :after chezmoi company
@@ -27,7 +28,7 @@
 
 (use-package chezmoi-dired
   :vc (chezmoi-extensions
-       :url "https://github.com/tuh8888/chezmoi.el"
+       :url "https://github.com/Lillenne/chezmoi.el"
        :lisp-dir "extensions/")
   :commands #'chezmoi-dired-add-marked-files)
 
@@ -36,14 +37,14 @@
   (setq age-default-identity nil
         age-default-recipient nil)
   :vc (chezmoi-extensions
-       :url "https://github.com/tuh8888/chezmoi.el"
+       :url "https://github.com/Lillenne/chezmoi.el"
        :lisp-dir "extensions")
   :commands #'chezmoi-ediff)
 
 (when (package-installed-p 'magit)
   (use-package chezmoi-magit
     :vc (chezmoi-extensions
-         :url "https://github.com/tuh8888/chezmoi.el"
+         :url "https://github.com/Lillenne/chezmoi.el"
          :lisp-dir "extensions")
     :demand t
     :after chezmoi magit
@@ -52,7 +53,7 @@
 (when (package-installed-p 'cape)
   (use-package chezmoi-cape
     :vc (chezmoi-extensions
-         :url "https://github.com/tuh8888/chezmoi.el"
+         :url "https://github.com/Lillenne/chezmoi.el"
          :lisp-dir "extensions/")
     :demand t
     :after chezmoi cape
