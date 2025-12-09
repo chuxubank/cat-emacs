@@ -59,10 +59,21 @@
 (require 'magit)
 (require 'jira-api)
 (require 'jira-issues)
+(require 'json)
 
 (defcustom task-icon-cache-dir "~/.cache/emacs/task/icon"
   "Cache directory for task icon."
   :type 'directory
+  :group 'task)
+
+(defcustom task-backend 'acli-jira
+  "Backend used to fetch issues.
+
+Supported backends:
+- `jira' (default): use the Emacs jira package.
+- `acli-jira': use the `acli jira` command-line tool."
+  :type '(choice (const :tag "JIRA API" jira)
+                 (const :tag "acli jira" acli-jira))
   :group 'task)
 
 (defcustom task-jira-default-jql "assignee = currentUser() and resolution = Unresolved"
@@ -73,6 +84,21 @@
 (defcustom task-jira-search-limit 20
   "The Jira search limit."
   :type 'number
+  :group 'task)
+
+(defcustom task-acli-jira-command '("acli" "jira")
+  "Base command (program + subcommand) for the `acli jira` backend.
+
+Customize this if you need to inject additional global flags, e.g. auth or
+profile arguments. The JQL, limit, and JSON flags are appended automatically."
+  :type '(repeat string)
+  :group 'task)
+
+(defcustom task-acli-jira-extra-args '("--output" "json")
+  "Extra arguments passed to the `acli jira search` command.
+
+The JQL and limit arguments are appended automatically."
+  :type '(repeat string)
   :group 'task)
 
 (unless (file-exists-p task-icon-cache-dir)
@@ -90,6 +116,84 @@ Returns the issues list from the API response."
                                     :sync t))
          (data (request-response-data response)))
     (cdr (assoc 'issues data))))
+
+(defun task--acli-jira--get (issue key)
+  "Get KEY from ISSUE, looking into `fields' when present."
+  (or (alist-get key issue)
+      (alist-get key (alist-get 'fields issue))))
+
+(defun task--acli-jira--build-type (issue symbol name-key icon-key id-key)
+  "Build a TYPE entry (SYMBOL . alist) from ISSUE using NAME-KEY, ICON-KEY, ID-KEY."
+  (or (alist-get symbol (alist-get 'fields issue))
+      (let ((name (task--acli-jira--get issue name-key))
+            (icon (task--acli-jira--get issue icon-key))
+            (id   (task--acli-jira--get issue id-key)))
+        (when (or name icon id)
+          (cons symbol (delq nil (list (and name (cons 'name name))
+                                       (and icon (cons 'iconUrl icon))
+                                       (and id   (cons 'id id)))))))))
+
+(defun task--acli-jira--build-status (issue)
+  "Normalize status payload in ISSUE to the shape jira.el expects."
+  (let* ((fields  (alist-get 'fields issue))
+         (status  (or (alist-get 'status fields)
+                      (alist-get 'status issue)))
+         (name    (cond ((stringp status) status)
+                        ((listp status) (alist-get 'name status))))
+         (cat     (or (and (listp status) (alist-get 'statusCategory status))
+                      (let ((color (or (task--acli-jira--get issue 'statusCategoryColor)
+                                       (task--acli-jira--get issue 'statusColor))))
+                        (when color `((colorName . ,color)))))))
+    (cond
+     ((and (listp status) (assoc 'name status)) status)
+     (name `((name . ,name) (statusCategory . ,cat)))
+     (t nil))))
+
+(defun task--acli-jira-normalize-issue (issue)
+  "Convert ISSUE returned by `acli jira' into the shape expected by task.el."
+  (let* ((key       (task--acli-jira--get issue 'key))
+         (summary   (task--acli-jira--get issue 'summary))
+         (created   (task--acli-jira--get issue 'created))
+         (updated   (task--acli-jira--get issue 'updated))
+         (issuetype (task--acli-jira--build-type issue 'issuetype 'issuetypeName 'issuetypeIcon 'issuetypeId))
+         (priority  (task--acli-jira--build-type issue 'priority 'priorityName 'priorityIcon 'priorityId))
+         (status    (task--acli-jira--build-status issue))
+         (fields nil))
+    (when summary   (push (cons 'summary summary) fields))
+    (when created   (push (cons 'created created) fields))
+    (when updated   (push (cons 'updated updated) fields))
+    (when issuetype (push issuetype fields))
+    (when priority  (push priority fields))
+    (when status    (push (cons 'status status) fields))
+    `((key . ,key)
+      (fields . ,(nreverse fields)))))
+
+(defun task--acli-jira-search (jql max-results)
+  "Search issues via `acli jira'. Return a vector of normalized issues."
+  (let* ((cmd (append task-acli-jira-command
+                      (list "search" "--jql" jql "--limit" (number-to-string max-results))
+                      task-acli-jira-extra-args))
+         (program (car cmd))
+         (args (cdr cmd))
+         (_ (unless (executable-find program)
+              (error "Executable not found for acli jira backend: %s" program)))
+         (output (with-temp-buffer
+                   (let ((exit-code (apply #'process-file program nil (current-buffer) nil args)))
+                     (unless (zerop exit-code)
+                       (error "acli jira command failed (%s): %s" exit-code
+                              (replace-regexp-in-string "\n\\'" "" (buffer-string))))
+                     (buffer-string))))
+         (data (json-parse-string output :object-type 'alist :array-type 'vector
+                                  :null-object nil :false-object nil))
+         (issues (or (alist-get 'issues data) data)))
+    (vconcat (mapcar #'task--acli-jira-normalize-issue (append issues nil)))))
+
+(defun task--fetch-issues (jql max-results)
+  "Fetch issues according to `task-backend'."
+  (pcase task-backend
+    ('jira      (task--jira-api-search-sync jql max-results))
+    ('acli-jira (task--acli-jira-search jql max-results))
+    (_ (error "Unsupported task backend: %s" task-backend))))
 
 (defun task--generate-branch-name (key text)
   "Make KEY and TEXT a valid branch name."
@@ -196,7 +300,7 @@ Both key and summary participate in completion matching, but the
 return value is always the issue key."
   (interactive "sJQL: ")
   (let* ((cands (task--jira-format-candidates
-                 (task--jira-api-search-sync jql task-jira-search-limit)))
+                 (task--fetch-issues jql task-jira-search-limit)))
          (table (task--jira-completion-table cands))
          (cand (completing-read "Select JIRA issue: " table)))
     (gethash cand cands)))
