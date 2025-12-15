@@ -6,9 +6,6 @@
 
 (use-package kotlin-ts-mode
   :when EMACS29+
-  :init
-  (add-to-list 'major-mode-remap-alist
-               '(kotlin-mode . kotlin-ts-mode))
   :mode-hydra
   (("Test"
     (("t" kotlin-ts-mode-goto-test-file "go to test file")

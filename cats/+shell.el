@@ -3,9 +3,6 @@
 
 (use-package sh-script
   :ensure nil
-  :init
-  (add-to-list 'major-mode-remap-alist
-               '(sh-mode . bash-ts-mode))
   :custom
   (sh-basic-offset 4))
 

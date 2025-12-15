@@ -35,7 +35,12 @@
 
 (use-package treesit-langs
   :demand
-  :commands treesit-langs-major-mode-setup)
+  :commands treesit-langs-major-mode-setup
+  :config
+  (+add-to-list-multi 'major-mode-remap-alist
+                      '(c++-mode . c++-ts-mode)
+                      '(sh-mode  . bash-ts-mode)
+                      '(go-mode  . go-ts-mode)))
 
 (use-package treesit-auto
   :disabled
