@@ -8,5 +8,10 @@
   :custom
   (js-indent-level 2))
 
+(use-package json-ts-mode
+  :ensure nil
+  :when EMACS29+
+  :demand)
+
 (defun cat-node-package-lock-buffer-p ()
   (string-match-p "package-lock.json" (buffer-name)))

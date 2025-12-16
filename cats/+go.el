@@ -2,6 +2,11 @@
 
 (use-package go-mode)
 
+(use-package go-ts-mode
+  :ensure nil
+  :when EMACS29+
+  :demand)
+
 (use-package ob-go
   :demand
   :after org
