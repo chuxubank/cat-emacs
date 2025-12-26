@@ -42,3 +42,7 @@
   (cat-agent
    ("Agent Shell"
     (("s" #'agent-shell/body "agent-shell")))))
+
+(use-package mcp-server
+  :vc (:url "https://github.com/rhblind/emacs-mcp-server")
+  :hook (emacs-startup . mcp-server-start-unix))
