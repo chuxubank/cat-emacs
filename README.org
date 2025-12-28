@@ -58,6 +58,16 @@ https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sourc
 allow-emacs-pinentry
 #+end_example
 
+** Mu4e
+With latest release, macOS homebrew version will missing =mu4e-dbus.el=, you can download with following script
+#+begin_src sh :results silent
+  wget https://github.com/djcb/mu/raw/master/mu4e/mu4e-dbus.el -O /opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el
+#+end_src
+
+#+begin_src elisp :results silent
+  (byte-compile-file "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el")
+#+end_src
+
 ** Latex
 
 *** If you want to include svg file in latex file and generate the pdf file you need to
