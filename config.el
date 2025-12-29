@@ -23,11 +23,10 @@
 ;; (cat! "+dashboard")
 
 ;;; daemon
-(cat! "+daemon")
+(when (daemonp) (cat! "+daemon"))
 
 ;;; os
-(when IS-MAC
-  (cat! "+macos"))
+(when IS-MAC (cat! "+macos"))
 
 ;;; editor
 (cat! "+meow")
