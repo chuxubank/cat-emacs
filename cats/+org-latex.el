@@ -25,14 +25,19 @@
 
 (setq org-latex-compiler "xelatex"
       org-latex-packages-alist
-      '(("" "ctex" t ("xelatex"))
+      '(
         ("" "booktabs" nil)
+        ("" "ctex" t ("xelatex"))
         ("" "enumitem" nil)
         ("" "fontspec" nil)
-        ("" "svg" nil)
+        ("" "geometry" nil)
+        ("" "minted2" nil)              ;FIXME: change to minted after https://github.com/gpoore/minted/issues/463 fixed
+        ("" "newfloat" nil)
         ("" "pgfplots" t)
-        ("" "geometry" nil))
+        ("" "svg" nil)
+        )
       org-latex-default-table-environment "longtable"
+      org-latex-src-block-backend 'minted
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm)
 
