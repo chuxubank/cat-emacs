@@ -101,7 +101,7 @@ Properties stored in the node:
          (link (leetcode--problem-link title))
          (title-slug (leetcode--slugify-title title))
          (difficulty (leetcode-problem-difficulty problem))
-         (tags (string-join (leetcode-problem-tags problem) ":"))
+         (tags (leetcode-problem-tags problem))
          (content (leetcode-org-roam--html-to-org (leetcode-problem-content problem-with-content)))
          (snippets (leetcode-problem-snippets problem-with-snippets))
          (snippet (progn
