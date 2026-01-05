@@ -44,6 +44,12 @@
                       '(conf-toml-mode  . toml-ts-mode)
                       '(sh-mode         . bash-ts-mode)))
 
+(defun +treesit-langs-cleanup (&optional _)
+  (interactive)
+  (delete-directory (treesit-langs--bin-dir) t))
+
+(advice-add 'treesit-langs-install-grammars :before #'+treesit-langs-cleanup)
+
 (use-package treesit-auto
   :disabled
   :hook (after-init . global-treesit-auto-mode)
