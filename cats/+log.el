@@ -52,7 +52,7 @@
       (format . "TIMESTAMP [LEVEL]<<RX:THREAD: \\[[^]]+\\] \\| >>NAME: MESSAGE")
       (levels . "Xray"))
      ("sing-box"
-      (format . "TIMESTAMP LEVEL<<RX:THREAD: \\[[^]]+\\] \\| >>NAME: MESSAGE")
+      (format . "TIMESTAMP LEVEL<<RX:IGNORED: \\[\\|>><<RX:THREAD:[0-9]+\\|>><<RX:IGNORED: [^]]+\\] \\| >>NAME: MESSAGE")
       (levels . "SLF4J")
       (timestamp "sing-box"))
      ("Zscaler"
