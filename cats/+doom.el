@@ -17,7 +17,8 @@
   :custom
   (doom-modeline-minor-modes t)
   (doom-modeline-enable-word-count t)
-  (doom-modeline-support-imenu t))
+  (doom-modeline-support-imenu t)
+  (doom-modeline-unicode-number nil))
 
 (defun cat-enable-doom-modeline-minor-modes ()
   (setq-local doom-modeline-minor-modes t))
