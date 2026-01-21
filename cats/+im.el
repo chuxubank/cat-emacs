@@ -10,6 +10,7 @@
 (use-package telega
   :hook
   (telega-load . telega-mode-line-mode)
+  :commands #'telega-transient--prefix-telega-prefix-map
   :bind
   (:map telega-prefix-map
         ("k" . #'telega-kill))
@@ -31,17 +32,12 @@
   (telega-video-player-command "mpv")
   (telega-chat-input-markups '("markdown2" nil))
   (telega-open-file-function #'org-open-file)
-  (telega-completing-read-function completing-read-function))
-
-(use-package telega-transient
-  :load-path cat-telega-contrib-load-path
-  :commands #'telega-transient-telega
+  (telega-completing-read-function completing-read-function)
+  (telega-transient-keymaps-mode)
   :pretty-hydra
   (cat-im
    ("Telegram"
-    (("t" #'telega-transient-telega "telega"))))
-  :config
-  (telega-transient-mode))
+    (("t" #'telega-transient--prefix-telega-prefix-map "telega")))))
 
 (use-package telega-mnz
   :load-path cat-telega-contrib-load-path
