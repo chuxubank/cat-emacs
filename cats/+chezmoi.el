@@ -15,6 +15,9 @@
 	             chezmoi--dispatch
 	             (cl-map 'list #'abbreviate-file-name))))
 
+(defvar cat-chezmoi-extensions-load-path
+  (expand-file-name "extensions" (file-name-directory (locate-library "chezmoi"))))
+
 (defun chezmoi-find-scripts (script)
   "Edit a source SCRIPT managed by chezmoi."
   (interactive
@@ -33,9 +36,7 @@
 
 (when (package-installed-p 'company)
   (use-package chezmoi-company
-    :vc (chezmoi-extensions
-         :url "https://github.com/Lillenne/chezmoi.el"
-         :lisp-dir "extensions/")
+    :load-path cat-chezmoi-extensions-load-path
     :demand t
     :after chezmoi company
     :config
@@ -46,34 +47,26 @@
     (add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend)))
 
 (use-package chezmoi-dired
-  :vc (chezmoi-extensions
-       :url "https://github.com/Lillenne/chezmoi.el"
-       :lisp-dir "extensions/")
+  :load-path cat-chezmoi-extensions-load-path
   :commands #'chezmoi-dired-add-marked-files)
 
 (use-package chezmoi-ediff
+  :load-path cat-chezmoi-extensions-load-path
   :init
   (setq age-default-identity nil
         age-default-recipient nil)
-  :vc (chezmoi-extensions
-       :url "https://github.com/Lillenne/chezmoi.el"
-       :lisp-dir "extensions")
   :commands #'chezmoi-ediff)
 
 (when (package-installed-p 'magit)
   (use-package chezmoi-magit
-    :vc (chezmoi-extensions
-         :url "https://github.com/Lillenne/chezmoi.el"
-         :lisp-dir "extensions")
+    :load-path cat-chezmoi-extensions-load-path
     :demand t
     :after chezmoi magit
     :commands #'chezmoi-magit-status))
 
 (when (package-installed-p 'cape)
   (use-package chezmoi-cape
-    :vc (chezmoi-extensions
-         :url "https://github.com/Lillenne/chezmoi.el"
-         :lisp-dir "extensions/")
+    :load-path cat-chezmoi-extensions-load-path
     :demand t
     :after chezmoi cape
     :config
