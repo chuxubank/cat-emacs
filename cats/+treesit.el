@@ -7,6 +7,13 @@
   :custom
   (treesit-font-lock-level 4))
 
+(+add-to-list-multi 'major-mode-remap-alist
+                    '(c++-mode        . c++-ts-mode)
+                    '(c-mode          . c-ts-mode)
+                    '(c-or-c++-mode   . c-or-c++-ts-mode)
+                    '(conf-toml-mode  . toml-ts-mode)
+                    '(sh-mode         . bash-ts-mode))
+
 (use-package treesit-fold
   :delight
   :pin jcs-elpa
@@ -34,15 +41,7 @@
         (alist-get 'java-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-langs
-  :demand
-  :commands treesit-langs-major-mode-setup
-  :config
-  (+add-to-list-multi 'major-mode-remap-alist
-                      '(c++-mode        . c++-ts-mode)
-                      '(c-mode          . c-ts-mode)
-                      '(c-or-c++-mode   . c-or-c++-ts-mode)
-                      '(conf-toml-mode  . toml-ts-mode)
-                      '(sh-mode         . bash-ts-mode)))
+  :commands treesit-langs-major-mode-setup)
 
 (defun +treesit-langs-cleanup (&optional _)
   (interactive)
