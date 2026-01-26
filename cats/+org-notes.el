@@ -12,6 +12,11 @@
 
 (use-package mpv)
 
+(defcustom cat-org-noter-property-file-ext "NOTER_FILE_EXT"
+  "Name of the property that specifies the document file extension."
+  :group 'cat-emacs
+  :type 'string)
+
 (use-package org-noter
   :custom
   (org-noter-notes-window-location
@@ -42,12 +47,15 @@
 When there is more than one note files associated with CITE-KEY, have
 user select one of them."
   (let* ((key (or cite-key (orb-get-node-citekey)))
+         (ext (org-entry-get nil cat-org-noter-property-file-ext t))
          (file-table (citar-get-files key))
          (files '()))
     (when file-table
       (maphash (lambda (key file-list)
                  (setq files (append files file-list)))
                file-table))
+    (when ext
+      (setq files (seq-filter (lambda (f) (string= (file-name-extension f) ext)) files)))
     (cond ((= (length files) 1)
            (car files))
           ((> (length files) 1)
