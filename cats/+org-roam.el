@@ -139,6 +139,7 @@ DIR specifies a subdirectory under `cat-org-roam-default-templates-dir'."
   "F" #'org-roam-ref-find
   "g" #'org-roam-graph
   "i" #'org-roam-node-insert
+  "r" #'cat-org-roam-relocate-file
   "R" #'org-roam-buffer-display-dedicated
   "u" #'org-roam-ui-mode
   "t" #'cat-org-roam-get-template)
