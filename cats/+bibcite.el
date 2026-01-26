@@ -37,7 +37,7 @@ See `org-cite-csl-styles-dir'."
 
 (defun cat-org-roam-locate-file (name)
   "Choose directory and return with full file NAME."
-  (let* ((default-directory cat-org-roam-default-roam-dir)
+  (let* ((default-directory cat-org-roam-directory)
          (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
          (dir (completing-read "Choose org-roam sub directory: " dir-list nil 'confirm))
          (filename (file-name-with-extension name "org")))
@@ -52,7 +52,7 @@ See `org-cite-csl-styles-dir'."
 (defun cat-org-roam-relocate-file ()
   "Relocate and rename the Org-roam file."
   (interactive)
-  (let* ((default-directory cat-org-roam-default-roam-dir)
+  (let* ((default-directory cat-org-roam-directory)
          (node (or (org-roam-node-at-point)
                    (let ((node (org-roam-node-read)))
                      (org-roam-node-open node)
