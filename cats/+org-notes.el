@@ -13,12 +13,12 @@
 (use-package mpv)
 
 (use-package org-noter
-  ;; :custom
-  ;; (org-noter-notes-window-location
-  ;;  (if (string= (getenv "HOST_TYPE") "work")
-  ;;      'other-frame
-  ;;    'horizontal-split))
-  ;; (org-noter-doc-split-fraction '(0.6 . 0.5))
+  :custom
+  (org-noter-notes-window-location
+   (if (string= system-name "Yui.local")
+       'vertical-split
+     'horizontal-split))
+  (org-noter-doc-split-fraction '(0.6 . 0.5))
   :mode-hydra
   (org-mode
    ("Notes"
