@@ -10,6 +10,7 @@
   (pdf-view-use-scaling t)
   :hook
   (pdf-view-mode . pdf-view-themed-minor-mode)
+  (pdf-view-mode . pdf-view-roll-minor-mode)
   :config
   (pdf-loader-install :no-query))
 
