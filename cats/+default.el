@@ -38,8 +38,8 @@
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       frame-resize-pixelwise t
-      frame-title-format '("%b – " cat-emacs-name)
-      icon-title-format frame-title-format)
+      frame-title-format '("%b %n - " cat-emacs-name)
+      icon-title-format t)
 
 (setq custom-safe-themes t)
 
