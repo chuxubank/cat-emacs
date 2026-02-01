@@ -45,16 +45,16 @@
 (defconst go-template-mode-pair-tag
   (regexp-opt
    '("a" "abbr" "acronym" "address" "applet" "area" "b" "bdo"
-	 "big" "blockquote" "body" "button" "caption" "center" "cite"
-	 "code" "col" "colgroup" "dd" "del" "dfn" "dif" "div" "dl"
-	 "dt" "em" "fieldset" "font" "form" "frame" "frameset" "h1"
-	 "header" "nav" "footer" "section"
-	 "h2" "h3" "h4" "h5" "h6" "head" "html" "i" "iframe" "ins"
-	 "kbd" "label" "legend" "li" "link" "map" "menu" "noframes"
-	 "noscript" "object" "ol" "optgroup" "option" "p" "pre" "q"
-	 "s" "samp" "script" "select" "small" "span" "strike"
-	 "strong" "style" "sub" "sup" "table" "tbody" "td" "textarea"
-	 "tfoot" "th" "thead" "title" "tr" "tt" "u" "ul" "var")
+     "big" "blockquote" "body" "button" "caption" "center" "cite"
+     "code" "col" "colgroup" "dd" "del" "dfn" "dif" "div" "dl"
+     "dt" "em" "fieldset" "font" "form" "frame" "frameset" "h1"
+     "header" "nav" "footer" "section"
+     "h2" "h3" "h4" "h5" "h6" "head" "html" "i" "iframe" "ins"
+     "kbd" "label" "legend" "li" "link" "map" "menu" "noframes"
+     "noscript" "object" "ol" "optgroup" "option" "p" "pre" "q"
+     "s" "samp" "script" "select" "small" "span" "strike"
+     "strong" "style" "sub" "sup" "table" "tbody" "td" "textarea"
+     "tfoot" "th" "thead" "title" "tr" "tt" "u" "ul" "var")
    t))
 (defconst go-template-mode-standalone-tag
   (regexp-opt
@@ -63,12 +63,12 @@
 
 (defconst go-template-mode-font-lock-keywords
   `((go-template-mode-font-lock-cs-comment 0 font-lock-comment-face t)
-	(go-template-mode-font-lock-cs-string 0 font-lock-string-face t)
-	(,(regexp-opt '("{{" "}}"))  (0 font-lock-preprocessor-face))
-	("$[a-zA-Z0-9]*" (0 font-lock-variable-name-face))
+    (go-template-mode-font-lock-cs-string 0 font-lock-string-face t)
+    (,(regexp-opt '("{{" "}}"))  (0 font-lock-preprocessor-face))
+    ("$[a-zA-Z0-9]*" (0 font-lock-variable-name-face))
     (,(regexp-opt go-template-mode-keywords 'words) . font-lock-keyword-face)
     (,(regexp-opt go-template-mode-builtins 'words) . font-lock-builtin-face)
-	(,(concat "</?" go-template-mode-pair-tag ">?") (0 font-lock-function-name-face))
+    (,(concat "</?" go-template-mode-pair-tag ">?") (0 font-lock-function-name-face))
     (,(concat "<" go-template-mode-standalone-tag ">?") (0 font-lock-function-name-face))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -96,10 +96,10 @@ nesting caches from the modified point on."
       ;; Remove the property adjacent to the change position.
       ;; It may contain positions pointing beyond the new end mark.
       (let ((b (let ((cs (get-text-property (max 1 (1- b)) 'go-template-mode-cs)))
-		         (if cs (car cs) b))))
-	    (remove-text-properties
-	     b (min go-template-mode-mark-cs-end (point-max)) '(go-template-mode-cs nil))
-	    (setq go-template-mode-mark-cs-end b)))
+                 (if cs (car cs) b))))
+        (remove-text-properties
+         b (min go-template-mode-mark-cs-end (point-max)) '(go-template-mode-cs nil))
+        (setq go-template-mode-mark-cs-end b)))
     (when (< b go-template-mode-mark-nesting-end)
       (remove-text-properties b (min go-template-mode-mark-nesting-end (point-max)) '(go-template-mode-nesting nil))
       (setq go-template-mode-mark-nesting-end b))))
@@ -143,51 +143,51 @@ directly; use `go-template-mode-cs'."
   (go-template-mode-parser
    (save-match-data
      (let ((pos
-	        ;; Back up to the last known state.
-	        (let ((last-cs
-		           (and (> go-template-mode-mark-cs-end 1)
-			            (get-text-property (1- go-template-mode-mark-cs-end) 
-					                       'go-template-mode-cs))))
-	          (if last-cs
-		          (car last-cs)
-		        (max 1 (1- go-template-mode-mark-cs-end))))))
+            ;; Back up to the last known state.
+            (let ((last-cs
+                   (and (> go-template-mode-mark-cs-end 1)
+                        (get-text-property (1- go-template-mode-mark-cs-end)
+                                           'go-template-mode-cs))))
+              (if last-cs
+                  (car last-cs)
+                (max 1 (1- go-template-mode-mark-cs-end))))))
        (while (< pos end)
-	     (goto-char pos)
-	     (let ((cs-end			; end of the text property
-		        (cond
-		         ((looking-at "{{/\\*")
-		          (goto-char (+ pos 4))
-		          (if (search-forward "*/}}" (1+ end) t)
-		              (point)
-		            end))
-		         ((looking-at "\"")
-		          (goto-char (1+ pos))
-		          (if (looking-at "[^\"\n\\\\]*\\(\\\\.[^\"\n\\\\]*\\)*\"")
-		              (match-end 0)
-		            (end-of-line)
-		            (point)))
-		         ((looking-at "'")
-		          (goto-char (1+ pos))
-		          (if (looking-at "[^'\n\\\\]*\\(\\\\.[^'\n\\\\]*\\)*'")
-		              (match-end 0)
-		            (end-of-line)
-		            (point)))
-		         ((looking-at "`")
-		          (goto-char (1+ pos))
-		          (while (if (search-forward "`" end t)
-			                 (if (eq (char-after) ?`)
-				                 (goto-char (1+ (point))))
-			               (goto-char end)
-			               nil))
-		          (point)))))
-	       (cond
-	        (cs-end
-	         (put-text-property pos cs-end 'go-template-mode-cs (cons pos cs-end))
-	         (setq pos cs-end))
-	        ((re-search-forward "[\"'`]\\|{{/\\*" end t)
-	         (setq pos (match-beginning 0)))
-	        (t
-	         (setq pos end)))))
+         (goto-char pos)
+         (let ((cs-end			; end of the text property
+                (cond
+                 ((looking-at "{{/\\*")
+                  (goto-char (+ pos 4))
+                  (if (search-forward "*/}}" (1+ end) t)
+                      (point)
+                    end))
+                 ((looking-at "\"")
+                  (goto-char (1+ pos))
+                  (if (looking-at "[^\"\n\\\\]*\\(\\\\.[^\"\n\\\\]*\\)*\"")
+                      (match-end 0)
+                    (end-of-line)
+                    (point)))
+                 ((looking-at "'")
+                  (goto-char (1+ pos))
+                  (if (looking-at "[^'\n\\\\]*\\(\\\\.[^'\n\\\\]*\\)*'")
+                      (match-end 0)
+                    (end-of-line)
+                    (point)))
+                 ((looking-at "`")
+                  (goto-char (1+ pos))
+                  (while (if (search-forward "`" end t)
+                             (if (eq (char-after) ?`)
+                                 (goto-char (1+ (point))))
+                           (goto-char end)
+                           nil))
+                  (point)))))
+           (cond
+            (cs-end
+             (put-text-property pos cs-end 'go-template-mode-cs (cons pos cs-end))
+             (setq pos cs-end))
+            ((re-search-forward "[\"'`]\\|{{/\\*" end t)
+             (setq pos (match-beginning 0)))
+            (t
+             (setq pos end)))))
        (setq go-template-mode-mark-cs-end pos)))))
 
 
@@ -202,29 +202,29 @@ if no further tokens of the type exist."
   (let (cs next (result 'scan))
     (while (eq result 'scan)
       (if (or (>= (point) limit) (eobp))
-	      (setq result nil)
-	    (setq cs (go-template-mode-cs))
-	    (if cs
-	        (if (eq (= (char-after (car cs)) ?/) comment)
-		        ;; If inside the expected comment/string, highlight it.
-		        (progn
-		          ;; If the match includes a "\n", we have a
-		          ;; multi-line construct.  Mark it as such.
-		          (goto-char (car cs))
-		          (when (search-forward "\n" (cdr cs) t)
-		            (put-text-property
-		             (car cs) (cdr cs) 'font-lock-multline t))
-		          (set-match-data (list (car cs) (cdr cs) (current-buffer)))
-		          (goto-char (cdr cs))
-		          (setq result t))
-	          ;; Wrong type.  Look for next comment/string after this one.
-	          (goto-char (cdr cs)))
-	      ;; Not inside comment/string.  Search for next comment/string.
-	      (setq next (next-single-property-change
-		              (point) 'go-template-mode-cs nil limit))
-	      (if (and next (< next limit))
-	          (goto-char next)
-	        (setq result nil)))))
+          (setq result nil)
+        (setq cs (go-template-mode-cs))
+        (if cs
+            (if (eq (= (char-after (car cs)) ?/) comment)
+                ;; If inside the expected comment/string, highlight it.
+                (progn
+                  ;; If the match includes a "\n", we have a
+                  ;; multi-line construct.  Mark it as such.
+                  (goto-char (car cs))
+                  (when (search-forward "\n" (cdr cs) t)
+                    (put-text-property
+                     (car cs) (cdr cs) 'font-lock-multline t))
+                  (set-match-data (list (car cs) (cdr cs) (current-buffer)))
+                  (goto-char (cdr cs))
+                  (setq result t))
+              ;; Wrong type.  Look for next comment/string after this one.
+              (goto-char (cdr cs)))
+          ;; Not inside comment/string.  Search for next comment/string.
+          (setq next (next-single-property-change
+                      (point) 'go-template-mode-cs nil limit))
+          (if (and next (< next limit))
+              (goto-char next)
+            (setq result nil)))))
     result))
 
 (defun go-template-mode-font-lock-cs-string (limit)
@@ -244,7 +244,7 @@ and some types. It does not provide indentation."
 
   ;; Font lock
   (set (make-local-variable 'font-lock-defaults)
-	   '(go-template-mode-font-lock-keywords nil nil nil nil))
+       '(go-template-mode-font-lock-keywords nil nil nil nil))
 
   ;; Remove stale text properties
   (save-restriction
@@ -253,7 +253,7 @@ and some types. It does not provide indentation."
                             '(go-template-mode-cs nil go-template-mode-nesting nil)))
 
   ;; Reset the syntax mark caches
-  (setq go-template-mode-mark-cs-end      1
+  (setq go-template-mode-mark-cs-end 1
         go-template-mode-mark-nesting-end 1)
   (add-hook 'before-change-functions #'go-template-mode-mark-clear-cache nil t)
 
