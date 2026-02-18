@@ -36,7 +36,9 @@
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key 'gptel-api-key
-          :models '(alibaba/tongyi-deepresearch-30b-a3b:free
+          :models '(openrouter/free
+                    alibaba/tongyi-deepresearch-30b-a3b:free
+                    arcee-ai/trinity-large-preview:free
                     deepseek/deepseek-chat-v3.1:free
                     deepseek/deepseek-r1-0528-qwen3-8b:free
                     deepseek/deepseek-r1-0528:free
@@ -49,6 +51,8 @@
                     microsoft/mai-ds-r1:free
                     moonshotai/kimi-k2:free
                     nvidia/nemotron-nano-9b-v2:free
+                    stepfun/step-3.5-flash:free
+                    openai/gpt-oss-120b:free
                     openai/gpt-oss-20b:free
                     qwen/qwen3-235b-a22b:free
                     qwen/qwen3-30b-a3b:free
@@ -62,7 +66,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-backend gptel--openrouter)
-  (gptel-magit-model 'openai/gpt-oss-20b:free)
+  (gptel-magit-model 'openrouter/free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning)
