@@ -70,21 +70,22 @@
   (gptel-magit-model 'openai/gpt-oss-120b:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning)
-  (advice-add 'gptel-magit--format-commit-message :around #'cat/gptel-magit--format-commit-message-skip))
-
-(defun cat/gptel-magit--generate-without-reasoning (orig-fn callback)
-  "Advice around ORIG-FN to set `gptel-include-reasoning' to nil with CALLBACK."
-  (let ((gptel-include-reasoning nil)
-        (gptel--request-params (if (eq gptel-magit-backend gptel--openrouter)
-                                   (list :reasoning (list :exclude t
-                                                          :effort "minimal"))
-                                 nil)))
-    (funcall orig-fn callback)))
-
-(defun cat/gptel-magit--format-commit-message-skip (_ message)
-  "Advice to skip formatting, return MESSAGE as-is."
-  message)
+  (defun gptel-magit--generate (callback)
+    "Generate a commit message for current magit repo.
+Invokes CALLBACK with the generated message when done."
+    (let ((gptel-include-reasoning nil)
+          (gptel--request-params (if (eq gptel-magit-backend gptel--openrouter)
+                                     (list :reasoning (list :exclude t
+                                                            :effort "minimal"))
+                                   nil))
+          (diff (magit-git-output "diff" "--cached")))
+      (gptel-magit--request diff
+        :system gptel-magit-commit-prompt
+        :context nil
+        :callback (lambda (response info)
+                    (when (and (stringp response)
+                               (not (string-empty-p response)))
+                      (funcall callback response)))))))
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")
