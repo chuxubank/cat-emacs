@@ -39,6 +39,7 @@
           :models '(openrouter/free
                     alibaba/tongyi-deepresearch-30b-a3b:free
                     arcee-ai/trinity-large-preview:free
+                    arcee-ai/trinity-mini:free
                     deepseek/deepseek-chat-v3.1:free
                     deepseek/deepseek-r1-0528-qwen3-8b:free
                     deepseek/deepseek-r1-0528:free
@@ -48,15 +49,15 @@
                     kwaipilot/kat-coder-pro:free
                     meituan/longcat-flash-chat:free
                     meta-llama/llama-3.3-70b-instruct:free
-                    microsoft/mai-ds-r1:free
-                    moonshotai/kimi-k2:free
+                    nvidia/nemotron-3-nano-30b-a3b:free
+                    nvidia/nemotron-nano-12b-v2-vl:free
                     nvidia/nemotron-nano-9b-v2:free
-                    stepfun/step-3.5-flash:free
                     openai/gpt-oss-120b:free
                     openai/gpt-oss-20b:free
-                    qwen/qwen3-235b-a22b:free
-                    qwen/qwen3-30b-a3b:free
+                    qwen/qwen3-4b:free
                     qwen/qwen3-coder:free
+                    qwen/qwen3-next-80b-a3b-instruct:free
+                    stepfun/step-3.5-flash:free
                     tngtech/deepseek-r1t2-chimera:free
                     tngtech/tng-r1t-chimera:free
                     z-ai/glm-4.5-air:free)))
@@ -66,7 +67,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-backend gptel--openrouter)
-  (gptel-magit-model 'openrouter/free)
+  (gptel-magit-model 'openai/gpt-oss-120b:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (advice-add 'gptel-magit--generate :around #'cat/gptel-magit--generate-without-reasoning)
