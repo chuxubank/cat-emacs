@@ -83,6 +83,7 @@ Invokes CALLBACK with the generated message when done."
         :system gptel-magit-commit-prompt
         :context nil
         :callback (lambda (response info)
+                    (print info)
                     (when (and (stringp response)
                                (not (string-empty-p response)))
                       (funcall callback response)))))))

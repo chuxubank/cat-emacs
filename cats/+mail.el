@@ -4,6 +4,20 @@
   (:color teal :title (+with-icon "nf-oct-mail" "Mail"))
   ("" ()))
 
+(defcustom cat/mu4e-print-types
+  '(("PDF"  . "pdf")
+    ("ODF"  . "odf")
+    ("Word" . "docx"))
+  "List of file types for printing in `cat/mu4e-action-print-by-type'.
+
+The first character of NAME is used as the shortcut."
+  :group 'mu4e-headers
+  :type '(alist :key-type string :value-type function))
+
+(defun cat/mu4e-print-type-read ()
+  "Print attachments or URLs of a single type from the current message."
+  (mu4e-read-option "Type: " cat/mu4e-print-types))
+
 (use-package mu4e
   :commands #'mu4e
   :ensure-system-package
@@ -64,10 +78,19 @@
                                          (call-process-shell-command lpr-command file))
                               :receives temp))
   (+add-to-list-multi 'mu4e-view-actions
-                      '("print pdf url" . cat/mu4e-action-print-pdf-url))
+                      '("print" . cat/mu4e-action-print-by-type))
   (+add-to-list-multi 'mu4e-headers-actions
-                      '("print pdf url" . cat/mu4e-action-print-pdf-url))
+                      '("print" . cat/mu4e-action-print-by-type))
   (+add-to-list-multi 'mu4e-marks
+                      '(print
+                        :char ("p" . "󰐪")
+                        :prompt "print"
+                        :ask-target cat/mu4e-print-type-read
+                        :action (lambda (docid msg type)
+                                  (cat/mu4e-action-print-by-type msg type)
+                                  (mu4e-action-retag-message msg "+printed")
+                                  (mu4e--server-move docid
+                                                     (mu4e-msg-field msg :maildir))))
                       '(tag
                         :char ("t" . "")
                         :prompt "tag"
@@ -82,29 +105,71 @@
   :ensure nil
   :commands file-url-extractor-get-all)
 
-(defun cat/mu4e-view-message-urls (msg)
-  "Return the rendered MSG as a string."
+(defun cat/mu4e-view-message-files-and-urls (msg file-ext)
+  "Return a plist with :local-files and :urls from MSG filtered by FILE-EXT.
+Local attachments are saved via `mu4e--view-mime-part-to-temp-file'.
+Remote URLs are kept as-is."
   (with-temp-buffer
-    (insert-file-contents-literally
-     (mu4e-message-readable-path msg) nil nil nil t)
+    (insert-file-contents-literally (mu4e-message-readable-path msg) nil nil nil t)
     (let ((gnus-inhibit-mime-unbuttonizing nil)
           (gnus-unbuttonized-mime-types '(".*/.*"))
-          (mu4e-view-fields '(:from :to :cc :subject :date)))
+          (mu4e-view-fields '(:from :to :cc :subject :date))
+          local-files urls)
       (mu4e--view-render-buffer msg)
-      (gnus-collect-urls))))
+      (setq urls (file-url-extractor-get-all (gnus-collect-urls) file-ext))
+      (dolist (part (mu4e-view-mime-parts))
+        (let ((handle (plist-get part :handle))
+              (fname (plist-get part :filename)))
+          (when (and handle fname
+                     (plist-get part :attachment-like)
+                     (string-match-p (concat "\\." (regexp-quote file-ext) "\\'") fname))
+            (push (mu4e--view-mime-part-to-temp-file handle) local-files))))
+      (list :local-files (nreverse local-files)
+            :urls (nreverse urls)))))
 
-(defun cat/mu4e-action-print-pdf-url (&optional msg)
-  "Find PDF URLs in the MSG or current buffer, detect PDFs then download and send to printer."
-  (let* ((urls (file-url-extractor-get-all (cat/mu4e-view-message-urls msg) "pdf"))
-         (url (cl-case (length urls)
-                (0 (user-error "No PDF URLs detected in this message"))
-                (1 (car urls))
-                (t (completing-read "Print PDF URL: " urls nil t))))
-         (cmd (format "curl -sL %s | %s"
-                      (shell-quote-argument url)
-                      lpr-command)))
-    (start-process-shell-command "mu4e-print-pdf" nil cmd)
-    (message "Sent %s to printer via %s" url lpr-command)))
+(defun cat/mu4e-action-print-by-type (&optional msg file-type)
+  "Print attachments or URLs of a single FILE-TYPE from the MSG.
+User selects type first then choose one if multiple files."
+  (interactive)
+  (let* ((file-type (or file-type (cat/mu4e-print-type-read)))
+         (files-and-urls (cat/mu4e-view-message-files-and-urls msg file-type))
+         (local-files (plist-get files-and-urls :local-files))
+         (urls (plist-get files-and-urls :urls))
+         (candidates
+          (append
+           (mapcar (lambda (f)
+                     (cons (format "LOCAL: %s" (file-name-nondirectory f))
+                           (list :type 'local :path f)))
+                   local-files)
+           (mapcar (lambda (u)
+                     (cons (format "URL: %s" u)
+                           (list :type 'url :url u)))
+                   urls))))
+    (if (null candidates)
+        (user-error "No %s files found" file-type)
+      (let* ((chosen-entry
+              (cdr
+               (if (= (length candidates) 1)
+                   (car candidates)
+                 (assoc (completing-read
+                         (format "Select %s to print: " file-type)
+                         (mapcar #'car candidates) nil t)
+                        candidates)))))
+        (pcase (plist-get chosen-entry :type)
+          ('local
+           (start-process-shell-command "lpr-local" nil
+                                        (format "%s %s"
+                                                lpr-command
+                                                (shell-quote-argument (plist-get chosen-entry :path)))))
+          ('url
+           (start-process-shell-command "lpr-remote" nil
+                                        (format "curl -sL %s | %s"
+                                                (shell-quote-argument (plist-get chosen-entry :url))
+                                                lpr-command))))
+        (message "Sent %s to printer"
+                 (if (eq (plist-get chosen-entry :type) 'local)
+                     (plist-get chosen-entry :path)
+                   (plist-get chosen-entry :url)))))))
 
 (defun cat/mu4e--update-mail-and-index-real-around (orig-fun run-in-background)
   "Temporarily set `mu4e-get-mail-command' to \"true\".
