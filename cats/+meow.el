@@ -7,7 +7,8 @@
     (meow-normal-mode 'toggle))
   :hook
   (after-init . meow-global-mode)
-  ((mime-view-mode
+  ((git-timemachine-mode
+    mime-view-mode
     view-mode
     wl-folder-mode) . cat-meow-toggle)
   :custom
