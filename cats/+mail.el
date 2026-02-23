@@ -65,6 +65,8 @@
                               :receives temp))
   (+add-to-list-multi 'mu4e-view-actions
                       '("print pdf url" . cat/mu4e-action-print-pdf-url))
+  (+add-to-list-multi 'mu4e-headers-actions
+                      '("print pdf url" . cat/mu4e-action-print-pdf-url))
   (+add-to-list-multi 'mu4e-marks
                       '(tag
                         :char ("t" . "")
@@ -80,9 +82,20 @@
   :ensure nil
   :commands file-url-extractor-get-all)
 
+(defun cat/mu4e-view-message-urls (msg)
+  "Return the rendered MSG as a string."
+  (with-temp-buffer
+    (insert-file-contents-literally
+     (mu4e-message-readable-path msg) nil nil nil t)
+    (let ((gnus-inhibit-mime-unbuttonizing nil)
+          (gnus-unbuttonized-mime-types '(".*/.*"))
+          (mu4e-view-fields '(:from :to :cc :subject :date)))
+      (mu4e--view-render-buffer msg)
+      (gnus-collect-urls))))
+
 (defun cat/mu4e-action-print-pdf-url (&optional msg)
   "Find PDF URLs in the MSG or current buffer, detect PDFs then download and send to printer."
-  (let* ((urls (file-url-extractor-get-all (mu4e-view-message-text msg) "pdf"))
+  (let* ((urls (file-url-extractor-get-all (cat/mu4e-view-message-urls msg) "pdf"))
          (url (cl-case (length urls)
                 (0 (user-error "No PDF URLs detected in this message"))
                 (1 (car urls))

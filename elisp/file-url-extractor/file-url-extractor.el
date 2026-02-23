@@ -52,7 +52,7 @@ Each script must be named by domain:
       (while (re-search-forward
               "\\(https?://[[:alnum:][:punct:]]+\\)"
               nil t)
-        (push (match-string 1) result)))
+        (push (url-unhex-string (match-string 1)) result)))
     (cl-remove-duplicates result :test #'equal)))
 
 (defun file-url-extractor--domain (url)
@@ -136,14 +136,16 @@ Otherwise, check extension or content-type match with FILE-EXT."
 ;; Public API
 ;; ------------------------------------------------------------
 
-(defun file-url-extractor-get-all (text file-ext)
+(defun file-url-extractor-get-all (input file-ext)
   (unless file-url-extractor-script-dir
     (error "file-url-extractor-script-dir not configured"))
-  (let ((urls (file-url-extractor--collect-urls text)))
+  (let ((urls (if (listp input)
+                  input
+                (file-url-extractor--collect-urls input))))
     (file-url-extractor--parallel-resolve urls file-ext)))
 
-(defun file-url-extractor-get (text file-ext)
-  (car (file-url-extractor-get-all text file-ext)))
+(defun file-url-extractor-get (input file-ext)
+  (car (file-url-extractor-get-all input file-ext)))
 
 (provide 'file-url-extractor)
 
