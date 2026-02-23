@@ -76,26 +76,17 @@
                                                      (mu4e-msg-field msg :maildir)))))
   (mu4e~headers-defun-mark-for tag))
 
+(use-package file-url-extractor
+  :ensure nil
+  :commands file-url-extractor-get-all)
+
 (defun cat/mu4e-action-print-pdf-url (&optional msg)
   "Find PDF URLs in the MSG or current buffer, detect PDFs then download and send to printer."
-  (let* ((urls (gnus-collect-urls))
-         (pdf-urls-fast (cl-remove-if-not
-                         (lambda (url)
-                           (string-match-p "\\.pdf" url))
-                         urls))
-         (pdf-urls-checked (append
-                            pdf-urls-fast
-                            (cl-remove-if-not
-                             (lambda (url)
-                               (with-temp-buffer
-                                 (when (eq 0 (call-process "curl" nil t nil "-sI" "-L" url))
-                                   (goto-char (point-min))
-                                   (re-search-forward "Content-Type: *application/pdf" nil t))))
-                             (cl-set-difference urls pdf-urls-fast :test #'equal))))
-         (url (cl-case (length pdf-urls-checked)
+  (let* ((urls (file-url-extractor-get-all (mu4e-view-message-text msg) "pdf"))
+         (url (cl-case (length urls)
                 (0 (user-error "No PDF URLs detected in this message"))
-                (1 (car pdf-urls-checked))
-                (t (completing-read "Print PDF URL: " pdf-urls-checked nil t))))
+                (1 (car urls))
+                (t (completing-read "Print PDF URL: " urls nil t))))
          (cmd (format "curl -sL %s | %s"
                       (shell-quote-argument url)
                       lpr-command)))
