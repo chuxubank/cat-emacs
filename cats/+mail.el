@@ -69,7 +69,7 @@
                       '(tag
                         :char ("t" . "")
                         :prompt "tag"
-                        :ask-target (lambda () (read-string "Add tag: "))
+                        :ask-target (lambda () (read-string "Edit tag (use '+' for add, '-' for remove and ',' for separate): "))
                         :action (lambda (docid msg target)
                                   (mu4e-action-retag-message msg target)
                                   (mu4e--server-move docid
