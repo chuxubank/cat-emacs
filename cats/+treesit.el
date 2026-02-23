@@ -12,7 +12,9 @@
                     '(c-mode          . c-ts-mode)
                     '(c-or-c++-mode   . c-or-c++-ts-mode)
                     '(conf-toml-mode  . toml-ts-mode)
-                    '(sh-mode         . bash-ts-mode))
+                    '(js-mode         . js-ts-mode)
+                    '(sh-mode         . bash-ts-mode)
+                    '(typescript-mode . typescript-ts-mode))
 
 (use-package treesit-fold
   :delight
