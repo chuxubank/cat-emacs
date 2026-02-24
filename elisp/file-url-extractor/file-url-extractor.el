@@ -84,12 +84,20 @@ Each script must be named by domain:
    url))
 
 (defun file-url-extractor--content-type-match-p (url ext)
+  "Return non-nil if URL's headers content type or disposition matches EXT."
   (with-temp-buffer
     (when (eq 0 (call-process "curl" nil t nil "-sI" "-L" url))
       (goto-char (point-min))
-      (re-search-forward
-       (format "Content-Type:.*%s" ext)
-       nil t))))
+      (let ((case-fold-search t))
+        (or
+         (re-search-forward
+          (format "^Content-Type:.*%s"
+                  (regexp-quote ext))
+          nil t)
+         (re-search-forward
+          (format "^Content-Disposition:.*filename\\*?=.*%s"
+                  (format "\\.%s\\b" (regexp-quote ext)))
+          nil t))))))
 
 (defun file-url-extractor--resolve-candidate (url file-ext)
   "Resolve a single URL to a file, using domain script if available.
