@@ -6,7 +6,7 @@
 
 (defcustom cat/mu4e-print-types
   '(("PDF"  . "pdf")
-    ("ODF"  . "odf")
+    ("OFD"  . "ofd")
     ("Word" . "docx"))
   "List of file types for printing in `cat/mu4e-action-print-by-type'.
 
@@ -88,22 +88,20 @@ The first character of NAME is used as the shortcut."
                         :ask-target cat/mu4e-print-type-read
                         :action (lambda (docid msg type)
                                   (cat/mu4e-action-print-by-type msg type)
-                                  (mu4e-action-retag-message msg "+printed")
-                                  (mu4e--server-move docid
-                                                     (mu4e-msg-field msg :maildir))))
-                      '(tag
-                        :char ("t" . "")
-                        :prompt "tag"
-                        :ask-target (lambda () (read-string "Edit tag (use '+' for add, '-' for remove and ',' for separate): "))
-                        :action (lambda (docid msg target)
-                                  (mu4e-action-retag-message msg target)
-                                  (mu4e--server-move docid
-                                                     (mu4e-msg-field msg :maildir)))))
-  (mu4e~headers-defun-mark-for tag))
+                                  (mu4e-action-retag-message msg "+printed"))))
+  (mu4e~headers-defun-mark-for print)
+  (advice-add 'mu4e-action-retag-message :after #'cat/mu4e-retag-message-move))
 
 (use-package file-url-extractor
   :ensure nil
   :commands file-url-extractor-get-all)
+
+(defun cat/mu4e-retag-message-move (msg &rest _args)
+  "After retagging MSG, move it to its current maildir on the server."
+  (let ((docid (mu4e-message-field msg :docid))
+        (maildir (mu4e-message-field msg :maildir)))
+    (when (and docid maildir)
+      (mu4e--server-move docid maildir))))
 
 (defun cat/mu4e-view-message-files-and-urls (msg file-ext)
   "Return a plist with :local-files and :urls from MSG filtered by FILE-EXT.
