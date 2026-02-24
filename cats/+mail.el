@@ -87,10 +87,15 @@ The first character of NAME is used as the shortcut."
                         :ask-target cat/mu4e-print-type-read
                         :action (lambda (docid msg type)
                                   (cat/mu4e-action-print-by-type msg type)
-                                  (mu4e-action-retag-message msg "+printed"))))
+                                  (mu4e-action-retag-message msg "+printed")))
+                      '(tag
+                        :char ("t" . "")
+                        :prompt "tag"
+                        :ask-target (lambda () (read-string "Edit tag (use '+' for add, '-' for remove and ',' for separate): "))
+                        :action (lambda (docid msg target)
+                                  (mu4e-action-retag-message msg target))))
   (+add-to-list-multi 'mu4e-action-tags-completion-list
                       "printed")
-  (mu4e~headers-defun-mark-for print)
   (advice-add 'mu4e-action-retag-message :after #'cat/mu4e-retag-message-move))
 
 (use-package file-url-extractor
