@@ -63,7 +63,6 @@ The first character of NAME is used as the shortcut."
                           ("retag message" . mu4e-action-retag-message)
                           ("browse online archive" . mu4e-action-browse-list-archive)
                           ("show this thread" . mu4e-action-show-thread)))
-  (mu4e-action-tags-completion-list '("printed"))
   :pretty-hydra
   (cat-mail
    ("Mu4e"
@@ -89,6 +88,8 @@ The first character of NAME is used as the shortcut."
                         :action (lambda (docid msg type)
                                   (cat/mu4e-action-print-by-type msg type)
                                   (mu4e-action-retag-message msg "+printed"))))
+  (+add-to-list-multi 'mu4e-action-tags-completion-list
+                      "printed")
   (mu4e~headers-defun-mark-for print)
   (advice-add 'mu4e-action-retag-message :after #'cat/mu4e-retag-message-move))
 
