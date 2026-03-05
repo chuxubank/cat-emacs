@@ -34,7 +34,7 @@
     (("o" #'osx-dictionary-search-pointer "osx")
      ("O" #'osx-dictionary-search-input "osx input")))))
 
-(use-package go-translate
+(use-package gt
   :custom
   (gt-langs '(en zh))
   (gt-preset-translators
@@ -69,9 +69,9 @@
   :pretty-hydra
   (cat-language
    ("Translate"
-    (("gg" #'gt-do-translate "go translate")
-     ("gs" #'gt-do-setup "go translate setup")
-     ("gS" #'gt-do-speak "go translate speak")
+    (("gg" #'gt-translate "go translate")
+     ("gs" #'gt-setup "go translate setup")
+     ("gS" #'gt-speak "go translate speak")
      ("gd" #'gt-delete-render-overlays "go translate delete ov")))))
 
 (use-package immersive-translate
