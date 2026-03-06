@@ -8,7 +8,6 @@
   :delight " 󱡄"
   :custom
   (gptel-expert-commands t)
-  (gptel-model 'moonshotai/kimi-k2:free)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
   ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
@@ -60,16 +59,33 @@
                     stepfun/step-3.5-flash:free
                     tngtech/deepseek-r1t2-chimera:free
                     tngtech/tng-r1t-chimera:free
-                    z-ai/glm-4.5-air:free)))
-  (setq gptel-backend gptel--openrouter))
+                    z-ai/glm-4.5-air:free))
+        gptel--iv
+        (gptel-make-anthropic "IV"
+          :host "llm.invalley.co"
+          :stream t
+          :key 'gptel-api-key
+          :header
+          (lambda () (when-let* ((key (gptel--get-api-key)))
+                       `(("x-api-key" . ,key))))
+          :models '(claude-haiku-4-5-20251001
+                    claude-opus-4-1-20250805
+                    claude-opus-4-20250514
+                    claude-opus-4-5-20251101
+                    claude-sonnet-4-20250514
+                    claude-sonnet-4-5-20250929
+                    global.anthropic.claude-opus-4-6-v1
+                    global.anthropic.claude-sonnet-4-6)))
+  (setq gptel-backend (if (eq HOST_TYPE 'iv) gptel--iv gptel--openrouter)
+        gptel-model (if (eq HOST_TYPE 'iv) 'global.anthropic.claude-opus-4-6-v1 'openrouter/free)))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-backend gptel--openrouter)
-  (gptel-magit-model 'openai/gpt-oss-120b:free)
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
+  (setq gptel-magit-backend (if (eq HOST_TYPE 'iv) gptel--iv gptel--openrouter)
+        gptel-magit-model (if (eq HOST_TYPE 'iv) 'global.anthropic.claude-opus-4-6-v1 'openai/gpt-oss-120b:free))
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."

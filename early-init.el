@@ -16,7 +16,8 @@
 (defconst IS-CI      (getenv "CI"))
 (defconst HOST_TYPE  (pcase (getenv "HOST_TYPE")
                        ("home" 'home)
-                       ("work" 'work)
+                       ("aa"   'aa)
+                       ("iv"   'iv)
                        ("ci"   'ci)))
 
 (defconst cat-emacs-name "Cat Emacs")
