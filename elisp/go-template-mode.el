@@ -213,7 +213,7 @@ if no further tokens of the type exist."
                   (goto-char (car cs))
                   (when (search-forward "\n" (cdr cs) t)
                     (put-text-property
-                     (car cs) (cdr cs) 'font-lock-multline t))
+                     (car cs) (cdr cs) 'font-lock-multiline t))
                   (set-match-data (list (car cs) (cdr cs) (current-buffer)))
                   (goto-char (cdr cs))
                   (setq result t))
@@ -236,7 +236,7 @@ if no further tokens of the type exist."
   (go-template-mode-font-lock-cs limit t))
 
 ;;;###autoload
-(define-derived-mode go-template-mode fundamental-mode "Go-Template"
+(define-derived-mode go-template-mode prog-mode "Go-Template"
   "Major mode for editing Go template text.
 
 This provides basic syntax highlighting for keyword, built-ins, functions,
