@@ -6,6 +6,8 @@ on:
       - "main"
     tags:
       - "v*.*.*"
+    paths-ignore:
+      - "README.org"
 
   workflow_dispatch:
 
