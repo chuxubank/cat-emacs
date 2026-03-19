@@ -63,6 +63,7 @@
         gptel--iv
         (gptel-make-anthropic "IV"
           :host "llm.invalley.co"
+          :protocol "http"
           :stream t
           :key 'gptel-api-key
           :header
