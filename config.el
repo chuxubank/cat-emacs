@@ -62,8 +62,6 @@
 (cat! "+org-srs")
 (cat! "+org-cv")
 (cat! "+org-link")
-;; (cat! "+org-jira")
-;; (cat! "+ejira")
 
 ;;; latex
 (cat! "+bibcite")
@@ -89,9 +87,11 @@
 ;; (cat! "+lsp")
 ;; (cat! "+lsp-bridge")
 (cat! "+eglot")
+
+;;; ai
+(cat! "+copilot")
 (cat! "+vibe")
 (cat! "+agent")
-(cat! "+copilot")
 
 ;;; program
 (cat! "+android")
@@ -125,7 +125,8 @@
 
 ;;; plugins
 (when (eq HOST_TYPE 'aa)
-  (cat! "+atlassian"))
+  (cat! "+atlassian")
+  (cat! "+org-jira"))
 (cat! "+beancount")
 (cat! "+blog")
 (cat! "+chezmoi")
