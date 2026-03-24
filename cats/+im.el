@@ -4,9 +4,6 @@
   (:color teal :title (+with-icon "nf-md-chat" "Instant Messaging"))
   ("" ()))
 
-(defvar cat-telega-contrib-load-path
-  (expand-file-name "contrib" (file-name-directory (locate-library "telega"))))
-
 (use-package telega
   :hook
   (telega-load . telega-mode-line-mode)
@@ -38,6 +35,10 @@
   (cat-im
    ("Telegram"
     (("t" #'telega-transient--prefix-telega-prefix-map "telega")))))
+
+(defvar cat-telega-contrib-load-path
+  (when (package-installed-p 'telega)
+    (expand-file-name "contrib" (file-name-directory (locate-library "telega")))))
 
 (use-package telega-mnz
   :load-path cat-telega-contrib-load-path
