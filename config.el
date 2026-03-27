@@ -124,7 +124,7 @@
 (cat! "+docker")
 
 ;;; plugins
-(when (eq HOST_TYPE 'aa)
+(when (eq HOST_ENV 'aa)
   (cat! "+atlassian")
   (cat! "+org-jira"))
 (cat! "+beancount")
