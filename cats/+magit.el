@@ -14,7 +14,9 @@
   (magit-format-file-function #'magit-format-file-nerd-icons)
   :config
   (transient-append-suffix 'magit-branch #'magit-branch-rename
-    '("w" "copy" magit-add-current-branch-to-kill-ring)))
+    '("w" "copy" magit-add-current-branch-to-kill-ring))
+  (transient-append-suffix 'magit-pull #'magit-pull-branch
+    '("b" "remote branch" magit-pull-remote-branch)))
 
 (defun magit-add-current-branch-to-kill-ring ()
   "Show the current branch in the echo-area and add it to the `kill-ring'."
@@ -24,6 +26,15 @@
         (progn (kill-new branch)
                (message "%s" branch))
       (user-error "There is not current branch"))))
+
+(defun magit-pull-remote-branch (&optional remote branch)
+  "Pull BRANCH from REMOTE."
+  (interactive
+   (list (magit-read-remote "Select remote: " "origin")
+         (magit-read-starting-point "Branch")))
+  (if (string= branch (magit-get-current-branch))
+      (magit-pull-branch branch nil)
+    (magit-fetch-refspec remote (format "%s:%s" branch branch) nil)))
 
 (use-package magit-section
   :pin melpa-stable)

@@ -328,7 +328,7 @@ See `magit-branch-or-checkout'"
 (defun task-pull-remote-branch (&optional remote branch)
   "Pull BRANCH from REMOTE."
   (interactive
-   (list (magit-read-remote "Select remote: ")
+   (list (magit-read-remote "Select remote: " "origin")
          (magit-read-starting-point "Branch")))
   (if (string= branch (magit-get-current-branch))
       (magit-pull-branch branch nil)
