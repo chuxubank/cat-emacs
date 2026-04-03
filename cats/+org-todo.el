@@ -13,12 +13,14 @@
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-skip-scheduled-repeats-after-deadline t)
-  ;; comment out because affect org-crypt
-  ;; (org-agenda-skip-function-global '(org-agenda-skip-entry-if 'nottodo 'any))
   (org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                               (todo   . " %i %-20:c")
                               (tags   . " %i %-20:c")
                               (search . " %i %-20:c"))))
+
+(defconst cat-org-agenda-skip-non-todo
+  '(org-agenda-skip-entry-if 'nottodo 'any)
+  "Skip non-TODO entries in agenda commands without affecting `org-scan-tags'.")
 
 (defun cat-filter-todo-entries (args)
   "Filter out non-TODO entries from the ARGS for `org-agenda--count'."
@@ -38,6 +40,7 @@
       ((agenda
         ""
         ((org-agenda-span 'day)
+         (org-agenda-skip-function cat-org-agenda-skip-non-todo)
          (org-agenda-overriding-header
           (format "Agenda [%s]" (org-agenda-count)))))
        (alltodo
@@ -76,4 +79,3 @@ Ref: https://emacs.stackexchange.com/a/57749"
     (if (eq major-mode 'org-agenda-mode)
         (org-agenda-todo arg)
       (org-todo arg))))
-
