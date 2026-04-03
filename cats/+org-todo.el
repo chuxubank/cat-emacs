@@ -13,7 +13,8 @@
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-deadline-prewarning-if-scheduled t)
   (org-agenda-skip-scheduled-repeats-after-deadline t)
-  (org-agenda-skip-function-global '(org-agenda-skip-entry-if 'nottodo 'any))
+  ;; comment out because affect org-crypt
+  ;; (org-agenda-skip-function-global '(org-agenda-skip-entry-if 'nottodo 'any))
   (org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                               (todo   . " %i %-20:c")
                               (tags   . " %i %-20:c")
