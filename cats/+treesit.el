@@ -60,6 +60,19 @@
   (dolist (lang '(cmake cpp bash))
     (setq treesit-auto-langs (delete lang treesit-auto-langs))))
 
+(with-eval-after-load 'org-src
+  (defun +org-src-kill-treesit-fontification-buffer (lang &rest _)
+    "Kill reusable fontification buffer for tree-sitter modes.
+`org-src-font-lock-fontify-block' reuses a single buffer and skips
+mode re-initialization when already active, breaking tree-sitter
+fontification on subsequent calls."
+    (when-let* ((mode (org-src-get-lang-mode-if-bound lang))
+                (buf (get-buffer (format " *org-src-fontification:%s*" mode)))
+                ((with-current-buffer buf (treesit-parser-list))))
+      (kill-buffer buf)))
+  (advice-add 'org-src-font-lock-fontify-block :before
+              #'+org-src-kill-treesit-fontification-buffer))
+
 (with-eval-after-load 'meow
   (use-package meow-tree-sitter
     :demand

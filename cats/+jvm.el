@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package kotlin-mode
+  :unless EMACS29+
   :custom
   (kotlin-args-repl '("-Xrepl")))
 
@@ -11,6 +12,9 @@
     (("t" kotlin-ts-mode-goto-test-file "go to test file")
      ("r" kotlin-ts-mode-run-current-test-function "run current test function")
      ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
+
+(with-eval-after-load 'org
+  (add-to-list 'org-src-lang-modes '("kotlin" . kotlin-ts)))
 
 (use-package ob-kotlin
   :vc (:url "https://github.com/chuxubank/ob-kotlin")
