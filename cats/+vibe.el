@@ -70,23 +70,34 @@
           (lambda () (when-let* ((key (gptel--get-api-key)))
                        `(("x-api-key" . ,key))))
           :models '(claude-haiku-4-5-20251001
-                    claude-opus-4-1-20250805
-                    claude-opus-4-20250514
-                    claude-opus-4-5-20251101
-                    claude-sonnet-4-20250514
-                    claude-sonnet-4-5-20250929
-                    global.anthropic.claude-opus-4-6-v1
-                    global.anthropic.claude-sonnet-4-6)))
-  (setq gptel-backend (if (eq HOST_ENV 'iv) gptel--iv gptel--openrouter)
-        gptel-model (if (eq HOST_ENV 'iv) 'global.anthropic.claude-opus-4-6-v1 'openrouter/free)))
+                    global.anthropic.claude-sonnet-4-6
+                    global.anthropic.claude-opus-4-6-v1))
+        gptel--ollama
+        (gptel-make-ollama "Ollama"
+          :host "localhost:11434"
+          :stream t
+          :models '(gemma4
+                    gpt-oss
+                    qwen3.5
+                    qwen3.5:0.8b)))
+  (setq gptel-backend (if (eq HOST_ENV 'iv)
+                          gptel--iv
+                        gptel--ollama)
+        gptel-model (if (eq HOST_ENV 'iv)
+                        'global.anthropic.claude-opus-4-6-v1
+                      'gemma4)))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (setq gptel-magit-backend (if (eq HOST_ENV 'iv) gptel--iv gptel--openrouter)
-        gptel-magit-model (if (eq HOST_ENV 'iv) 'global.anthropic.claude-opus-4-6-v1 'openrouter/free))
+  (setq gptel-magit-backend (if (eq HOST_ENV 'iv)
+                                gptel--iv
+                              gptel--ollama)
+        gptel-magit-model (if (eq HOST_ENV 'iv)
+                              'global.anthropic.claude-opus-4-6-v1
+                            'gemma4))
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
