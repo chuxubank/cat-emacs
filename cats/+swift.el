@@ -1,8 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package swift-mode)
+(use-package swift-mode
+  :unless EMACS29+)
 
-(use-package swift-ts-mode)
+(use-package swift-ts-mode
+  :when EMACS29+)
 
 (use-package ob-swiftui
   :demand t

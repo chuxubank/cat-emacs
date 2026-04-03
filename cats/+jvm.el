@@ -13,9 +13,6 @@
      ("r" kotlin-ts-mode-run-current-test-function "run current test function")
      ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
 
-(with-eval-after-load 'org
-  (add-to-list 'org-src-lang-modes '("kotlin" . kotlin-ts)))
-
 (use-package ob-kotlin
   :vc (:url "https://github.com/chuxubank/ob-kotlin")
   :demand
