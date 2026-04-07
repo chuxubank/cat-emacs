@@ -70,8 +70,8 @@
           (lambda () (when-let* ((key (gptel--get-api-key)))
                        `(("x-api-key" . ,key))))
           :models '(claude-haiku-4-5-20251001
-                    global.anthropic.claude-sonnet-4-6
-                    global.anthropic.claude-opus-4-6))
+                    claude-sonnet-4-6
+                    claude-opus-4-6))
         gptel--ollama
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
@@ -84,7 +84,7 @@
                           gptel--iv
                         gptel--ollama)
         gptel-model (if (eq HOST_ENV 'iv)
-                        'global.anthropic.claude-sonnet-4-6
+                        'claude-sonnet-4-6
                       'gemma4)))
 
 (use-package gptel-magit
@@ -96,7 +96,7 @@
                                 gptel--iv
                               gptel--ollama)
         gptel-magit-model (if (eq HOST_ENV 'iv)
-                              'global.anthropic.claude-sonnet-4-6
+                              'claude-sonnet-4-6
                             'gemma4))
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
