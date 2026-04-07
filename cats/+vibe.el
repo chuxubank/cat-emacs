@@ -84,7 +84,7 @@
                           gptel--iv
                         gptel--ollama)
         gptel-model (if (eq HOST_ENV 'iv)
-                        'global.anthropic.claude-opus-4-6-v1
+                        'global.anthropic.claude-sonnet-4-6
                       'gemma4)))
 
 (use-package gptel-magit
@@ -96,7 +96,7 @@
                                 gptel--iv
                               gptel--ollama)
         gptel-magit-model (if (eq HOST_ENV 'iv)
-                              'global.anthropic.claude-opus-4-6-v1
+                              'global.anthropic.claude-sonnet-4-6
                             'gemma4))
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
