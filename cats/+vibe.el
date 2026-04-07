@@ -92,12 +92,8 @@
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (setq gptel-magit-backend (if (eq HOST_ENV 'iv)
-                                gptel--iv
-                              gptel--ollama)
-        gptel-magit-model (if (eq HOST_ENV 'iv)
-                              'claude-sonnet-4-6
-                            'gemma4))
+  (setq gptel-magit-backend gptel--ollama
+        gptel-magit-model 'gemma4)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
