@@ -71,7 +71,7 @@
                        `(("x-api-key" . ,key))))
           :models '(claude-haiku-4-5-20251001
                     global.anthropic.claude-sonnet-4-6
-                    global.anthropic.claude-opus-4-6-v1))
+                    global.anthropic.claude-opus-4-6))
         gptel--ollama
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
