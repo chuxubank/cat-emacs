@@ -29,6 +29,9 @@
   (add-to-list 'org-babel-load-languages '(aider . t)))
 
 (use-package agent-shell
+  :delight
+  (agent-shell-ui-mode "")
+  (agent-shell-completion-mode "")
   :bind
   (:map agent-shell-ui-mode-map
         ("C-c C-p" . agent-shell-ui-backward-block)
