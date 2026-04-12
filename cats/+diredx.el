@@ -18,24 +18,26 @@
       (format "7z x -o\\* -p%s" (password-store-get "Work/AA/Luna/Log")))
      ("\.?codecov.ya?ml\\'"
       "curl -X POST --data-binary @`?` https://codecov.io/validate")
-     ("\\.tmpl\\'"
-      "cat * | chezmoi execute-template")
-     ("\\.zip\\'"
-      (concat "7z x -o\\*")
-      (concat "7z x -o\\* -p"))
+     ("\\.csv\\'"
+      "double-entry-generator translate"
+      "double-entry-generator translate --provider ")
+     ("\\.md\\'"
+      (concat "pandoc ? -o $(basename `?` .md).org --lua-filter=remove-header-attr.lua")
+      (concat "pandoc ? -o $(basename `?` .md).org"))
      ("\\.pub\\'"
       (concat "ssh-keygen -lv -f"))
      ("\\.plist\\'"
       (concat "plutil -p"))
-     ("\\.md\\'"
-      (concat "pandoc ? -o $(basename `?` .md).org --lua-filter=remove-header-attr.lua")
-      (concat "pandoc ? -o $(basename `?` .md).org"))
-     ("\\.csv\\'"
-      "double-entry-generator translate"
-      "double-entry-generator translate --provider ")
+     ("\\.srs\\'"
+      (concat "sing-box rule-set decompile"))
+     ("\\.tmpl\\'"
+      "cat * | chezmoi execute-template")
      ("\\.yaml\\'"
       "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) validate-pipeline --enable-across-step --config"
-      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) set-pipeline --config ? --pipeline $(basename `?` .yaml)")))
+      "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) set-pipeline --config ? --pipeline $(basename `?` .yaml)")
+     ("\\.zip\\'"
+      (concat "7z x -o\\*")
+      (concat "7z x -o\\* -p"))))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
