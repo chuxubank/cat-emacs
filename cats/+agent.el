@@ -48,4 +48,6 @@
 
 (use-package mcp-server
   :vc (:url "https://github.com/rhblind/emacs-mcp-server")
-  :hook (emacs-startup . mcp-server-start-unix))
+  :hook (cat-idle-preload-hook . mcp-server-start-unix)
+  :custom
+  (mcp-server-socket-directory cat-cache-dir))
