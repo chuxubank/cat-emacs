@@ -9,7 +9,7 @@
     (when (android-root) (android-mode t)))
   :hook ((find-file dired-mode) . +android-mode)
   :custom
-  (android-mode-key-prefix "\C-c p a"))
+  (android-mode-key-prefix "\C-c p A"))
 
 (use-package elogcat
   :commands #'elogcat
