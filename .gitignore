@@ -25,5 +25,8 @@ network-security.data
 
 # treesit
 tree-sitter/
+
+# ai
 .aider*
-/.agent-shell/
+.agent-shell/
+.chatgpt-shell.el

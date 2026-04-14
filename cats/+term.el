@@ -88,7 +88,6 @@
     (meow-vterm-enable)))
 
 (use-package shell-maker
-  :demand t
   :custom
   (shell-maker-root-path (concat cat-local-dir "shell-maker/"))
   :config

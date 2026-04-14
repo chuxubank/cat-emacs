@@ -130,34 +130,10 @@ Invokes CALLBACK with the generated message when done."
 (use-package chatgpt-shell
   :custom
   (chatgpt-shell-root-path (concat cat-local-dir "shell-maker/"))
-  (chatgpt-shell-google-key
-   (let ((found (car (auth-source-search
-                      :host "generativelanguage.googleapis.com"
-                      :user "apikey"
-                      :require '(:user :secret)))))
-     (if found
-         (plist-get found :secret)
-       (error "No matching entry found"))))
-  (chatgpt-shell-model-version "gemini-2.5-flash-preview-05-20")
+  (chatgpt-shell-model-version "gemma4")
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-fa-terminal" "ChatGPT Shell"))
-   ("Shell"
-    (("p" #'chatgpt-shell-prompt "prompt")
-     ("P" #'chatgpt-shell-prompt-compose "prompt compose")
-     ("y" #'chatgpt-shell-prompt-appending-kill-ring "yank"))
-    "Code"
-    (("d" #'chatgpt-shell-describe-code "describe code")
-     ("r" #'chatgpt-shell-refactor-code "refactor code")
-     ("c" #'chatgpt-shell-write-git-commit "write git commit")
-     ("t" #'chatgpt-shell-generate-unit-test "generate unit test")
-     ("f" #'chatgpt-shell-fix-error-at-point "fix error at point"))
-    "Utils"
-    (("e" #'chatgpt-shell-proofread-paragraph-or-region "proofread")
-     ("i" #'chatgpt-shell-describe-image "describe image")
-     ("q" #'chatgpt-shell-quick-insert "quick insert"))
-    "Eshell"
-    (("w" #'chatgpt-shell-eshell-whats-wrong-with-last-command "what's wrong")
-     ("s" #'chatgpt-shell-eshell-summarize-last-command-output "summarize output"))))
   (cat-vibe
    ("Shell"
-    (("c" #'chatgpt-shell-hydra/body "chatgpt shell")))))
+    (("s" #'chatgpt-shell-transient "chatgpt shell"))))
+  :config
+  (chatgpt-shell-ollama-load-models :override t))
