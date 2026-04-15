@@ -93,7 +93,7 @@
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (setq gptel-magit-backend gptel--ollama
-        gptel-magit-model 'gemma4)
+        gptel-magit-model 'qwen3.5)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
