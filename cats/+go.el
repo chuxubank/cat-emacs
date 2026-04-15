@@ -16,3 +16,5 @@
 (use-package templ-ts-mode)
 
 (use-package go-template-mode)
+
+(use-package go-template-helper-mode)
