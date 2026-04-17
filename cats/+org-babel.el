@@ -22,9 +22,3 @@
   :ensure nil
   :config
   (org-babel-lob-ingest (expand-file-name "library-of-babel.org" user-emacs-directory)))
-
-(use-package ob-async
-  :vc (:url "https://github.com/ezchi/ob-async"
-            :rev "develop")
-  :demand t
-  :after org)
