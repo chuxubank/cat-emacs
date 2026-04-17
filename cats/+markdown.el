@@ -8,7 +8,10 @@
 (use-package mustache)
 
 (use-package markdown-mode
-  :pin melpa-stable)
+  :pin melpa-stable
+  :mode ("README\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "pandoc"))
 
 (use-package md-babel
   :vc (:url "https://github.com/md-babel/md-babel.el")
@@ -30,3 +33,10 @@
   :config
   (add-hook 'cat-theme-refresh-hook #'markdown-xwidget-auto-theme)
   (markdown-xwidget-auto-theme))
+
+(use-package grip-mode
+  :bind
+  (:map markdown-mode-command-map
+        ("g" . grip-mode))
+  :custom
+  (grip-command 'auto))
