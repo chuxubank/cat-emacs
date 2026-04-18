@@ -328,3 +328,19 @@
   :ensure nil
   :custom
   (native-comp-async-report-warnings-errors 'silent))
+
+(use-package warnings
+  :ensure nil
+  :custom
+  (warning-minimum-level :error))
+
+(use-package webjump
+  :ensure nil
+  :config
+  (+add-to-list-multi 'webjump-sites
+                      '("GitHub" .
+                        [simple-query "github.com"
+		                              "github.com/" ""])
+                      '("GitHub Search" .
+                        [simple-query "github.com"
+		                              "github.com/search?q=" "&type=repositories"])))
