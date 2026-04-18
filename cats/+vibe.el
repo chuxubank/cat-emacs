@@ -80,20 +80,16 @@
                     gpt-oss
                     qwen3.5
                     qwen3.5:0.8b)))
-  (setq gptel-backend (if (eq HOST_ENV 'iv)
-                          gptel--iv
-                        gptel--ollama)
-        gptel-model (if (eq HOST_ENV 'iv)
-                        'claude-sonnet-4-6
-                      'gemma4)))
+  (setq gptel-backend gptel--iv
+        gptel-model 'claude-sonnet-4-6))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (setq gptel-magit-backend gptel--ollama
-        gptel-magit-model 'qwen3.5)
+  (setq gptel-magit-backend gptel--iv
+        gptel-magit-model 'claude-haiku-4-5-20251001)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
