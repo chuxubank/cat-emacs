@@ -31,8 +31,7 @@
         (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)
         gptel--openrouter
         (gptel-make-openai "OpenRouter"
-          :host "openrouter.ai"
-          :endpoint "/api/v1/chat/completions"
+          :host "openrouter.ai/api"
           :stream t
           :key 'gptel-api-key
           :models '(openrouter/free
@@ -61,17 +60,20 @@
                     tngtech/tng-r1t-chimera:free
                     z-ai/glm-4.5-air:free))
         gptel--iv
-        (gptel-make-anthropic "IV"
+        (gptel-make-openai "IV"
           :host "llm.invalley.co"
           :protocol "http"
           :stream t
           :key 'gptel-api-key
-          :header
-          (lambda () (when-let* ((key (gptel--get-api-key)))
-                       `(("x-api-key" . ,key))))
-          :models '(claude-haiku-4-5-20251001
+          :models '(MiniMax-M2.7
+                    claude-haiku-4-5-20251001
+                    claude-opus-4-6
                     claude-sonnet-4-6
-                    claude-opus-4-6))
+                    deepseek-v3.2
+                    deepseek-v3.2-exp
+                    gemini-3.1-pro-preview
+                    gpt-5.4
+                    qwen3.6-plus))
         gptel--ollama
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
@@ -89,7 +91,7 @@
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (setq gptel-magit-backend gptel--iv
-        gptel-magit-model 'claude-haiku-4-5-20251001)
+        gptel-magit-model 'deepseek-v3.2)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
