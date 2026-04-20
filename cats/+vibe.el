@@ -49,57 +49,18 @@
         gptel--openrouter
         (gptel-make-openai "OpenRouter"
           :host "openrouter.ai/api"
-          :stream t
           :key 'gptel-api-key
-          :models '(openrouter/free
-                    alibaba/tongyi-deepresearch-30b-a3b:free
-                    arcee-ai/trinity-large-preview:free
-                    arcee-ai/trinity-mini:free
-                    deepseek/deepseek-chat-v3.1:free
-                    deepseek/deepseek-r1-0528-qwen3-8b:free
-                    deepseek/deepseek-r1-0528:free
-                    deepseek/deepseek-r1:free
-                    google/gemini-2.0-flash-exp:free
-                    google/gemma-3-27b-it:free
-                    kwaipilot/kat-coder-pro:free
-                    meituan/longcat-flash-chat:free
-                    meta-llama/llama-3.3-70b-instruct:free
-                    nvidia/nemotron-3-nano-30b-a3b:free
-                    nvidia/nemotron-nano-12b-v2-vl:free
-                    nvidia/nemotron-nano-9b-v2:free
-                    openai/gpt-oss-120b:free
-                    openai/gpt-oss-20b:free
-                    qwen/qwen3-4b:free
-                    qwen/qwen3-coder:free
-                    qwen/qwen3-next-80b-a3b-instruct:free
-                    stepfun/step-3.5-flash:free
-                    tngtech/deepseek-r1t2-chimera:free
-                    tngtech/tng-r1t-chimera:free
-                    z-ai/glm-4.5-air:free))
+          :stream t)
         gptel--iv
         (gptel-make-openai "IV"
           :host "llm.invalley.co"
           :protocol "http"
-          :stream t
           :key 'gptel-api-key
-          :models '(MiniMax-M2.7
-                    claude-haiku-4-5-20251001
-                    claude-opus-4-6
-                    claude-opus-4-7
-                    claude-sonnet-4-6
-                    deepseek-v3.2
-                    deepseek-v3.2-exp
-                    gemini-3.1-pro-preview
-                    gpt-5.4
-                    qwen3.6-plus))
+          :stream t)
         gptel--ollama
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
-          :stream t
-          :models '(gemma4
-                    gpt-oss
-                    qwen3.5
-                    qwen3.5:0.8b)))
+          :stream t))
   (setq gptel-backend gptel--iv
         gptel-model 'claude-sonnet-4-6))
 
