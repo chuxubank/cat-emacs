@@ -35,6 +35,8 @@
   (markdown-xwidget-auto-theme))
 
 (use-package grip-mode
+  :demand t
+  :after markdown-mode
   :bind
   (:map markdown-mode-command-map
         ("g" . grip-mode))
