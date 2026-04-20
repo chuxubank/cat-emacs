@@ -9,6 +9,8 @@
   :commands
   (gptel-model-updater-update-backend
    gptel-model-updater-update-all)
+  :hook
+  (cat-idle-preload-hook . gptel-model-updater-update-all)
   :pretty-hydra
   (cat-vibe
    ("GPTel"
