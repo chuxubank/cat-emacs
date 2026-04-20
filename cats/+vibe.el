@@ -4,6 +4,21 @@
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
 
+(use-package gptel-model-updater
+  :ensure nil
+  :after gptel
+  :pretty-hydra
+  (cat-vibe
+   ("GPTel"
+    (("u" #'gptel-model-updater-update-backend "update")
+     ("U" #'gptel-model-updater-update-all "update all"))))
+  :config
+  (setq gptel--backends
+        '(gptel--gemini
+          gptel--openrouter
+          gptel--ollama
+          gptel--iv)))
+
 (use-package gptel
   :delight " 󱡄"
   :custom
@@ -24,7 +39,7 @@
     (("t" #'gptel-org-set-topic "set topic")
      ("p" #'gptel-org-set-properties "set properties"))))
   (cat-vibe
-   ("Fundamental"
+   ("GPTel"
     (("g" #'gptel-hydra/body "gptel"))))
   :config
   (setq gptel--gemini
@@ -68,6 +83,7 @@
           :models '(MiniMax-M2.7
                     claude-haiku-4-5-20251001
                     claude-opus-4-6
+                    claude-opus-4-7
                     claude-sonnet-4-6
                     deepseek-v3.2
                     deepseek-v3.2-exp
