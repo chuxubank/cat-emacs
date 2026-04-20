@@ -29,7 +29,6 @@
 
 ;;; Code:
 
-(require 'url)
 (require 'json)
 (require 'cl-lib)
 (require 'gptel)
@@ -82,26 +81,28 @@ PROVIDER-TYPE is `openai', `ollama', or `gemini'.
 URL is the endpoint to fetch from.
 HEADERS is the request headers alist.
 CALLBACK is called with (success raw-data error-message)."
-  (let* ((url-request-method "GET")
-         (url-request-timeout gptel-model-updater-timeout)
-         (url-request-extra-headers headers))
-    (message "GPTel-Model-Updater: Contacting %s..." backend-name)
-    (url-retrieve
-     url
-     (lambda (status)
-       (let ((http-code (url-http-parse-response)))
-         (cond
-          ((plist-get status :error)
-           (funcall callback nil nil
-                    (format "Connection failed: %s" (plist-get status :error))))
-          ((not (eq http-code 200))
-           (funcall callback nil nil (format "HTTP %d" http-code)))
-          (t
-           (goto-char (point-min))
-           (re-search-forward "^$" nil 'move)
-           (let* ((json-object-type 'alist)
+  (message "GPTel-Model-Updater: Contacting %s..." backend-name)
+  (let* ((args (list "--silent" "--max-time" (number-to-string gptel-model-updater-timeout)))
+         (output-buf (generate-new-buffer " *gptel-model-updater-curl*")))
+    (dolist (h headers)
+      (setq args (append args (list "-H" (format "%s: %s" (car h) (cdr h))))))
+    (setq args (append args (list url)))
+    (make-process
+     :name (format "gptel-model-updater-%s" backend-name)
+     :buffer output-buf
+     :command (cons "curl" args)
+     :noquery t
+     :sentinel
+     (lambda (proc event)
+       (when (string-match-p "finished" event)
+         (with-current-buffer (process-buffer proc)
+           (let* ((body (buffer-string))
+                  (json-object-type 'alist)
                   (json-key-type 'symbol)
-                  (response (condition-case nil (json-read) (error nil))))
+                  (response (condition-case nil
+                                (json-read-from-string body)
+                              (error nil))))
+             (kill-buffer (process-buffer proc))
              (if (not response)
                  (funcall callback nil nil "Failed to parse JSON")
                (let ((raw-data (pcase provider-type
@@ -110,8 +111,13 @@ CALLBACK is called with (success raw-data error-message)."
                                  (_ (alist-get 'data response)))))
                  (when (vectorp raw-data)
                    (setq raw-data (append raw-data nil)))
-                 (funcall callback t raw-data nil))))))))
-     nil t)))
+                 (funcall callback t raw-data nil)))))
+         (when (buffer-live-p (process-buffer proc))
+           (kill-buffer (process-buffer proc))))
+       (when (string-match-p "\\(exited\\|failed\\)" event)
+         (when (buffer-live-p (process-buffer proc))
+           (kill-buffer (process-buffer proc)))
+         (funcall callback nil nil (format "curl process %s" (string-trim event))))))))
 
 (defun gptel-model-updater--parse-models (raw-data provider-type)
   "Parse RAW-DATA from PROVIDER-TYPE into a list of model symbols."
