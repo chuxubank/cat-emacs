@@ -43,15 +43,6 @@
   :type 'number
   :group 'gptel-model-updater)
 
-(defun gptel-model-updater--resolve-key (key)
-  "Recursively resolve KEY until it yields a string or nil."
-  (cond
-   ((stringp key) key)
-   ((functionp key) (gptel-model-updater--resolve-key (funcall key)))
-   ((and (symbolp key) (fboundp key)) (gptel-model-updater--resolve-key (funcall key)))
-   ((and (symbolp key) (boundp key)) (gptel-model-updater--resolve-key (symbol-value key)))
-   (t nil)))
-
 (defun gptel-model-updater--detect-provider (backend)
   "Detect provider type for BACKEND struct.
 Returns one of `openai', `gemini', or `ollama'."
@@ -67,7 +58,7 @@ Returns one of `openai', `gemini', or `ollama'."
         (protocol (or (gptel-backend-protocol backend) "https")))
     (pcase provider-type
       ('gemini
-       (let ((api-key (gptel-model-updater--resolve-key (gptel-backend-key backend))))
+       (let ((api-key (gptel--get-api-key (gptel-backend-key backend))))
          (format "%s://%s/v1beta/models?key=%s&pageSize=1000" protocol host (or api-key ""))))
       ('ollama
        (format "%s://%s/api/tags" protocol host))
@@ -163,7 +154,7 @@ URL overrides the default endpoint."
      (list (completing-read "Backend: " backends nil t))))
   (let* ((backend (gptel-get-backend backend-name))
          (provider (or provider-type (gptel-model-updater--detect-provider backend)))
-         (api-key (gptel-model-updater--resolve-key (gptel-backend-key backend)))
+         (api-key (gptel--get-api-key (gptel-backend-key backend)))
          (fetch-url (or url (gptel-model-updater--build-url backend provider)))
          (headers (gptel-model-updater--build-headers provider api-key)))
 

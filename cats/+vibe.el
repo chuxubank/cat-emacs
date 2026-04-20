@@ -6,7 +6,9 @@
 
 (use-package gptel-model-updater
   :ensure nil
-  :after gptel
+  :commands
+  (gptel-model-updater-update-backend
+   gptel-model-updater-update-all)
   :pretty-hydra
   (cat-vibe
    ("GPTel"
