@@ -170,25 +170,45 @@ Uses the modern `emulator -list-avds` command."
         (cond ((and package class) (concat package "." class))
               (class class))))))
 
+(defun android--find-module-dir (dir)
+  "Return a list of subdirectories of DIR that contain a
+`build/outputs/apk` directory."
+  (when-let ((dir (file-name-as-directory dir)))
+    (seq-filter
+     (lambda (sub)
+       (and (file-directory-p sub) (file-directory-p (concat sub "build/outputs/apk"))))
+     (directory-files dir t "^[^.]" t))))
+
 (defun android--apk-path ()
   "Find the most recent debug APK in the project build output."
   (android-in-directory
    (android-root)
-   (let ((apk-dir "app/build/outputs/apk/debug/"))
-     (when (file-directory-p apk-dir)
-       (car (sort (directory-files apk-dir t "\\.apk$")
+   (let* ((modules (or (android--find-module-dir default-directory)
+                       (list default-directory)))
+          (candidates (mapcan
+                       (lambda (mod)
+                         (let ((apk-dir (concat mod "build/outputs/apk/debug/")))
+                           (when (file-directory-p apk-dir)
+                             (directory-files apk-dir t "\\.apk$"))))
+                       modules)))
+     (when candidates
+       (car (sort candidates
                   (lambda (a b)
                     (time-less-p (file-attribute-modification-time (file-attributes b))
                                  (file-attribute-modification-time (file-attributes a))))))))))
+
+(defun android--aapt2-dump (apk)
+  "Run `aapt2 dump badging APK` and return the output."
+  (shell-command-to-string
+   (format "%s dump badging %s 2>&1"
+           (android-tool-path "aapt2")
+           (shell-quote-argument apk))))
 
 (defun android-project-package ()
   "Return the package name of the Android project.
 Parses the built APK via aapt2."
   (when-let ((apk (android--apk-path)))
-    (let ((output (shell-command-to-string
-                   (format "%s dump badging %s"
-                           (android-tool-path "aapt2")
-                           (shell-quote-argument apk)))))
+    (let ((output (android--aapt2-dump apk)))
       (when (string-match "^package: name='\\([^']+\\)'" output)
         (match-string 1 output)))))
 
@@ -196,10 +216,7 @@ Parses the built APK via aapt2."
   "Return list of main activity class names.
 Parses the built APK via aapt2."
   (when-let ((apk (android--apk-path)))
-    (let ((output (shell-command-to-string
-                   (format "%s dump badging %s"
-                           (android-tool-path "aapt2")
-                           (shell-quote-argument apk))))
+    (let ((output (android--aapt2-dump apk))
           activities)
       (with-temp-buffer
         (insert output)
@@ -213,18 +230,26 @@ Parses the built APK via aapt2."
 Tries to match the current buffer's class name against activities
 parsed from the built APK.  Falls back to the first launchable activity."
   (interactive)
-  (let* ((package (android-project-package))
-         (launchable (android-project-main-activities))
-         (current (android-current-buffer-class-name))
-         (activity (or (and (member current launchable) current)
-                       (car launchable))))
-    (unless activity (error "No launchable activity found in APK"))
-    (message "Starting activity: %s" activity)
-    (let* ((command (format "%s shell am start -n %s/%s"
-                            (android-tool-path "adb") package activity))
-           (output (shell-command-to-string command)))
-      (when (string-match-p "^Error: " output)
-        (error "Error starting app:\n%s" output)))))
+  (let* ((apk (android--apk-path))
+         (dump (when apk (android--aapt2-dump apk)))
+         package launchable)
+    (unless apk (error "No APK found. Run `./gradlew assembleDebug` first."))
+    (when (string-match "^package: name='\\([^']+\\)'" dump)
+      (setq package (match-string 1 package)))
+    (let ((pos 0))
+      (while (string-match "launchable-activity: name='\\([^']+\\)'" dump pos)
+        (push (match-string 1 dump) launchable)
+        (setq pos (match-end 0))))
+    (setq launchable (nreverse launchable))
+    (let* ((current (android-current-buffer-class-name))
+           (activity (or (and current (seq-contains-p launchable current #'string=)) (car launchable))))
+      (unless activity (error "No launchable activity found in APK"))
+      (message "Starting activity: %s" activity)
+      (let* ((command (format "%s shell am start -n %s/%s"
+                              (android-tool-path "adb") package activity))
+             (output (shell-command-to-string command)))
+        (when (string-match-p "^Error: " output)
+          (error "Error starting app:\n%s" output))))))
 
 (defun android-print-flavor ()
   "Print the project's flavors, variants and application IDs."
