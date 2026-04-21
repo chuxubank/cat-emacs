@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(pretty-hydra-define cat-android
+  (:color teal :title (+with-icon "nf-md-android" "Android"))
+  ("" ()))
+
 (use-package android-mode
   :ensure nil
   :delight " 󰀲"
@@ -8,8 +12,17 @@
   (defun +android-mode ()
     (when (android-root) (android-mode t)))
   :hook ((find-file dired-mode) . +android-mode)
-  :custom
-  (android-mode-key-prefix "\C-c p A"))
+  :pretty-hydra
+  (cat-android
+   ("Start"
+    (("a" #'android-start-app "start app")
+     ("e" #'android-start-emulator "emulator"))
+    "Build"
+    (("c" #'android-gradle-assembleDebug "debug")
+     ("C" #'android-gradle-clean "clean")
+     ("t" #'android-gradle-test "test")
+     ("i" #'android-gradle-installDebug "install")
+     ("u" #'android-gradle-uninstallDebug "uninstall")))))
 
 (use-package elogcat
   :commands #'elogcat
@@ -21,6 +34,10 @@
         ("p" . #'previous-line)
         ("P" . #'+elogcat-toggle-package)
         ("S" . #'+elogcat-save-buffer))
+  :pretty-hydra
+  (cat-android
+   ("Log"
+    (("l" #'elogcat "elogcat"))))
   :config
   (defun elogcat-make-status (&optional status)
     "Get a log buffer STATUS for use in the mode line."

@@ -32,6 +32,7 @@
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
   "a" #'cat-agent/body
+  "A" #'cat-android/body
   "b" #'cat-blog/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
@@ -40,7 +41,6 @@
   "G" #'cat-github/body
   "i" #'cat-im/body
   "j" #'jira-issues
-  "l" #'elogcat
   "m" #'cat-mail/body
   "M" #'osm-prefix-map
   "n" #'deft
