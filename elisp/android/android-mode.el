@@ -170,27 +170,60 @@ Uses the modern `emulator -list-avds` command."
         (cond ((and package class) (concat package "." class))
               (class class))))))
 
+(defun android--fd-lines (&rest args)
+  "Run fd with ARGS, return output lines.
+Returns nil instead of signaling on non-zero exit (e.g. no matches)."
+  (with-temp-buffer
+    (let ((exit (apply #'call-process "fd" nil t nil args)))
+      (when (zerop exit)
+        (split-string (buffer-string) "\n" t)))))
+
 (defun android--find-module-dir (dir)
-  "Return a list of subdirectories of DIR that contain a
-`build/outputs/apk` directory."
-  (when-let ((dir (file-name-as-directory dir)))
-    (seq-filter
-     (lambda (sub)
-       (and (file-directory-p sub) (file-directory-p (concat sub "build/outputs/apk"))))
-     (directory-files dir t "^[^.]" t))))
+  "Recursively return a list of subdirectories of DIR that contain
+a `build.gradle' or `build.gradle.kts' file.
+Uses `fd' for speed when available, falls back to Elisp traversal."
+  (when-let ((dir (file-name-as-directory (expand-file-name dir))))
+    (if (executable-find "fd")
+        (delq nil
+              (mapcar (lambda (line)
+                        (let ((full (expand-file-name (file-name-directory line) dir)))
+                          (unless (string= (file-truename full) (file-truename dir))
+                            (directory-file-name full))))
+                      (or (android--fd-lines "-t" "f"
+                                             "^build\\.gradle(\\.kts)?$"
+                                             dir)
+                          '())))
+      ;; fallback: recursive Elisp
+      (let ((result '()))
+        (dolist (entry (directory-files dir t "^[^.]" t))
+          (when (file-directory-p entry)
+            (let ((entry-dir (file-name-as-directory entry)))
+              (when (or (file-exists-p (concat entry-dir "build.gradle"))
+                        (file-exists-p (concat entry-dir "build.gradle.kts")))
+                (push entry result))
+              (setq result (nconc result (android--find-module-dir entry))))))
+        result))))
 
 (defun android--apk-path ()
-  "Find the most recent debug APK in the project build output."
+  "Find the most recent APK in the project build output.
+Uses `fd' when available, falls back to scanning module build directories."
   (android-in-directory
    (android-root)
-   (let* ((modules (or (android--find-module-dir default-directory)
-                       (list default-directory)))
-          (candidates (mapcan
-                       (lambda (mod)
-                         (let ((apk-dir (concat mod "build/outputs/apk/debug/")))
-                           (when (file-directory-p apk-dir)
-                             (directory-files apk-dir t "\\.apk$"))))
-                       modules)))
+   (let ((candidates
+          (if (executable-find "fd")
+              (mapcar (lambda (f) (expand-file-name f))
+                      (or (android--fd-lines "--no-ignore" "-t" "f" "-e" "apk"
+                                             "." (expand-file-name default-directory))
+                          '()))
+            ;; fallback: scan module build dirs
+            (mapcan
+             (lambda (mod)
+               (let ((apk-dir (concat (file-name-as-directory mod)
+                                      "build/outputs/apk/debug/")))
+                 (when (file-directory-p apk-dir)
+                   (directory-files apk-dir t "\\.apk$"))))
+             (or (android--find-module-dir default-directory)
+                 (list default-directory))))))
      (when candidates
        (car (sort candidates
                   (lambda (a b)
@@ -235,7 +268,7 @@ parsed from the built APK.  Falls back to the first launchable activity."
          package launchable)
     (unless apk (error "No APK found. Run `./gradlew assembleDebug` first."))
     (when (string-match "^package: name='\\([^']+\\)'" dump)
-      (setq package (match-string 1 package)))
+      (setq package (match-string 1 dump)))
     (let ((pos 0))
       (while (string-match "launchable-activity: name='\\([^']+\\)'" dump pos)
         (push (match-string 1 dump) launchable)
