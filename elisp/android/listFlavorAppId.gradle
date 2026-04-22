@@ -1,14 +1,25 @@
-gradle.projectsEvaluated {
-    println "===FLAVORS_START==="
-    gradle.rootProject.allprojects.each { proj ->
-        if (proj.plugins.hasPlugin('com.android.application')) {
-            def android = proj.extensions.findByName("android")
-            if (android != null) {
-                android.applicationVariants.all { variant ->
-                    println "${proj.name}:${variant.name}=${variant.applicationId}"
-                }
+// Init script compatible with AGP 9 / Gradle 9 / includeBuild / configuration cache.
+// Usage: ./gradlew -I listFlavorAppId.gradle listFlavors --quiet
+
+def collected = Collections.synchronizedList([])
+
+allprojects { proj ->
+    proj.plugins.withId('com.android.application') {
+        def androidComponents = proj.extensions.findByName("androidComponents")
+        if (androidComponents != null) {
+            androidComponents.onVariants(androidComponents.selector().all()) { variant ->
+                collected.add("${proj.name}:${variant.name}=${variant.applicationId.get()}")
             }
         }
     }
-    println "===FLAVORS_END==="
+}
+
+rootProject {
+    tasks.register("listFlavors") {
+        doLast {
+            println "===FLAVORS_START==="
+            collected.each { println it }
+            println "===FLAVORS_END==="
+        }
+    }
 }

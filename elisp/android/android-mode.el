@@ -259,43 +259,69 @@ Parses the built APK via aapt2."
       (nreverse activities))))
 
 (defun android-start-app ()
-  "Start the main activity in the running emulator.
-Tries to match the current buffer's class name against activities
-parsed from the built APK.  Falls back to the first launchable activity."
+  "Start an application on the connected device.
+Interactively select module and variant, then launch via adb.
+Uses aapt2 to find the launchable activity from the built APK."
   (interactive)
-  (let* ((apk (android--apk-path))
-         (dump (when apk (android--aapt2-dump apk)))
-         package launchable)
-    (unless apk (error "No APK found. Run `./gradlew assembleDebug` first."))
-    (when (string-match "^package: name='\\([^']+\\)'" dump)
-      (setq package (match-string 1 dump)))
-    (let ((pos 0))
-      (while (string-match "launchable-activity: name='\\([^']+\\)'" dump pos)
-        (push (match-string 1 dump) launchable)
-        (setq pos (match-end 0))))
-    (setq launchable (nreverse launchable))
-    (let* ((current (android-current-buffer-class-name))
-           (activity (or (and current (seq-contains-p launchable current #'string=)) (car launchable))))
-      (unless activity (error "No launchable activity found in APK"))
-      (message "Starting activity: %s" activity)
-      (let* ((command (format "%s shell am start -n %s/%s"
-                              (android-tool-path "adb") package activity))
-             (output (shell-command-to-string command)))
-        (when (string-match-p "^Error: " output)
-          (error "Error starting app:\n%s" output))))))
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (package (android--flavor-appid module variant))
+         (apk (android--apk-path)))
+    (unless package (error "No applicationId for %s:%s" module variant))
+    (let* ((dump (when apk (android--aapt2-dump apk)))
+           launchable)
+      (when dump
+        (let ((pos 0))
+          (while (string-match "launchable-activity: name='\\([^']+\\)'" dump pos)
+            (push (match-string 1 dump) launchable)
+            (setq pos (match-end 0))))
+        (setq launchable (nreverse launchable)))
+      (let* ((current (android-current-buffer-class-name))
+             (activity (or (and current launchable
+                                (seq-contains-p launchable current #'string=)
+                                current)
+                           (car launchable))))
+        ;; If no launchable activity found, use monkey launcher as fallback
+        (if activity
+            (let* ((command (format "%s shell am start -n %s/%s"
+                                    (android-tool-path "adb") package activity))
+                   (output (shell-command-to-string command)))
+              (message "Starting %s/%s" package activity)
+              (when (string-match-p "^Error: " output)
+                (error "Error starting app:\n%s" output)))
+          ;; monkey fallback: launch default activity
+          (let* ((command (format "%s shell monkey -p %s -c android.intent.category.LAUNCHER 1"
+                                  (android-tool-path "adb") package))
+                 (output (shell-command-to-string command)))
+            (message "Starting %s via monkey launcher" package)
+            (when (string-match-p "^Error\\|No activities found" output)
+              (error "Error starting app:\n%s" output))))))))
 
-(defun android-print-flavor ()
-  "Print the project's flavors, variants and application IDs."
-  (interactive)
-  (android-in-directory
-   (android-root)
-   (let* ((script android-mode-flavor-script)
-          (command (format "./gradlew -I %s --quiet" script))
-          (output (shell-command-to-string command))
-          (flavors (android-parse-gradle-flavors output)))
-     (dolist (f flavors)
-       (message "Module: %s Variant: %s AppId: %s"
-                (nth 0 f) (nth 1 f) (nth 2 f))))))
+;; --- Flavor data source (module / variant / appId) ---
+
+(defvar android--flavor-cache nil
+  "Cached flavor data as list of (MODULE VARIANT APPID).
+Per-project, keyed by project root.")
+
+(defvar android--flavor-cache-root nil
+  "Project root for which `android--flavor-cache' is valid.")
+
+(defun android--get-flavors (&optional refresh)
+  "Return flavor data as list of (MODULE VARIANT APPID).
+Caches the result per project root.  With REFRESH non-nil, re-fetch."
+  (let ((root (android-root)))
+    (when (or refresh
+              (not android--flavor-cache)
+              (not (string= root android--flavor-cache-root)))
+      (android-in-directory
+       root
+       (let* ((script android-mode-flavor-script)
+              (command (format "./gradlew -I %s listFlavors --quiet"
+                              (shell-quote-argument script)))
+              (output (shell-command-to-string command)))
+         (setq android--flavor-cache (android-parse-gradle-flavors output)
+               android--flavor-cache-root root))))
+    android--flavor-cache))
 
 (defun android-parse-gradle-flavors (gradle-output)
   "Parse GRADLE-OUTPUT and return a list of (MODULE VARIANT APPID) tuples.
@@ -316,6 +342,62 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
             (push (list module variant appid) result))))))
     (nreverse result)))
 
+(defun android--flavor-modules ()
+  "Return deduplicated list of module names from flavor data."
+  (delete-dups (mapcar #'car (android--get-flavors))))
+
+(defun android--flavor-variants (module)
+  "Return list of variant names for MODULE."
+  (mapcar #'cadr
+          (seq-filter (lambda (f) (string= (car f) module))
+                      (android--get-flavors))))
+
+(defun android--flavor-appid (module variant)
+  "Return applicationId for MODULE and VARIANT."
+  (nth 2 (seq-find (lambda (f)
+                     (and (string= (car f) module)
+                          (string= (cadr f) variant)))
+                   (android--get-flavors))))
+
+;; --- Interactive selection ---
+
+(defun android--select-module ()
+  "Prompt user to select a module.  Returns module name string."
+  (let ((modules (android--flavor-modules)))
+    (if (= (length modules) 1)
+        (car modules)
+      (completing-read "Module: " modules nil t))))
+
+(defun android--select-variant (module)
+  "Prompt user to select a variant for MODULE.  Returns variant name string."
+  (let ((variants (android--flavor-variants module)))
+    (if (= (length variants) 1)
+        (car variants)
+      (completing-read (format "Variant (%s): " module) variants nil t))))
+
+(defun android--capitalize (s)
+  "Capitalize first letter of S."
+  (if (string-empty-p s) s
+    (concat (upcase (substring s 0 1)) (substring s 1))))
+
+;; --- Commands ---
+
+(defun android-print-flavor ()
+  "Print the project's flavors, variants and application IDs."
+  (interactive)
+  (let ((flavors (android--get-flavors t)))
+    (if flavors
+        (dolist (f flavors)
+          (message "Module: %s Variant: %s AppId: %s"
+                   (nth 0 f) (nth 1 f) (nth 2 f)))
+      (message "No application flavors found."))))
+
+(defun android-refresh-flavors ()
+  "Force refresh the cached flavor data."
+  (interactive)
+  (android--get-flavors t)
+  (message "Refreshed: %d flavors" (length android--flavor-cache)))
+
 (defun android-gradle (tasks-or-goals)
   "Run gradle TASKS-OR-GOALS in the project root directory."
   (interactive "sTasks or Goals: ")
@@ -323,7 +405,93 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
    (android-root)
    (compile (format "./gradlew %s" tasks-or-goals))))
 
-;; Gradle
+(defun android-gradle-build ()
+  "Interactively select module and variant, then run assemble task."
+  (interactive)
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (task (format ":%s:assemble%s" module (android--capitalize variant))))
+    (android-gradle task)))
+
+(defun android-gradle-install ()
+  "Interactively select module and variant, then run install task."
+  (interactive)
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (task (format ":%s:install%s" module (android--capitalize variant))))
+    (android-gradle task)))
+
+(defun android-gradle-uninstall ()
+  "Interactively select module and variant, then run uninstall task."
+  (interactive)
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (task (format ":%s:uninstall%s" module (android--capitalize variant))))
+    (android-gradle task)))
+
+(defun android-gradle-test ()
+  "Interactively select module and variant, then run test task."
+  (interactive)
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (task (format ":%s:test%sUnitTest" module (android--capitalize variant))))
+    (android-gradle task)))
+
+(defun android-gradle-clean ()
+  "Run clean on the whole project."
+  (interactive)
+  (android-gradle "clean"))
+
+(defun android--launch-app (module variant)
+  "Launch the app for MODULE and VARIANT on the connected device."
+  (let ((package (android--flavor-appid module variant)))
+    (unless package (error "No applicationId for %s:%s" module variant))
+    (let* ((command (format "%s shell monkey -p %s -c android.intent.category.LAUNCHER 1"
+                            (android-tool-path "adb") package))
+           (output (shell-command-to-string command)))
+      (message "Launching %s" package)
+      (when (string-match-p "^Error\\|No activities found" output)
+        (error "Error launching app:\n%s" output)))))
+
+(defun android--compilation-chain (steps)
+  "Run STEPS sequentially.  Each step is either a gradle command
+string (run via `compile') or a function (called directly).
+Gradle steps chain via `compilation-finish-functions'."
+  (when steps
+    (let ((step (car steps))
+          (rest (cdr steps)))
+      (if (functionp step)
+          (progn (funcall step)
+                 (android--compilation-chain rest))
+        ;; step is a gradle command string
+        (android-in-directory
+         (android-root)
+         (compile (format "./gradlew %s" step)))
+        (when rest
+          (let (hook)
+            (setq hook
+                  (lambda (buf status)
+                    (remove-hook 'compilation-finish-functions hook)
+                    (when (string-match-p "finished" status)
+                      (android--compilation-chain rest))))
+            (add-hook 'compilation-finish-functions hook)))))))
+
+(defun android-run ()
+  "Build, install and launch the app in one go.
+Interactively select module and variant, then chain
+assemble → install → launch."
+  (interactive)
+  (let* ((module (android--select-module))
+         (variant (android--select-variant module))
+         (cap-variant (android--capitalize variant))
+         (assemble-task (format ":%s:assemble%s" module cap-variant))
+         (install-task (format ":%s:install%s" module cap-variant)))
+    (android--compilation-chain
+     (list assemble-task
+           install-task
+           (lambda () (android--launch-app module variant))))))
+
+;; Gradle (keep simple macro for custom tasks)
 (defmacro android-defun-gradle-task (task)
   `(defun ,(intern (concat "android-gradle-"
                            (replace-regexp-in-string "[[:space:]:]" "-" task)))
@@ -332,21 +500,17 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
      (interactive)
      (android-gradle ,task)))
 
-(android-defun-gradle-task "clean")
-(android-defun-gradle-task "test")
-(android-defun-gradle-task "assembleDebug")
-(android-defun-gradle-task "assembleRelease")
-(android-defun-gradle-task "installDebug")
-(android-defun-gradle-task "uninstallDebug")
-
 (defconst android-mode-keys
   '(("a" . android-start-app)
+    ("r" . android-run)
     ("e" . android-start-emulator)
+    ("f" . android-print-flavor)
+    ("R" . android-refresh-flavors)
     ("C" . android-gradle-clean)
     ("t" . android-gradle-test)
-    ("c" . android-gradle-assembleDebug)
-    ("i" . android-gradle-installDebug)
-    ("u" . android-gradle-uninstallDebug)))
+    ("c" . android-gradle-build)
+    ("i" . android-gradle-install)
+    ("u" . android-gradle-uninstall)))
 
 (defvar android-mode-map (make-sparse-keymap)
   "Keymap for `android-mode'.")
