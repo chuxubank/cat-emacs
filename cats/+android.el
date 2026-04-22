@@ -16,16 +16,16 @@
   (cat-android
    ("Start"
     (("a" #'android-start-app "start app")
-     ("r" #'android-run "build+install+launch")
+     ("r" #'android-run "run")
      ("e" #'android-start-emulator "emulator"))
     "Build"
-     (("c" #'android-gradle-build "build")
-      ("C" #'android-gradle-clean "clean")
-      ("t" #'android-gradle-test "test")
-      ("i" #'android-gradle-install "install")
-      ("u" #'android-gradle-uninstall "uninstall")
-      ("f" #'android-print-flavor "flavors")
-      ("R" #'android-refresh-flavors "refresh")))))
+    (("c" #'android-gradle-build "build")
+     ("C" #'android-gradle-clean "clean")
+     ("t" #'android-gradle-test "test")
+     ("i" #'android-gradle-install "install")
+     ("u" #'android-gradle-uninstall "uninstall")
+     ("f" #'android-print-flavor "flavors")
+     ("R" #'android-refresh-flavors "refresh")))))
 
 (use-package elogcat
   :commands #'elogcat

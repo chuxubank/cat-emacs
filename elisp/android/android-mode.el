@@ -477,18 +477,16 @@ Gradle steps chain via `compilation-finish-functions'."
             (add-hook 'compilation-finish-functions hook)))))))
 
 (defun android-run ()
-  "Build, install and launch the app in one go.
+  "Install and launch the app in one go.
 Interactively select module and variant, then chain
-assemble → install → launch."
+install → launch.  (install implies assemble.)"
   (interactive)
   (let* ((module (android--select-module))
          (variant (android--select-variant module))
          (cap-variant (android--capitalize variant))
-         (assemble-task (format ":%s:assemble%s" module cap-variant))
          (install-task (format ":%s:install%s" module cap-variant)))
     (android--compilation-chain
-     (list assemble-task
-           install-task
+     (list install-task
            (lambda () (android--launch-app module variant))))))
 
 ;; Gradle (keep simple macro for custom tasks)
