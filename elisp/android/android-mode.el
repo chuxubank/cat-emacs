@@ -442,6 +442,58 @@ Only considers lines between ===FLAVORS_START=== and ===FLAVORS_END===."
   (interactive)
   (android-gradle "clean"))
 
+(defun android--list-devices ()
+  "Return list of (SERIAL . DESCRIPTION) for connected Android devices.
+Parses output of `adb devices -l'."
+  (let* ((adb (android-tool-path "adb"))
+         (output (shell-command-to-string (format "%s devices -l" adb)))
+         devices)
+    (dolist (line (split-string output "\n" t))
+      (when (string-match "^\\([^ \t]+\\)[ \t]+device[ \t]+\\(.*\\)$" line)
+        (let* ((serial (match-string 1 line))
+               (info (match-string 2 line))
+               (model (when (string-match "model:\\([^ ]+\\)" info)
+                        (match-string 1 info)))
+               (desc (or model serial)))
+          (push (cons serial desc) devices))))
+    (nreverse devices)))
+
+(defun android--select-device ()
+  "Prompt user to select a device when multiple are connected.
+Returns the device serial string.  If only one device, return it directly."
+  (let ((devices (android--list-devices)))
+    (cond
+     ((null devices) (error "No Android devices connected"))
+     ((= (length devices) 1) (caar devices))
+     (t (let* ((candidates (mapcar (lambda (d)
+                                     (cons (format "%s (%s)" (cdr d) (car d))
+                                           (car d)))
+                                   devices))
+               (choice (completing-read "Device: " (mapcar #'car candidates) nil t)))
+          (cdr (assoc choice candidates)))))))
+
+(defun android--install-apk (device apk)
+  "Install APK on DEVICE via `adb -s DEVICE install -r APK'."
+  (let* ((adb (android-tool-path "adb"))
+         (command (format "%s -s %s install -r %s"
+                          adb
+                          (shell-quote-argument device)
+                          (shell-quote-argument apk)))
+         (output (shell-command-to-string command)))
+    (if (string-match-p "Success" output)
+        (message "Installed %s on %s" (file-name-nondirectory apk) device)
+      (error "Install failed on %s:\n%s" device output))))
+
+(defun android--launch-app-on-device (device package)
+  "Launch PACKAGE on DEVICE via monkey launcher."
+  (let* ((adb (android-tool-path "adb"))
+         (command (format "%s -s %s shell monkey -p %s -c android.intent.category.LAUNCHER 1"
+                          adb (shell-quote-argument device) package))
+         (output (shell-command-to-string command)))
+    (message "Launching %s on %s" package device)
+    (when (string-match-p "^Error\\|No activities found" output)
+      (error "Error launching app:\n%s" output))))
+
 (defun android--launch-app (module variant)
   "Launch the app for MODULE and VARIANT on the connected device."
   (let ((package (android--flavor-appid module variant)))
@@ -477,17 +529,25 @@ Gradle steps chain via `compilation-finish-functions'."
             (add-hook 'compilation-finish-functions hook)))))))
 
 (defun android-run ()
-  "Install and launch the app in one go.
-Interactively select module and variant, then chain
-install → launch.  (install implies assemble.)"
+  "Build, install and launch the app.
+Interactively select module, variant and target device, then chain:
+  gradle assemble → adb install → adb start.
+When only one device is connected, it is used automatically."
   (interactive)
   (let* ((module (android--select-module))
          (variant (android--select-variant module))
+         (device (android--select-device))
          (cap-variant (android--capitalize variant))
-         (install-task (format ":%s:install%s" module cap-variant)))
+         (assemble-task (format ":%s:assemble%s" module cap-variant))
+         (package (android--flavor-appid module variant)))
+    (unless package (error "No applicationId for %s:%s" module variant))
     (android--compilation-chain
-     (list install-task
-           (lambda () (android--launch-app module variant))))))
+     (list assemble-task
+           (lambda ()
+             (let ((apk (android--apk-path)))
+               (unless apk (error "No APK found after build"))
+               (android--install-apk device apk)
+               (android--launch-app-on-device device package)))))))
 
 ;; Gradle (keep simple macro for custom tasks)
 (defmacro android-defun-gradle-task (task)
