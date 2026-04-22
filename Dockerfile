@@ -28,6 +28,6 @@ RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
 
 RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
     --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
-    make -C $HOME/.config/emacs/elpa/org-mode autoloads
+    make -C $HOME/.config/emacs/elpa/org-mode compile autoloads
 
 ENTRYPOINT ["emacs"]
