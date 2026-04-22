@@ -91,7 +91,6 @@
 ;;; ai
 (cat! "+copilot")
 (cat! "+vibe")
-(cat! "+agent")
 
 ;;; program
 (cat! "+android")

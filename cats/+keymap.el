@@ -31,8 +31,7 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "a" #'cat-agent/body
-  "A" #'cat-android/body
+  "a" #'cat-android/body
   "b" #'cat-blog/body
   "c" 'chezmoi-prefix
   "d" 'cat-dev-doc-prefix
@@ -50,7 +49,6 @@
   "r" #'elfeed
   "R" #'magit-list-repositories
   "t" #'cat-term/body
-  "v" #'cat-vibe/body
   "w" #'webjump)
 
 (defvar-keymap cat-map
@@ -71,6 +69,7 @@
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
+  "v" #'cat-vibe/body
   "w" #'cat-workspace/body)
 
 (defvar-keymap cat-escape-map
