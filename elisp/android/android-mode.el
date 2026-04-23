@@ -512,27 +512,59 @@ Returns the device serial string.  If only one device, return it directly."
                (choice (completing-read "Device: " (mapcar #'car candidates) nil t)))
           (cdr (assoc choice candidates)))))))
 
-(defun android--install-apk (device apk)
-  "Install APK on DEVICE via `adb -s DEVICE install -r APK'."
+(defun android--install-apk (device apk &optional callback)
+  "Install APK on DEVICE asynchronously.
+When CALLBACK is non-nil, call it with no arguments on success."
   (let* ((adb (android-tool-path "adb"))
-         (command (format "%s -s %s install -r %s"
-                          adb
-                          (shell-quote-argument device)
-                          (shell-quote-argument apk)))
-         (output (shell-command-to-string command)))
-    (if (string-match-p "Success" output)
-        (message "Installed %s on %s" (file-name-nondirectory apk) device)
-      (error "Install failed on %s:\n%s" device output))))
+         (buf-name (format "*adb install %s*" (file-name-nondirectory apk)))
+         (buf (get-buffer-create buf-name)))
+    (with-current-buffer buf (erase-buffer))
+    (message "Installing %s on %s ..." (file-name-nondirectory apk) device)
+    (make-process
+     :name "adb-install"
+     :buffer buf
+     :command (list adb "-s" device "install" "-r" apk)
+     :sentinel
+     (lambda (proc _event)
+       (when (memq (process-status proc) '(exit signal))
+         (let ((output (with-current-buffer (process-buffer proc)
+                         (buffer-string))))
+           (if (and (zerop (process-exit-status proc))
+                    (string-match-p "Success" output))
+               (progn
+                 (message "Installed %s on %s" (file-name-nondirectory apk) device)
+                 (kill-buffer (process-buffer proc))
+                 (when callback (funcall callback)))
+             (pop-to-buffer (process-buffer proc))
+             (error "Install failed on %s" device))))))))
 
-(defun android--launch-app-on-device (device package)
-  "Launch PACKAGE on DEVICE via monkey launcher."
+(defun android--launch-app-on-device (device package &optional callback)
+  "Launch PACKAGE on DEVICE asynchronously.
+When CALLBACK is non-nil, call it with no arguments on success."
   (let* ((adb (android-tool-path "adb"))
-         (command (format "%s -s %s shell monkey -p %s -c android.intent.category.LAUNCHER 1"
-                          adb (shell-quote-argument device) package))
-         (output (shell-command-to-string command)))
-    (message "Launching %s on %s" package device)
-    (when (string-match-p "^Error\\|No activities found" output)
-      (error "Error launching app:\n%s" output))))
+         (buf-name (format "*adb launch %s*" package))
+         (buf (get-buffer-create buf-name)))
+    (with-current-buffer buf (erase-buffer))
+    (message "Launching %s on %s ..." package device)
+    (make-process
+     :name "adb-launch"
+     :buffer buf
+     :command (list adb "-s" device "shell"
+                    "monkey" "-p" package
+                    "-c" "android.intent.category.LAUNCHER" "1")
+     :sentinel
+     (lambda (proc _event)
+       (when (memq (process-status proc) '(exit signal))
+         (let ((output (with-current-buffer (process-buffer proc)
+                         (buffer-string))))
+           (if (and (zerop (process-exit-status proc))
+                    (not (string-match-p "^Error\\|No activities found" output)))
+               (progn
+                 (message "Launched %s on %s" package device)
+                 (kill-buffer (process-buffer proc))
+                 (when callback (funcall callback)))
+             (pop-to-buffer (process-buffer proc))
+             (error "Error launching %s on %s" package device))))))))
 
 (defun android--launch-app (module variant)
   "Launch the app for MODULE and VARIANT on the connected device."
@@ -546,16 +578,18 @@ Returns the device serial string.  If only one device, return it directly."
         (error "Error launching app:\n%s" output)))))
 
 (defun android--compilation-chain (steps)
-  "Run STEPS sequentially.  Each step is either a gradle command
-string (run via `compile') or a function (called directly).
+  "Run STEPS sequentially.  Each step is one of:
+- a string: gradle command, run via `compile'.
+- a function taking one arg (a continuation thunk): async step,
+  must call the thunk when done to proceed to the next step.
+- a function taking zero args: synchronous step, returns immediately.
 Gradle steps chain via `compilation-finish-functions'."
   (when steps
     (let ((step (car steps))
           (rest (cdr steps)))
-      (if (functionp step)
-          (progn (funcall step)
-                 (android--compilation-chain rest))
-        ;; step is a gradle command string
+      (cond
+       ;; string → gradle compile
+       ((stringp step)
         (android-in-directory
          (android-root)
          (compile (format "./gradlew %s" step)))
@@ -566,12 +600,21 @@ Gradle steps chain via `compilation-finish-functions'."
                     (remove-hook 'compilation-finish-functions hook)
                     (when (string-match-p "finished" status)
                       (android--compilation-chain rest))))
-            (add-hook 'compilation-finish-functions hook)))))))
+            (add-hook 'compilation-finish-functions hook))))
+       ;; function with 1 arg → async step, pass continuation
+       ((and (functionp step)
+             (= (car (func-arity step)) 1))
+        (funcall step (lambda () (android--compilation-chain rest))))
+       ;; function with 0 args → sync step
+       ((functionp step)
+        (funcall step)
+        (android--compilation-chain rest))))))
 
 (defun android-run ()
   "Build, install and launch the app.
 Interactively select module, variant and target device, then chain:
   gradle assemble → adb install → adb start.
+All adb steps run asynchronously without blocking Emacs.
 When only one device is connected, it is used automatically."
   (interactive)
   (let* ((module (android--select-module))
@@ -583,11 +626,12 @@ When only one device is connected, it is used automatically."
     (unless package (error "No applicationId for %s:%s" module variant))
     (android--compilation-chain
      (list assemble-task
-           (lambda ()
+           (lambda (next)
              (let ((apk (android--apk-path)))
                (unless apk (error "No APK found after build"))
-               (android--install-apk device apk)
-               (android--launch-app-on-device device package)))))))
+               (android--install-apk device apk next)))
+           (lambda (next)
+             (android--launch-app-on-device device package next))))))
 
 ;; Gradle (keep simple macro for custom tasks)
 (defmacro android-defun-gradle-task (task)
