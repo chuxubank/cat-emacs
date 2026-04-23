@@ -12,6 +12,8 @@
   (defun +android-mode ()
     (when (android-root) (android-mode t)))
   :hook ((find-file dired-mode) . +android-mode)
+  :custom
+  (android-mode-cache-dir (concat cat-cache-dir "android"))
   :pretty-hydra
   (cat-android
    ("Start"

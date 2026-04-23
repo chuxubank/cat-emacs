@@ -299,6 +299,12 @@ Uses aapt2 to find the launchable activity from the built APK."
 
 ;; --- Flavor data source (module / variant / appId) ---
 
+(defcustom android-mode-cache-dir
+  (concat user-emacs-directory ".cache/android/")
+  "Directory for persisting android-mode caches."
+  :type 'string
+  :group 'android-mode)
+
 (defvar android--flavor-cache nil
   "Cached flavor data as list of (MODULE VARIANT APPID).
 Per-project, keyed by project root.")
@@ -306,21 +312,55 @@ Per-project, keyed by project root.")
 (defvar android--flavor-cache-root nil
   "Project root for which `android--flavor-cache' is valid.")
 
+(defun android--flavor-cache-file (root)
+  "Return the disk cache file path for project ROOT."
+  (let ((key (md5 (directory-file-name (expand-file-name root)))))
+    (expand-file-name (concat key ".eld") android-mode-cache-dir)))
+
+(defun android--flavor-cache-save (root data)
+  "Persist flavor DATA for project ROOT to disk."
+  (let ((file (android--flavor-cache-file root)))
+    (make-directory (file-name-directory file) t)
+    (with-temp-file file
+      (prin1 (list :root root :time (current-time) :data data)
+             (current-buffer)))))
+
+(defun android--flavor-cache-load (root)
+  "Load cached flavor data for project ROOT from disk.
+Returns the data list, or nil if no valid cache exists."
+  (let ((file (android--flavor-cache-file root)))
+    (when (file-exists-p file)
+      (ignore-errors
+        (with-temp-buffer
+          (insert-file-contents file)
+          (let ((plist (read (current-buffer))))
+            (when (string= (plist-get plist :root) root)
+              (plist-get plist :data))))))))
+
 (defun android--get-flavors (&optional refresh)
   "Return flavor data as list of (MODULE VARIANT APPID).
-Caches the result per project root.  With REFRESH non-nil, re-fetch."
+Caches in memory and on disk under `android-mode-cache-dir'.
+With REFRESH non-nil, re-fetch from gradle."
   (let ((root (android-root)))
     (when (or refresh
               (not android--flavor-cache)
               (not (string= root android--flavor-cache-root)))
-      (android-in-directory
-       root
-       (let* ((script android-mode-flavor-script)
-              (command (format "./gradlew -I %s listFlavors --quiet"
-                              (shell-quote-argument script)))
-              (output (shell-command-to-string command)))
-         (setq android--flavor-cache (android-parse-gradle-flavors output)
-               android--flavor-cache-root root))))
+      ;; try disk cache first
+      (let ((disk (unless refresh (android--flavor-cache-load root))))
+        (if disk
+            (setq android--flavor-cache disk
+                  android--flavor-cache-root root)
+          ;; fetch from gradle
+          (android-in-directory
+           root
+           (let* ((script android-mode-flavor-script)
+                  (command (format "./gradlew -I %s listFlavors --quiet"
+                                   (shell-quote-argument script)))
+                  (output (shell-command-to-string command))
+                  (data (android-parse-gradle-flavors output)))
+             (setq android--flavor-cache data
+                   android--flavor-cache-root root)
+             (android--flavor-cache-save root data))))))
     android--flavor-cache))
 
 (defun android-parse-gradle-flavors (gradle-output)
