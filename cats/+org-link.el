@@ -62,6 +62,7 @@
     (("c" org-cliplink "cliplink")))))
 
 (use-package org-link-beautify
+  :pin melpa-stable
   :demand t
   :after org
   :custom
