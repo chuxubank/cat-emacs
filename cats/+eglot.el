@@ -3,7 +3,8 @@
 (use-package eglot
   :ignore-builtin
   :pin gnu
-  :hook ((cmake-mode
+  :hook ((
+          cmake-mode
           cmake-ts-mode
           c-mode
           c-ts-mode
@@ -12,8 +13,6 @@
           objc-mode
           python-base-mode
           js-base-mode
-          ;; kotlin-mode
-          ;; kotlin-ts-mode
           )
          . eglot-ensure) ; See `eglot-server-programs'
   :custom
@@ -55,7 +54,11 @@
   :vc (:url "https://github.com/jadestrong/lsp-proxy")
   :delight " 󰑣"
   :hook
-  (beancount-mode . lsp-proxy-mode)
+  ((
+    beancount-mode
+    kotlin-ts-mode
+    )
+   . lsp-proxy-mode)
   :commands
   (lsp-proxy-mode
    lsp-proxy-open-config-file)
