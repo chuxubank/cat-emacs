@@ -18,10 +18,11 @@
      ("U" #'gptel-model-updater-update-all "update all"))))
   :config
   (setq gptel--backends
-        '(gptel--gemini
-          gptel--openrouter
+        '(gptel--dflash
+          gptel--gemini
+          gptel--iv
           gptel--ollama
-          gptel--iv)))
+          gptel--openrouter)))
 
 (use-package gptel
   :delight " 󱡄"
@@ -58,6 +59,11 @@
           :host "llm.invalley.co"
           :protocol "http"
           :key 'gptel-api-key
+          :stream t)
+        gptel--dflash
+        (gptel-make-openai "DFlash"
+          :host "localhost:8000"
+          :protocol "http"
           :stream t)
         gptel--ollama
         (gptel-make-ollama "Ollama"
