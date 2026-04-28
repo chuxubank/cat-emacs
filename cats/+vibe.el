@@ -78,7 +78,7 @@
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
   (setq gptel-magit-backend gptel--iv
-        gptel-magit-model 'deepseek-v3.2)
+        gptel-magit-model 'deepseek-v4-flash)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
