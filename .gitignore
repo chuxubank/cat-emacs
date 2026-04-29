@@ -28,5 +28,5 @@ tree-sitter/
 
 # ai
 .aider*
-.agent-shell/
 .chatgpt-shell.el
+/.agent-shell/

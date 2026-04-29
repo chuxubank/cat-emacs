@@ -146,14 +146,14 @@ and find corresponding live buffers."
 
 (defun treemacs-activities--find-project-roots ()
   "Collect unique project roots from the current activity's buffers.
-Returns a list of canonical project root paths."
+Only considers buffers that belong to a real project (e.g. git repo);
+plain directories are never returned.  Returns a list of canonical
+project root paths."
   (let (roots seen)
-    (dolist (buf (or (treemacs-activities--activity-buffers)
-                     ;; Ultimate fallback: all file-visiting buffers.
-                     (-filter #'buffer-file-name (buffer-list))))
-      (when (buffer-live-p buf)
+    (dolist (buf (treemacs-activities--activity-buffers))
+      (when (and buf (buffer-live-p buf) (buffer-file-name buf))
         (with-current-buffer buf
-          (-when-let (project (project-current))
+          (-when-let (project (project-current nil))
             (let ((root (-> project (project-root) (file-truename) (treemacs-canonical-path))))
               (unless (member root seen)
                 (push root seen)
@@ -162,17 +162,14 @@ Returns a list of canonical project root paths."
 
 (defun treemacs-activities--create-workspace (name)
   "Create a new workspace for the activity with NAME.
-Projects will be found by scanning all file-visiting buffers for project roots.
-Falls back to `treemacs--find-current-user-project' if no buffer-based roots
-are found.  If that also fails, the projects of the fallback workspace will be
-copied."
+Projects are discovered by scanning the current activity's buffers for
+project roots (git repos etc.).  If none are found the projects of
+the fallback workspace are copied instead."
   (treemacs-block
    (let* ((ws-result (treemacs-do-create-workspace name))
           (ws-status (car ws-result))
           (ws (cadr ws-result))
-          (root-paths (or (treemacs-activities--find-project-roots)
-                          (-when-let (single (treemacs--find-current-user-project))
-                            (list single))))
+          (root-paths (treemacs-activities--find-project-roots))
           (project-list))
      (unless (eq ws-status 'success)
        (treemacs-log "Failed to create workspace for activity: %s, using fallback instead." ws)
