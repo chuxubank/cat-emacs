@@ -19,7 +19,6 @@
 (cat! "+beauty")
 (cat! "+windows")
 (cat! "+workspace")
-(cat! "+treemacs")
 (cat! "+dashboard")
 
 ;;; daemon
