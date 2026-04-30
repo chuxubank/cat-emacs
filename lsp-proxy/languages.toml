@@ -7,7 +7,7 @@ ansible-language-server = { command = "ansible-language-server" }
 name = "kotlin"
 language-id = "kotlin"
 file-types = ["kt", "kts"]
-roots = ["gradlew"]
+roots = ["gradlew", "build.gradle.kts", "build.gradle"]
 language-servers = ["kotlin-lsp"]
 
 [[language]]

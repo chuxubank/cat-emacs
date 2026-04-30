@@ -56,7 +56,6 @@
   :hook
   ((
     beancount-mode
-    kotlin-ts-mode
     )
    . lsp-proxy-mode)
   :commands
