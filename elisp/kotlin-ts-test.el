@@ -4,7 +4,7 @@
 
 ;; Author: Misaka <chuxubank@qq.com>
 ;; Maintainer: Misaka <chuxubank@qq.com>
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "30.1") (kotlin-ts-mode))
 ;; Keywords: languages, kotlin, tools
 ;; URL: https://github.com/chuxubank/cat-emacs
@@ -46,12 +46,26 @@
 ;; `run-function' automatically derive the corresponding test class
 ;; by appending "Test" to the current class name (e.g. Foo → FooTest).
 ;;
+;; After a test run finishes, a *kotlin-ts-test-results* buffer is
+;; displayed with a summary of passed / failed / skipped tests.
+;;
 ;; Also provides `kotlin-ts-test-find-sibling-rules' for
 ;; `find-sibling-file' integration, installed via a mode hook.
 
 ;;; Code:
 
 (require 'kotlin-ts-mode)
+(require 'compile)
+(require 'ansi-color)
+
+;; ──────────────────────────────────────────────────────────────────
+;;; Custom group
+;; ──────────────────────────────────────────────────────────────────
+
+(defgroup kotlin-ts-test nil
+  "Run Kotlin tests from `kotlin-ts-mode' buffers."
+  :group 'kotlin
+  :prefix "kotlin-ts-test-")
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; Source-set detection
@@ -107,7 +121,7 @@ Or per-project via .dir-locals.el:
      (\"common\" . \"desktopTest\")
      (\"jvm\" . \"jvmTest\"))))"
   :type '(alist :key-type string :value-type string)
-  :group 'kotlin
+  :group 'kotlin-ts-test
   :safe #'listp)
 
 (defcustom kotlin-ts-test-aggregate-tasks '("allTests")
@@ -116,7 +130,7 @@ Aggregate tasks do not support the `--tests' filter flag and will
 be run without it.  Non-aggregate tasks receive `--tests' to
 select specific classes or functions."
   :type '(repeat string)
-  :group 'kotlin
+  :group 'kotlin-ts-test
   :safe #'listp)
 
 (defun kotlin-ts-test--gradle-task (layout-info)
@@ -158,7 +172,7 @@ Examples:
 
 This can also be set per-project via .dir-locals.el."
   :type 'string
-  :group 'kotlin
+  :group 'kotlin-ts-test
   :safe #'stringp)
 
 ;; ──────────────────────────────────────────────────────────────────
@@ -223,6 +237,222 @@ Supports:
       (find-file dest))))
 
 ;; ──────────────────────────────────────────────────────────────────
+;;; Gradle runner
+;; ──────────────────────────────────────────────────────────────────
+
+(defconst kotlin-ts-test--compilation-buffer-name "*kotlin-ts-test*"
+  "Name of the compilation buffer used for test runs.")
+
+(defun kotlin-ts-test--compilation-buffer-name-fn (_mode)
+  "Return the fixed compilation buffer name."
+  kotlin-ts-test--compilation-buffer-name)
+
+(defun kotlin-ts-test--run-gradle (project task args)
+  "Run Gradle TASK with ARGS in PROJECT, parse results when done.
+If PROJECT is nil, run in the root project."
+  (let* ((default-directory default-directory)
+         (exec-path exec-path)
+         (command "gradle")
+         (compilation-buffer-name-function
+          #'kotlin-ts-test--compilation-buffer-name-fn)
+         (qualified-task (if project
+                             (concat ":" project ":" task)
+                           (concat ":" task))))
+    (when (kotlin-ts-mode--in-gradle-project-p)
+      (setq default-directory (project-root (project-current))
+            command "./gradlew"
+            exec-path (list nil)))
+    (let ((cmd (string-join
+                (append
+                 (list command "--console=plain" qualified-task)
+                 (when args
+                   (mapcar #'shell-quote-argument args)))
+                " ")))
+      (setq kotlin-ts-test--last-command cmd)
+      (compile cmd)
+      ;; Install the one-shot finish hook on the compilation buffer
+      (when-let* ((buf (get-buffer kotlin-ts-test--compilation-buffer-name)))
+        (with-current-buffer buf
+          (add-hook 'compilation-finish-functions
+                    #'kotlin-ts-test--on-compilation-finish nil t))))))
+
+;; ──────────────────────────────────────────────────────────────────
+;;; Output parsing
+;; ──────────────────────────────────────────────────────────────────
+
+;; Gradle `--console=plain' test output lines look like:
+;;   com.example.FooTest > testBar PASSED
+;;   com.example.FooTest > testBaz FAILED
+;;   com.example.FooTest > testQux SKIPPED
+
+(defconst kotlin-ts-test--result-re
+  (rx bol
+      (group (+? nonl))                  ; class (may include spaces for KMP target prefix)
+      " > "
+      (group (+? nonl))                  ; test name
+      " "
+      (group (or "PASSED" "FAILED" "SKIPPED"))
+      eol)
+  "Regexp matching a single test result line from Gradle.")
+
+;; Summary line:
+;;   3 tests completed, 1 failed
+;;   5 tests completed, 2 failed, 1 skipped
+(defconst kotlin-ts-test--summary-re
+  (rx bol
+      (group (+ digit)) " test" (? "s") " completed"
+      (* ", " (group (+ digit)) " " (group (or "failed" "skipped")))
+      eol)
+  "Regexp matching the test summary line from Gradle.")
+
+(cl-defstruct (kotlin-ts-test-result (:constructor kotlin-ts-test-result-create)
+                                     (:copier nil))
+  "A single test result."
+  class name status)
+
+(defun kotlin-ts-test--parse-buffer (buf)
+  "Parse compilation buffer BUF and return a list of `kotlin-ts-test-result'."
+  (let ((results nil))
+    (with-current-buffer buf
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward kotlin-ts-test--result-re nil t)
+          (push (kotlin-ts-test-result-create
+                 :class  (match-string 1)
+                 :name   (match-string 2)
+                 :status (match-string 3))
+                results))))
+    (nreverse results)))
+
+;; ──────────────────────────────────────────────────────────────────
+;;; Results buffer
+;; ──────────────────────────────────────────────────────────────────
+
+(defconst kotlin-ts-test-results-buffer-name "*kotlin-ts-test-results*"
+  "Name of the test results display buffer.")
+
+(defface kotlin-ts-test-pass-face
+  '((t :foreground "green" :weight bold))
+  "Face for PASSED tests."
+  :group 'kotlin-ts-test)
+
+(defface kotlin-ts-test-fail-face
+  '((t :foreground "red" :weight bold))
+  "Face for FAILED tests."
+  :group 'kotlin-ts-test)
+
+(defface kotlin-ts-test-skip-face
+  '((t :foreground "yellow" :weight bold))
+  "Face for SKIPPED tests."
+  :group 'kotlin-ts-test)
+
+(defface kotlin-ts-test-class-face
+  '((t :inherit font-lock-type-face))
+  "Face for test class names in the results buffer."
+  :group 'kotlin-ts-test)
+
+(defface kotlin-ts-test-name-face
+  '((t :inherit font-lock-function-name-face))
+  "Face for test function names in the results buffer."
+  :group 'kotlin-ts-test)
+
+(defvar kotlin-ts-test-results-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "q" #'quit-window)
+    (define-key map "g" #'kotlin-ts-test-rerun)
+    map)
+  "Keymap for `kotlin-ts-test-results-mode'.")
+
+(define-derived-mode kotlin-ts-test-results-mode special-mode "KtTest"
+  "Major mode for displaying Kotlin test results."
+  :group 'kotlin-ts-test
+  (setq truncate-lines t))
+
+(defvar kotlin-ts-test--last-command nil
+  "The last Gradle command string, for rerunning.")
+
+(defun kotlin-ts-test--status-face (status)
+  "Return the face for STATUS string."
+  (pcase status
+    ("PASSED"  'kotlin-ts-test-pass-face)
+    ("FAILED"  'kotlin-ts-test-fail-face)
+    ("SKIPPED" 'kotlin-ts-test-skip-face)
+    (_         'default)))
+
+(defun kotlin-ts-test--status-icon (status)
+  "Return a display icon for STATUS string."
+  (pcase status
+    ("PASSED"  "✓")
+    ("FAILED"  "✗")
+    ("SKIPPED" "○")
+    (_         "?")))
+
+(defun kotlin-ts-test--render-results (results compilation-buf)
+  "Render RESULTS into the results buffer.
+COMPILATION-BUF is the source compilation buffer for linking."
+  (let* ((buf (get-buffer-create kotlin-ts-test-results-buffer-name))
+         (passed  (cl-count "PASSED"  results :key #'kotlin-ts-test-result-status :test #'equal))
+         (failed  (cl-count "FAILED"  results :key #'kotlin-ts-test-result-status :test #'equal))
+         (skipped (cl-count "SKIPPED" results :key #'kotlin-ts-test-result-status :test #'equal))
+         (total   (length results))
+         ;; Group by class
+         (groups  (seq-group-by #'kotlin-ts-test-result-class results)))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (kotlin-ts-test-results-mode)
+        ;; Header
+        (insert (propertize "Kotlin Test Results\n" 'face '(:weight bold :height 1.2)))
+        (insert (make-string 40 ?─) "\n\n")
+        ;; Summary
+        (insert (format "  Total: %d" total))
+        (when (> passed 0)
+          (insert "  " (propertize (format "✓ %d passed" passed) 'face 'kotlin-ts-test-pass-face)))
+        (when (> failed 0)
+          (insert "  " (propertize (format "✗ %d failed" failed) 'face 'kotlin-ts-test-fail-face)))
+        (when (> skipped 0)
+          (insert "  " (propertize (format "○ %d skipped" skipped) 'face 'kotlin-ts-test-skip-face)))
+        (insert "\n\n")
+        ;; Per-class results
+        (dolist (group groups)
+          (let ((class (car group))
+                (tests (cdr group)))
+            (insert (propertize class 'face 'kotlin-ts-test-class-face) "\n")
+            (dolist (test tests)
+              (let* ((status (kotlin-ts-test-result-status test))
+                     (icon   (kotlin-ts-test--status-icon status))
+                     (face   (kotlin-ts-test--status-face status)))
+                (insert "  "
+                        (propertize icon 'face face)
+                        " "
+                        (propertize (kotlin-ts-test-result-name test) 'face 'kotlin-ts-test-name-face)
+                        "\n")))
+            (insert "\n")))
+        ;; Footer
+        (insert (make-string 40 ?─) "\n")
+        (insert (propertize "q" 'face 'help-key-binding) " quit  "
+                (propertize "g" 'face 'help-key-binding) " rerun  ")
+        (when compilation-buf
+          (insert "Full output: "
+                  (propertize (buffer-name compilation-buf) 'face 'link)))
+        (insert "\n")
+        (goto-char (point-min))))
+    ;; Display the buffer
+    (display-buffer buf '((display-buffer-reuse-window
+                           display-buffer-at-bottom)
+                          (window-height . fit-window-to-buffer)))))
+
+;; ──────────────────────────────────────────────────────────────────
+;;; Compilation finish hook
+;; ──────────────────────────────────────────────────────────────────
+
+(defun kotlin-ts-test--on-compilation-finish (buf _msg)
+  "Parse test results from compilation buffer BUF and display them."
+  (let ((results (kotlin-ts-test--parse-buffer buf)))
+    (when results
+      (kotlin-ts-test--render-results results buf))))
+
+;; ──────────────────────────────────────────────────────────────────
 ;;; Run tests
 ;; ──────────────────────────────────────────────────────────────────
 
@@ -238,7 +468,7 @@ If the resolved task is an aggregate task (see
   (let* ((info (kotlin-ts-test--detect-layout))
          (task (kotlin-ts-test--gradle-task info)))
     (if (kotlin-ts-test--aggregate-task-p task)
-        (kotlin-ts-mode--run-gradle-command
+        (kotlin-ts-test--run-gradle
          (kotlin-ts-mode--get-subproject-name) task nil)
       (let* ((package-name (kotlin-ts-mode--get-package-name))
              (class-name   (kotlin-ts-mode--get-class-name))
@@ -248,7 +478,7 @@ If the resolved task is an aggregate task (see
                                (concat class-name "Test")))))
         (unless (and package-name test-class)
           (user-error "Could not determine package and class name"))
-        (kotlin-ts-mode--run-gradle-command
+        (kotlin-ts-test--run-gradle
          (kotlin-ts-mode--get-subproject-name)
          task
          (list "--tests"
@@ -268,7 +498,7 @@ If the resolved task is an aggregate task (see
   (let* ((info (kotlin-ts-test--detect-layout))
          (task (kotlin-ts-test--gradle-task info)))
     (if (kotlin-ts-test--aggregate-task-p task)
-        (kotlin-ts-mode--run-gradle-command
+        (kotlin-ts-test--run-gradle
          (kotlin-ts-mode--get-subproject-name) task nil)
       (let* ((package-name  (kotlin-ts-mode--get-package-name))
              (class-name    (kotlin-ts-mode--get-class-name))
@@ -285,12 +515,29 @@ If the resolved task is an aggregate task (see
                                         function-name)))))
         (unless (and package-name test-class test-function)
           (user-error "Could not determine package, class, and function name"))
-        (kotlin-ts-mode--run-gradle-command
+        (kotlin-ts-test--run-gradle
          (kotlin-ts-mode--get-subproject-name)
          task
          (list "--tests"
                (kotlin-ts-mode--qualify-name
                 package-name test-class test-function)))))))
+
+;;;###autoload
+(defun kotlin-ts-test-rerun ()
+  "Rerun the last test command."
+  (interactive)
+  (if-let* ((cmd kotlin-ts-test--last-command))
+      (let ((compilation-buffer-name-function
+             #'kotlin-ts-test--compilation-buffer-name-fn)
+            (default-directory (or (when-let* ((proj (project-current)))
+                                     (project-root proj))
+                                   default-directory)))
+        (compile cmd)
+        (when-let* ((buf (get-buffer kotlin-ts-test--compilation-buffer-name)))
+          (with-current-buffer buf
+            (add-hook 'compilation-finish-functions
+                      #'kotlin-ts-test--on-compilation-finish nil t))))
+    (user-error "No previous test run to repeat")))
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; find-sibling-file rules

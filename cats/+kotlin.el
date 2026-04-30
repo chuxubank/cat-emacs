@@ -19,7 +19,8 @@
    ("Test"
     (("t" kotlin-ts-test-goto-file "go to test file")
      ("r" kotlin-ts-test-run-function "run current test function")
-     ("R" kotlin-ts-test-run-class "run current test class")))))
+     ("R" kotlin-ts-test-run-class "run current test class")
+     ("l" kotlin-ts-test-rerun "rerun last test")))))
 
 (use-package ob-kotlin
   :vc (:url "https://github.com/chuxubank/ob-kotlin")
