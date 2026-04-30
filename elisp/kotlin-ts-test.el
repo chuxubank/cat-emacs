@@ -4,7 +4,7 @@
 
 ;; Author: Misaka <chuxubank@qq.com>
 ;; Maintainer: Misaka <chuxubank@qq.com>
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; Package-Requires: ((emacs "30.1") (kotlin-ts-mode))
 ;; Keywords: languages, kotlin, tools
 ;; URL: https://github.com/chuxubank/cat-emacs
@@ -46,8 +46,9 @@
 ;; `run-function' automatically derive the corresponding test class
 ;; by appending "Test" to the current class name (e.g. Foo → FooTest).
 ;;
-;; After a test run finishes, a *kotlin-ts-test-results* buffer is
-;; displayed with a summary of passed / failed / skipped tests.
+;; After a test run finishes, the JUnit XML reports under
+;; build/test-results/<task>/ are parsed and displayed in a
+;; *kotlin-ts-test-results* buffer with a summary.
 ;;
 ;; Also provides `kotlin-ts-test-find-sibling-rules' for
 ;; `find-sibling-file' integration, installed via a mode hook.
@@ -56,7 +57,9 @@
 
 (require 'kotlin-ts-mode)
 (require 'compile)
-(require 'ansi-color)
+(require 'xml)
+(require 'dom)
+(require 'seq)
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; Custom group
@@ -77,8 +80,7 @@
       "/kotlin/")
   "Regexp matching a Kotlin source set directory.
 Group 1: full source-set name (e.g. \"commonMain\", \"jvmTest\").
-Group 2: the target prefix  (e.g. \"common\", \"jvm\").
-An empty group 2 means the standard JVM layout (src/main, src/test).")
+Group 2: the target prefix  (e.g. \"common\", \"jvm\").")
 
 (defconst kotlin-ts-test--standard-re
   (rx "src/" (group (or "main" "test")) "/kotlin/")
@@ -90,12 +92,10 @@ Return a plist (:layout kmp :target \"common\") or
 \(:layout jvm :target nil) or nil if nothing matches."
   (when-let* ((file (buffer-file-name)))
     (cond
-     ;; KMP: src/<target>Main/kotlin or src/<target>Test/kotlin
      ((string-match kotlin-ts-test--source-set-re file)
       (let ((target (match-string 2 file)))
         (unless (string-empty-p target)
           (list :layout 'kmp :target target))))
-     ;; Standard JVM: src/main/kotlin or src/test/kotlin
      ((string-match kotlin-ts-test--standard-re file)
       (list :layout 'jvm :target nil)))))
 
@@ -216,13 +216,11 @@ Supports:
       (user-error "Cannot determine Kotlin source layout for %s" file))
     (let* ((layout (plist-get info :layout))
            (target (plist-get info :target))
-           ;; Figure out whether we are in a Main/source or Test file
            (in-test (string-match-p
                      (if (eq layout 'kmp)
                          (concat "src/" target "Test/")
                        "src/test/")
                      file))
-           ;; Build from/to set names
            (from-set (if (eq layout 'kmp)
                          (concat target (if in-test "Test" "Main"))
                        (if in-test "test" "main")))
@@ -247,6 +245,13 @@ Supports:
   "Return the fixed compilation buffer name."
   kotlin-ts-test--compilation-buffer-name)
 
+(defvar kotlin-ts-test--last-command nil
+  "The last Gradle command string, for rerunning.")
+
+(defvar kotlin-ts-test--last-run nil
+  "Plist describing the last test run.
+Keys: :project-root :subproject :task.")
+
 (defun kotlin-ts-test--run-gradle (project task args)
   "Run Gradle TASK with ARGS in PROJECT, parse results when done.
 If PROJECT is nil, run in the root project."
@@ -268,61 +273,81 @@ If PROJECT is nil, run in the root project."
                  (when args
                    (mapcar #'shell-quote-argument args)))
                 " ")))
-      (setq kotlin-ts-test--last-command cmd)
+      ;; Remember for rerun and for finding XML reports
+      (setq kotlin-ts-test--last-command cmd
+            kotlin-ts-test--last-run (list :project-root default-directory
+                                          :subproject project
+                                          :task task))
       (compile cmd)
-      ;; Install the one-shot finish hook on the compilation buffer
       (when-let* ((buf (get-buffer kotlin-ts-test--compilation-buffer-name)))
         (with-current-buffer buf
           (add-hook 'compilation-finish-functions
                     #'kotlin-ts-test--on-compilation-finish nil t))))))
 
 ;; ──────────────────────────────────────────────────────────────────
-;;; Output parsing
+;;; JUnit XML parsing
 ;; ──────────────────────────────────────────────────────────────────
 
-;; Gradle `--console=plain' test output lines look like:
-;;   com.example.FooTest > testBar PASSED
-;;   com.example.FooTest > testBaz FAILED
-;;   com.example.FooTest > testQux SKIPPED
-
-(defconst kotlin-ts-test--result-re
-  (rx bol
-      (group (+? nonl))                  ; class (may include spaces for KMP target prefix)
-      " > "
-      (group (+? nonl))                  ; test name
-      " "
-      (group (or "PASSED" "FAILED" "SKIPPED"))
-      eol)
-  "Regexp matching a single test result line from Gradle.")
-
-;; Summary line:
-;;   3 tests completed, 1 failed
-;;   5 tests completed, 2 failed, 1 skipped
-(defconst kotlin-ts-test--summary-re
-  (rx bol
-      (group (+ digit)) " test" (? "s") " completed"
-      (* ", " (group (+ digit)) " " (group (or "failed" "skipped")))
-      eol)
-  "Regexp matching the test summary line from Gradle.")
+;; Gradle writes JUnit XML reports to:
+;;   <project-root>/<subproject>/build/test-results/<task>/
+;; Each file is TEST-<classname>.xml containing a <testsuite> with
+;; <testcase> children.  Failed tests have a <failure> child,
+;; skipped tests have a <skipped> child.
 
 (cl-defstruct (kotlin-ts-test-result (:constructor kotlin-ts-test-result-create)
                                      (:copier nil))
   "A single test result."
-  class name status)
+  class name status time message)
 
-(defun kotlin-ts-test--parse-buffer (buf)
-  "Parse compilation buffer BUF and return a list of `kotlin-ts-test-result'."
-  (let ((results nil))
-    (with-current-buffer buf
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward kotlin-ts-test--result-re nil t)
-          (push (kotlin-ts-test-result-create
-                 :class  (match-string 1)
-                 :name   (match-string 2)
-                 :status (match-string 3))
-                results))))
-    (nreverse results)))
+(defun kotlin-ts-test--report-dir ()
+  "Return the directory containing JUnit XML reports for the last run."
+  (when-let* ((run kotlin-ts-test--last-run)
+              (root (plist-get run :project-root))
+              (task (plist-get run :task)))
+    (let* ((subproject (plist-get run :subproject))
+           (base (if subproject
+                     (concat root
+                             (string-replace ":" "/" subproject)
+                             "/")
+                   root)))
+      (expand-file-name (concat "build/test-results/" task "/") base))))
+
+(defun kotlin-ts-test--parse-xml-file (file)
+  "Parse a single JUnit XML FILE and return a list of `kotlin-ts-test-result'."
+  (condition-case nil
+      (let* ((root (car (xml-parse-file file)))
+             (testcases (dom-by-tag root 'testcase)))
+        (mapcar
+         (lambda (tc)
+           (let* ((classname (dom-attr tc 'classname))
+                  (name      (dom-attr tc 'name))
+                  (time-str  (dom-attr tc 'time))
+                  (failure   (dom-by-tag tc 'failure))
+                  (error     (dom-by-tag tc 'error))
+                  (skipped   (dom-by-tag tc 'skipped))
+                  (status    (cond (failure "FAILED")
+                                  (error   "FAILED")
+                                  (skipped "SKIPPED")
+                                  (t       "PASSED")))
+                  (message   (cond (failure (dom-attr (car failure) 'message))
+                                  (error   (dom-attr (car error) 'message))
+                                  (t       nil))))
+             (kotlin-ts-test-result-create
+              :class   classname
+              :name    name
+              :status  status
+              :time    (and time-str (string-to-number time-str))
+              :message message)))
+         testcases))
+    (error nil)))
+
+(defun kotlin-ts-test--parse-reports ()
+  "Parse all JUnit XML reports for the last test run.
+Return a list of `kotlin-ts-test-result'."
+  (when-let* ((dir (kotlin-ts-test--report-dir))
+              (_exists (file-directory-p dir)))
+    (let ((xml-files (directory-files dir t (rx ".xml" eos))))
+      (mapcan #'kotlin-ts-test--parse-xml-file xml-files))))
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; Results buffer
@@ -368,9 +393,6 @@ If PROJECT is nil, run in the root project."
   :group 'kotlin-ts-test
   (setq truncate-lines t))
 
-(defvar kotlin-ts-test--last-command nil
-  "The last Gradle command string, for rerunning.")
-
 (defun kotlin-ts-test--status-face (status)
   "Return the face for STATUS string."
   (pcase status
@@ -395,6 +417,7 @@ COMPILATION-BUF is the source compilation buffer for linking."
          (failed  (cl-count "FAILED"  results :key #'kotlin-ts-test-result-status :test #'equal))
          (skipped (cl-count "SKIPPED" results :key #'kotlin-ts-test-result-status :test #'equal))
          (total   (length results))
+         (total-time (apply #'+ (mapcar (lambda (r) (or (kotlin-ts-test-result-time r) 0)) results)))
          ;; Group by class
          (groups  (seq-group-by #'kotlin-ts-test-result-class results)))
     (with-current-buffer buf
@@ -402,9 +425,10 @@ COMPILATION-BUF is the source compilation buffer for linking."
         (erase-buffer)
         (kotlin-ts-test-results-mode)
         ;; Header
-        (insert (propertize "Kotlin Test Results\n" 'face '(:weight bold :height 1.2)))
-        (insert (make-string 40 ?─) "\n\n")
-        ;; Summary
+        (insert (propertize "Kotlin Test Results" 'face '(:weight bold :height 1.2)))
+        (insert (format "  (%.3fs)\n" total-time))
+        (insert (make-string 50 ?─) "\n\n")
+        ;; Summary line
         (insert (format "  Total: %d" total))
         (when (> passed 0)
           (insert "  " (propertize (format "✓ %d passed" passed) 'face 'kotlin-ts-test-pass-face)))
@@ -413,23 +437,35 @@ COMPILATION-BUF is the source compilation buffer for linking."
         (when (> skipped 0)
           (insert "  " (propertize (format "○ %d skipped" skipped) 'face 'kotlin-ts-test-skip-face)))
         (insert "\n\n")
-        ;; Per-class results
-        (dolist (group groups)
-          (let ((class (car group))
-                (tests (cdr group)))
-            (insert (propertize class 'face 'kotlin-ts-test-class-face) "\n")
-            (dolist (test tests)
-              (let* ((status (kotlin-ts-test-result-status test))
-                     (icon   (kotlin-ts-test--status-icon status))
-                     (face   (kotlin-ts-test--status-face status)))
-                (insert "  "
-                        (propertize icon 'face face)
-                        " "
-                        (propertize (kotlin-ts-test-result-name test) 'face 'kotlin-ts-test-name-face)
-                        "\n")))
-            (insert "\n")))
+        ;; Per-class results (failed classes first)
+        (let ((sorted-groups
+               (seq-sort-by (lambda (g)
+                              (if (cl-some (lambda (r) (equal (kotlin-ts-test-result-status r) "FAILED"))
+                                           (cdr g))
+                                  0 1))
+                            #'< groups)))
+          (dolist (group sorted-groups)
+            (let ((class (car group))
+                  (tests (cdr group)))
+              (insert (propertize (or class "?") 'face 'kotlin-ts-test-class-face) "\n")
+              (dolist (test tests)
+                (let* ((status (kotlin-ts-test-result-status test))
+                       (icon   (kotlin-ts-test--status-icon status))
+                       (face   (kotlin-ts-test--status-face status))
+                       (time   (kotlin-ts-test-result-time test))
+                       (msg    (kotlin-ts-test-result-message test)))
+                  (insert "  "
+                          (propertize icon 'face face)
+                          " "
+                          (propertize (kotlin-ts-test-result-name test) 'face 'kotlin-ts-test-name-face))
+                  (when time
+                    (insert (propertize (format " (%.3fs)" time) 'face 'shadow)))
+                  (insert "\n")
+                  (when (and msg (equal status "FAILED"))
+                    (insert "    " (propertize msg 'face 'kotlin-ts-test-fail-face) "\n"))))
+              (insert "\n"))))
         ;; Footer
-        (insert (make-string 40 ?─) "\n")
+        (insert (make-string 50 ?─) "\n")
         (insert (propertize "q" 'face 'help-key-binding) " quit  "
                 (propertize "g" 'face 'help-key-binding) " rerun  ")
         (when compilation-buf
@@ -447,10 +483,13 @@ COMPILATION-BUF is the source compilation buffer for linking."
 ;; ──────────────────────────────────────────────────────────────────
 
 (defun kotlin-ts-test--on-compilation-finish (buf _msg)
-  "Parse test results from compilation buffer BUF and display them."
-  (let ((results (kotlin-ts-test--parse-buffer buf)))
-    (when results
-      (kotlin-ts-test--render-results results buf))))
+  "Parse JUnit XML test reports and display results after compilation.
+BUF is the compilation buffer."
+  (let ((results (kotlin-ts-test--parse-reports)))
+    (if results
+        (kotlin-ts-test--render-results results buf)
+      (message "kotlin-ts-test: no test results found in %s"
+               (or (kotlin-ts-test--report-dir) "unknown")))))
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; Run tests
@@ -526,12 +565,11 @@ If the resolved task is an aggregate task (see
 (defun kotlin-ts-test-rerun ()
   "Rerun the last test command."
   (interactive)
-  (if-let* ((cmd kotlin-ts-test--last-command))
+  (if-let* ((cmd kotlin-ts-test--last-command)
+            (run kotlin-ts-test--last-run))
       (let ((compilation-buffer-name-function
              #'kotlin-ts-test--compilation-buffer-name-fn)
-            (default-directory (or (when-let* ((proj (project-current)))
-                                     (project-root proj))
-                                   default-directory)))
+            (default-directory (plist-get run :project-root)))
         (compile cmd)
         (when-let* ((buf (get-buffer kotlin-ts-test--compilation-buffer-name)))
           (with-current-buffer buf
@@ -556,9 +594,7 @@ If the resolved task is an aggregate task (see
 
 (defvar kotlin-ts-test-find-sibling-rules
   (append
-   ;; Standard JVM (from upstream)
    kotlin-ts-mode--find-sibling-rules
-   ;; KMP: <target>Main ↔ <target>Test
    (mapcan
     (lambda (tgt)
       (let ((main (concat tgt "Main/"))
