@@ -42,6 +42,10 @@
 ;;   `kotlin-ts-test-run-class'          – run test class at point
 ;;   `kotlin-ts-test-run-function'       – run test function at point
 ;;
+;; When invoked from a source file (non-test), `run-class' and
+;; `run-function' automatically derive the corresponding test class
+;; by appending "Test" to the current class name (e.g. Foo → FooTest).
+;;
 ;; Also provides `kotlin-ts-test-find-sibling-rules' for
 ;; `find-sibling-file' integration, installed via a mode hook.
 
@@ -136,6 +140,38 @@ defaults:
   (member task kotlin-ts-test-aggregate-tasks))
 
 ;; ──────────────────────────────────────────────────────────────────
+;;; Test name mapping
+;; ──────────────────────────────────────────────────────────────────
+
+(defcustom kotlin-ts-test-function-pattern "*%s*"
+  "Format string for deriving a test function filter from a source function name.
+Used when running tests from a source (non-test) file.
+
+`%s' is replaced by the source function name.  The resulting
+string is passed to Gradle's `--tests' flag, which supports `*'
+as a wildcard.
+
+Examples:
+  \"*%s*\"     →  matches any test containing the function name (default)
+  \"test%s\"   →  matches testFoo for source function foo
+  \"%s\"       →  exact match only
+
+This can also be set per-project via .dir-locals.el."
+  :type 'string
+  :group 'kotlin
+  :safe #'stringp)
+
+;; ──────────────────────────────────────────────────────────────────
+;;; Test file predicate
+;; ──────────────────────────────────────────────────────────────────
+
+(defun kotlin-ts-test--in-test-p ()
+  "Return non-nil if the current buffer is a test file."
+  (when-let* ((file (buffer-file-name)))
+    (or (string-match-p (rx "src/" (+? anything) "Test/kotlin/") file)
+        (string-match-p (rx "src/test/kotlin/") file))))
+
+;; ──────────────────────────────────────────────────────────────────
 ;;; Goto test / source file
 ;; ──────────────────────────────────────────────────────────────────
 
@@ -192,8 +228,10 @@ Supports:
 
 ;;;###autoload
 (defun kotlin-ts-test-run-class ()
-  "Run the test class at point via Gradle.
-Automatically selects the correct task for JVM or KMP layouts.
+  "Run the corresponding test class via Gradle.
+When in a test file, run the test class at point.
+When in a source file, derive the test class name by appending
+\"Test\" to the current class name and run that instead.
 If the resolved task is an aggregate task (see
 `kotlin-ts-test-aggregate-tasks'), run it without `--tests'."
   (interactive)
@@ -202,20 +240,28 @@ If the resolved task is an aggregate task (see
     (if (kotlin-ts-test--aggregate-task-p task)
         (kotlin-ts-mode--run-gradle-command
          (kotlin-ts-mode--get-subproject-name) task nil)
-      (let ((package-name (kotlin-ts-mode--get-package-name))
-            (class-name   (kotlin-ts-mode--get-class-name)))
-        (unless (and package-name class-name)
+      (let* ((package-name (kotlin-ts-mode--get-package-name))
+             (class-name   (kotlin-ts-mode--get-class-name))
+             (test-class   (if (kotlin-ts-test--in-test-p)
+                               class-name
+                             (when class-name
+                               (concat class-name "Test")))))
+        (unless (and package-name test-class)
           (user-error "Could not determine package and class name"))
         (kotlin-ts-mode--run-gradle-command
          (kotlin-ts-mode--get-subproject-name)
          task
          (list "--tests"
-               (kotlin-ts-mode--qualify-name package-name class-name)))))))
+               (kotlin-ts-mode--qualify-name package-name test-class)))))))
 
 ;;;###autoload
 (defun kotlin-ts-test-run-function ()
-  "Run the test function at point via Gradle.
-Automatically selects the correct task for JVM or KMP layouts.
+  "Run the corresponding test function via Gradle.
+When in a test file, run the test function at point exactly.
+When in a source file, derive the test class name by appending
+\"Test\" to the current class name and use
+`kotlin-ts-test-function-pattern' to build a wildcard filter
+from the source function name (default \"*funcName*\").
 If the resolved task is an aggregate task (see
 `kotlin-ts-test-aggregate-tasks'), run it without `--tests'."
   (interactive)
@@ -224,17 +270,27 @@ If the resolved task is an aggregate task (see
     (if (kotlin-ts-test--aggregate-task-p task)
         (kotlin-ts-mode--run-gradle-command
          (kotlin-ts-mode--get-subproject-name) task nil)
-      (let ((package-name  (kotlin-ts-mode--get-package-name))
-            (class-name    (kotlin-ts-mode--get-class-name))
-            (function-name (kotlin-ts-mode--get-function-name)))
-        (unless (and package-name class-name function-name)
+      (let* ((package-name  (kotlin-ts-mode--get-package-name))
+             (class-name    (kotlin-ts-mode--get-class-name))
+             (function-name (kotlin-ts-mode--get-function-name))
+             (in-test       (kotlin-ts-test--in-test-p))
+             (test-class    (if in-test
+                                class-name
+                              (when class-name
+                                (concat class-name "Test"))))
+             (test-function (if in-test
+                                function-name
+                              (when function-name
+                                (format kotlin-ts-test-function-pattern
+                                        function-name)))))
+        (unless (and package-name test-class test-function)
           (user-error "Could not determine package, class, and function name"))
         (kotlin-ts-mode--run-gradle-command
          (kotlin-ts-mode--get-subproject-name)
          task
          (list "--tests"
                (kotlin-ts-mode--qualify-name
-                package-name class-name function-name)))))))
+                package-name test-class test-function)))))))
 
 ;; ──────────────────────────────────────────────────────────────────
 ;;; find-sibling-file rules
