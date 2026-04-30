@@ -6,12 +6,20 @@
   (kotlin-args-repl '("-Xrepl")))
 
 (use-package kotlin-ts-mode
+  :when EMACS29+)
+
+(use-package kotlin-ts-test
+  :ensure nil
   :when EMACS29+
+  :after kotlin-ts-mode
+  :custom
+  (kotlin-ts-test-task-alist '(("common" . "desktopTest")))
   :mode-hydra
-  (("Test"
-    (("t" kotlin-ts-mode-goto-test-file "go to test file")
-     ("r" kotlin-ts-mode-run-current-test-function "run current test function")
-     ("R" kotlin-ts-mode-run-current-test-class "run current test class")))))
+  (kotlin-ts-mode
+   ("Test"
+    (("t" kotlin-ts-test-goto-file "go to test file")
+     ("r" kotlin-ts-test-run-function "run current test function")
+     ("R" kotlin-ts-test-run-class "run current test class")))))
 
 (use-package ob-kotlin
   :vc (:url "https://github.com/chuxubank/ob-kotlin")
