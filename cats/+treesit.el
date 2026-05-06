@@ -5,21 +5,7 @@
 (use-package treesit
   :ensure nil
   :custom
-  (treesit-font-lock-level 4)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(kotlin "https://github.com/fwcd/tree-sitter-kotlin")))
-
-(+add-to-list-multi 'major-mode-remap-alist
-                    '(c++-mode        . c++-ts-mode)
-                    '(c-mode          . c-ts-mode)
-                    '(c-or-c++-mode   . c-or-c++-ts-mode)
-                    '(conf-toml-mode  . toml-ts-mode)
-                    '(js-mode         . js-ts-mode)
-                    '(kotlin-mode     . kotlin-ts-mode)
-                    '(swift-mode      . swift-ts-mode)
-                    '(sh-mode         . bash-ts-mode)
-                    '(typescript-mode . typescript-ts-mode))
+  (treesit-font-lock-level 4))
 
 (use-package treesit-fold
   :delight
@@ -48,16 +34,25 @@
         (alist-get 'java-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-langs
-  :commands treesit-langs-major-mode-setup)
-
-(defun +treesit-langs-cleanup (&optional _)
-  (interactive)
-  (delete-directory (treesit-langs--bin-dir) t))
-
-(advice-add 'treesit-langs-install-grammars :before #'+treesit-langs-cleanup)
+  :disabled
+  :commands treesit-langs-major-mode-setup
+  :config
+  (+add-to-list-multi 'major-mode-remap-alist
+                      '(c++-mode        . c++-ts-mode)
+                      '(c-mode          . c-ts-mode)
+                      '(c-or-c++-mode   . c-or-c++-ts-mode)
+                      '(conf-toml-mode  . toml-ts-mode)
+                      '(js-mode         . js-ts-mode)
+                      '(kotlin-mode     . kotlin-ts-mode)
+                      '(swift-mode      . swift-ts-mode)
+                      '(sh-mode         . bash-ts-mode)
+                      '(typescript-mode . typescript-ts-mode))
+  (defun +treesit-langs-cleanup (&optional _)
+    (interactive)
+    (delete-directory (treesit-langs--bin-dir) t))
+  (advice-add 'treesit-langs-install-grammars :before #'+treesit-langs-cleanup))
 
 (use-package treesit-auto
-  :disabled
   :hook (after-init . global-treesit-auto-mode)
   :custom
   (treesit-auto-install 'prompt)
