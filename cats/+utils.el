@@ -47,7 +47,7 @@ List contains pairs mode lighter, see `minor-mode-alist'"
   (let (output)
     (while list
       (let ((mode (car list))
-	        (newlighter (nth 1 list)))
+            (newlighter (nth 1 list)))
         (setcar (cdr (assq mode minor-mode-alist)) newlighter))
       (setq list (nthcdr 2 list)))
     (reverse output)))
@@ -124,5 +124,37 @@ directories listed in `vc-directory-exclusion-list'."
   (type-break-mode -1)
   (shell-command "emacs --debug")
   (type-break-mode 1))
+
+;; Source - https://stackoverflow.com/a/25944631
+;; Posted by killdash9
+;; Retrieved 2026-05-06, License - CC BY-SA 3.0
+(defun +ediff-marked-pair ()
+  "Run ediff-files on a pair of files marked in dired buffer"
+  (interactive)
+  (let* ((marked-files (dired-get-marked-files nil nil))
+         (other-win (get-window-with-predicate
+                     (lambda (window)
+                       (with-current-buffer (window-buffer window)
+                         (and (not (eq window (selected-window)))
+                              (eq major-mode 'dired-mode))))))
+         (other-marked-files (and other-win
+                                  (with-current-buffer (window-buffer other-win)
+                                    (dired-get-marked-files nil)))))
+    (cond ((= (length marked-files) 2)
+           (ediff-files (nth 0 marked-files)
+                        (nth 1 marked-files)))
+          ((and (= (length marked-files) 1)
+                (= (length other-marked-files) 1))
+           (ediff-files (nth 0 marked-files)
+                        (nth 0 other-marked-files)))
+          ((= (length marked-files) 1)
+           (let ((single-file (nth 0 marked-files)))
+             (ediff-files single-file
+                          (read-file-name
+                           (format "Diff %s with: " single-file)
+                           nil (if (string= single-file (dired-get-filename))
+                                   nil
+                                 (dired-get-filename)) t))))
+          (t (error "mark no more than 2 files")))))
 
 (use-package emacs-everywhere)
