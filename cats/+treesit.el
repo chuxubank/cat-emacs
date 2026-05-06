@@ -5,7 +5,10 @@
 (use-package treesit
   :ensure nil
   :custom
-  (treesit-font-lock-level 4))
+  (treesit-font-lock-level 4)
+  :config
+  (add-to-list 'treesit-language-source-alist
+               '(kotlin "https://github.com/fwcd/tree-sitter-kotlin")))
 
 (+add-to-list-multi 'major-mode-remap-alist
                     '(c++-mode        . c++-ts-mode)
