@@ -34,7 +34,6 @@
         (alist-get 'java-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-langs
-  :disabled
   :commands treesit-langs-major-mode-setup
   :config
   (+add-to-list-multi 'major-mode-remap-alist
@@ -53,6 +52,7 @@
   (advice-add 'treesit-langs-install-grammars :before #'+treesit-langs-cleanup))
 
 (use-package treesit-auto
+  :disabled
   :hook (after-init . global-treesit-auto-mode)
   :custom
   (treesit-auto-install 'prompt)
