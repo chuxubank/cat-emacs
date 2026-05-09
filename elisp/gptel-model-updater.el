@@ -80,6 +80,14 @@ API-KEY is used for providers that require it in the query string."
             ;; Gemini uses query param for key, no auth header needed
             (_ nil))))
 
+(defun gptel-model-updater--get-api-key (backend key-source)
+  "Get API key for BACKEND from KEY-SOURCE.
+Bind `gptel-backend' while resolving KEY-SOURCE so auth-source
+lookups use BACKEND's host instead of the current chat backend."
+  (when key-source
+    (let ((gptel-backend backend))
+      (ignore-errors (gptel--get-api-key key-source)))))
+
 (defun gptel-model-updater--fetch-models (backend-name provider-type url headers callback)
   "Fetch models from URL and call CALLBACK with the result.
 BACKEND-NAME is used for messages.
@@ -167,7 +175,7 @@ URL overrides the default endpoint."
   (let* ((backend (gptel-get-backend backend-name))
          (provider (or provider-type (gptel-model-updater--detect-provider backend)))
          (key-source (gptel-backend-key backend))
-         (api-key (and key-source (ignore-errors (gptel--get-api-key key-source)))))
+         (api-key (gptel-model-updater--get-api-key backend key-source)))
     (if (and (memq provider '(openai gemini)) key-source (not api-key))
         (message "GPTel-Model-Updater: Skipping %s, no API key found" backend-name)
       (let ((fetch-url (or url (gptel-model-updater--build-url backend provider api-key)))

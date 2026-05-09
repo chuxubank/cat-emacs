@@ -80,7 +80,9 @@
     (("g" #'gptel-hydra/body "gptel"))))
   :config
   (setq gptel--gemini
-        (gptel-make-gemini "Gemini" :key 'gptel-api-key :stream t)
+        (gptel-make-gemini "Gemini"
+          :key 'gptel-api-key
+          :stream t)
         gptel--openrouter
         (gptel-make-openai "OpenRouter"
           :host "openrouter.ai/api"
