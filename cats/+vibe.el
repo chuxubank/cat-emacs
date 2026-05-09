@@ -4,6 +4,34 @@
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
 
+(defvar cat-gptel-backend-preferences '("MLX" "IV" "Ollama" "OpenRouter" "Gemini")
+  "Preferred backend names for normal GPTel requests.")
+
+(defvar cat-gptel-magit-backend-preferences '("MLX" "Ollama" "IV" "OpenRouter" "Gemini")
+  "Preferred backend names for gptel-magit requests.")
+
+(defun cat-gptel--random-model (models)
+  "Return a random model from MODELS."
+  (nth (random (length models)) models))
+
+(defun cat-gptel--pick-backend-model (backend-names)
+  "Pick the first available backend from BACKEND-NAMES and a random model."
+  (catch 'found
+    (dolist (backend-name backend-names)
+      (when-let* ((backend (gptel-get-backend backend-name))
+                  (models (gptel-backend-models backend)))
+        (throw 'found (cons backend (cat-gptel--random-model models)))))))
+
+(defun cat-gptel-select-ideal-backends (&rest _)
+  "Select preferred GPTel and gptel-magit backends from refreshed model lists."
+  (when-let ((choice (cat-gptel--pick-backend-model cat-gptel-backend-preferences)))
+    (setq gptel-backend (car choice)
+          gptel-model (cdr choice)))
+  (when (boundp 'gptel-magit-backend)
+    (when-let ((choice (cat-gptel--pick-backend-model cat-gptel-magit-backend-preferences)))
+      (setq gptel-magit-backend (car choice)
+            gptel-magit-model (cdr choice)))))
+
 (use-package gptel-model-updater
   :ensure nil
   :commands
@@ -18,11 +46,12 @@
      ("U" #'gptel-model-updater-update-all "update all"))))
   :config
   (setq gptel--backends
-        '(gptel--dflash
+        '(gptel--mlx
           gptel--gemini
           gptel--iv
           gptel--ollama
-          gptel--openrouter)))
+          gptel--openrouter))
+  (add-hook 'gptel-model-updater-after-update-hook #'cat-gptel-select-ideal-backends))
 
 (use-package gptel
   :delight " 󱡄"
@@ -60,8 +89,8 @@
           :protocol "http"
           :key 'gptel-api-key
           :stream t)
-        gptel--dflash
-        (gptel-make-openai "DFlash"
+        gptel--mlx
+        (gptel-make-openai "MLX"
           :host "localhost:8000"
           :protocol "http"
           :stream t)
@@ -69,16 +98,14 @@
         (gptel-make-ollama "Ollama"
           :host "localhost:11434"
           :stream t))
-  (setq gptel-backend gptel--iv
-        gptel-model 'claude-sonnet-4-6))
+  (cat-gptel-select-ideal-backends))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (setq gptel-magit-backend gptel--iv
-        gptel-magit-model 'deepseek-v4-flash)
+  (cat-gptel-select-ideal-backends)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."

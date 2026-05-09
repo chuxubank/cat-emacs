@@ -42,6 +42,12 @@
   :type 'number
   :group 'gptel-model-updater)
 
+(defcustom gptel-model-updater-after-update-hook nil
+  "Hook run after a backend's models are updated successfully.
+Each function is called with BACKEND-NAME, BACKEND, and MODELS."
+  :type 'hook
+  :group 'gptel-model-updater)
+
 (defun gptel-model-updater--detect-provider (backend)
   "Detect provider type for BACKEND struct.
 Returns one of `openai', `gemini', or `ollama'."
@@ -175,9 +181,11 @@ URL overrides the default endpoint."
          (let ((new-models (gptel-model-updater--parse-models raw-data provider)))
            (if (not new-models)
                (message "GPTel-Model-Updater: No models found for %s" backend-name)
-             (setf (gptel-backend-models backend) new-models)
-             (message "GPTel-Model-Updater: Updated %s with %d models"
-                      backend-name (length new-models)))))))))
+              (setf (gptel-backend-models backend) new-models)
+              (run-hook-with-args 'gptel-model-updater-after-update-hook
+                                  backend-name backend new-models)
+              (message "GPTel-Model-Updater: Updated %s with %d models"
+                       backend-name (length new-models)))))))))
 
 ;;;###autoload
 (defun gptel-model-updater-update-all ()
