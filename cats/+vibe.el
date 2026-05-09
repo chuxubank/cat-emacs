@@ -14,9 +14,10 @@
   (cat-idle-preload-hook . gptel-model-updater-update-all)
   :custom
   (gptel-model-updater-backends
-   '(gptel--mlx
-     gptel--gemini
+   '(gptel--gemini
      gptel--iv
+     gptel--llama
+     gptel--mlx
      gptel--ollama
      gptel--openrouter))
   (gptel-model-updater-external-targets
@@ -53,12 +54,15 @@
   :config
   (setq gptel--gemini
         (gptel-make-gemini "Gemini"
+          :models '()
           :key 'gptel-api-key
           :stream t)
         gptel--openrouter
         (gptel-make-openai "OpenRouter"
-          :host "openrouter.ai/api"
+          :models '()
+          :host "openrouter.ai"
           :key 'gptel-api-key
+          :endpoint "/api/v1/chat/completions"
           :stream t)
         gptel--iv
         (gptel-make-openai "IV"
@@ -71,6 +75,12 @@
         (gptel-make-openai "MLX"
           :models '()
           :host "localhost:8000"
+          :protocol "http"
+          :stream t)
+        gptel--llama
+        (gptel-make-openai "llama.cpp"
+          :models '()
+          :host "localhost:8080"
           :protocol "http"
           :stream t)
         gptel--ollama

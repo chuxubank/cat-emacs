@@ -79,6 +79,7 @@ Returns one of `openai', `gemini', or `ollama'."
   "Build the models list URL for BACKEND given PROVIDER-TYPE.
 API-KEY is used for providers that require it in the query string."
   (let ((host (gptel-backend-host backend))
+        (endpoint (gptel-backend-endpoint backend))
         (protocol (or (gptel-backend-protocol backend) "https")))
     (pcase provider-type
       ('gemini
@@ -86,7 +87,9 @@ API-KEY is used for providers that require it in the query string."
       ('ollama
        (format "%s://%s/api/tags" protocol host))
       (_
-       (format "%s://%s/v1/models" protocol host)))))
+       (let* ((base-path (replace-regexp-in-string "chat/completions.*" "" (or endpoint "")))
+              (models-url (concat base-path "models")))
+         (format "%s://%s%s" protocol host models-url))))))
 
 (defun gptel-model-updater--build-headers (provider-type api-key)
   "Build request headers for PROVIDER-TYPE with API-KEY."
