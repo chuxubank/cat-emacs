@@ -57,14 +57,14 @@ Returns one of `openai', `gemini', or `ollama'."
    ((cl-typep backend 'gptel-openai) 'openai)
    (t 'openai)))
 
-(defun gptel-model-updater--build-url (backend provider-type)
-  "Build the models list URL for BACKEND given PROVIDER-TYPE."
+(defun gptel-model-updater--build-url (backend provider-type &optional api-key)
+  "Build the models list URL for BACKEND given PROVIDER-TYPE.
+API-KEY is used for providers that require it in the query string."
   (let ((host (gptel-backend-host backend))
         (protocol (or (gptel-backend-protocol backend) "https")))
     (pcase provider-type
       ('gemini
-       (let ((api-key (gptel--get-api-key (gptel-backend-key backend))))
-         (format "%s://%s/v1beta/models?key=%s&pageSize=1000" protocol host (or api-key ""))))
+       (format "%s://%s/v1beta/models?key=%s&pageSize=1000" protocol host (or api-key "")))
       ('ollama
        (format "%s://%s/api/tags" protocol host))
       (_
@@ -166,26 +166,25 @@ URL overrides the default endpoint."
      (list (completing-read "Backend: " backends nil t))))
   (let* ((backend (gptel-get-backend backend-name))
          (provider (or provider-type (gptel-model-updater--detect-provider backend)))
-         (api-key (gptel--get-api-key (gptel-backend-key backend)))
-         (fetch-url (or url (gptel-model-updater--build-url backend provider)))
-         (headers (gptel-model-updater--build-headers provider api-key)))
-
-    (when (and (eq provider 'openai) (not api-key))
-      (user-error "GPTel-Model-Updater: No API key found for %s" backend-name))
-
-    (gptel-model-updater--fetch-models
-     backend-name provider fetch-url headers
-     (lambda (success raw-data error-msg)
-       (if (not success)
-           (message "GPTel-Model-Updater Error: %s (%s)" backend-name error-msg)
-         (let ((new-models (gptel-model-updater--parse-models raw-data provider)))
-           (if (not new-models)
-               (message "GPTel-Model-Updater: No models found for %s" backend-name)
-              (setf (gptel-backend-models backend) new-models)
-              (run-hook-with-args 'gptel-model-updater-after-update-hook
-                                  backend-name backend new-models)
-              (message "GPTel-Model-Updater: Updated %s with %d models"
-                       backend-name (length new-models)))))))))
+         (key-source (gptel-backend-key backend))
+         (api-key (and key-source (ignore-errors (gptel--get-api-key key-source)))))
+    (if (and (memq provider '(openai gemini)) key-source (not api-key))
+        (message "GPTel-Model-Updater: Skipping %s, no API key found" backend-name)
+      (let ((fetch-url (or url (gptel-model-updater--build-url backend provider api-key)))
+            (headers (gptel-model-updater--build-headers provider api-key)))
+        (gptel-model-updater--fetch-models
+         backend-name provider fetch-url headers
+         (lambda (success raw-data error-msg)
+           (if (not success)
+               (message "GPTel-Model-Updater Error: %s (%s)" backend-name error-msg)
+             (let ((new-models (gptel-model-updater--parse-models raw-data provider)))
+               (if (not new-models)
+                   (message "GPTel-Model-Updater: No models found for %s" backend-name)
+                 (setf (gptel-backend-models backend) new-models)
+                 (message "GPTel-Model-Updater: Updated %s with %d models"
+                          backend-name (length new-models))
+                 (run-hook-with-args 'gptel-model-updater-after-update-hook
+                                     backend-name backend new-models))))))))))
 
 ;;;###autoload
 (defun gptel-model-updater-update-all ()
