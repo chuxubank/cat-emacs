@@ -4,57 +4,29 @@
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
 
-(defun cat-gptel--random-model (models)
-  "Return a random model from MODELS."
-  (nth (random (length models)) models))
-
-(defun cat-gptel--pick-backend-model ()
-  "Pick the first available backend from `gptel--backends' and a random model."
-  (catch 'found
-    (dolist (backend-symbol gptel--backends)
-      (when-let* ((backend (and (symbolp backend-symbol)
-                                (boundp backend-symbol)
-                                (symbol-value backend-symbol)))
-                  (models (gptel-backend-models backend)))
-        (throw 'found (cons backend (cat-gptel--random-model models)))))))
-
-(defun cat-gptel-select-ideal-backends (&rest _)
-  "Select preferred GPTel and gptel-magit backends from refreshed model lists."
-  (when-let ((choice (cat-gptel--pick-backend-model)))
-    (setq gptel-backend (car choice)
-          gptel-model (cdr choice)))
-  (when-let ((choice (cat-gptel--pick-backend-model)))
-    (setq gptel-magit-backend (car choice)
-          gptel-magit-model (cdr choice)))
-  (message "GPTel: backend=%s model=%s\nGPTel-magit: backend=%s model=%s"
-           (and (boundp 'gptel-backend) gptel-backend
-                (gptel-backend-name gptel-backend))
-           (and (boundp 'gptel-model) gptel-model)
-           (and (boundp 'gptel-magit-backend) gptel-magit-backend
-                (gptel-backend-name gptel-magit-backend))
-           (and (boundp 'gptel-magit-model) gptel-magit-model)))
-
 (use-package gptel-model-updater
   :ensure nil
-  :init
-  (setq gptel--backends
-        '(gptel--mlx
-          gptel--gemini
-          gptel--iv
-          gptel--ollama
-          gptel--openrouter))
   :commands
   (gptel-model-updater-update-backend
-   gptel-model-updater-update-all)
+   gptel-model-updater-update-all
+   gptel-model-updater-select-backend-models)
   :hook
   (cat-idle-preload-hook . gptel-model-updater-update-all)
+  :custom
+  (gptel-model-updater-backends
+   '(gptel--mlx
+     gptel--gemini
+     gptel--iv
+     gptel--ollama
+     gptel--openrouter))
+  (gptel-model-updater-external-targets
+   '((gptel-magit-backend gptel-magit-model "GPTel-Magit")))
   :pretty-hydra
   (cat-vibe
    ("GPTel"
     (("u" #'gptel-model-updater-update-backend "update")
-     ("U" #'gptel-model-updater-update-all "update all"))))
-  :config
-  (add-hook 'gptel-model-updater-after-update-hook #'cat-gptel-select-ideal-backends))
+     ("U" #'gptel-model-updater-update-all "update all")
+     ("m" #'gptel-model-updater-select-backend-models "select model")))))
 
 (use-package gptel
   :delight " 󱡄"
@@ -104,14 +76,14 @@
         gptel--ollama
         (gptel-make-ollama "Ollama"
           :stream t))
-  (cat-gptel-select-ideal-backends))
+  (gptel-model-updater-select-backend-models))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (cat-gptel-select-ideal-backends)
+  (gptel-model-updater-select-backend-models t)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
