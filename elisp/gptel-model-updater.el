@@ -254,40 +254,40 @@ Interactively, read backend and model with completion.  Otherwise,
 backends are tried in `gptel-model-updater-backends' order.  The first backend
 with models is selected, and one model is chosen randomly.
 
-When EXTERNAL is non-nil, also set variable pairs from
-`gptel-model-updater-external-targets'.  Interactively, EXTERNAL is
-enabled by a C-u prefix and each external target is selected
-separately.  When QUIET is non-nil, do not print the final
+When EXTERNAL is non-nil, set variable pairs from
+`gptel-model-updater-external-targets' instead of the global
+gptel-backend/model.  When QUIET is non-nil, do not print the final
 selection.  CHOICE is a cons of BACKEND and MODEL."
   (interactive
-   (let ((external current-prefix-arg))
-     (list external
+   (if current-prefix-arg
+       (list t nil nil t)
+     (list nil
            nil
-           (gptel-model-updater--read-backend-model "GPTel ")
-           external)))
-  (setq choice (or choice (gptel-model-updater--pick-backend-model)))
-  (gptel-model-updater--set-choice 'gptel-backend 'gptel-model choice)
-  (when external
-    (gptel-model-updater--select-external-targets interactive-external))
-  (unless quiet
-    (message "GPTel: backend=%s model=%s%s"
-             (and (boundp 'gptel-backend) gptel-backend
-                  (gptel-backend-name gptel-backend))
-             (and (boundp 'gptel-model) gptel-model)
-             (if external
-                 (mapconcat
-                  (lambda (target)
-                    (pcase-let ((`(,backend-variable ,model-variable . ,_) target))
-                      (format "\n%s: backend=%s model=%s"
-                              (gptel-model-updater--target-label target)
-                              (and (boundp backend-variable)
-                                   (symbol-value backend-variable)
-                                   (gptel-backend-name (symbol-value backend-variable)))
-                              (and (boundp model-variable)
-                                   (symbol-value model-variable)))))
-                  gptel-model-updater-external-targets
-                  "")
-               ""))))
+           (gptel-model-updater--read-backend-model "GPTel "))))
+  (if external
+      (progn
+        (gptel-model-updater--select-external-targets interactive-external)
+        (unless quiet
+          (message "GPTel external targets set%s"
+                   (mapconcat
+                    (lambda (target)
+                      (pcase-let ((`(,backend-variable ,model-variable . ,_) target))
+                        (format "\n%s: backend=%s model=%s"
+                                (gptel-model-updater--target-label target)
+                                (and (boundp backend-variable)
+                                     (symbol-value backend-variable)
+                                     (gptel-backend-name (symbol-value backend-variable)))
+                                (and (boundp model-variable)
+                                     (symbol-value model-variable)))))
+                    gptel-model-updater-external-targets
+                    ""))))
+    (setq choice (or choice (gptel-model-updater--pick-backend-model)))
+    (gptel-model-updater--set-choice 'gptel-backend 'gptel-model choice)
+    (unless quiet
+      (message "GPTel: backend=%s model=%s"
+               (and (boundp 'gptel-backend) gptel-backend
+                    (gptel-backend-name gptel-backend))
+               (and (boundp 'gptel-model) gptel-model)))))
 
 ;;;###autoload
 (defun gptel-model-updater-update-backend (backend-name &optional provider-type url)
