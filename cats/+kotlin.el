@@ -1,12 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package kotlin-mode
-  :unless EMACS29+
   :custom
   (kotlin-args-repl '("-Xrepl")))
 
-(use-package kotlin-ts-mode
-  :when EMACS29+)
+(use-package kotlin-ts-mode)
 
 (use-package kotlin-ts-test
   :ensure nil
