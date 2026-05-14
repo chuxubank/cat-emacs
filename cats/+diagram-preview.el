@@ -2,7 +2,7 @@
 
 (use-package diagram-preview
   :vc (:url "https://github.com/natrys/diagram-preview")
-  :delight " "
+  :delight " "
   :hook (graphviz-dot-mode
          plantuml-mode
          mermaid-mode

@@ -35,6 +35,7 @@
   (markdown-xwidget-auto-theme))
 
 (use-package grip-mode
+  :delight " "
   :demand t
   :after markdown-mode
   :bind
