@@ -53,13 +53,24 @@ Each function is called with BACKEND-NAME, BACKEND, and MODELS."
   :type '(repeat symbol)
   :group 'gptel-model-updater)
 
+(defcustom gptel-model-updater-models nil
+  "Preferred models selected by `gptel-model-updater'.
+When non-nil, entries are tried in order.  Each entry must be BACKEND:MODEL.
+The first available backend/model pair is selected.  Entries may be symbols
+or strings."
+  :type '(repeat (choice symbol string))
+  :group 'gptel-model-updater)
+
 (defcustom gptel-model-updater-external-targets nil
   "External backend/model variable pairs set by `gptel-model-updater'.
-Each item is (BACKEND-VARIABLE MODEL-VARIABLE DISPLAY-NAME).  These
-targets are selected and set when
+Each item is (BACKEND-VARIABLE MODEL-VARIABLE DISPLAY-NAME MODEL-LIST).
+MODEL-LIST is optional and overrides `gptel-model-updater-models' for that
+target.  These targets are selected and set when
 `gptel-model-updater-select-backend-models' is called with external
 targets enabled, such as via a C-u prefix interactively."
-  :type '(repeat (list symbol symbol string))
+  :type '(repeat (choice (list symbol symbol string)
+                         (list symbol symbol string
+                               (repeat (choice symbol string)))))
   :group 'gptel-model-updater)
 
 (defun gptel-model-updater--backends ()
@@ -187,15 +198,75 @@ Iterates over `gptel-model-updater-backends' and returns their name strings."
   "Return a random model from MODELS."
   (nth (random (length models)) models))
 
-(defun gptel-model-updater--pick-backend-model ()
-  "Pick the first available managed backend and a random model."
+(defun gptel-model-updater--split-model-entry (entry)
+  "Return ENTRY as (BACKEND-NAME . MODEL), or nil for unsupported entries."
+  (let ((entry-name (cond
+                     ((symbolp entry) (symbol-name entry))
+                     ((stringp entry) entry))))
+    (when entry-name
+      (if (string-match-p ":" entry-name)
+          (pcase-let ((`(,backend-name ,model-name)
+                       (string-split entry-name ":" t)))
+            (when (and backend-name model-name)
+              (cons backend-name (intern model-name))))
+        nil))))
+
+(defun gptel-model-updater--normalize-model-list (models)
+  "Return MODELS as preferred (BACKEND-NAME . MODEL) entries."
+  (delq nil (mapcar #'gptel-model-updater--split-model-entry models)))
+
+(defun gptel-model-updater--pick-preferred-backend-model (model-list)
+  "Pick the first available backend/model following MODEL-LIST order."
   (catch 'found
-    (dolist (backend-symbol (gptel-model-updater--backends))
-      (when-let* ((backend (and (symbolp backend-symbol)
-                                (boundp backend-symbol)
-                                (symbol-value backend-symbol)))
+    (pcase-dolist (`(,backend-name . ,model)
+                   (gptel-model-updater--normalize-model-list model-list))
+      (dolist (backend-symbol (gptel-model-updater--backends))
+        (when-let* ((backend (and (symbolp backend-symbol)
+                                  (boundp backend-symbol)
+                                  (symbol-value backend-symbol)))
                   (models (gptel-backend-models backend)))
-        (throw 'found (cons backend (gptel-model-updater--random-model models)))))))
+          (when (and (or (not backend-name)
+                         (string= backend-name (gptel-backend-name backend)))
+                     (memq model models))
+            (throw 'found (cons backend model))))))))
+
+(defun gptel-model-updater--order-models (models &optional model-list backend-name)
+  "Return MODELS with MODEL-LIST entries for BACKEND-NAME first."
+  (let (selected)
+    (pcase-dolist (`(,entry-backend-name . ,model)
+                   (gptel-model-updater--normalize-model-list model-list))
+      (when (and (or (not entry-backend-name)
+                     (string= entry-backend-name backend-name))
+                 (memq model models)
+                 (not (memq model selected)))
+        (setq selected (append selected (list model)))))
+    (append selected (cl-remove-if (lambda (model) (memq model selected)) models))))
+
+(defun gptel-model-updater--pick-backend-model (&optional model-list)
+  "Pick an available backend/model.
+When MODEL-LIST is non-nil, prefer models in that order.  Otherwise, pick
+the first available managed backend and a random model."
+  (or (and model-list
+           (gptel-model-updater--pick-preferred-backend-model model-list))
+      (catch 'found
+        (dolist (backend-symbol (gptel-model-updater--backends))
+          (when-let* ((backend (and (symbolp backend-symbol)
+                                    (boundp backend-symbol)
+                                    (symbol-value backend-symbol)))
+                      (models (gptel-backend-models backend)))
+            (throw 'found (cons backend (gptel-model-updater--random-model models))))))))
+
+(defun gptel-model-updater--target-models (target)
+  "Return preferred model list configured on external TARGET."
+  (nth 3 target))
+
+(defun gptel-model-updater--hook-args-p (external choice)
+  "Return non-nil when EXTERNAL and CHOICE look like after-update hook args."
+  (and (stringp external) (listp choice)))
+
+(defun gptel-model-updater--effective-model-list (&optional model-list)
+  "Return MODEL-LIST or `gptel-model-updater-models'."
+  (or model-list gptel-model-updater-models))
 
 (defun gptel-model-updater--available-backends ()
   "Return configured backends that have model lists."
@@ -233,10 +304,10 @@ PROMPT-PREFIX is prepended to completion prompts."
   "Return display label for external TARGET."
   (or (nth 2 target) (symbol-name (car target))))
 
-(defun gptel-model-updater--select-external-targets (interactivep)
+(defun gptel-model-updater--select-external-targets (interactivep &optional model-list)
   "Set configured external targets.
 When INTERACTIVEP is non-nil, read each target with completion;
-otherwise select each target randomly."
+otherwise select each target from MODEL-LIST or randomly."
   (dolist (target gptel-model-updater-external-targets)
     (pcase-let ((`(,backend-variable ,model-variable . ,_) target))
       (when (and (symbolp backend-variable) (symbolp model-variable))
@@ -244,15 +315,19 @@ otherwise select each target randomly."
          backend-variable model-variable
          (if interactivep
              (gptel-model-updater--read-backend-model
-              (format "%s " (gptel-model-updater--target-label target)))
-           (gptel-model-updater--pick-backend-model)))))))
+               (format "%s " (gptel-model-updater--target-label target)))
+            (gptel-model-updater--pick-backend-model
+             (or (gptel-model-updater--target-models target)
+                 model-list))))))))
 
 ;;;###autoload
-(defun gptel-model-updater-select-backend-models (&optional external quiet choice interactive-external)
+(defun gptel-model-updater-select-backend-models (&optional external quiet choice interactive-external model-list)
   "Select GPTel backend/model from refreshed model lists.
-Interactively, read backend and model with completion.  Otherwise,
-backends are tried in `gptel-model-updater-backends' order.  The first backend
-with models is selected, and one model is chosen randomly.
+Interactively, read backend and model with completion.  Otherwise, entries
+in MODEL-LIST are tried in order.  Each entry may be BACKEND:MODEL, or just
+MODEL to search across `gptel-model-updater-backends'.  If MODEL-LIST is
+nil, use `gptel-model-updater-models'.  If neither list selects a model,
+the first backend with models is selected, and one model is chosen randomly.
 
 When EXTERNAL is non-nil, set variable pairs from
 `gptel-model-updater-external-targets' instead of the global
@@ -261,12 +336,18 @@ selection.  CHOICE is a cons of BACKEND and MODEL."
   (interactive
    (if current-prefix-arg
        (list t nil nil t)
-     (list nil
-           nil
-           (gptel-model-updater--read-backend-model "GPTel "))))
+      (list nil
+            nil
+            (gptel-model-updater--read-backend-model "GPTel "))))
+  (when (gptel-model-updater--hook-args-p external choice)
+    (setq external nil
+          quiet t
+          choice nil
+          interactive-external nil))
+  (setq model-list (gptel-model-updater--effective-model-list model-list))
   (if external
       (progn
-        (gptel-model-updater--select-external-targets interactive-external)
+        (gptel-model-updater--select-external-targets interactive-external model-list)
         (unless quiet
           (message "GPTel external targets set%s"
                    (mapconcat
@@ -279,9 +360,9 @@ selection.  CHOICE is a cons of BACKEND and MODEL."
                                      (gptel-backend-name (symbol-value backend-variable)))
                                 (and (boundp model-variable)
                                      (symbol-value model-variable)))))
-                    gptel-model-updater-external-targets
-                    ""))))
-    (setq choice (or choice (gptel-model-updater--pick-backend-model)))
+                     gptel-model-updater-external-targets
+                     ""))))
+    (setq choice (or choice (gptel-model-updater--pick-backend-model model-list)))
     (gptel-model-updater--set-choice 'gptel-backend 'gptel-model choice)
     (unless quiet
       (message "GPTel: backend=%s model=%s"
@@ -290,11 +371,11 @@ selection.  CHOICE is a cons of BACKEND and MODEL."
                (and (boundp 'gptel-model) gptel-model)))))
 
 ;;;###autoload
-(defun gptel-model-updater-update-backend (backend-name &optional provider-type url)
+(defun gptel-model-updater-update-backend (backend-name &optional provider-type url model-list)
   "Update models for BACKEND-NAME.
 PROVIDER-TYPE can be `openai', `ollama', or `gemini'.
 If nil, it is auto-detected from the backend struct type.
-URL overrides the default endpoint."
+URL overrides the default endpoint.  MODEL-LIST orders available models."
   (interactive
    (let ((backends (gptel-model-updater--get-backends)))
      (list (completing-read "Backend: " backends nil t))))
@@ -311,9 +392,12 @@ URL overrides the default endpoint."
          (lambda (success raw-data error-msg)
            (if (not success)
                (message "GPTel-Model-Updater Error: %s (%s)" backend-name error-msg)
-             (let ((new-models (gptel-model-updater--parse-models raw-data provider)))
-               (if (not new-models)
-                   (message "GPTel-Model-Updater: No models found for %s" backend-name)
+              (let ((new-models (gptel-model-updater--order-models
+                                 (gptel-model-updater--parse-models raw-data provider)
+                                 (gptel-model-updater--effective-model-list model-list)
+                                 backend-name)))
+                (if (not new-models)
+                    (message "GPTel-Model-Updater: No models found for %s" backend-name)
                  (setf (gptel-backend-models backend) new-models)
                  (message "GPTel-Model-Updater: Updated %s with %d models"
                           backend-name (length new-models))
@@ -321,14 +405,15 @@ URL overrides the default endpoint."
                                      backend-name backend new-models))))))))))
 
 ;;;###autoload
-(defun gptel-model-updater-update-all ()
-  "Update models for all configured GPTel backends."
+(defun gptel-model-updater-update-all (&optional model-list)
+  "Update models for all configured GPTel backends.
+MODEL-LIST orders available models."
   (interactive)
   (dolist (sym (gptel-model-updater--backends))
     (when (and (symbolp sym) (boundp sym))
       (let ((name (gptel-backend-name (symbol-value sym))))
         (condition-case err
-            (gptel-model-updater-update-backend name)
+            (gptel-model-updater-update-backend name nil nil model-list)
           (error (message "GPTel-Model-Updater: Failed to update %s: %s" name err)))))))
 
 (provide 'gptel-model-updater)

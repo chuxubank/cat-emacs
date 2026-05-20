@@ -13,6 +13,11 @@
   :hook
   (cat-idle-preload-hook . gptel-model-updater-update-all)
   :custom
+  (gptel-model-updater-models
+   '("IV:gpt-5.4"
+     "IV:claude-opus-4-7"
+     "IV:deepseek-v4-pro"
+     "OpenRouter:auto"))
   (gptel-model-updater-backends
    '(gptel--gemini
      gptel--iv
@@ -21,7 +26,9 @@
      gptel--ollama
      gptel--openrouter))
   (gptel-model-updater-external-targets
-   '((gptel-magit-backend gptel-magit-model "GPTel-Magit")))
+   '((gptel-magit-backend gptel-magit-model "GPTel-Magit"
+                          ("IV:deepseek-v4-flash"
+                           "OpenRouter:openai/gpt-oss-120b:free"))))
   :pretty-hydra
   (cat-vibe
    ("GPTel"
