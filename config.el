@@ -121,6 +121,7 @@
 (cat! "+ansible")
 (cat! "+caddy")
 (cat! "+docker")
+(cat! "+compile")
 
 ;;; plugins
 (when (eq HOST_ENV 'aa)

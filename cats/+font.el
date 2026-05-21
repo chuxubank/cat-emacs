@@ -157,6 +157,9 @@ If ADD is nil, the first existing font is set as replacement, and others are app
 (use-package nerd-icons
   :hook (cat-setup-fonts . nerd-icons-set-font))
 
+(use-package nerd-icons-completion
+  :hook (after-init . nerd-icons-completion-mode))
+
 (setq
  face-font-rescale-alist
  '(("Noto Serif Thai" . 0.4)
