@@ -5,11 +5,7 @@
   ("" ()))
 
 (use-package gptel-model-updater
-  :ensure nil
-  :commands
-  (gptel-model-updater-update-backend
-   gptel-model-updater-update-all
-   gptel-model-updater-select-backend-models)
+  :vc (:url "https://github.com/chuxubank/gptel-model-updater")
   :hook
   (cat-idle-preload-hook . gptel-model-updater-update-all)
   :custom
