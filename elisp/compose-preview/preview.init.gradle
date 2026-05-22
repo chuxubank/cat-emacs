@@ -1,0 +1,339 @@
+// Gradle init script used by compose-preview.el.
+//
+// It injects Paparazzi into the selected Android module and generates a
+// temporary JUnit test class that snapshots @Preview composables.
+
+import org.gradle.api.Project
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
+def selectedPath = System.getenv("COMPOSE_PREVIEW_MODULE_PATH")
+def selectedVariant = System.getenv("COMPOSE_PREVIEW_VARIANT") ?: "debug"
+def selectedVariantName = selectedVariant.capitalize()
+def generatedRoot = System.getenv("COMPOSE_PREVIEW_GENERATED_DIR")
+def className = "ComposePreviewPaparazziTest"
+def providerName = "ComposablePreviewProvider"
+def paparazziVersion = System.getenv("COMPOSE_PREVIEW_PAPARAZZI_VERSION") ?: "2.0.0-alpha02"
+def previewScannerVersion = System.getenv("COMPOSE_PREVIEW_SCANNER_VERSION") ?: "0.9.0"
+def testParameterInjectorVersion = System.getenv("COMPOSE_PREVIEW_TEST_PARAMETER_INJECTOR_VERSION") ?: "1.20"
+def junitVintageVersion = System.getenv("COMPOSE_PREVIEW_JUNIT_VINTAGE_VERSION") ?: "6.1.0"
+def junit4Version = System.getenv("COMPOSE_PREVIEW_JUNIT4_VERSION") ?: "4.13.2"
+def initScriptFile = new File(getClass().protectionDomain.codeSource.location.toURI())
+def initScriptDir = initScriptFile.isFile() ? initScriptFile.parentFile : initScriptFile
+def sourceTemplateFile = new File(
+  System.getenv("COMPOSE_PREVIEW_TEMPLATE_FILE") ?:
+    new File(initScriptDir, "compose-preview-paparazzi-test.template.kt").path
+)
+
+def androidPluginIds = [
+  "com.android.application",
+  "com.android.library",
+  "com.android.dynamic-feature"
+]
+
+def sanitize = { String value ->
+  value.replaceAll(/[^A-Za-z0-9_]/, "_")
+}
+
+def buildStateDirs = { Project project ->
+  [
+    new File(project.buildDir, "kspCaches/${selectedVariant}"),
+    new File(project.buildDir, "kotlin/compile${selectedVariantName}Kotlin/cacheable"),
+    new File(project.buildDir, "kotlin/compile${selectedVariantName}Kotlin/classpath-snapshot"),
+    new File(project.buildDir, "kotlin/compile${selectedVariantName}UnitTestKotlin/cacheable"),
+    new File(project.buildDir, "kotlin/compile${selectedVariantName}UnitTestKotlin/classpath-snapshot")
+  ]
+}
+
+def buildStateRoot = { Project project ->
+  new File(project.rootProject.projectDir, ".gradle/compose-preview/build-state/${sanitize(project.path)}/${selectedVariant}")
+}
+
+def buildStateManifest = { Project project ->
+  new File(buildStateRoot(project), "files.txt")
+}
+
+def variantRJar = { Project project ->
+  new File(
+    project.buildDir,
+    "intermediates/compile_and_runtime_not_namespaced_r_class_jar/${selectedVariant}/process${selectedVariantName}Resources/R.jar"
+  )
+}
+
+def generatedPackageName = { Project project ->
+  def namespace = project.extensions.findByName("android")?.namespace ?: project.group?.toString()
+  (namespace ?: "compose.preview.generated") + ".composepreview"
+}
+
+def generatedTestClassName = { Project project ->
+  "${generatedPackageName(project)}.${className}"
+}
+
+def ensureBuildState = { Project project ->
+  buildStateDirs(project).each { dir ->
+    dir.mkdirs()
+  }
+  def kspSymbols = new File(project.buildDir, "kspCaches/${selectedVariant}/symbols")
+  if (kspSymbols.isDirectory()) {
+    project.delete(kspSymbols)
+  }
+  if (!kspSymbols.exists()) {
+    kspSymbols.parentFile.mkdirs()
+    kspSymbols.createNewFile()
+  }
+}
+
+def snapshotBuildFile = { Project project, File stateRoot, Set<String> paths, File source ->
+  if (!source.isFile()) {
+    return
+  }
+  def rootPath = project.rootProject.projectDir.toPath()
+  def sourcePath = source.toPath()
+  if (!sourcePath.startsWith(rootPath)) {
+    return
+  }
+  def relativePath = rootPath.relativize(sourcePath).toString()
+  def target = new File(stateRoot, relativePath)
+  target.parentFile.mkdirs()
+  Files.copy(sourcePath, target.toPath(), StandardCopyOption.REPLACE_EXISTING)
+  paths.add(relativePath)
+}
+
+def snapshotBuildTree = { Project project, File stateRoot, Set<String> paths, File root, String includes ->
+  if (!root.isDirectory()) {
+    return
+  }
+  project.fileTree(dir: root, include: includes).files.each { file ->
+    snapshotBuildFile(project, stateRoot, paths, file)
+  }
+}
+
+def snapshotBuildState = { Project project ->
+  def stateRoot = buildStateRoot(project)
+  def manifest = buildStateManifest(project)
+  def paths = new LinkedHashSet<String>()
+  if (manifest.isFile()) {
+    manifest.eachLine { relativePath ->
+      if (relativePath) {
+        paths.add(relativePath)
+      }
+    }
+  }
+  stateRoot.mkdirs()
+
+  snapshotBuildFile(project, stateRoot, paths, variantRJar(project))
+  snapshotBuildTree(
+    project,
+    stateRoot,
+    paths,
+    new File(project.buildDir, "generated/source/buildConfig"),
+    "**/BuildConfig.java"
+  )
+  snapshotBuildTree(
+    project,
+    stateRoot,
+    paths,
+    new File(project.buildDir, "generated/ksp/${selectedVariant}"),
+    "**/*"
+  )
+
+  project.rootProject.allprojects.each { candidate ->
+    def libsDir = new File(candidate.buildDir, "libs")
+    if (libsDir.isDirectory()) {
+      libsDir.listFiles()
+        ?.findAll { it.isFile() && it.name.endsWith(".jar") }
+        ?.each { jar -> snapshotBuildFile(project, stateRoot, paths, jar) }
+    }
+  }
+
+  manifest.parentFile.mkdirs()
+  manifest.text = paths.join("\n")
+  project.logger.lifecycle("compose-preview: snapshotted ${paths.size()} build-state file(s) for ${project.path}")
+}
+
+def restoreBuildState = { Project project ->
+  ensureBuildState(project)
+  def stateRoot = buildStateRoot(project)
+  def manifest = buildStateManifest(project)
+  if (!manifest.isFile()) {
+    return
+  }
+  def restored = 0
+  manifest.eachLine { relativePath ->
+    if (relativePath) {
+      def source = new File(stateRoot, relativePath)
+      def target = new File(project.rootProject.projectDir, relativePath)
+      if (source.isFile()) {
+        target.parentFile.mkdirs()
+        Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        restored++
+      }
+    }
+  }
+  project.logger.lifecycle("compose-preview: restored ${restored} build-state file(s) for ${project.path}")
+}
+
+def generateTestSource = { Project project, File outputDir ->
+  def namespace = project.extensions.findByName("android")?.namespace ?: project.group?.toString()
+  def scanPackage = namespace ?: ""
+  def packageName = generatedPackageName(project)
+  def source = sourceTemplateFile.getText("UTF-8")
+    .replace("__PACKAGE_NAME__", packageName)
+    .replace("__CLASS_NAME__", className)
+    .replace("__PROVIDER_NAME__", providerName)
+    .replace("__SCAN_PACKAGE__", scanPackage)
+  def file = new File(outputDir, packageName.replace(".", "/") + "/${className}.kt")
+  file.parentFile.mkdirs()
+  file.text = source
+  project.logger.lifecycle("compose-preview: generated scanner-backed Paparazzi source for ${scanPackage} at ${file}")
+}
+
+gradle.beforeProject { project ->
+  if (!selectedPath || project.path == selectedPath) {
+    project.buildscript.repositories {
+      google()
+      mavenCentral()
+    }
+    project.buildscript.dependencies.add(
+      "classpath",
+      "app.cash.paparazzi:paparazzi-gradle-plugin:${paparazziVersion}"
+    )
+  }
+}
+
+allprojects { project ->
+  if (selectedPath && project.path != selectedPath) {
+    return
+  }
+
+  androidPluginIds.each { pluginId ->
+    project.plugins.withId(pluginId) {
+      project.apply plugin: "app.cash.paparazzi"
+
+      def sourceDir = generatedRoot
+        ? new File(new File(generatedRoot, sanitize(project.path)), "src/test/kotlin")
+        : new File(project.rootProject.projectDir, ".gradle/compose-preview/generated/${sanitize(project.path)}/src/test/kotlin")
+
+      project.dependencies.add("testImplementation", "app.cash.paparazzi:paparazzi:${paparazziVersion}")
+      project.dependencies.add(
+        "testImplementation",
+        "io.github.sergio-sastre.ComposablePreviewScanner:android:${previewScannerVersion}"
+      )
+      project.dependencies.add(
+        "testImplementation",
+        "com.google.testparameterinjector:test-parameter-injector:${testParameterInjectorVersion}"
+      )
+      project.dependencies.add("testImplementation", "junit:junit:${junit4Version}")
+      project.dependencies.add("testRuntimeOnly", "org.junit.vintage:junit-vintage-engine:${junitVintageVersion}")
+
+      project.extensions.configure("android") { android ->
+        android.sourceSets {
+          test.java.srcDir(sourceDir)
+          test.kotlin.srcDir(sourceDir)
+        }
+      }
+
+      def generateTask = project.tasks.register("generateComposePreviewPaparazziTest") {
+        doLast {
+          project.delete(sourceDir)
+          generateTestSource(project, sourceDir)
+        }
+      }
+
+      def prepareBuildDirsTask = project.tasks.register("prepareComposePreviewBuildDirs") {
+        doLast {
+          ensureBuildState(project)
+        }
+      }
+
+      def snapshotBuildStateTask = project.tasks.register("snapshotComposePreviewBuildState") {
+        doLast {
+          snapshotBuildState(project)
+        }
+      }
+
+      def restoreBuildStateAction = {
+        restoreBuildState(project)
+      }
+
+      def restoreBefore = { String taskName, List<String> previousTaskNames ->
+        def restoreTask = project.tasks.register(
+          "restoreComposePreviewBuildStateFor${taskName.capitalize()}"
+        ) {
+          dependsOn(snapshotBuildStateTask)
+          dependsOn(project.tasks.matching { previousTaskNames.contains(it.name) })
+          doLast {
+            restoreBuildState(project)
+          }
+        }
+        project.tasks.matching { it.name == taskName }.configureEach { task ->
+          task.dependsOn(restoreTask)
+          task.doFirst {
+            restoreBuildStateAction()
+          }
+        }
+      }
+
+      def dependentTaskNames = [
+          "compile${selectedVariantName}UnitTestKotlin",
+          "compile${selectedVariantName}UnitTestJavaWithJavac",
+          "test${selectedVariantName}UnitTest",
+          "recordPaparazzi${selectedVariantName}",
+          "verifyPaparazzi${selectedVariantName}"
+      ]
+
+      project.afterEvaluate {
+        [
+          "process${selectedVariantName}Resources",
+          "generate${selectedVariantName}BuildConfig"
+        ].each { taskName ->
+          def task = project.tasks.findByName(taskName)
+          if (task != null) {
+            snapshotBuildStateTask.configure {
+              dependsOn(task)
+            }
+          }
+        }
+
+        dependentTaskNames.each { taskName ->
+          def task = project.tasks.findByName(taskName)
+          task?.dependsOn(generateTask, prepareBuildDirsTask, snapshotBuildStateTask)
+          task?.outputs?.upToDateWhen { false }
+        }
+
+        project.tasks.matching { it.name == "test${selectedVariantName}UnitTest" }.configureEach { task ->
+          task.filter {
+            includeTestsMatching(generatedTestClassName(project))
+          }
+        }
+
+        project.tasks.matching { it.name == "finalizeTestRoborazzi${selectedVariantName}" }.configureEach { task ->
+          task.enabled = false
+        }
+
+        restoreBefore("ksp${selectedVariantName}Kotlin", ["snapshotComposePreviewBuildState"])
+        restoreBefore("compile${selectedVariantName}Kotlin", ["ksp${selectedVariantName}Kotlin"])
+        restoreBefore("compile${selectedVariantName}JavaWithJavac", ["compile${selectedVariantName}Kotlin"])
+        restoreBefore("hiltAggregateDeps${selectedVariantName}", ["compile${selectedVariantName}JavaWithJavac"])
+        restoreBefore("hiltJavaCompile${selectedVariantName}", ["hiltAggregateDeps${selectedVariantName}"])
+        restoreBefore("ksp${selectedVariantName}UnitTestKotlin", ["hiltJavaCompile${selectedVariantName}"])
+        restoreBefore("compile${selectedVariantName}UnitTestKotlin", ["ksp${selectedVariantName}UnitTestKotlin"])
+        restoreBefore("compile${selectedVariantName}UnitTestJavaWithJavac", ["compile${selectedVariantName}UnitTestKotlin"])
+        restoreBefore("hiltAggregateDeps${selectedVariantName}UnitTest", ["compile${selectedVariantName}UnitTestJavaWithJavac"])
+        restoreBefore("hiltJavaCompile${selectedVariantName}UnitTest", ["hiltAggregateDeps${selectedVariantName}UnitTest"])
+
+        [
+          "ksp${selectedVariantName}Kotlin",
+          "compile${selectedVariantName}Kotlin",
+          "compile${selectedVariantName}JavaWithJavac"
+        ].each { taskName ->
+          project.tasks.findByName(taskName)?.doLast {
+            snapshotBuildState(project)
+          }
+        }
+      }
+
+      project.logger.lifecycle("compose-preview: generated sources will be written to ${sourceDir}")
+    }
+  }
+}

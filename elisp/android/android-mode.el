@@ -354,7 +354,7 @@ With REFRESH non-nil, re-fetch from gradle."
           (android-in-directory
            root
            (let* ((script android-mode-flavor-script)
-                  (command (format "./gradlew -I %s listFlavors --quiet"
+                  (command (format "./gradlew --no-configuration-cache -I %s help --quiet"
                                    (shell-quote-argument script)))
                   (output (shell-command-to-string command))
                   (data (android-parse-gradle-flavors output)))

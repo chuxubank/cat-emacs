@@ -29,6 +29,21 @@
      ("f" #'android-print-flavor "flavors")
      ("R" #'android-refresh-flavors "refresh")))))
 
+(use-package compose-preview
+  :ensure nil
+  :commands (compose-preview-record
+             compose-preview-verify
+             compose-preview-open-results
+             compose-preview-gallery
+             compose-preview-set-variant)
+  :pretty-hydra
+  (cat-android
+   ("Compose"
+    (("p" #'compose-preview-record "preview")
+     ("P" #'compose-preview-open-results "open previews")
+     ("v" #'compose-preview-verify "verify previews")
+     ("V" #'compose-preview-set-variant "set variant")))))
+
 (use-package elogcat
   :vc (:url "https://github.com/chuxubank/elogcat.el")
   :bind
