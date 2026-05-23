@@ -44,6 +44,7 @@
                       '(conf-toml-mode  . toml-ts-mode)
                       '(js-mode         . js-ts-mode)
                       '(kotlin-mode     . kotlin-ts-mode)
+                      '(rust-mode       . rust-ts-mode)
                       '(swift-mode      . swift-ts-mode)
                       '(sh-mode         . bash-ts-mode)
                       '(typescript-mode . typescript-ts-mode)))
