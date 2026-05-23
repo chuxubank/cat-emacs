@@ -221,6 +221,7 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'comint-mode
                       'mistty-mode
                       'vterm-mode
+                      'ghostel-mode
                       'logview-mode)
       (let ((font (nth 0 cat-mono-code-fonts)))
         (+safe-buffer-face-set-fonts font)

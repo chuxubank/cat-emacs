@@ -87,6 +87,12 @@
     :config
     (meow-vterm-enable)))
 
+(use-package ghostel
+  :pretty-hydra
+  (cat-term
+   ("Ghostty"
+    (("g" #'ghostel "Ghostel")))))
+
 (use-package shell-maker
   :custom
   (shell-maker-root-path (concat cat-local-dir "shell-maker/"))
