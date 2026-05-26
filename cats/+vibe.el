@@ -30,7 +30,7 @@
    ("GPTel"
     (("u" #'gptel-model-updater-update-backend "update")
      ("U" #'gptel-model-updater-update-all "update all")
-     ("m" #'gptel-model-updater-select-backend-models "select model")))))
+     ("m" #'gptel-model-updater-select-all-targets "select all targets")))))
 
 (use-package gptel
   :delight " 󱡄"
