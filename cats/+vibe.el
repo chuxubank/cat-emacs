@@ -16,7 +16,7 @@
      "OpenRouter:auto"))
   (gptel-model-updater-backends
    '(gptel--gemini
-     gptel--iv
+     (gptel--iv :providers (all))
      gptel--llama
      gptel--mlx
      gptel--ollama
@@ -88,15 +88,13 @@
           :stream t)
         gptel--ollama
         (gptel-make-ollama "Ollama"
-          :stream t))
-  (gptel-model-updater-select-backend-models))
+          :stream t)))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
   :config
-  (gptel-model-updater-select-backend-models t)
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
