@@ -9,6 +9,7 @@
   :hook
   (cat-idle-preload-hook . gptel-model-updater-update-all)
   :custom
+  (gptel-model-updater-metadata-overwrite-existing t)
   (gptel-model-updater-models
    '("IV:gpt-5.4"
      "IV:claude-opus-4-7"
