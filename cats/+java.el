@@ -2,7 +2,7 @@
 
 (use-package java-imports
   :disabled
-  :hook ((java-mode kotlin-mode) . java-imports-scan-file)
+  :hook (java-mode . java-imports-scan-file)
   :custom
   (java-imports-find-block-function 'java-imports-find-place-sorted-block))
 
