@@ -66,6 +66,41 @@ def generatedTestClassName = { Project project ->
   "${generatedPackageName(project)}.${className}"
 }
 
+def manifestFile = { Project project ->
+  new File(
+    project.rootProject.projectDir,
+    ".gradle/compose-preview/${sanitize(project.path)}/${selectedVariant}/previews.tsv"
+  )
+}
+
+def kotlinString = { String value ->
+  "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+}
+
+def sourceRoots = { Project project ->
+  def roots = new LinkedHashSet<File>()
+  def android = project.extensions.findByName("android")
+  android?.sourceSets?.each { sourceSet ->
+    sourceSet?.java?.srcDirs?.each { roots.add(it) }
+    if (sourceSet?.hasProperty("kotlin")) {
+      sourceSet.kotlin.srcDirs.each { roots.add(it) }
+    }
+  }
+  [
+    "src/main/kotlin",
+    "src/main/java",
+    "src/${selectedVariant}/kotlin",
+    "src/${selectedVariant}/java"
+  ].each { path -> roots.add(new File(project.projectDir, path)) }
+  roots
+    .findAll { it.isDirectory() }
+    .collect { it.absolutePath }
+}
+
+def kotlinStringList = { List<String> values ->
+  "listOf(" + values.collect { kotlinString(it) }.join(", ") + ")"
+}
+
 def ensureBuildState = { Project project ->
   buildStateDirs(project).each { dir ->
     dir.mkdirs()
@@ -185,6 +220,8 @@ def generateTestSource = { Project project, File outputDir ->
     .replace("__CLASS_NAME__", className)
     .replace("__PROVIDER_NAME__", providerName)
     .replace("__SCAN_PACKAGE__", scanPackage)
+    .replace("__MANIFEST_FILE__", manifestFile(project).path.replace("\\", "\\\\"))
+    .replace("__SOURCE_ROOTS__", kotlinStringList(sourceRoots(project)))
   def file = new File(outputDir, packageName.replace(".", "/") + "/${className}.kt")
   file.parentFile.mkdirs()
   file.text = source

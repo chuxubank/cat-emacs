@@ -35,9 +35,13 @@ opens the resulting PNGs in an Emacs gallery buffer. Build output stays in
 The gallery is source-focused: when refresh is launched from a Kotlin file, it
 shows only previews declared in that buffer and labels each section with the
 preview display name rather than the Paparazzi PNG filename.
-Custom multipreview annotations such as `@DevicePreview`, `@PreviewBackground`,
-and AndroidX templates like `@PreviewScreenSizes` are treated as preview
-annotations for current-buffer filtering.
+Preview metadata comes from `AndroidComposablePreviewScanner`, not Emacs-side
+annotation parsing, so custom multipreview annotations such as `@DevicePreview`,
+`@PreviewBackground`, and AndroidX templates like `@PreviewScreenSizes` follow
+the same discovery path as Android Studio-style previews.
+When invoked from a Kotlin buffer, the gallery does not fall back to module-wide
+images; if the scanner manifest cannot attribute a preview to that source file,
+the command reports that no current-buffer previews were found.
 
 The generated runner uses `AndroidComposablePreviewScanner`,
 `TestParameterInjector`, and `AndroidPreviewScreenshotIdBuilder`, so preview
