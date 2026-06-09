@@ -64,8 +64,10 @@ KSP1. Recent KSP versions fail configuration when `ksp.useKSP2=false` is passed.
 `2.0.0-alpha02` still needs AGP's legacy Android extension for resource tasks in
 AGP 9 projects.
 
-Refresh uses Gradle, Kotlin, KSP, and build caches by default. If a project hits
-stale generated state while previewing, temporarily set
+Refresh uses Gradle build cache, parallel execution, Kotlin incremental
+compilation, and KSP incremental processing by default. Configuration cache is
+disabled because the preview init script injects dynamic task actions. If a
+project hits stale generated state while previewing, temporarily set
 `compose-preview-force-clean-build` to non-nil to run a slower clean-style
 preview build.
 

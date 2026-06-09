@@ -472,9 +472,9 @@ When FORCE-PROMPT is non-nil, prompt for module and variant via android-mode."
                          (list "-Pksp.incremental=false"
                                "-Pkotlin.incremental=false"
                                "--no-build-cache"
-                               "--no-configuration-cache"
                                "--no-parallel"))
-                       (list "--init-script"
+                       (list "--no-configuration-cache"
+                             "--init-script"
                              init-script)))
          (command (string-join (mapcar #'shell-quote-argument args) " "))
          (env (list (concat "COMPOSE_PREVIEW_MODULE_PATH=" module-path)
