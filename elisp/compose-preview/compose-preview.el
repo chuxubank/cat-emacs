@@ -645,11 +645,5 @@ VARIANT defaults to `compose-preview-default-variant'."
   (setq compose-preview-default-variant variant)
   (message "compose-preview: default variant set to %s" variant))
 
-;;;###autoload
-(defun compose-preview-gallery ()
-  "Backward-compatible alias for `compose-preview-refresh'."
-  (interactive)
-  (compose-preview-refresh))
-
 (provide 'compose-preview)
 ;;; compose-preview.el ends here

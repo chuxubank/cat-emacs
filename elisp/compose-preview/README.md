@@ -23,8 +23,6 @@ secondary Paparazzi utilities.
   - secondary snapshot command: records Paparazzi golden images.
 - `M-x compose-preview-verify`
   - secondary snapshot command: verifies Paparazzi golden images.
-- `M-x compose-preview-gallery`
-  - compatibility alias for `compose-preview-refresh`.
 
 ## How It Works
 

@@ -35,7 +35,6 @@
              compose-preview-record
              compose-preview-verify
              compose-preview-open-results
-             compose-preview-gallery
              compose-preview-set-variant)
   :pretty-hydra
   (cat-android
