@@ -28,7 +28,7 @@ secondary Paparazzi utilities.
 
 `compose-preview-refresh` runs Gradle in the background with a temporary init
 script. The script injects Paparazzi into the current Android module, generates a
-temporary scanner-backed preview runner, runs `recordPaparazzi<Variant>`, and
+temporary scanner-backed preview runner, runs `test<Variant>UnitTest`, and
 opens the resulting PNGs in an Emacs gallery buffer. Build output stays in
 `*compose-preview-log*` and is shown only when refresh fails.
 
@@ -74,8 +74,7 @@ AGP 9 projects.
   `M-x compose-preview-set-variant`.
 - If Gradle reports an ambiguous task such as `recordPaparazziDebug`, the Emacs
   command offers the candidate variants and retries with the selected one.
-- Paparazzi still exposes rendering through snapshot tasks, so refresh currently
-  uses `recordPaparazzi<Variant>` under the hood. That is an implementation
-  detail of the preview renderer rather than the primary user workflow.
-- Paparazzi's output locations are unchanged, commonly `src/test/snapshots` for
-  recorded snapshots and `build/paparazzi` for failures.
+- Refresh runs the generated preview test through the normal unit-test task and
+  reads Paparazzi's HTML report images. It does not record golden snapshots.
+- `compose-preview-record` still uses `recordPaparazzi<Variant>`, so recorded
+  golden snapshots use Paparazzi's normal `src/test/snapshots` location.

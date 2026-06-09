@@ -296,16 +296,99 @@ Each entry is (PROJECT-ROOT . TARGET), where TARGET is a plist containing
     (and (string-match-p (regexp-quote method-prefix) stem)
          (string-match-p (regexp-quote (compose-preview-item-id preview)) stem))))
 
-(defun compose-preview--attach-preview-files (previews files)
-  "Return PREVIEWS with matching snapshot FILES attached."
-  (mapcar
-   (lambda (preview)
-     (setf (compose-preview-item-files preview)
-           (seq-filter (lambda (file)
-                         (compose-preview--snapshot-matches-preview-p file preview))
-                       files))
-     preview)
-   previews))
+(defun compose-preview--report-run-files (module-root)
+  "Return Paparazzi report run metadata files under MODULE-ROOT."
+  (let ((reports-root (expand-file-name "build/reports/paparazzi" module-root))
+        files)
+    (when (file-directory-p reports-root)
+      (dolist (runs-dir (directory-files-recursively reports-root "\\`runs\\'" t))
+        (when (file-directory-p runs-dir)
+          (setq files
+                (nconc files
+                       (directory-files-recursively runs-dir "\\.js\\'"))))))
+    (sort files #'string<)))
+
+(defun compose-preview--report-name-base (name)
+  "Return Paparazzi run NAME without a duplicate numeric suffix."
+  (if (string-match "\\`\\(.*\\)_[0-9]+\\'" name)
+      (match-string 1 name)
+    name))
+
+(defun compose-preview--put-report-image (index key file)
+  "Add FILE to report INDEX under KEY."
+  (puthash key (cons file (gethash key index)) index))
+
+(defun compose-preview--report-js-field (field)
+  "Return Paparazzi run JS FIELD value from the current buffer."
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward
+           (format "\"%s\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\""
+                   (regexp-quote field))
+           nil t)
+      (match-string-no-properties 1))))
+
+(defun compose-preview--report-image-index (module-root)
+  "Return hash table from preview keys to report PNG files."
+  (let ((index (make-hash-table :test #'equal)))
+    (dolist (run-file (compose-preview--report-run-files module-root))
+      (with-temp-buffer
+        (insert-file-contents run-file)
+        (let* ((name (compose-preview--report-js-field "name"))
+               (test-name (compose-preview--report-js-field "testName"))
+               (image (compose-preview--report-js-field "file"))
+               (run-root (file-name-directory (directory-file-name
+                                               (file-name-directory run-file)))))
+          (when (and test-name image
+                     (string-match
+                      "#snapshot\\[[0-9]+\\.\\(.+\\)_\\([^]]+\\)\\]"
+                      test-name))
+            (let* ((declaring-class (match-string 1 test-name))
+                   (method (match-string 2 test-name))
+                   (file (expand-file-name image run-root)))
+              (when (file-readable-p file)
+                (compose-preview--put-report-image
+                 index
+                 (concat declaring-class "#" method)
+                 file)
+                (when (and name (not (string-empty-p name)))
+                  (compose-preview--put-report-image
+                   index
+                   (concat declaring-class
+                           "#"
+                           method
+                           "#"
+                           (compose-preview--report-name-base name))
+                   file))))))))
+    (maphash (lambda (key value)
+               (puthash key (delete-dups (sort value #'string<)) index))
+             index)
+    index))
+
+(defun compose-preview--report-files-for-preview (preview report-index)
+  "Return report PNG files for PREVIEW from REPORT-INDEX."
+  (let ((method-key (concat (compose-preview-item-declaring-class preview)
+                            "#"
+                            (compose-preview-item-method preview)))
+        (id (compose-preview-item-id preview)))
+    (or (and id
+             (not (string-empty-p id))
+             (gethash (concat method-key "#" id) report-index))
+        (gethash method-key report-index))))
+
+(defun compose-preview--attach-preview-files (previews files module-root)
+  "Return PREVIEWS with matching snapshot FILES under MODULE-ROOT attached."
+  (let ((report-index (compose-preview--report-image-index module-root)))
+    (mapcar
+     (lambda (preview)
+       (setf (compose-preview-item-files preview)
+             (or (and report-index
+                      (compose-preview--report-files-for-preview preview report-index))
+                 (seq-filter (lambda (file)
+                               (compose-preview--snapshot-matches-preview-p file preview))
+                             files)))
+       preview)
+     previews)))
 
 (defun compose-preview--android-flavors-available-p ()
   "Return non-nil when android-mode flavor helpers are available."
@@ -476,7 +559,7 @@ ACTION is `record' or `verify' and is used for retrying ambiguous variants."
              (with-current-buffer (process-buffer proc)
                (compose-preview--retry-ambiguous-variant)))
             ((compose-preview--image-files module-root)
-             (message "compose-preview: refresh failed after producing images; opening available previews")
+             (message "compose-preview: Gradle reported an error after rendering; opening available previews")
              (compose-preview-open-results
               module-root
               (compose-preview--source-file-previews source-file target)
@@ -501,11 +584,13 @@ ACTION is `record' or `verify' and is used for retrying ambiguous variants."
 
 (defun compose-preview--candidate-variants (action)
   "Return candidate variants from the current Gradle error buffer for ACTION."
-  (let ((prefix (pcase action
-                  ('preview "recordPaparazzi")
-                  ('record "recordPaparazzi")
-                  ('verify "verifyPaparazzi")
-                  (_ nil)))
+  (let* ((task-shape (pcase action
+                       ('preview '("test" . "UnitTest"))
+                       ('record '("recordPaparazzi" . ""))
+                       ('verify '("verifyPaparazzi" . ""))
+                       (_ nil)))
+         (prefix (car task-shape))
+         (suffix (cdr task-shape))
         (start (save-excursion
                  (goto-char (point-min))
                  (and (re-search-forward "Candidates are:" nil t)
@@ -515,7 +600,10 @@ ACTION is `record' or `verify' and is used for retrying ambiguous variants."
       (save-excursion
         (goto-char start)
         (while (re-search-forward
-                (concat "'" (regexp-quote prefix) "\\([[:alnum:]_]+\\)'")
+                (concat "'" (regexp-quote prefix)
+                        "\\([[:alnum:]_]+\\)"
+                        (regexp-quote suffix)
+                        "'")
                 nil t)
           (push (compose-preview--uncapitalize-variant (match-string 1))
                 variants))))
@@ -532,11 +620,13 @@ ACTION is `record' or `verify' and is used for retrying ambiguous variants."
     (let* ((variant (completing-read "Compose preview variant: " variants nil t
                                      nil nil (car variants)))
            (task-prefix (pcase action
-                          ('preview "recordPaparazzi")
+                          ('preview "test")
                           ('record "recordPaparazzi")
                           ('verify "verifyPaparazzi")))
            (task (concat task-prefix
-                         (compose-preview--capitalize-variant variant))))
+                         (compose-preview--capitalize-variant variant)
+                         (when (eq action 'preview)
+                           "UnitTest"))))
       (setq compose-preview-default-variant variant)
       (message "compose-preview: retrying with variant %s" variant)
       (let ((target (list :project-root project-root
@@ -635,7 +725,7 @@ When called interactively, use the current Gradle module."
                              (ignore-errors (compose-preview--target))))))
          (preview-images (and previews
                               (compose-preview--attach-preview-files
-                               previews images)))
+                               previews images root)))
          (visible-images (if preview-images
                              (apply #'append
                                     (mapcar #'compose-preview-item-files preview-images))
@@ -664,8 +754,9 @@ and variant using android-mode's flavor data when available."
   (let* ((target (compose-preview--target current-prefix-arg))
          (variant (or variant (plist-get target :variant)))
          (source-file buffer-file-name)
-         (task (concat "recordPaparazzi"
-                       (compose-preview--capitalize-variant variant))))
+         (task (concat "test"
+                       (compose-preview--capitalize-variant variant)
+                       "UnitTest")))
     (setq target (compose-preview--cache-target
                   (plist-put target :variant variant)))
     (setq target (plist-put target :source-file source-file))
