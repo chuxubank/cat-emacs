@@ -109,10 +109,6 @@ def ensureBuildState = { Project project ->
   if (kspSymbols.isDirectory()) {
     project.delete(kspSymbols)
   }
-  if (!kspSymbols.exists()) {
-    kspSymbols.parentFile.mkdirs()
-    kspSymbols.createNewFile()
-  }
 }
 
 def snapshotBuildFile = { Project project, File stateRoot, Set<String> paths, File source ->
