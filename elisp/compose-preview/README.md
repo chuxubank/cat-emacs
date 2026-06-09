@@ -1,28 +1,50 @@
 # Compose Preview
 
-Preview Jetpack Compose `@Preview` functions from Emacs using
-[Paparazzi](https://github.com/cashapp/paparazzi).
+Android Studio-style Jetpack Compose `@Preview` browsing from Emacs.
 
-The package runs Gradle asynchronously with a temporary init script. The script
-injects Paparazzi into the current Android module, generates a temporary
-parameterized JUnit test that scans `main` source-set `@Preview` composables,
-runs the Paparazzi task, and opens the generated PNG snapshots in an Emacs
-gallery buffer.
+Paparazzi is used as the rendering engine because it can render Compose without
+an emulator. The Emacs experience is centered on refreshing and viewing previews,
+not on running UI tests. Snapshot record/verify commands remain available as
+secondary Paparazzi utilities.
 
 ## Commands
 
-- `M-x compose-preview-record`
-  - runs `recordPaparazzi<Variant>` for the current Android module.
-- `M-x compose-preview-verify`
-  - runs `verifyPaparazzi<Variant>` for the current Android module.
-- `C-u M-x compose-preview-record`
+- `M-x compose-preview-refresh`
+  - refreshes previews silently for the current Android module and opens the
+    image gallery for the current Kotlin buffer's `@Preview` functions.
+- `C-u M-x compose-preview-refresh`
   - prompts for module and variant using android-mode's cached flavor data.
+- `M-x compose-preview-open-results`
+  - opens generated preview PNGs. From a Kotlin buffer, it filters to that
+    buffer's previews; elsewhere it falls back to the module gallery.
 - `M-x compose-preview-set-variant`
   - changes the default variant using android-mode's variant list when present.
-- `M-x compose-preview-open-results`
-  - opens existing Paparazzi PNG outputs for the current module.
+- `M-x compose-preview-record`
+  - secondary snapshot command: records Paparazzi golden images.
+- `M-x compose-preview-verify`
+  - secondary snapshot command: verifies Paparazzi golden images.
 - `M-x compose-preview-gallery`
-  - compatibility alias for `compose-preview-record`.
+  - compatibility alias for `compose-preview-refresh`.
+
+## How It Works
+
+`compose-preview-refresh` runs Gradle in the background with a temporary init
+script. The script injects Paparazzi into the current Android module, generates a
+temporary scanner-backed preview runner, runs `recordPaparazzi<Variant>`, and
+opens the resulting PNGs in an Emacs gallery buffer. Build output stays in
+`*compose-preview-log*` and is shown only when refresh fails.
+
+The gallery is source-focused: when refresh is launched from a Kotlin file, it
+shows only previews declared in that buffer and labels each section with the
+preview display name rather than the Paparazzi PNG filename.
+Custom multipreview annotations such as `@DevicePreview`, `@PreviewBackground`,
+and AndroidX templates like `@PreviewScreenSizes` are treated as preview
+annotations for current-buffer filtering.
+
+The generated runner uses `AndroidComposablePreviewScanner`,
+`TestParameterInjector`, and `AndroidPreviewScreenshotIdBuilder`, so preview
+discovery is closer to Android Studio than a hand-written regex. It scans the
+module namespace package tree and includes private previews.
 
 ## Configuration
 
@@ -41,22 +63,17 @@ AGP 9 projects.
 
 ## Notes
 
-- This is aimed at Android modules using Jetpack Compose.
 - Projects with product flavors usually need a full variant name, for example
   `demoDebug`, because Paparazzi creates tasks like `recordPaparazziDemoDebug`.
-  compose-preview reuses android-mode's flavor cache and selection helpers for
-  these variants.
-  If Gradle reports an ambiguous task such as `recordPaparazziDebug`, the Emacs
-  command will offer the candidate variants and retry with the selected one.
-- The generated test uses
-  `AndroidComposablePreviewScanner`, `TestParameterInjector`, and
-  `AndroidPreviewScreenshotIdBuilder` so each discovered preview becomes one
-  Paparazzi snapshot.
-- The scanner reads previews from the module's `main` source package tree, which
-  matches the user-facing Android Studio preview model.
-- Paparazzi `2.0.0-alpha02` configures successfully on an AGP 8.12 project in
-  local testing. AGP 9 projects may need a newer Paparazzi version once one is
-  available.
-- Paparazzi's record task writes snapshots using Paparazzi's normal Gradle
-  output locations, commonly under `src/test/snapshots` for recorded snapshots
-  and `build/paparazzi` for failures.
+  compose-preview reuses android-mode's flavor cache and selection helpers.
+- The selected module and variant are cached per Gradle project, so refreshes
+  from Kotlin buffers, the preview gallery, or the log buffer reuse the same
+  target until you select another one with `C-u M-x compose-preview-refresh` or
+  `M-x compose-preview-set-variant`.
+- If Gradle reports an ambiguous task such as `recordPaparazziDebug`, the Emacs
+  command offers the candidate variants and retries with the selected one.
+- Paparazzi still exposes rendering through snapshot tasks, so refresh currently
+  uses `recordPaparazzi<Variant>` under the hood. That is an implementation
+  detail of the preview renderer rather than the primary user workflow.
+- Paparazzi's output locations are unchanged, commonly `src/test/snapshots` for
+  recorded snapshots and `build/paparazzi` for failures.

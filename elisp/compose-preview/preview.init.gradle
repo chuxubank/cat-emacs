@@ -18,11 +18,8 @@ def previewScannerVersion = System.getenv("COMPOSE_PREVIEW_SCANNER_VERSION") ?: 
 def testParameterInjectorVersion = System.getenv("COMPOSE_PREVIEW_TEST_PARAMETER_INJECTOR_VERSION") ?: "1.20"
 def junitVintageVersion = System.getenv("COMPOSE_PREVIEW_JUNIT_VINTAGE_VERSION") ?: "6.1.0"
 def junit4Version = System.getenv("COMPOSE_PREVIEW_JUNIT4_VERSION") ?: "4.13.2"
-def initScriptFile = new File(getClass().protectionDomain.codeSource.location.toURI())
-def initScriptDir = initScriptFile.isFile() ? initScriptFile.parentFile : initScriptFile
 def sourceTemplateFile = new File(
-  System.getenv("COMPOSE_PREVIEW_TEMPLATE_FILE") ?:
-    new File(initScriptDir, "compose-preview-paparazzi-test.template.kt").path
+  System.getenv("COMPOSE_PREVIEW_TEMPLATE_FILE") ?: "compose-preview-paparazzi-test.template.kt"
 )
 
 def androidPluginIds = [
@@ -174,6 +171,12 @@ def restoreBuildState = { Project project ->
 }
 
 def generateTestSource = { Project project, File outputDir ->
+  if (!sourceTemplateFile.isFile()) {
+    throw new GradleException(
+      "compose-preview template not found: ${sourceTemplateFile}. " +
+      "Set COMPOSE_PREVIEW_TEMPLATE_FILE to compose-preview-paparazzi-test.template.kt."
+    )
+  }
   def namespace = project.extensions.findByName("android")?.namespace ?: project.group?.toString()
   def scanPackage = namespace ?: ""
   def packageName = generatedPackageName(project)

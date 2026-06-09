@@ -31,7 +31,8 @@
 
 (use-package compose-preview
   :ensure nil
-  :commands (compose-preview-record
+  :commands (compose-preview-refresh
+             compose-preview-record
              compose-preview-verify
              compose-preview-open-results
              compose-preview-gallery
@@ -39,9 +40,10 @@
   :pretty-hydra
   (cat-android
    ("Compose"
-    (("p" #'compose-preview-record "preview")
+    (("p" #'compose-preview-refresh "preview")
      ("P" #'compose-preview-open-results "open previews")
-     ("v" #'compose-preview-verify "verify previews")
+     ("r" #'compose-preview-record "record snapshots")
+     ("v" #'compose-preview-verify "verify snapshots")
      ("V" #'compose-preview-set-variant "set variant")))))
 
 (use-package elogcat
