@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption
 def selectedPath = System.getenv("COMPOSE_PREVIEW_MODULE_PATH")
 def selectedVariant = System.getenv("COMPOSE_PREVIEW_VARIANT") ?: "debug"
 def selectedVariantName = selectedVariant.capitalize()
+def selectedSourceFile = System.getenv("COMPOSE_PREVIEW_SOURCE_FILE") ?: ""
 def generatedRoot = System.getenv("COMPOSE_PREVIEW_GENERATED_DIR")
 def className = "ComposePreviewPaparazziTest"
 def providerName = "ComposablePreviewProvider"
@@ -201,7 +202,7 @@ def restoreBuildState = { Project project ->
   project.logger.lifecycle("compose-preview: restored ${restored} build-state file(s) for ${project.path}")
 }
 
-def generateTestSource = { Project project, File outputDir ->
+def generateTestSource = { Project project, File outputDir, List<String> currentSourceRoots ->
   if (!sourceTemplateFile.isFile()) {
     throw new GradleException(
       "compose-preview template not found: ${sourceTemplateFile}. " +
@@ -217,7 +218,8 @@ def generateTestSource = { Project project, File outputDir ->
     .replace("__PROVIDER_NAME__", providerName)
     .replace("__SCAN_PACKAGE__", scanPackage)
     .replace("__MANIFEST_FILE__", manifestFile(project).path.replace("\\", "\\\\"))
-    .replace("__SOURCE_ROOTS__", kotlinStringList(sourceRoots(project)))
+    .replace("__SOURCE_FILE__", selectedSourceFile.replace("\\", "\\\\").replace("\"", "\\\""))
+    .replace("__SOURCE_ROOTS__", kotlinStringList(currentSourceRoots))
   def file = new File(outputDir, packageName.replace(".", "/") + "/${className}.kt")
   file.parentFile.mkdirs()
   file.text = source
@@ -249,6 +251,7 @@ allprojects { project ->
       def sourceDir = generatedRoot
         ? new File(new File(generatedRoot, sanitize(project.path)), "src/test/kotlin")
         : new File(project.rootProject.projectDir, ".gradle/compose-preview/generated/${sanitize(project.path)}/src/test/kotlin")
+      def currentSourceRoots = sourceRoots(project)
 
       project.dependencies.add("testImplementation", "app.cash.paparazzi:paparazzi:${paparazziVersion}")
       project.dependencies.add(
@@ -270,9 +273,14 @@ allprojects { project ->
       }
 
       def generateTask = project.tasks.register("generateComposePreviewPaparazziTest") {
+        inputs.file(sourceTemplateFile)
+        inputs.property("composePreviewPackageName", generatedPackageName(project))
+        inputs.property("composePreviewSourceFile", selectedSourceFile)
+        inputs.property("composePreviewSourceRoots", currentSourceRoots.join(File.pathSeparator))
+        outputs.dir(sourceDir)
         doLast {
           project.delete(sourceDir)
-          generateTestSource(project, sourceDir)
+          generateTestSource(project, sourceDir, currentSourceRoots)
         }
       }
 
@@ -334,7 +342,9 @@ allprojects { project ->
         dependentTaskNames.each { taskName ->
           def task = project.tasks.findByName(taskName)
           task?.dependsOn(generateTask, prepareBuildDirsTask, snapshotBuildStateTask)
-          task?.outputs?.upToDateWhen { false }
+          if (taskName.startsWith("recordPaparazzi") || taskName.startsWith("verifyPaparazzi")) {
+            task?.outputs?.upToDateWhen { false }
+          }
         }
 
         project.tasks.matching { it.name == "test${selectedVariantName}UnitTest" }.configureEach { task ->

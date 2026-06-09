@@ -45,8 +45,9 @@ the command reports that no current-buffer previews were found.
 
 The generated runner uses `AndroidComposablePreviewScanner`,
 `TestParameterInjector`, and `AndroidPreviewScreenshotIdBuilder`, so preview
-discovery is closer to Android Studio than a hand-written regex. It scans the
-module namespace package tree and includes private previews.
+discovery is closer to Android Studio than a hand-written regex. Refresh passes
+the current Kotlin file to the runner, so it scans with the same scanner path but
+renders only previews attributed to that file.
 
 ## Configuration
 
@@ -62,6 +63,11 @@ KSP1. Recent KSP versions fail configuration when `ksp.useKSP2=false` is passed.
 `compose-preview-use-legacy-android-dsl` defaults to non-nil because Paparazzi
 `2.0.0-alpha02` still needs AGP's legacy Android extension for resource tasks in
 AGP 9 projects.
+
+Refresh uses Gradle, Kotlin, KSP, and build caches by default. If a project hits
+stale generated state while previewing, temporarily set
+`compose-preview-force-clean-build` to non-nil to run a slower clean-style
+preview build.
 
 ## Notes
 

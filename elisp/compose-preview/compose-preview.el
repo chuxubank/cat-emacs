@@ -60,6 +60,12 @@ AGP's new DSL in the target project."
   :type 'boolean
   :group 'compose-preview)
 
+(defcustom compose-preview-force-clean-build nil
+  "Whether preview refresh should disable Gradle, Kotlin and KSP caches.
+This is slower, but can be useful when a project has stale generated state."
+  :type 'boolean
+  :group 'compose-preview)
+
 (defvar-local compose-preview--last-module-root nil)
 (defvar-local compose-preview--last-module-path nil)
 (defvar-local compose-preview--last-project-root nil)
@@ -462,16 +468,19 @@ When FORCE-PROMPT is non-nil, prompt for module and variant via android-mode."
                          (list "-Pksp.useKSP2=false"))
                        (when compose-preview-use-legacy-android-dsl
                          (list "-Pandroid.newDsl=false"))
-                       (list "-Pksp.incremental=false"
-                             "-Pkotlin.incremental=false"
-                             "--no-build-cache"
-                             "--no-configuration-cache"
-                             "--no-parallel"
-                             "--init-script"
+                       (when compose-preview-force-clean-build
+                         (list "-Pksp.incremental=false"
+                               "-Pkotlin.incremental=false"
+                               "--no-build-cache"
+                               "--no-configuration-cache"
+                               "--no-parallel"))
+                       (list "--init-script"
                              init-script)))
          (command (string-join (mapcar #'shell-quote-argument args) " "))
          (env (list (concat "COMPOSE_PREVIEW_MODULE_PATH=" module-path)
                     (concat "COMPOSE_PREVIEW_VARIANT=" variant)
+                    (concat "COMPOSE_PREVIEW_SOURCE_FILE="
+                            (or (plist-get target :source-file) ""))
                     (concat "COMPOSE_PREVIEW_TEMPLATE_FILE="
                             (expand-file-name
                              "compose-preview-paparazzi-test.template.kt"

@@ -16,6 +16,7 @@ import sergio.sastre.composable.preview.scanner.core.preview.ComposablePreview
 import java.io.File
 
 private const val COMPOSE_PREVIEW_MANIFEST_FILE = "__MANIFEST_FILE__"
+private const val COMPOSE_PREVIEW_SOURCE_FILE = "__SOURCE_FILE__"
 private val COMPOSE_PREVIEW_SOURCE_ROOTS = __SOURCE_ROOTS__
 
 private data class SourceIndex(
@@ -29,10 +30,18 @@ object __PROVIDER_NAME__ : TestParameterValuesProvider() {
             .scanPackageTrees("__SCAN_PACKAGE__")
             .includePrivatePreviews()
             .getPreviews()
+            .filterForSourceFile()
             .also {
                 writeManifest(it)
                 println("compose-preview: scanner discovered ${it.size} preview(s)")
             }
+
+    private fun List<ComposablePreview<AndroidPreviewInfo>>.filterForSourceFile(): List<ComposablePreview<AndroidPreviewInfo>> {
+        if (COMPOSE_PREVIEW_SOURCE_FILE.isBlank()) return this
+        return filter { preview ->
+            File(sourceFile(preview)).normalize() == File(COMPOSE_PREVIEW_SOURCE_FILE).normalize()
+        }
+    }
 
     private fun writeManifest(previews: List<ComposablePreview<AndroidPreviewInfo>>) {
         val manifest = File(COMPOSE_PREVIEW_MANIFEST_FILE)
