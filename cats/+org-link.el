@@ -30,14 +30,14 @@
   (org-yt-cache-directory (concat cat-cache-dir "yt-cache")))
 
 (use-package org-remoteimg
-  :vc (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
+  :vc (:url "https://github.com/gaoDean/org-remoteimg")
   :demand t
   :after org
   :config
   (advice-add #'org-link-preview-region :after #'org-display-user-inline-images))
 
 (use-package org-imgtog
-  :vc (org-imgtog :url "https://github.com/gaoDean/org-imgtog")
+  :vc (:url "https://github.com/gaoDean/org-imgtog")
   :hook (org-mode . org-imgtog-mode))
 
 (defun +org-inline-image-data-fn (_protocol link _description)
