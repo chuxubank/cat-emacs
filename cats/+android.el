@@ -5,7 +5,8 @@
   ("" ()))
 
 (use-package android-mode
-  :ensure nil
+  :vc (android-mode :url "https://github.com/chuxubank/emacs-studio"
+                    :lisp-dir "android-mode/")
   :delight " 󰀲"
   :commands #'android-root
   :init
@@ -30,7 +31,8 @@
      ("R" #'android-refresh-flavors "refresh")))))
 
 (use-package compose-preview
-  :ensure nil
+  :vc (compose-preview :url "https://github.com/chuxubank/emacs-studio"
+                       :lisp-dir "compose-preview/")
   :commands (compose-preview-refresh
              compose-preview-record
              compose-preview-verify
