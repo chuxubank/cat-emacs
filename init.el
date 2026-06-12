@@ -48,6 +48,12 @@ See `auth-source-pass-filename'."
   :type 'directory
   :group 'cat-emacs)
 
+(defcustom cat-user-directory
+  (expand-file-name "cat-emacs/" (or (getenv "XDG_CONFIG_HOME") "~/.config"))
+  "Directory for Cat Emacs user configuration."
+  :type 'directory
+  :group 'cat-emacs)
+
 ;;; packages
 (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
   (add-to-list 'load-path default-directory)
@@ -97,7 +103,12 @@ See `auth-source-pass-filename'."
         (error "Cat module %S has no group" module))
       (cat-load (cat--module-name module) group)))))
 
-(load (concat user-emacs-directory "cats") nil 'nomessage)
+(let ((user-cats-file (expand-file-name "cats" cat-user-directory))
+      (default-cats-file (expand-file-name "templates/cats.example" user-emacs-directory)))
+  (load (if (file-exists-p (concat user-cats-file ".el"))
+            user-cats-file
+          default-cats-file)
+        nil 'nomessage))
 (cat! cat-modules)
 
 ;;; ui

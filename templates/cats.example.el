@@ -1,4 +1,4 @@
-;;; cats.el --- Cat Emacs module list -*- lexical-binding: t; -*-
+;;; cats.example.el --- Example Cat Emacs module list -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -34,11 +34,11 @@
 
     :daemon
     (:if (daemonp)
-     daemon)
+         daemon)
 
     :os
     (:if IS-MAC
-     macos)
+         macos)
 
     :editor
     meow
@@ -94,9 +94,9 @@
     format
     flycheck
     (:if EMACS29+
-     treesit)
+         treesit)
     (:if (not EMACS29+)
-     tree-sitter)
+         tree-sitter)
     doc
     sideline
     ;; lsp
@@ -141,8 +141,8 @@
 
     :plugins
     (:if (eq HOST_ENV 'aa)
-     atlassian
-     org-jira)
+         atlassian
+         org-jira)
     beancount
     blog
     chezmoi
@@ -167,6 +167,6 @@
     keymap)
   "Cat Emacs module declarations.")
 
-(provide 'cats)
+(provide 'cats.example)
 
-;;; cats.el ends here
+;;; cats.example.el ends here
