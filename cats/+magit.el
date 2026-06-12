@@ -60,4 +60,11 @@
 (use-package forge
   :pin melpa-stable
   :demand t
-  :after magit)
+  :after magit
+  :config
+  (when (eq HOST_ENV 'iv)
+    (push '("git.infinityparadise.com"        ; GITHOST
+            "git.infinityparadise.com/api/v4" ; APIHOST
+            "git.infinityparadise.com"        ; WEBHOST and INSTANCE-ID
+            forge-gitlab-repository)          ; CLASS
+          forge-alist)))
