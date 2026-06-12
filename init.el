@@ -54,26 +54,51 @@ See `auth-source-pass-filename'."
   (normal-top-level-add-subdirs-to-load-path))
 
 ;;; modules
-(defmacro cat! (filename &optional path noerror)
-  "Load a module in cats by default"
-  (let* ((path (or path
-                   (expand-file-name "cats" user-emacs-directory)
-                   (error "Could not detect path to look for '%s' in"
-                          filename)))
-         (file (if path
-                   `(expand-file-name ,filename ,path)
-                 filename)))
-    `(condition-case-unless-debug err
+(defun cat-load (module group &optional noerror)
+  "Load MODULE from GROUP under the modules directory."
+  (let ((file (expand-file-name
+               module
+               (expand-file-name group (expand-file-name "modules" user-emacs-directory)))))
+    (condition-case-unless-debug err
          (let (file-name-handler-alist)
-           (cat-benchmark 'beg ,file)
-           (load ,file ,noerror 'nomessage))
+           (cat-benchmark 'beg file)
+           (load file noerror 'nomessage))
        (error
         (message "ERROR: %S when loading file: %s\nBacktrace:\n%s"
                  err
-                 (abbreviate-file-name ,file)
+                 (abbreviate-file-name file)
                  (with-output-to-string (backtrace)))))))
 
-(load (concat user-emacs-directory "config") nil 'nomessage)
+(defun cat--module-name (module)
+  "Return the file name for MODULE."
+  (cond
+   ((stringp module) module)
+   ((symbolp module) (concat "+" (symbol-name module)))
+   (t (error "Invalid Cat module: %S" module))))
+
+(defun cat--module-group (group)
+  "Return the directory name for GROUP."
+  (substring (symbol-name group) 1))
+
+(defun cat! (modules &optional group)
+  "Load MODULES with grouped declarations like Doom's `doom!':
+
+  (cat! '(:ui doom font
+          :editor meow avy))"
+  (dolist (module modules)
+    (cond
+     ((keywordp module)
+      (setq group (cat--module-group module)))
+     ((and (consp module) (eq (car module) :if))
+      (when (eval (cadr module) lexical-binding)
+        (cat! (cddr module) group)))
+     (t
+      (unless group
+        (error "Cat module %S has no group" module))
+      (cat-load (cat--module-name module) group)))))
+
+(load (concat user-emacs-directory "cats") nil 'nomessage)
+(cat! cat-modules)
 
 ;;; ui
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
