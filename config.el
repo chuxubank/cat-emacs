@@ -10,6 +10,7 @@
 (cat! "+tramp")
 (cat! "+eudc")
 (cat! "+term")
+(cat! "+file")
 
 ;;; ui
 ;; (cat! "+nano")
