@@ -2,6 +2,28 @@
 #+ATTR_HTML: :title CI
 [[https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml][https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml/badge.svg]]
 
+** Modules
+
+Cat Emacs is organized as a distribution core plus a user module list.
+Users can define their own module list in =~/.config/cat-emacs/cats.el=.
+If that file does not exist, Cat Emacs loads the default example from
+=templates/cats.example.el=.
+
+Module groups map directly to directories under =modules/=:
+
+- =:core= :: package setup, defaults, environment helpers, local settings, and keymaps.
+- =:system= :: OS/session integration such as daemon and macOS support.
+- =:emacs= :: enhancements for built-in Emacs features such as Dired, TRAMP, EUDC, terminal, and file handling.
+- =:ui= :: themes, fonts, appearance, windows, workspaces, and dashboard.
+- =:editor= :: editing interaction such as modal editing, jumping, structural editing, and input methods.
+- =:completion= :: completion, minibuffer, narrowing, actions, and snippets.
+- =:text= :: prose and publishing formats such as Org, LaTeX, Markdown, bibliography, and notes.
+- =:code= :: language-agnostic programming support such as formatting, diagnostics, Tree-sitter, documentation, sideline, and LSP clients.
+- =:ai= :: AI-assisted coding and chat tools.
+- =:lang= :: language and file-format support, including programming languages, markup/data formats, build files, diagrams, and CSV.
+- =:tools= :: developer tools such as search, Git, containers, compile commands, and infrastructure helpers.
+- =:apps= :: application/service integrations and user workflows such as mail, feeds, maps, media, password store, PDF, GitHub, and issue trackers.
+
 ** Docker
 
 *** macOS

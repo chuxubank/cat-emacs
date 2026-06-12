@@ -7,15 +7,22 @@
 ;;; Code:
 
 (defconst cat-modules
-  '(:config
+  '(:core
     package
     utils
     benchmark
     default
     env
     local
+    keymap
 
-    :enhance
+    :system
+    (:if (daemonp)
+         daemon)
+    (:if IS-MAC
+         macos)
+
+    :emacs
     diredx
     tramp
     eudc
@@ -32,18 +39,11 @@
     workspace
     dashboard
 
-    :daemon
-    (:if (daemonp)
-         daemon)
-
-    :os
-    (:if IS-MAC
-         macos)
-
     :editor
     meow
     avy
     smartparens
+    rime
     ;; hydra
 
     :completion
@@ -57,14 +57,7 @@
     embark
     yasnippet
 
-    :search
-    rg
-
-    :git
-    magit
-    git-misc
-
-    :org
+    :text
     org
     org-babel
     org-todo
@@ -74,21 +67,11 @@
     org-srs
     org-cv
     org-link
-
-    :latex
     bibcite
     latex
     cdlatex
     ;; zotero
-
-    :markdown
     markdown
-
-    :csv
-    csv
-
-    :input
-    rime
 
     :code
     format
@@ -107,10 +90,11 @@
     copilot
     vibe
 
-    :program
+    :lang
     android
     applescript
     cmake
+    csv
     dart
     go
     gradle
@@ -134,12 +118,15 @@
     yaml
 
     :tools
+    rg
+    magit
+    git-misc
     ansible
     caddy
     docker
     compile
 
-    :plugins
+    :apps
     (:if (eq HOST_ENV 'aa)
          atlassian
          org-jira)
@@ -161,10 +148,7 @@
     pass
     pdf
     toc
-    undo
-
-    :keymap
-    keymap)
+    undo)
   "Cat Emacs module declarations.")
 
 (provide 'cats.example)
