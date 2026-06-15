@@ -27,6 +27,7 @@
 
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
+(defconst cat-assets-dir (concat user-emacs-directory "assets/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
 (defconst cat-etc-dir (concat cat-local-dir "etc/"))
 
