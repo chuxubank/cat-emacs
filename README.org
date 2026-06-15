@@ -1,8 +1,38 @@
 * Cat Emacs
+
 #+ATTR_HTML: :title CI
 [[https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml][https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml/badge.svg]]
 
-** Modules
+Cat Emacs is a modular Emacs configuration built as a personal workbench for
+code, notes, writing, communication, and day-to-day automation.  It keeps a
+small distribution core and moves almost every feature into named modules that
+can be enabled, replaced, or skipped from a user module list.
+
+#+begin_quote
+Meow, meow, meow... Oh, that's a cat!
+#+end_quote
+
+** Highlights
+
+- Modular layout inspired by Doom's grouped declarations, implemented with a
+  small local loader.
+- Modern completion stack with Vertico, Corfu, Consult, Embark, Prescient,
+  Which-Key, Cape, and Yasnippet.
+- Modal editing with Meow, plus Avy navigation, Smartparens, Rime input, and
+  mode-specific hydras.
+- Org-first workflow for agenda, capture, notes, Babel, LaTeX export, roam,
+  SRS, CVs, encrypted entries, and transclusion.
+- Programming setup for Tree-sitter, Eglot, formatting, diagnostics,
+  documentation popups, folding, and many language modules.
+- AI-assisted workflow around GPTel, Copilot, Aider, agent shells, Magit commit
+  prompts, local LLM backends, OpenRouter, Gemini, Ollama, llama.cpp, and MCP.
+- Practical application integrations for mail, feeds, password-store, GitHub,
+  Jira/Atlassian, PDFs, e-books, Beancount, maps, media, blogs, and online
+  judges.
+- Cross-platform support for macOS, Linux, Windows, WSL, Android, daemon
+  sessions, CI, and host-specific configuration.
+
+** How It Is Organized
 
 Cat Emacs is organized as a distribution core plus a user module list.
 Users can define their own module list in =~/.config/cat-emacs/cats.el=.
@@ -19,104 +49,154 @@ For example:
 
 Module groups map directly to directories under =modules/=:
 
-- =:core= :: package setup, defaults, environment helpers, local settings, and keymaps.
-- =:system= :: OS/session integration such as daemon and macOS support.
-- =:emacs= :: enhancements for built-in Emacs features such as Dired, TRAMP, EUDC, terminal, and file handling.
-- =:ui= :: themes, fonts, appearance, windows, workspaces, and dashboard.
-- =:editor= :: editing interaction such as modal editing, jumping, structural editing, and input methods.
-- =:completion= :: completion, minibuffer, narrowing, actions, and snippets.
-- =:text= :: prose and publishing formats such as Org, LaTeX, Markdown, bibliography, and notes.
-- =:code= :: language-agnostic programming support such as formatting, diagnostics, Tree-sitter, documentation, sideline, and LSP clients.
-- =:ai= :: AI-assisted coding and chat tools.
-- =:lang= :: language and file-format support, including programming languages, markup/data formats, build files, diagrams, and CSV.
-- =:tools= :: developer tools such as search, Git, containers, compile commands, and infrastructure helpers.
-- =:apps= :: application/service integrations and user workflows such as mail, feeds, maps, media, password store, PDF, GitHub, and issue trackers.
+| Group       | Purpose                                                                                     |
+|-------------+---------------------------------------------------------------------------------------------|
+| =:core=       | Package setup, defaults, environment helpers, local settings, and keymaps.                  |
+| =:system=     | OS and session integration such as daemon and macOS support.                                |
+| =:emacs=      | Enhancements for built-in features such as Dired, TRAMP, EUDC, terminal, and file handling. |
+| =:ui=         | Themes, fonts, appearance, windows, workspaces, and dashboard.                              |
+| =:editor=     | Modal editing, jumping, structural editing, hydras, and input methods.                      |
+| =:completion= | Completion, minibuffer UI, narrowing, actions, and snippets.                                |
+| =:text=       | Org, LaTeX, Markdown, bibliography, publishing, notes, and learning workflows.              |
+| =:code=       | Formatting, diagnostics, Tree-sitter, documentation, sideline, and LSP clients.             |
+| =:ai=         | AI-assisted coding, chat, agents, model metadata, and MCP integration.                      |
+| =:lang=       | Programming languages, markup/data formats, build files, diagrams, and CSV.                 |
+| =:tools=      | Search, Git, containers, compile commands, and infrastructure helpers.                      |
+| =:apps=       | Mail, feeds, maps, media, password store, PDF, GitHub, issue trackers, and user workflows.  |
+
+** Default Module Profile
+
+The default profile in =templates/cats.el= enables a broad everyday
+setup:
+
+- UI: Doom themes/modeline, fonts, auto dark mode, window/workspace helpers,
+  dashboard, and visual polish.
+- Editing: Meow, Avy, Smartparens, and Rime.
+- Completion: Corfu, Vertico, Prescient, Which-Key, Consult, Embark, and
+  Yasnippet.
+- Text: Org, Org Babel, agenda/todo helpers, Org Roam, Org notes, Org LaTeX,
+  Org SRS, Org CV, Org links, bibliography, LaTeX, CDLaTeX, and Markdown.
+- Code: formatting, Flycheck, Tree-sitter on Emacs 29+, documentation, sideline,
+  and Eglot.
+- Tools and apps: Ripgrep, Magit, Docker, compile helpers, Beancount, Elfeed,
+  GitHub, mail, password-store, PDFs, media, maps, blogs, and more.
+
+** Configuration Entry Points
+
+- =early-init.el= defines platform flags, cache directories, benchmark logging,
+  and OS modifier keys.
+- =init.el= loads custom variables, local elisp, the user module list, and then
+  each selected module.
+- =modules/core/+package.el= configures package archives, mirrors, =use-package=,
+  =package-vc=, and supporting package helpers.
+- =modules/core/+keymap.el= defines the main =C-c= command map for files,
+  toggles, Org, plugins, workspaces, search, and AI tools.
+- =templates/cats.el= is the reference module list for new users.
 
 ** Docker
 
 *** macOS
 [[https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949][Docker X11 macOS]]
+
 #+begin_src sh
-  brew install XQuartz
-  open -a /System/Volumes/Data/Applications/Utilities/XQuartz.app
-  DISPLAY=:0 xhost +localhost     # localhost being added to access control list
-  docker run -it -e "DISPLAY=host.docker.internal:0" chuxubank/cat-emacs:main
+brew install XQuartz
+open -a /System/Volumes/Data/Applications/Utilities/XQuartz.app
+DISPLAY=:0 xhost +localhost
+docker run -it -e "DISPLAY=host.docker.internal:0" chuxubank/cat-emacs:main
 #+end_src
 
 *** Windows with WSLg
 [[https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md][Containerizing GUI applications with WSLg]]
+
 #+begin_src sh
-  sudo docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /mnt/wslg:/mnt/wslg \
-    -e DISPLAY=$DISPLAY -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
-    -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR -e PULSE_SERVER=$PULSE_SERVER \
-    chuxubank/cat-emacs:main
+sudo docker run -it \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v /mnt/wslg:/mnt/wslg \
+  -e DISPLAY=$DISPLAY \
+  -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+  -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
+  -e PULSE_SERVER=$PULSE_SERVER \
+  chuxubank/cat-emacs:main
 #+end_src
 
-** System
+** Platform Notes
 
 *** Windows
 
 **** MSYS2
-You can use
+Create a shortcut with:
+
 #+begin_src sh
-  C:\msys64\usr\bin\mintty.exe -w hide /bin/env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit /bin/zsh -l -c "/mingw64/bin/emacsclientw -n -c -a ''"
+C:\msys64\usr\bin\mintty.exe -w hide /bin/env MSYSTEM=MINGW64 MSYS2_PATH_TYPE=inherit /bin/zsh -l -c "/mingw64/bin/emacsclientw -n -c -a ''"
 #+end_src
-to create a shortcut to start Emacs.
-You may also set ~HOME~ environment and start path to ~%USERPROFILE%~
+
+You may also set the =HOME= environment variable and the shortcut start path to
+=%USERPROFILE%=.
+
 **** WSL
-To use Wayland and set GTK theme, you can add these to your shell script.
+To use Wayland and sync GTK theme preference with Windows:
+
 #+begin_src sh
-  export MOZ_ENABLE_WAYLAND=1
+export MOZ_ENABLE_WAYLAND=1
 
-  isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
+isLight=$(reg.exe query "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" | grep AppsUseLightTheme | awk '{print $3}')
 
-  if [ "${isLight:2:1}" == 1 ]; then
-      export GTK_THEME=Arc
-  else
-      export GTK_THEME=Arc-Darker
-  fi
+if [ "${isLight:2:1}" == 1 ]; then
+    export GTK_THEME=Arc
+else
+    export GTK_THEME=Arc-Darker
+fi
 #+end_src
 
-** Rime
-*** Sync
-https://github.com/rime/home/wiki/UserGuide#同步用戶資料
+** Integration Notes
 
-** Pass
-https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
-~$HOME/.gnupg/gpg-agent.conf~
+*** Rime
+For user data sync, see
+[[https://github.com/rime/home/wiki/UserGuide#同步用戶資料][Rime user data synchronization]].
+
+*** Pass
+See [[https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources][Keeping Secrets in Emacs with GnuPG and Auth Sources]].
+
+Add this to =~/.gnupg/gpg-agent.conf=:
+
 #+begin_example
 allow-emacs-pinentry
 #+end_example
 
-** Mu4e
-With latest release, macOS homebrew version will missing =mu4e-dbus.el=, you can download with following script
+*** Mu4e
+With some recent Homebrew builds, =mu4e-dbus.el= may be missing. Download and
+compile it manually when needed:
+
 #+begin_src sh :results silent
-  wget https://github.com/djcb/mu/raw/master/mu4e/mu4e-dbus.el -O /opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el
+wget https://github.com/djcb/mu/raw/master/mu4e/mu4e-dbus.el -O /opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el
 #+end_src
 
 #+begin_src elisp :results silent
-  (byte-compile-file "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el")
+(byte-compile-file "/opt/homebrew/share/emacs/site-lisp/mu/mu4e/mu4e-dbus.el")
 #+end_src
 
-** Latex
+*** LaTeX
+To include SVG files in LaTeX export and generate PDFs:
 
-*** If you want to include svg file in latex file and generate the pdf file you need to
-- Add ~set_tex_cmds( '--shell-escape %O %S' );~ to ~$HOME/.latexmkrc~
-- Install =inkscape=
+- Add =set_tex_cmds( '--shell-escape %O %S' );= to =~/.latexmkrc=.
+- Install =inkscape=.
 
-*** To indent tex file you need to
+To indent TeX files:
+
 #+begin_src sh
-  sudo cpan -i File::HomeDir
+sudo cpan -i File::HomeDir
 #+end_src
 
-** Org
-Use [[https://code.tecosaur.net/tec/org-mode]] for org latex preview.
-If autoloads have problem, use following command to re-build
+*** Org
+Cat Emacs uses [[https://code.tecosaur.net/tec/org-mode][Tecosaur's Org branch]] for Org LaTeX previews.
+If autoloads break, rebuild them with:
+
 #+begin_src sh
-  make -C ~/.config/emacs/elpa/org-mode compile autoloads
+make -C ~/.config/emacs/elpa/org-mode compile autoloads
 #+end_src
 
 ** Star History
+
 #+HTML: <a href="https://www.star-history.com/?repos=chuxubank%2Fcat-emacs&type=date&legend=top-left">
 #+HTML:  <picture>
 #+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=chuxubank/cat-emacs&type=date&theme=dark&legend=top-left" />

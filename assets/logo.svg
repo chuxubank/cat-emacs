@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-labelledby="title desc">
+  <title id="title">cat-emacs traced cat lambda</title>
+  <desc id="desc">A clean vector trace of a cat outline with whiskers and a lambda symbol.</desc>
+  <path d="M 16 71 C 16.5 64 18 59 21 54 L 23 50 C 24 48 24.5 45 25 41 L 28 21 L 47 41 C 53 39 58.5 38.5 64 38.5 C 69.5 38.5 75 39 81 41 L 100 21 L 103 41 C 103.5 45 104 48 105 50 L 107 54 C 110 59 111.5 64 112 71"/>
+  <path d="M 10 78 L 34 83"/>
+  <path d="M 10 93 L 34 90"/>
+  <path d="M 94 83 L 118 78"/>
+  <path d="M 94 90 L 118 93"/>
+  <path d="M 56 69 H 62 C 64 69 65.5 70.5 66.4 73 L 75 96 C 76.3 99.5 79 101 83 101 H 88"/>
+  <path d="M 66.5 77 L 52 101"/>
+</svg>
