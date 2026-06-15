@@ -7,7 +7,15 @@
 Cat Emacs is organized as a distribution core plus a user module list.
 Users can define their own module list in =~/.config/cat-emacs/cats.el=.
 If that file does not exist, Cat Emacs loads the default example from
-=templates/cats.example.el=.
+=templates/cats.el=.
+
+Other user-overridable configuration files follow the same rule: Cat Emacs
+first looks under =~/.config/cat-emacs/= and falls back to =templates/=.
+For example:
+
+- =~/.config/cat-emacs/lsp-proxy/languages.toml= falls back to =templates/lsp-proxy/languages.toml=.
+- =~/.config/cat-emacs/mermaid/config.json= falls back to =templates/mermaid/config.json=.
+- =~/.config/cat-emacs/prompt/= falls back to =templates/prompt/=.
 
 Module groups map directly to directories under =modules/=:
 

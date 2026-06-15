@@ -26,6 +26,9 @@ network-security.data
 # treesit
 tree-sitter/
 
+# flycheck
+flycheck_*
+
 # ai
 .aider*
 .chatgpt-shell.el

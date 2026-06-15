@@ -94,7 +94,7 @@
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-commit-prompt (gptel-prompts-poet (expand-file-name "git-commit.yml.j2" cat-prompt-dir)))
+  (gptel-magit-commit-prompt (gptel-prompts-poet (cat-config-file "prompt/git-commit.yml.j2")))
   :config
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.

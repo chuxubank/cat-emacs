@@ -27,7 +27,6 @@
 
 ;;; directory
 (defconst cat-local-dir (concat user-emacs-directory ".local/"))
-(defconst cat-prompt-dir (concat user-emacs-directory "prompt/"))
 (defconst cat-cache-dir (concat cat-local-dir "cache/"))
 (defconst cat-etc-dir (concat cat-local-dir "etc/"))
 
@@ -37,7 +36,6 @@
     (make-directory dir t)))
 
 (+mkdir-p cat-local-dir)
-(+mkdir-p cat-prompt-dir)
 (+mkdir-p cat-cache-dir)
 (+mkdir-p cat-etc-dir)
 

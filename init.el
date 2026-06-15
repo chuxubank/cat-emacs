@@ -54,6 +54,31 @@ See `auth-source-pass-filename'."
   :type 'directory
   :group 'cat-emacs)
 
+(defun cat-user-file (file)
+  "Return FILE under `cat-user-directory'."
+  (expand-file-name file cat-user-directory))
+
+(defun cat-template-file (file)
+  "Return FILE under the Cat Emacs templates directory."
+  (expand-file-name file (expand-file-name "templates" user-emacs-directory)))
+
+(defun cat-config-file (file)
+  "Return user FILE if it exists, otherwise return the template FILE."
+  (let ((user-file (cat-user-file file)))
+    (if (file-exists-p user-file)
+        user-file
+      (cat-template-file file))))
+
+(defun cat-config-directory (directory)
+  "Return user DIRECTORY if it exists, otherwise return the template DIRECTORY."
+  (let ((user-directory (file-name-as-directory (cat-user-file directory))))
+    (if (file-directory-p user-directory)
+        user-directory
+      (file-name-as-directory (cat-template-file directory)))))
+
+(defvar cat-prompt-dir (cat-config-directory "prompt")
+  "Directory for prompt templates.")
+
 ;;; packages
 (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
   (add-to-list 'load-path default-directory)
@@ -103,12 +128,7 @@ See `auth-source-pass-filename'."
         (error "Cat module %S has no group" module))
       (cat-load (cat--module-name module) group)))))
 
-(let ((user-cats-file (expand-file-name "cats" cat-user-directory))
-      (default-cats-file (expand-file-name "templates/cats.example" user-emacs-directory)))
-  (load (if (file-exists-p (concat user-cats-file ".el"))
-            user-cats-file
-          default-cats-file)
-        nil 'nomessage))
+(load (cat-config-file "cats") nil 'nomessage)
 (cat! cat-modules)
 
 ;;; ui

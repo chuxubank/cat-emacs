@@ -53,6 +53,8 @@
 (use-package lsp-proxy
   :vc (:url "https://github.com/jadestrong/lsp-proxy")
   :delight " 󰑣"
+  :custom
+  (lsp-proxy-user-languages-config (cat-config-file "lsp-proxy/languages.toml"))
   :hook
   ((
     beancount-mode

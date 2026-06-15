@@ -1,4 +1,4 @@
-;;; cats.example.el --- Example Cat Emacs module list -*- lexical-binding: t; -*-
+;;; cats.el --- Default Cat Emacs module list -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -151,6 +151,6 @@
     undo)
   "Cat Emacs module declarations.")
 
-(provide 'cats.example)
+(provide 'cats)
 
-;;; cats.example.el ends here
+;;; cats.el ends here

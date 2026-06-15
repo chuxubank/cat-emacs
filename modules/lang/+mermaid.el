@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(defvar cat-mermaid-config-file (expand-file-name "mermaid/config.json" user-emacs-directory))
+(defvar cat-mermaid-config-file (cat-config-file "mermaid/config.json"))
 
 (defvar cat-mermaid-theme "default")
 
