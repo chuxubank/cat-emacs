@@ -43,9 +43,9 @@
    ("Compose"
     (("p" #'compose-preview-refresh "preview")
      ("P" #'compose-preview-open-results "open previews")
-     ("r" #'compose-preview-record "record snapshots")
-     ("v" #'compose-preview-verify "verify snapshots")
-     ("V" #'compose-preview-set-variant "set variant")))))
+     ("s" #'compose-preview-record "record snapshots")
+     ("S" #'compose-preview-verify "verify snapshots")
+     ("v" #'compose-preview-set-variant "set variant")))))
 
 (use-package elogcat
   :vc (:url "https://github.com/chuxubank/elogcat.el")
