@@ -93,6 +93,15 @@
    ("Ghostty"
     (("g" #'ghostel "Ghostel")))))
 
+(use-package kitty-graphics
+  :vc (:url "https://github.com/cashmeredev/kitty-graphics.el")
+  :delight " 󰘒"
+  :when (not (display-graphic-p))
+  :custom
+  (kitty-gfx-enable-video t)
+  :config
+  (kitty-graphics-mode 1))
+
 (use-package shell-maker
   :custom
   (shell-maker-root-path (concat cat-local-dir "shell-maker/"))
