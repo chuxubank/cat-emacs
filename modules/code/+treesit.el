@@ -35,7 +35,7 @@
 
 (use-package treesit-langs
   :commands treesit-langs-major-mode-setup
-  :config
+  :init
   (+add-to-list-multi 'major-mode-remap-alist
                       '(c++-mode        . c++-ts-mode)
                       '(c-mode          . c-ts-mode)
@@ -47,6 +47,7 @@
                       '(swift-mode      . swift-ts-mode)
                       '(sh-mode         . bash-ts-mode)
                       '(typescript-mode . typescript-ts-mode))
+  :config
   (defun +treesit-langs-cleanup (&optional _)
     (interactive)
     (delete-directory (treesit-langs--bin-dir) t))
