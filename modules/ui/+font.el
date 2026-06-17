@@ -222,7 +222,8 @@ Unless `buffer-face-mode' already enabled."
                       'mistty-mode
                       'vterm-mode
                       'ghostel-mode
-                      'logview-mode)
+                      'logview-mode
+                      'treemacs-mode)
       (let ((font (nth 0 cat-mono-code-fonts)))
         (+safe-buffer-face-set-fonts font)
         (setq-local face-font-rescale-alist

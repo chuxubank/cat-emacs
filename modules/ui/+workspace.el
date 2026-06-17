@@ -172,7 +172,8 @@
   :bind
   ("M-0" . treemacs-select-window)
   :custom
-  (treemacs-is-never-other-window t))
+  (treemacs-is-never-other-window t)
+  (treemacs-text-scale -1))
 
 (use-package treemacs-magit
   :demand t
