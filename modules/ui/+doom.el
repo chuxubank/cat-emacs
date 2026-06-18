@@ -14,6 +14,9 @@
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
+  :init
+  (add-to-list 'cat-custom-reevaluate-setting-list
+               'doom-modeline-height)
   :custom
   (doom-modeline-minor-modes t)
   (doom-modeline-enable-word-count t)

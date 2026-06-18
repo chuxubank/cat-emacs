@@ -16,7 +16,12 @@
   (org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                               (todo   . " %i %-20:c")
                               (tags   . " %i %-20:c")
-                              (search . " %i %-20:c"))))
+                              (search . " %i %-20:c")))
+  :init
+  (+add-to-list-multi 'cat-custom-reevaluate-setting-list
+                      'org-agenda-block-separator
+                      'org-agenda-current-time-string
+                      'org-agenda-time-grid))
 
 (defconst cat-org-agenda-skip-non-todo
   '(org-agenda-skip-entry-if 'nottodo 'any)

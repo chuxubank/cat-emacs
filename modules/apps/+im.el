@@ -18,6 +18,9 @@
   :init
   (when IS-WSL
     (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
+  (+add-to-list-multi 'cat-custom-reevaluate-setting-list
+                      'telega-chat-show-avatars
+                      'telega-user-show-avatars)
   :custom
   (telega-use-docker (if (eq HOST_ENV 'aa) "podman" "docker"))
   (telega-docker-volumes nil)
