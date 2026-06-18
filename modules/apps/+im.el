@@ -7,6 +7,7 @@
 (use-package telega
   :hook
   (telega-load . telega-mode-line-mode)
+  (telega-load . cat-custom-reevaluate-settings)
   :commands #'telega-transient--prefix-telega-prefix-map
   :bind
   (:map telega-prefix-map
@@ -20,7 +21,8 @@
     (setq telega-docker-run-command "docker run --security-opt apparmor=unconfined -i -u %u -v %w:%w -v /tmp/.X11-unix:/tmp/.X11-unix -v $XAUTHORITY:$XAUTHORITY -v /var/run/dbus:/var/run/dbus -e DISPLAY=$DISPLAY -e XAUTHORITY=$XAUTHORITY --net=host %i"))
   (+add-to-list-multi 'cat-custom-reevaluate-setting-list
                       'telega-chat-show-avatars
-                      'telega-user-show-avatars)
+                      'telega-user-show-avatars
+                      'telega-completions-username-show-avatars)
   :custom
   (telega-chat-input-markups '("markdown2" nil))
   (telega-docker-run-arguments (concat "--platform linux/amd64" (when (eq "podman" telega-use-docker) " --userns=keep-id")))
