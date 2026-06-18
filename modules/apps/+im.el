@@ -33,6 +33,8 @@
   (telega-use-docker (if (eq HOST_ENV 'aa) "podman" "docker"))
   (telega-use-images t)
   (telega-video-player-command "mpv")
+  :custom-face
+  (telega-msg-heading ((t (:inherit region :extend t))))
   :pretty-hydra
   (cat-im
    ("Telegram"
