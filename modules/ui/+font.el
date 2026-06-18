@@ -6,7 +6,12 @@
 (defvar cat-slab-fonts '("Iosevka Etoile" "Roboto Slab")
   "Default proportional slab serif fonts.")
 
-(defvar cat-sans-fonts '("Iosevka Aile" "Inter" "DejaVu Sans" "Roboto")
+(defvar cat-sans-fonts '("Iosevka Aile"
+                         "Inter"
+                         "DejaVu Sans"
+                         "Roboto"
+                         "SF Pro"
+                         "HarmonyOS Sans")
   "Default proportional sans serif fonts.")
 
 (defvar cat-mono-code-fonts '("Maple Mono"
@@ -222,8 +227,7 @@ Unless `buffer-face-mode' already enabled."
                       'mistty-mode
                       'vterm-mode
                       'ghostel-mode
-                      'logview-mode
-                      'treemacs-mode)
+                      'logview-mode)
       (let ((font (nth 0 cat-mono-code-fonts)))
         (+safe-buffer-face-set-fonts font)
         (setq-local face-font-rescale-alist
@@ -235,7 +239,8 @@ Unless `buffer-face-mode' already enabled."
      ((derived-mode-p 'text-mode)
       (+safe-buffer-face-set-fonts cat-slab-fonts))
      ((derived-mode-p 'Info-mode
-                      'man-common)
+                      'man-common
+                      'treemacs-mode)
       (+safe-buffer-face-set-fonts cat-sans-fonts)))))
 
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
