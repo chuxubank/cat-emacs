@@ -22,22 +22,23 @@
                       'telega-chat-show-avatars
                       'telega-user-show-avatars)
   :custom
-  (telega-use-docker (if (eq HOST_ENV 'aa) "podman" "docker"))
-  (telega-docker-volumes nil)
-  (telega-docker-run-arguments (concat "--platform linux/amd64" (when (eq "podman" telega-use-docker) " --userns=keep-id")))
-  (telega-use-images t)
-  (telega-emoji-use-images nil)
-  (telega-symbol-video-chat-active "🔊")
-  (telega-symbol-video-chat-passive "🔈")
-  (telega-video-player-command "mpv")
   (telega-chat-input-markups '("markdown2" nil))
+  (telega-docker-run-arguments (concat "--platform linux/amd64" (when (eq "podman" telega-use-docker) " --userns=keep-id")))
+  (telega-docker-volumes nil)
+  (telega-emoji-use-images nil)
+  (telega-msg-heading-trail 'date-and-status)
   (telega-open-file-function #'org-open-file)
-  (telega-completing-read-function completing-read-function)
-  (telega-transient-keymaps-mode)
+  (telega-symbol-video-chat-active "")
+  (telega-symbol-video-chat-passive "")
+  (telega-use-docker (if (eq HOST_ENV 'aa) "podman" "docker"))
+  (telega-use-images t)
+  (telega-video-player-command "mpv")
   :pretty-hydra
   (cat-im
    ("Telegram"
-    (("t" #'telega-transient--prefix-telega-prefix-map "telega")))))
+    (("t" #'telega-transient--prefix-telega-prefix-map "telega"))))
+  :config
+  (telega-transient-keymaps-mode))
 
 (defvar cat-telega-contrib-load-path
   (when (package-installed-p 'telega)
