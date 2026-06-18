@@ -7,7 +7,7 @@
 (use-package gptel-model-updater
   :vc (:url "https://github.com/chuxubank/gptel-model-updater")
   :hook
-  (cat-idle-preload-hook . gptel-model-updater-update-all)
+  (cat-idle-preload . gptel-model-updater-update-all)
   :custom
   (gptel-model-updater-metadata-overwrite-existing t)
   (gptel-model-updater-models
@@ -106,13 +106,13 @@ Invokes CALLBACK with the generated message when done."
                                    nil))
           (diff (magit-git-output "diff" "--cached")))
       (gptel-magit--request diff
-        :system gptel-magit-commit-prompt
-        :context nil
-        :callback (lambda (response info)
-                    (print info)
-                    (when (and (stringp response)
-                               (not (string-empty-p response)))
-                      (funcall callback response)))))))
+                            :system gptel-magit-commit-prompt
+                            :context nil
+                            :callback (lambda (response info)
+                                        (print info)
+                                        (when (and (stringp response)
+                                                   (not (string-empty-p response)))
+                                          (funcall callback response)))))))
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")
@@ -197,6 +197,7 @@ For example:
 
 (use-package mcp-server
   :vc (:url "https://github.com/rhblind/emacs-mcp-server")
-  :hook (cat-idle-preload-hook . mcp-server-start-unix)
+  :hook
+  (cat-idle-preload . mcp-server-start-unix)
   :custom
   (mcp-server-socket-directory cat-cache-dir))
