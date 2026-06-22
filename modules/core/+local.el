@@ -26,7 +26,12 @@
         ("p" . #'pinyin-search)))
 
 (use-package pinyin-isearch
-  :hook (isearch-mode . pinyin-isearch-activate-submodes))
+  :delight
+  :hook
+  (isearch-mode . pinyin-isearch-mode)
+  :bind
+  (:map pinyin-isearch-mode-map
+        ("M-s" . nil)))
 
 (use-package ace-pinyin
   :delight
