@@ -33,11 +33,6 @@
 (use-package compose-preview
   :vc (compose-preview :url "https://github.com/chuxubank/emacs-studio"
                        :lisp-dir "compose-preview/")
-  :commands (compose-preview-refresh
-             compose-preview-record
-             compose-preview-verify
-             compose-preview-open-results
-             compose-preview-set-variant)
   :pretty-hydra
   (cat-android
    ("Compose"
