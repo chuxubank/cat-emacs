@@ -190,7 +190,7 @@
   (treemacs-load-theme "nerd-icons"))
 
 (use-package treemacs-activities
-  :ensure nil
+  :vc (:url "https://github.com/chuxubank/treemacs-activities")
   :demand t
   :after (treemacs activities)
   :config
