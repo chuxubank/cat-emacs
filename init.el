@@ -79,6 +79,15 @@ See `auth-source-pass-filename'."
 (defvar cat-prompt-dir (cat-config-directory "prompt")
   "Directory for prompt templates.")
 
+(defvar cat-custom-reevaluate-setting-list nil
+  "List of custom settings to reevaluate for each client frame.
+Each element is a variable passed to `custom-reevaluate-setting'.")
+
+(defun cat-custom-reevaluate-settings ()
+  "Reevaluate settings in `cat-custom-reevaluate-setting-list'."
+  (dolist (setting cat-custom-reevaluate-setting-list)
+    (custom-reevaluate-setting setting)))
+
 ;;; packages
 (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
   (add-to-list 'load-path default-directory)
@@ -91,14 +100,14 @@ See `auth-source-pass-filename'."
                module
                (expand-file-name group (expand-file-name "modules" user-emacs-directory)))))
     (condition-case-unless-debug err
-         (let (file-name-handler-alist)
-           (cat-benchmark 'beg file)
-           (load file noerror 'nomessage))
-       (error
-        (message "ERROR: %S when loading file: %s\nBacktrace:\n%s"
-                 err
-                 (abbreviate-file-name file)
-                 (with-output-to-string (backtrace)))))))
+        (let (file-name-handler-alist)
+          (cat-benchmark 'beg file)
+          (load file noerror 'nomessage))
+      (error
+       (message "ERROR: %S when loading file: %s\nBacktrace:\n%s"
+                err
+                (abbreviate-file-name file)
+                (with-output-to-string (backtrace)))))))
 
 (defun cat--module-name (module)
   "Return the file name for MODULE."

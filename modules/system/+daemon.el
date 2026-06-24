@@ -8,15 +8,6 @@
 (defvar cat-idle-preload-hook nil
   "Hook to run after `emacs-startup-hook' with idle time.")
 
-(defvar cat-custom-reevaluate-setting-list nil
-  "List of custom settings to reevaluate for each client frame.
-Each element is a variable passed to `custom-reevaluate-setting'.")
-
-(defun cat-custom-reevaluate-settings ()
-  "Reevaluate settings in `cat-custom-reevaluate-setting-list'."
-  (dolist (setting cat-custom-reevaluate-setting-list)
-    (custom-reevaluate-setting setting)))
-
 (defun cat-client-frame-config ()
   (cat-benchmark 'beg "configuring new frame.")
   (if (display-graphic-p)
