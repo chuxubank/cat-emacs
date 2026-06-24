@@ -118,7 +118,11 @@ Invokes CALLBACK with the generated message when done."
                       (funcall callback response)))))))
 
 (use-package gptel-forge-prs
-  :hook (forge-post-mode . gptel-forge-prs-install))
+  :hook (forge-post-mode . gptel-forge-prs-install)
+  :custom
+  (gptel-forge-prs-pr-prompt (if (eq HOST_ENV 'iv)
+                                 (gptel-prompts-poet (cat-config-file "prompt/iv-mr.yml.j2"))
+                               gptel-forge-prs-prompt-conventional)))
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")
