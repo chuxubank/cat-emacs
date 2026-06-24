@@ -17,6 +17,9 @@
   :config
   (blink-cursor-mode 0))
 
+(use-package face-remap
+  :delight (buffer-face-mode " 󰛖"))
+
 (use-package scroll-bar
   :demand t
   :ensure nil

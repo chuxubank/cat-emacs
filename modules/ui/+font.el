@@ -105,6 +105,65 @@ Profiles decouple font intent from mode rules.  Each value can be a
 font family, a list of font families, or a symbol whose value is either."
   :type 'sexp)
 
+(defcustom cat-mode-font-rules
+  `((:modes (org-mode)
+            :font text-mono
+            :faces ((org-table table)
+                    (org-formula table)
+                    (org-column-title table)
+                    (org-code code)
+                    (org-block code)
+                    (org-meta-line code)))
+    (:modes (markdown-mode)
+            :font text-mono
+            :faces ((markdown-table-face table)
+                    (markdown-code-face code)
+                    (markdown-inline-code-face code)))
+    (:modes (csv-mode)
+            :font table)
+    (:modes (beancount-mode)
+            :font text-mono)
+    (:modes (json-mode json-ts-mode
+                       yaml-mode yaml-ts-mode
+                       toml-ts-mode
+                       conf-mode
+                       nxml-mode
+                       sgml-mode
+                       templ-ts-mode
+                       go-template-mode)
+            :font code-config)
+    (:modes (objc-mode swift-mode applescript-mode)
+            :font code-apple)
+    (:modes (plantuml-mode mermaid-mode mermaid-ts-mode)
+            :font code-diagram)
+    (:modes (python-base-mode)
+            :font code-python)
+    (:modes (kotlin-ts-mode kotlin-mode
+                            java-ts-mode java-mode
+                            js-base-mode
+                            typescript-ts-base-mode typescript-mode)
+            :font code-jvm)
+    (:modes (comint-mode mistty-mode vterm-mode ghostel-mode logview-mode)
+            :font terminal
+            :rescale (("Symbols Nerd Font" . 1.2)))
+    (:modes (prog-mode)
+            :font code)
+    (:buffer-name "Meow Cheatsheet"
+                  :font code)
+    (:modes (text-mode)
+            :font text)
+    (:modes (Info-mode man-common treemacs-mode)
+            :font sans))
+  "Rules for buffer-local font selection.
+Each rule is a plist.  Supported keys are:
+
+:modes       A mode or list of modes matched with `derived-mode-p'.
+:buffer-name A regexp matched against `buffer-name'.
+:font        Font profile, font family, font list, or font variable.
+:faces       Face rules in the form (FACE FONTS).
+:rescale     Buffer-local `face-font-rescale-alist' value."
+  :type 'sexp)
+
 (defvar cat-setup-fonts-hook nil
   "Hook runs after setup fonts.")
 
@@ -227,65 +286,6 @@ If ADD is nil, the first existing font is set as replacement, and others are app
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
 
-(defcustom cat-mode-font-rules
-  `((:modes (org-mode)
-            :font text-mono
-            :faces ((org-table table)
-                    (org-formula table)
-                    (org-column-title table)
-                    (org-code code)
-                    (org-block code)
-                    (org-meta-line code)))
-    (:modes (markdown-mode)
-            :font text-mono
-            :faces ((markdown-table-face table)
-                    (markdown-code-face code)
-                    (markdown-inline-code-face code)))
-    (:modes (csv-mode)
-            :font table)
-    (:modes (beancount-mode)
-            :font text-mono)
-    (:modes (json-mode json-ts-mode
-                       yaml-mode yaml-ts-mode
-                       toml-ts-mode
-                       conf-mode
-                       nxml-mode
-                       sgml-mode
-                       templ-ts-mode
-                       go-template-mode)
-            :font code-config)
-    (:modes (objc-mode swift-mode applescript-mode)
-            :font code-apple)
-    (:modes (plantuml-mode mermaid-mode mermaid-ts-mode)
-            :font code-diagram)
-    (:modes (python-base-mode)
-            :font code-python)
-    (:modes (kotlin-ts-mode kotlin-mode
-                            java-ts-mode java-mode
-                            js-base-mode
-                            typescript-ts-base-mode typescript-mode)
-            :font code-jvm)
-    (:modes (comint-mode mistty-mode vterm-mode ghostel-mode logview-mode)
-            :font terminal
-            :rescale (("Symbols Nerd Font" . 1.2)))
-    (:modes (prog-mode)
-            :font code)
-    (:buffer-name "Meow Cheatsheet"
-                  :font code)
-    (:modes (text-mode)
-            :font text)
-    (:modes (Info-mode man-common treemacs-mode)
-            :font sans))
-  "Rules for buffer-local font selection.
-Each rule is a plist.  Supported keys are:
-
-:modes       A mode or list of modes matched with `derived-mode-p'.
-:buffer-name A regexp matched against `buffer-name'.
-:font        Font profile, font family, font list, or font variable.
-:faces       Face rules in the form (FACE FONTS).
-:rescale     Buffer-local `face-font-rescale-alist' value."
-  :type 'sexp)
-
 (defun cat--mode-font-rule-matches-p (rule)
   "Return non-nil when RULE applies to the current buffer."
   (or (when-let* ((modes (plist-get rule :modes)))
@@ -311,6 +311,3 @@ Unless `buffer-face-mode' already enabled."
 
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 (add-hook 'after-revert-hook 'cat-setup-mode-font)
-
-(with-eval-after-load 'face-remap
-  (+change-lighter 'buffer-face-mode " 󰛖"))
