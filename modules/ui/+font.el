@@ -1,70 +1,133 @@
 ;; -*- lexical-binding: t; -*-
 
-(defvar cat-serif-fonts '("DejaVu Serif" "Roboto Serif")
-  "Default proportional serif fonts.")
+(defgroup cat-font nil
+  "Font settings for Cat Emacs."
+  :group 'cat)
 
-(defvar cat-slab-fonts '("Iosevka Etoile" "Roboto Slab")
-  "Default proportional slab serif fonts.")
+(defcustom cat-serif-fonts '("DejaVu Serif" "Roboto Serif")
+  "Default proportional serif fonts."
+  :type '(repeat string))
 
-(defvar cat-sans-fonts '("Iosevka Aile"
-                         "Inter"
-                         "DejaVu Sans"
-                         "Roboto"
-                         "SF Pro"
-                         "HarmonyOS Sans")
-  "Default proportional sans serif fonts.")
+(defcustom cat-slab-fonts '("Iosevka Etoile" "Roboto Slab")
+  "Default proportional slab serif fonts."
+  :type '(repeat string))
 
-(defvar cat-mono-code-fonts '("Maple Mono"
-                              "JetBrains Mono"
-                              "Cascadia Code"
-                              "Fira Code"
-                              "SF Mono"
-                              "IBM Plex Mono"
-                              "Menlo"
-                              "Monaco")
-  "Default monospaced fonts.")
+(defcustom cat-sans-fonts '("Iosevka Aile"
+                            "Inter"
+                            "DejaVu Sans"
+                            "Roboto"
+                            "SF Pro"
+                            "HarmonyOS Sans")
+  "Default proportional sans serif fonts."
+  :type '(repeat string))
 
-(defvar cat-mono-thin-fonts '("Iosevka Term" "Iosevka")
-  "Default monospaced thin fonts.")
+(defcustom cat-mono-code-fonts '("Maple Mono"
+                                 "JetBrains Mono"
+                                 "Cascadia Code"
+                                 "Fira Code"
+                                 "SF Mono"
+                                 "IBM Plex Mono"
+                                 "Menlo"
+                                 "Monaco")
+  "Default monospaced fonts."
+  :type '(repeat string))
 
-(defvar cat-mono-serif-fonts '("Courier Prime")
-  "Default monospaced serif fonts.")
+(defcustom cat-mono-thin-fonts '("Iosevka Term" "Iosevka")
+  "Default monospaced thin fonts."
+  :type '(repeat string))
 
-(defvar cat-mono-slab-fonts '("Wellfleet")
-  "Default monospaced slab serif fonts.")
+(defcustom cat-mono-serif-fonts '("Courier Prime")
+  "Default monospaced serif fonts."
+  :type '(repeat string))
 
-(defvar cat-mono-sans-fonts '("DejaVu Sans Mono" "Roboto Mono")
-  "Default monospaced sans serif fonts.")
+(defcustom cat-mono-slab-fonts '("Wellfleet")
+  "Default monospaced slab serif fonts."
+  :type '(repeat string))
 
-(defvar cat-cjk-mono-fonts '("LXGW WenKai")
-  "Font for cjk scripts.")
+(defcustom cat-mono-sans-fonts '("DejaVu Sans Mono" "Roboto Mono")
+  "Default monospaced sans serif fonts."
+  :type '(repeat string))
 
-(defvar cat-math-fonts '("DejaVu Math TeX Gyre" "Noto Sans Math")
-  "Fonts for characters in `mathematical' script.")
+(defcustom cat-cjk-mono-fonts '("LXGW WenKai")
+  "Font for cjk scripts."
+  :type '(repeat string))
 
-(defvar cat-symbol-fonts '("Apple Symbols"))
+(defcustom cat-math-fonts '("DejaVu Math TeX Gyre" "Noto Sans Math")
+  "Fonts for characters in `mathematical' script."
+  :type '(repeat string))
 
-(defvar cat-unicode-fonts '("Apple Color Emoji" "Symbola"))
+(defcustom cat-symbol-fonts '("Apple Symbols")
+  "Fonts for symbol characters."
+  :type '(repeat string))
 
-(defvar cat-default-font (car cat-mono-thin-fonts)
+(defcustom cat-unicode-fonts '("Apple Color Emoji" "Symbola")
+  "Fonts for unicode characters."
+  :type '(repeat string))
+
+(defcustom cat-default-font (car cat-mono-thin-fonts)
   "Cat default font.
 
 For most causes, we need a 1/2em wide mono font to make UI aligned,
-like `org-agenda' and `org-table', as well as make spatial efficient.")
+like `org-agenda' and `org-table', as well as make spatial efficient."
+  :type 'string)
 
-(defvar cat-font-size (cond (IS-MAC 160)
-                            (t 140))
-  "Cat default font size.")
+(defcustom cat-font-size (cond (IS-MAC 160)
+                               (t 140))
+  "Cat default font size."
+  :type 'integer)
+
+(defcustom cat-fontset-font-rules
+  '((unicode cat-unicode-fonts append)
+    ((han kana hangul bopomofo cjk-misc) cat-cjk-mono-fonts)
+    (mathematical cat-math-fonts))
+  "Rules for `set-fontset-font'.
+Each rule has the form (CHARACTERS FONTS &optional ADD).  CHARACTERS
+can be a script symbol or a list of script symbols.  FONTS can be a
+font family, a list of font families, or a symbol whose value is either."
+  :type 'sexp)
+
+(defcustom cat-font-profiles
+  '((default . cat-mono-thin-fonts)
+    (sans . cat-sans-fonts)
+    (text . cat-slab-fonts)
+    (text-mono . cat-mono-sans-fonts)
+    (table . cat-mono-thin-fonts)
+    (code . cat-mono-code-fonts)
+    (code-primary . ("Maple Mono"))
+    (code-jvm . ("JetBrains Mono"))
+    (code-python . ("Cascadia Code"))
+    (code-diagram . ("Fira Code"))
+    (code-apple . ("SF Mono"))
+    (code-config . ("IBM Plex Mono"))
+    (terminal . ("Maple Mono")))
+  "Named font profiles.
+Profiles decouple font intent from mode rules.  Each value can be a
+font family, a list of font families, or a symbol whose value is either."
+  :type 'sexp)
 
 (defvar cat-setup-fonts-hook nil
   "Hook runs after setup fonts.")
+
+(defun cat--font-value (fonts)
+  "Return resolved FONTS.
+FONTS can be a value, a font profile, or a variable symbol."
+  (cond
+   ((assq fonts cat-font-profiles)
+    (cat--font-value (alist-get fonts cat-font-profiles)))
+   ((and (symbolp fonts) (boundp fonts))
+    (symbol-value fonts))
+   (t fonts)))
+
+(defun cat--font-list (fonts)
+  "Return resolved FONTS as a list."
+  (ensure-list (cat--font-value fonts)))
 
 (defun +safe-set-fontset-fonts (fontset characters font-list &optional frame add)
   "Safely set fontset fonts.
 If ADD is non-nil, all fonts in FONT-LIST are set with given ADD parameter.
 If ADD is nil, the first existing font is set as replacement, and others are appended."
   (when (display-graphic-p)
-    (let ((fonts (ensure-list font-list))
+    (let ((fonts (cat--font-list font-list))
           (first-set nil))
       (dolist (font fonts)
         (if (member font (font-family-list))
@@ -83,7 +146,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
 (defun +safe-set-face-fonts (face font-list &optional frame)
   "Safely set face fonts."
   (when (display-graphic-p)
-    (cl-dolist (font (ensure-list font-list))
+    (cl-dolist (font (cat--font-list font-list))
       (if (member font (font-family-list))
           (progn (set-face-attribute face frame :family font :inherit 'fixed-pitch)
                  (message "Set %s face font to %s" face font)
@@ -93,7 +156,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
 (defun +safe-buffer-face-set-fonts (font-list)
   "Safely set buffer face fonts."
   (when (display-graphic-p)
-    (cl-dolist (font (ensure-list font-list))
+    (cl-dolist (font (cat--font-list font-list))
       (if (member font (font-family-list))
           (progn (buffer-face-set `(:family ,font))
                  (message "Set buffer %s face font to %s" (current-buffer) font)
@@ -109,23 +172,9 @@ If ADD is nil, the first existing font is set as replacement, and others are app
       (set-face-attribute 'default frame :font cat-default-font :height cat-font-size :weight 'light))
     ;; (set-face-attribute 'mode-line-active frame :font (cadr cat-mono-thin-fonts))
     ;; (set-face-attribute 'mode-line-inactive frame :font (cadr cat-mono-thin-fonts))
-
-    ;; (+safe-set-fontset-fonts t 'symbol cat-symbol-fonts frame)
-
-    ;; 🐾
-    (+safe-set-fontset-fonts t 'unicode cat-unicode-fonts frame 'append)
-
-    ;; 猫，ネコ，ねこ，고양이，ㄇㄠ
-    (+safe-set-fontset-fonts t 'han cat-cjk-mono-fonts frame)
-    (+safe-set-fontset-fonts t 'kana cat-cjk-mono-fonts frame)
-    (+safe-set-fontset-fonts t 'hangul cat-cjk-mono-fonts frame)
-    (+safe-set-fontset-fonts t 'bopomofo cat-cjk-mono-fonts frame)
-    (+safe-set-fontset-fonts t 'cjk-misc cat-cjk-mono-fonts frame)
-
-    ;; 𝓒𝙖𝕥
-    (+safe-set-fontset-fonts t 'mathematical cat-math-fonts frame)
-
-    ;; 󰄛
+    (pcase-dolist (`(,scripts ,fonts . ,args) cat-fontset-font-rules)
+      (dolist (script (ensure-list scripts))
+        (+safe-set-fontset-fonts t script fonts frame (car args))))
     (run-hook-with-args 'cat-setup-fonts-hook nil frame)
     (cat-benchmark 'end "setup fonts.")))
 
@@ -178,70 +227,87 @@ If ADD is nil, the first existing font is set as replacement, and others are app
    ("Source Han Sans" . 0.9)
    ("-cdac$" . 1.3)))
 
+(defcustom cat-mode-font-rules
+  `((:modes (org-mode)
+            :font text-mono
+            :faces ((org-table table)
+                    (org-formula table)
+                    (org-column-title table)
+                    (org-code code)
+                    (org-block code)
+                    (org-meta-line code)))
+    (:modes (markdown-mode)
+            :font text-mono
+            :faces ((markdown-table-face table)
+                    (markdown-code-face code)
+                    (markdown-inline-code-face code)))
+    (:modes (csv-mode)
+            :font table)
+    (:modes (beancount-mode)
+            :font text-mono)
+    (:modes (json-mode json-ts-mode
+                       yaml-mode yaml-ts-mode
+                       toml-ts-mode
+                       conf-mode
+                       nxml-mode
+                       sgml-mode
+                       templ-ts-mode
+                       go-template-mode)
+            :font code-config)
+    (:modes (objc-mode swift-mode applescript-mode)
+            :font code-apple)
+    (:modes (plantuml-mode mermaid-mode mermaid-ts-mode)
+            :font code-diagram)
+    (:modes (python-base-mode)
+            :font code-python)
+    (:modes (kotlin-ts-mode kotlin-mode
+                            java-ts-mode java-mode
+                            js-base-mode
+                            typescript-ts-base-mode typescript-mode)
+            :font code-jvm)
+    (:modes (comint-mode mistty-mode vterm-mode ghostel-mode logview-mode)
+            :font terminal
+            :rescale (("Symbols Nerd Font" . 1.2)))
+    (:modes (prog-mode)
+            :font code)
+    (:buffer-name "Meow Cheatsheet"
+                  :font code)
+    (:modes (text-mode)
+            :font text)
+    (:modes (Info-mode man-common treemacs-mode)
+            :font sans))
+  "Rules for buffer-local font selection.
+Each rule is a plist.  Supported keys are:
+
+:modes       A mode or list of modes matched with `derived-mode-p'.
+:buffer-name A regexp matched against `buffer-name'.
+:font        Font profile, font family, font list, or font variable.
+:faces       Face rules in the form (FACE FONTS).
+:rescale     Buffer-local `face-font-rescale-alist' value."
+  :type 'sexp)
+
+(defun cat--mode-font-rule-matches-p (rule)
+  "Return non-nil when RULE applies to the current buffer."
+  (or (when-let* ((modes (plist-get rule :modes)))
+        (apply #'derived-mode-p (ensure-list modes)))
+      (when-let* ((regexp (plist-get rule :buffer-name)))
+        (string-match-p regexp (buffer-name)))))
+
+(defun cat--apply-mode-font-rule (rule)
+  "Apply a mode font RULE to the current buffer."
+  (when-let* ((font (plist-get rule :font)))
+    (+safe-buffer-face-set-fonts font))
+  (pcase-dolist (`(,face ,fonts) (plist-get rule :faces))
+    (+safe-set-face-fonts face fonts))
+  (when-let* ((rescale (plist-get rule :rescale)))
+    (setq-local face-font-rescale-alist rescale)))
+
 (defun cat-setup-mode-font ()
   "Set font according to current major mode.
 Unless `buffer-face-mode' already enabled."
   (unless (bound-and-true-p buffer-face-mode)
-    (cond
-     ((derived-mode-p 'org-mode)
-      (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
-      (+safe-set-face-fonts 'org-table cat-mono-thin-fonts)
-      (+safe-set-face-fonts 'org-formula cat-mono-thin-fonts)
-      (+safe-set-face-fonts 'org-column-title cat-mono-thin-fonts)
-      (+safe-set-face-fonts 'org-code cat-mono-code-fonts)
-      (+safe-set-face-fonts 'org-block cat-mono-code-fonts)
-      (+safe-set-face-fonts 'org-meta-line cat-mono-code-fonts))
-     ((derived-mode-p 'markdown-mode)
-      (+safe-buffer-face-set-fonts cat-mono-sans-fonts)
-      (+safe-set-face-fonts 'markdown-table-face cat-mono-thin-fonts)
-      (+safe-set-face-fonts 'markdown-code-face cat-mono-code-fonts)
-      (+safe-set-face-fonts 'markdown-inline-code-face cat-mono-code-fonts))
-     ((derived-mode-p 'csv-mode)
-      (+safe-buffer-face-set-fonts cat-mono-thin-fonts))
-     ((derived-mode-p 'beancount-mode)
-      (+safe-buffer-face-set-fonts cat-mono-sans-fonts))
-     ((derived-mode-p 'json-mode 'json-ts-mode
-                      'yaml-mode 'yaml-ts-mode
-                      'toml-ts-mode
-                      'conf-mode
-                      'nxml-mode
-                      'sgml-mode
-                      'templ-ts-mode
-                      'go-template-mode)
-      (+safe-buffer-face-set-fonts (nth 5 cat-mono-code-fonts)))
-     ((derived-mode-p 'objc-mode
-                      'swift-mode
-                      'applescript-mode)
-      (+safe-buffer-face-set-fonts (nth 4 cat-mono-code-fonts)))
-     ((derived-mode-p 'plantuml-mode
-                      'mermaid-mode 'mermaid-ts-mode)
-      (+safe-buffer-face-set-fonts (nth 3 cat-mono-code-fonts)))
-     ((derived-mode-p 'python-base-mode)
-      (+safe-buffer-face-set-fonts (nth 2 cat-mono-code-fonts)))
-     ((derived-mode-p 'kotlin-ts-mode 'kotlin-mode
-                      'java-ts-mode 'java-mode
-                      'js-base-mode
-                      'typescript-ts-base-mode 'typescript-mode)
-      (+safe-buffer-face-set-fonts (nth 1 cat-mono-code-fonts)))
-     ((derived-mode-p 'comint-mode
-                      'mistty-mode
-                      'vterm-mode
-                      'ghostel-mode
-                      'logview-mode)
-      (let ((font (nth 0 cat-mono-code-fonts)))
-        (+safe-buffer-face-set-fonts font)
-        (setq-local face-font-rescale-alist
-                    '(("Symbols Nerd Font" . 1.2)))))
-     ((derived-mode-p 'prog-mode)
-      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
-     ((string-match-p "Meow Cheatsheet" (buffer-name))
-      (+safe-buffer-face-set-fonts cat-mono-code-fonts))
-     ((derived-mode-p 'text-mode)
-      (+safe-buffer-face-set-fonts cat-slab-fonts))
-     ((derived-mode-p 'Info-mode
-                      'man-common
-                      'treemacs-mode)
-      (+safe-buffer-face-set-fonts cat-sans-fonts)))))
+    (when-let* ((rule (seq-find #'cat--mode-font-rule-matches-p cat-mode-font-rules)))
+      (cat--apply-mode-font-rule rule))))
 
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 (add-hook 'after-revert-hook 'cat-setup-mode-font)
