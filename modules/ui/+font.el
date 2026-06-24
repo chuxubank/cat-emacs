@@ -8,7 +8,7 @@
   "Default proportional serif fonts."
   :type '(repeat string))
 
-(defcustom cat-slab-fonts '("Iosevka Etoile" "Roboto Slab")
+(defcustom cat-serif-slab-fonts '("Iosevka Etoile" "Roboto Slab")
   "Default proportional slab serif fonts."
   :type '(repeat string))
 
@@ -28,7 +28,8 @@
                                  "SF Mono"
                                  "IBM Plex Mono"
                                  "Menlo"
-                                 "Monaco")
+                                 "Monaco"
+                                 "Google Sans Code")
   "Default monospaced fonts."
   :type '(repeat string))
 
@@ -87,19 +88,18 @@ font family, a list of font families, or a symbol whose value is either."
   :type 'sexp)
 
 (defcustom cat-font-profiles
-  '((default . cat-mono-thin-fonts)
-    (sans . cat-sans-fonts)
-    (text . cat-slab-fonts)
+  '((text-sans . cat-sans-fonts)
+    (text-serif . cat-serif-fonts)
+    (text-serif-slab . cat-serif-slab-fonts)
     (text-mono . cat-mono-sans-fonts)
     (table . cat-mono-thin-fonts)
     (code . cat-mono-code-fonts)
-    (code-primary . ("Maple Mono"))
     (code-jvm . ("JetBrains Mono"))
     (code-python . ("Cascadia Code"))
     (code-diagram . ("Fira Code"))
     (code-apple . ("SF Mono"))
     (code-config . ("IBM Plex Mono"))
-    (terminal . ("Maple Mono")))
+    (terminal . ("Menlo")))
   "Named font profiles.
 Profiles decouple font intent from mode rules.  Each value can be a
 font family, a list of font families, or a symbol whose value is either."
@@ -108,7 +108,8 @@ font family, a list of font families, or a symbol whose value is either."
 (defcustom cat-mode-font-rules
   `((:modes (org-mode)
             :font text-mono
-            :faces ((org-table table)
+            :faces ((org-document-title text-serif)
+                    (org-table table)
                     (org-formula table)
                     (org-column-title table)
                     (org-code code)
@@ -151,9 +152,9 @@ font family, a list of font families, or a symbol whose value is either."
     (:buffer-name "Meow Cheatsheet"
                   :font code)
     (:modes (text-mode)
-            :font text)
+            :font text-serif-slab)
     (:modes (Info-mode man-common treemacs-mode)
-            :font sans))
+            :font text-sans))
   "Rules for buffer-local font selection.
 Each rule is a plist.  Supported keys are:
 
