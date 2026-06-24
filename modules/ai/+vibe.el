@@ -25,7 +25,10 @@
   (gptel-model-updater-external-targets
    '((gptel-magit-backend gptel-magit-model "GPTel-Magit"
                           ("IV:deepseek-v4-flash"
-                           "OpenRouter:openai/gpt-oss-120b:free"))))
+                           "OpenRouter:openai/gpt-oss-120b:free"))
+     (gptel-forge-prs-backend gptel-forge-prs-model "GPTel-Forge-Prs"
+                              ("IV:deepseek-v4-flash"
+                               "OpenRouter:openai/gpt-oss-120b:free"))))
   :pretty-hydra
   (cat-vibe
    ("GPTel"
@@ -106,13 +109,16 @@ Invokes CALLBACK with the generated message when done."
                                    nil))
           (diff (magit-git-output "diff" "--cached")))
       (gptel-magit--request diff
-                            :system gptel-magit-commit-prompt
-                            :context nil
-                            :callback (lambda (response info)
-                                        (print info)
-                                        (when (and (stringp response)
-                                                   (not (string-empty-p response)))
-                                          (funcall callback response)))))))
+        :system gptel-magit-commit-prompt
+        :context nil
+        :callback (lambda (response info)
+                    (print info)
+                    (when (and (stringp response)
+                               (not (string-empty-p response)))
+                      (funcall callback response)))))))
+
+(use-package gptel-forge-prs
+  :hook (forge-post-mode . gptel-forge-prs-install))
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")
