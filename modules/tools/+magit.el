@@ -42,108 +42,12 @@
   :pin melpa-stable)
 
 (use-package magit-difftastic
-  :vc (:url "https://github.com/rschmukler/magit-difftastic")
+  :vc (:url "https://github.com/chuxubank/magit-difftastic")
   :after magit
   :demand t
   :custom
   (magit-difftastic-display "inline")
   :config
-  (defvar cat-magit-difftastic-debug t
-    "When non-nil, write magit-difftastic diagnostics to a debug buffer.")
-
-  (defun cat-magit-difftastic-log (format-string &rest args)
-    "Append a magit-difftastic diagnostic message."
-    (when cat-magit-difftastic-debug
-      (let ((message (apply #'format format-string args)))
-        (with-current-buffer (get-buffer-create "*magit-difftastic-debug*")
-          (goto-char (point-max))
-          (insert (format-time-string "[%F %T.%3N] "))
-          (insert (or (ignore-errors (abbreviate-file-name default-directory))
-                      "<no default-directory>"))
-          (insert " ")
-          (insert message)
-          (insert "\n")))))
-
-  (defun cat-magit-difftastic--around (label orig &rest args)
-    "Log elapsed time and errors around a magit-difftastic function."
-    (let ((start (float-time)))
-      (cat-magit-difftastic-log "%s start args=%S" label args)
-      (condition-case err
-          (let ((result (apply orig args)))
-            (cat-magit-difftastic-log
-             "%s done elapsed=%.3fs" label (- (float-time) start))
-            result)
-        (error
-         (cat-magit-difftastic-log
-          "%s error elapsed=%.3fs err=%S" label (- (float-time) start) err)
-         (signal (car err) (cdr err))))))
-
-  (defun cat-magit-difftastic--prewarm-advice (orig &rest args)
-    (apply #'cat-magit-difftastic--around "prewarm" orig args))
-
-  (defun cat-magit-difftastic--insert-file-sections-advice (orig files context)
-    (cat-magit-difftastic-log
-     "insert-file-sections files=%d context=%S files-list=%S"
-     (length files) context files)
-    (funcall orig files context))
-
-  (defun cat-magit-difftastic--compute-align-col-advice (orig &rest args)
-    (apply #'cat-magit-difftastic--around "compute-align-col" orig args))
-
-  (defun cat-magit-difftastic--insert-chunks-advice (orig rendered file context)
-    (cat-magit-difftastic-log
-     "insert-chunks file=%s rendered-bytes=%d context=%S"
-     file (length rendered) context)
-    (funcall orig rendered file context))
-
-  (defun cat-magit-difftastic--render-files-debug (jobs width)
-    "Debug replacement for `magit-difftastic--render-files'."
-    (require 'difftastic)
-    (let* ((results (make-hash-table :test 'equal))
-           (start (float-time))
-           (env (difftastic--build-git-process-environment
-                 width (list "--display" magit-difftastic-display))))
-      (cat-magit-difftastic-log
-       "render-files sync start jobs=%d width=%S display=%S env=%S files=%S"
-       (length jobs) width magit-difftastic-display
-       (seq-filter (lambda (s) (string-prefix-p "DFT_" s)) env)
-       (mapcar #'car jobs))
-      (pcase-dolist (`(,file . ,diff-args) jobs)
-        (let* ((args (append diff-args (list "--" file)))
-               (process-environment env)
-               (file-start (float-time)))
-          (cat-magit-difftastic-log
-           "render sync start file=%s args=%S" file args)
-          (condition-case err
-              (with-temp-buffer
-                (let ((exit (apply #'process-file "git" nil t nil args))
-                      (bytes (buffer-size)))
-                  (cat-magit-difftastic-log
-                   "render sync finish file=%s exit=%S bytes=%d elapsed=%.3fs"
-                   file exit bytes (- (float-time) file-start))
-                  (when (equal exit 0)
-                    (puthash file
-                             (difftastic--ansi-color-apply (buffer-string))
-                             results))))
-            (error
-             (cat-magit-difftastic-log
-              "render sync error file=%s args=%S elapsed=%.3fs err=%S"
-              file args (- (float-time) file-start) err)))))
-      (cat-magit-difftastic-log
-       "render-files sync done elapsed=%.3fs results=%d"
-       (- (float-time) start) (hash-table-count results))
-      results))
-
-  (advice-add 'magit-difftastic--prewarm
-              :around #'cat-magit-difftastic--prewarm-advice)
-  (advice-add 'magit-difftastic--insert-file-sections
-              :around #'cat-magit-difftastic--insert-file-sections-advice)
-  (advice-add 'magit-difftastic--compute-align-col
-              :around #'cat-magit-difftastic--compute-align-col-advice)
-  (advice-add 'magit-difftastic--insert-chunks
-              :around #'cat-magit-difftastic--insert-chunks-advice)
-  (advice-add 'magit-difftastic--render-files
-              :override #'cat-magit-difftastic--render-files-debug)
   (magit-difftastic-mode 1))
 
 (use-package transient
