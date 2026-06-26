@@ -48,7 +48,8 @@
   :custom
   (magit-difftastic-display "inline")
   :config
-  (magit-difftastic-mode 1))
+  (transient-append-suffix 'magit-diff-refresh '(1 1 -1)
+    '("D" "difftastic" magit-difftastic-mode)))
 
 (use-package transient
   :ignore-builtin
