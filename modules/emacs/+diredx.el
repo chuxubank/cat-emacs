@@ -37,7 +37,10 @@
       "fly -t $(yq -r '.targets | keys | .[0]' ~/.flyrc) set-pipeline --config ? --pipeline $(basename `?` .yaml)")
      ("\\.zip\\'"
       (concat "7z x -o\\*")
-      (concat "7z x -o\\* -p"))))
+      (concat "7z x -o\\* -p"))
+     (".*\\'"
+      (format "7z a ?.zip")
+      (format "7z a ?.zip -p"))))
   :config
   (let ((args (list "-ahlv" "--group-directories-first")))
     (when IS-BSD
