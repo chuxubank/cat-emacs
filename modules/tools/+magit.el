@@ -42,7 +42,7 @@
   :pin melpa-stable)
 
 (use-package magit-difftastic
-  :vc (:url "https://github.com/chuxubank/magit-difftastic")
+  :vc (:url "https://github.com/rschmukler/magit-difftastic")
   :after magit
   :demand t
   :custom
