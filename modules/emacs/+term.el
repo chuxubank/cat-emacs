@@ -28,8 +28,19 @@
     (("e" #'eshell "eshell")))))
 
 (use-package vterm
+  :cat
   :ensure-system-package
   (cmake . cmake)
+  :init
+  (defun project-vterm ()
+    (interactive)
+    (defvar vterm-buffer-name)
+    (let* ((default-directory (project-root (project-current t)))
+           (vterm-buffer-name (project-prefixed-buffer-name "vterm"))
+           (vterm-buffer (get-buffer vterm-buffer-name)))
+      (if (and vterm-buffer (not current-prefix-arg))
+          (pop-to-buffer vterm-buffer  (bound-and-true-p display-comint-buffer-action))
+        (vterm))))
   :bind
   (:map vterm-mode-map
         ("C-q" . #'vterm-send-next-key))
@@ -39,16 +50,6 @@
   (cat-term
    ("Vterm"
     (("v" #'vterm "vterm")))))
-
-(defun project-vterm ()
-  (interactive)
-  (defvar vterm-buffer-name)
-  (let* ((default-directory (project-root (project-current t)))
-         (vterm-buffer-name (project-prefixed-buffer-name "vterm"))
-         (vterm-buffer (get-buffer vterm-buffer-name)))
-    (if (and vterm-buffer (not current-prefix-arg))
-        (pop-to-buffer vterm-buffer  (bound-and-true-p display-comint-buffer-action))
-      (vterm))))
 
 (use-package mistty
   :bind
@@ -60,15 +61,18 @@
     (("m" #'mistty "mistty")))))
 
 (with-eval-after-load 'project
-  (add-to-list 'project-switch-commands '(project-vterm "Vterm") t)
+  (when (catp! vterm)
+    (add-to-list 'project-switch-commands '(project-vterm "Vterm") t)
+    (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode)))
   (add-to-list 'project-switch-commands '(mistty-in-project "Mistty") t)
-  (add-to-list 'project-kill-buffer-conditions '(major-mode . vterm-mode))
   (add-to-list 'project-kill-buffer-conditions '(major-mode . mistty-mode)))
 
 (use-package eshell-vterm
+  :cat vterm
   :hook (eshell-mode . eshell-vterm-mode))
 
 (use-package vterm-toggle
+  :cat vterm
   :bind
   (:map vterm-mode-map
         ([(control return)] . vterm-toggle-insert-cd)
@@ -81,6 +85,7 @@
 
 (when (package-installed-p 'meow)
   (use-package meow-vterm
+    :cat vterm
     :vc (:url "https://github.com/accelbread/meow-vterm")
     :demand t
     :after vterm meow

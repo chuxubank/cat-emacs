@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+
 (defvar cat-current-module nil
   "Current Cat module being loaded.")
 
@@ -11,6 +13,9 @@
 
 (defvar cat-module-options nil
   "Alist of Cat module options grouped by module group.")
+
+(defvar cat-modules-enabled nil
+  "Alist of enabled Cat modules grouped by module group.")
 
 (defun cat--plist-get (plist prop)
   "Return PLIST value for PROP, preserving explicit nil values."
@@ -28,13 +33,38 @@ When MODULE and GROUP are nil, use the module currently being loaded."
         (cat--plist-get options option))
     (cat--plist-get cat-current-module-options option)))
 
-(defun cat-feature-enabled-p (feature &optional module group)
+(defun cat--query-symbol-form (value)
+  "Return a query form for VALUE, treating bare symbols as quoted names."
+  (cond
+   ((null value) nil)
+   ((symbolp value) `',value)
+   (t value)))
+
+(defun cat--query-group-form (group)
+  "Return a query form for GROUP, treating bare symbols as group names."
+  (cond
+   ((null group) nil)
+   ((keywordp group) (substring (symbol-name group) 1))
+   ((symbolp group) (symbol-name group))
+   (t group)))
+
+(defmacro catp! (feature &optional module group)
   "Return non-nil when FEATURE is enabled for MODULE in GROUP.
-Module options support a `:feature' allow-list.  Optional package declarations
-marked with `use-package' `:feature' are disabled unless their feature appears
-in the current module's `:feature' list."
-  (let ((features (cat--module-option :feature module group)))
-    (memq feature features)))
+When MODULE and GROUP are omitted, use the module currently being loaded."
+  `(memq ',feature
+         (cat--module-option :feature
+                             ,(cat--query-symbol-form module)
+                             ,(cat--query-group-form group))))
+
+(defmacro modulep! (module &optional group)
+  "Return non-nil when MODULE is enabled in GROUP.
+When GROUP is omitted, check every module group."
+  (if group
+      `(memq ',module
+             (alist-get ,(cat--query-group-form group)
+                        cat-modules-enabled nil nil #'equal))
+    `(cl-some (lambda (modules) (memq ',module (cdr modules)))
+              cat-modules-enabled)))
 
 (defun cat-load (module group &optional noerror)
   "Load MODULE from GROUP under the modules directory."
@@ -82,6 +112,9 @@ in the current module's `:feature' list."
 
 (defun cat--register-module-options (group module options)
   "Register OPTIONS for MODULE in GROUP."
+  (let ((modules (alist-get group cat-modules-enabled nil nil #'equal)))
+    (setf (alist-get group cat-modules-enabled nil nil #'equal)
+          (cl-adjoin module modules)))
   (when options
     (let ((group-options (alist-get group cat-module-options nil nil #'equal)))
       (setf (alist-get module group-options nil nil #'equal) options)

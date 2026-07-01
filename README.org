@@ -87,15 +87,18 @@ setup:
 - Tools and apps: Ripgrep, Magit, Docker, compile helpers, Beancount, Elfeed,
   GitHub, mail, password-store, PDFs, media, maps, blogs, and more.
 
-Modules can also expose feature-level controls through =use-package='s
-=:feature= keyword.  Package declarations marked with =:feature= are optional
-and stay disabled unless the module declaration enables that feature:
+Modules can also expose feature-level controls through =use-package='s =:cat=
+keyword and =catp!=.  Package declarations guarded by =:cat= are optional and
+stay disabled unless the Cat feature or expression is enabled:
 
 #+begin_src emacs-lisp
 (defconst cat-modules
   '(:lang
     (android :feature (android-mode compose-preview))
     ))
+
+(use-package compose-preview
+  :cat)
 #+end_src
 
 ** Configuration Entry Points
