@@ -49,6 +49,28 @@
 (require 'use-package)
 (require 'ignore-builtin)
 
+(defun use-package-handler/:feature (name _keyword args rest state)
+  "Handler for the `:feature' keyword in `use-package'.
+It skips the package declaration when the current Cat module does not enable
+NAME, or the feature symbol listed in ARGS."
+  (let ((feature (or args name)))
+    (when (cat-feature-enabled-p feature)
+      (use-package-process-keywords name rest state))))
+
+(defun use-package-normalize/:feature (_name _keyword args)
+  "Normalize the arguments for `:feature'.
+Accepts either no argument or a single feature symbol."
+  (cond
+   ((null args) nil)
+   ((symbolp args) args)
+   (t (use-package-error ":feature takes either no argument or a feature symbol"))))
+
+(eval-after-load 'use-package-core
+  '(progn
+     (add-to-list 'use-package-keywords ':feature)
+     (put 'use-package-handler/:feature 'function-documentation "Skip package when its Cat module feature is not enabled")
+     (setf (alist-get :feature use-package-keywords) 'use-package-handler/:feature)))
+
 (setq-default
  use-package-always-ensure t
  use-package-always-defer t

@@ -33,3 +33,6 @@ flycheck_*
 .aider*
 .chatgpt-shell.el
 /.agent-shell/
+
+# local history
+history

@@ -87,6 +87,17 @@ setup:
 - Tools and apps: Ripgrep, Magit, Docker, compile helpers, Beancount, Elfeed,
   GitHub, mail, password-store, PDFs, media, maps, blogs, and more.
 
+Modules can also expose feature-level controls through =use-package='s
+=:feature= keyword.  A module enables every feature by default, but module
+declarations may use =:feature= to keep an allow-list:
+
+#+begin_src emacs-lisp
+(defconst cat-modules
+  '(:lang
+    (android :feature (android-mode compose-preview))
+    ))
+#+end_src
+
 ** Configuration Entry Points
 
 - =early-init.el= defines platform flags, cache directories, benchmark logging,
