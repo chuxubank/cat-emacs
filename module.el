@@ -30,11 +30,11 @@ When MODULE and GROUP are nil, use the module currently being loaded."
 
 (defun cat-feature-enabled-p (feature &optional module group)
   "Return non-nil when FEATURE is enabled for MODULE in GROUP.
-Module options support a `:feature' allow-list.  When a module has no
-`:feature' option, every feature is enabled by default."
+Module options support a `:feature' allow-list.  Optional package declarations
+marked with `use-package' `:feature' are disabled unless their feature appears
+in the current module's `:feature' list."
   (let ((features (cat--module-option :feature module group)))
-    (or (null features)
-        (memq feature features))))
+    (memq feature features)))
 
 (defun cat-load (module group &optional noerror)
   "Load MODULE from GROUP under the modules directory."
