@@ -51,10 +51,6 @@
   (transient-append-suffix 'magit-diff-refresh '(1 1 -1)
     '("D" "difftastic" magit-difftastic-mode)))
 
-(use-package transient
-  :ignore-builtin
-  :pin melpa-stable)
-
 (use-package magit-todos
   :demand t
   :after magit

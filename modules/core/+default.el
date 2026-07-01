@@ -347,3 +347,7 @@
                       '("GitHub Search" .
                         [simple-query "github.com"
 		                              "github.com/search?q=" "&type=repositories"])))
+
+(use-package transient
+  :ignore-builtin
+  :pin gnu)
