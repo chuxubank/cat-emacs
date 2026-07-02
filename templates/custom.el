@@ -11,6 +11,50 @@
  '(use-short-answers t)
  '(package-native-compile t)
  '(system-packages-use-sudo nil)
+ '(package-vc-selected-packages
+   '((android-mode . (:url "https://github.com/chuxubank/emacs-studio" :lisp-dir "android-mode/"))
+     (chezmoi . (:url "https://github.com/Lillenne/chezmoi.el"))
+     (code-review . (:url "https://github.com/doomelpa/code-review"))
+     (compose-preview . (:url "https://github.com/chuxubank/emacs-studio" :lisp-dir "compose-preview/"))
+     (confluence . (:url "https://github.com/jahlborn/confluence-el"))
+     (diagram-preview . (:url "https://github.com/natrys/diagram-preview"))
+     (ejira3 . (:url "https://git.sr.ht/~madearl/ejira3"))
+     (elogcat . (:url "https://github.com/chuxubank/elogcat.el"))
+     (flymake-bridge . (:url "https://github.com/liuyinz/flymake-bridge"))
+     (gptel-model-updater . (:url "https://github.com/chuxubank/gptel-model-updater"))
+     (gptel-prompts . (:url "https://github.com/jwiegley/gptel-prompts"))
+     (gradle-el . (:url "https://git.sr.ht/~vhallac/gradle-el"))
+     (hydra-posframe . (:url "https://github.com/Ladicle/hydra-posframe"))
+     (jiralib3 . (:url "https://git.sr.ht/~madearl/jiralib3"))
+     (kitty-graphics . (:url "https://github.com/cashmeredev/kitty-graphics.el"))
+     (lsp-bridge . (:url "https://github.com/manateelazycat/lsp-bridge"))
+     (lsp-proxy . (:url "https://github.com/jadestrong/lsp-proxy"))
+     (magit-difftastic . (:url "https://github.com/rschmukler/magit-difftastic"))
+     (markdown-xwidget . (:url "https://github.com/cfclrk/markdown-xwidget"))
+     (math-delimiters . (:url "https://github.com/oantolin/math-delimiters"))
+     (mcp-server . (:url "https://github.com/rhblind/emacs-mcp-server"))
+     (md-babel . (:url "https://github.com/md-babel/md-babel.el"))
+     (meow-vterm . (:url "https://github.com/accelbread/meow-vterm"))
+     (nano . (:url "https://github.com/rougier/nano-emacs"))
+     (nano-minibuffer . (:url "https://github.com/rougier/nano-minibuffer"))
+     (netease-cloud-music . (:url "https://github.com/chuxubank/netease-cloud-music.el"))
+     (ob-async . (:url "https://github.com/ezchi/ob-async" :branch "develop"))
+     (ob-kotlin . (:url "https://github.com/chuxubank/ob-kotlin"))
+     (org-agenda-count . (:url "https://github.com/sid-kurias/org-agenda-count"))
+     (org-cv . (:url "https://gitlab.com/Titan-C/org-cv"))
+     (org-dial . (:url "https://github.com/mistrey/org-dial"))
+     (org-fc . (:url "https://github.com/l3kn/org-fc"))
+     (org-imgtog . (:url "https://github.com/gaoDean/org-imgtog"))
+     (org-media-note . (:url "https://github.com/yuchen-lea/org-media-note"))
+     (org-mode . (:url "https://code.tecosaur.net/tec/org-mode" :lisp-dir "lisp/" :branch "dev"))
+     (org-remoteimg . (:url "https://github.com/gaoDean/org-remoteimg"))
+     (org-yt . (:url "https://github.com/TobiasZawada/org-yt"))
+     (ox-jira3 . (:url "https://git.sr.ht/~madearl/ox-jira3"))
+     (treemacs-activities . (:url "https://github.com/chuxubank/treemacs-activities"))
+     (tributary . (:url "https://github.com/mrkrd/tributary"))
+     (ultra-scroll . (:url "https://github.com/jdtsmith/ultra-scroll"))
+     (vbnet-mode . (:url "https://github.com/lelit/vbnet-mode"))
+     (video-trimmer . (:url "https://github.com/xenodium/video-trimmer"))))
  '(package-selected-packages
    '(ace-pinyin
      ace-window
@@ -18,7 +62,6 @@
      agent-shell
      aider
      aidermacs
-     android-mode
      anki-vocabulary
      ansible
      ansible-doc
@@ -40,13 +83,11 @@
      cape
      cdlatex
      chatgpt-shell
-     chezmoi
      citar
      citar-embark
      citar-org-roam
      cmake-font-lock
      cmake-mode
-     code-review
      codeium
      compile-multi
      compile-multi-embark
@@ -82,7 +123,6 @@
      elfeed-org
      elfeed-protocol
      elisp-demos
-     elogcat
      emacs-everywhere
      embark
      embark-consult
@@ -155,14 +195,11 @@
      nov
      ob-aider
      ob-applescript
-     ob-async
      ob-go
-     ob-kotlin
      ob-powershell
      ob-rust
      ob-swiftui
      ob-typescript
-     org
      org-anki
      org-appear
      org-cliplink
@@ -225,7 +262,6 @@
      treesit-auto
      treesit-fold
      treesit-langs
-     ultra-scroll
      undo-fu-session
      uv-mode
      valign
