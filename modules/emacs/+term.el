@@ -83,14 +83,13 @@
    ("Vterm"
     (("V" #'vterm-toggle "vterm toggle")))))
 
-(when (package-installed-p 'meow)
-  (use-package meow-vterm
-    :cat vterm
-    :vc (:url "https://github.com/accelbread/meow-vterm")
-    :demand t
-    :after vterm meow
-    :config
-    (meow-vterm-enable)))
+(use-package meow-vterm
+  :cat (and (catp! vterm) (modulep! meow))
+  :vc (:url "https://github.com/accelbread/meow-vterm")
+  :demand t
+  :after vterm meow
+  :config
+  (meow-vterm-enable))
 
 (use-package ghostel
   :pretty-hydra
