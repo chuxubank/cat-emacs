@@ -2,8 +2,6 @@
 
 (require 'cl-lib)
 
-(declare-function cat-load-file "core" (file context &optional noerror))
-
 (defvar cat-current-module nil
   "Current Cat module being loaded.")
 
@@ -67,6 +65,19 @@ When GROUP is omitted, check every module group."
                         cat-modules-enabled nil nil #'equal))
     `(cl-some (lambda (modules) (memq ',module (cdr modules)))
               cat-modules-enabled)))
+
+(defun cat-load-file (file context &optional noerror)
+  "Load FILE for CONTEXT with Cat benchmark and error reporting."
+  (condition-case-unless-debug err
+      (let (file-name-handler-alist)
+        (cat-benchmark 'beg file)
+        (load file noerror 'nomessage))
+    (error
+     (message "ERROR: %S when loading %s: %s\nBacktrace:\n%s"
+              err
+              context
+              (abbreviate-file-name file)
+              (with-output-to-string (backtrace))))))
 
 (defun cat-load (module group &optional noerror)
   "Load MODULE from GROUP under the modules directory."
@@ -136,5 +147,11 @@ When GROUP is omitted, check every module group."
               (cat-current-module-group group)
               (cat-current-module-options module-options))
           (cat-load (cat--module-name module-name) group)))))))
+
+(defun cat-load-modules (&optional modules-file)
+  "Load Cat module declarations from MODULES-FILE.
+When MODULES-FILE is nil, load the configured cats file."
+  (load (or modules-file (cat-config-file "cats")) nil 'nomessage)
+  (cat! cat-modules))
 
 (provide 'cat-module)

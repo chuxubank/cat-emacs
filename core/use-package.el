@@ -25,3 +25,5 @@ expression."
      (add-to-list 'use-package-keywords ':cat)
      (put 'use-package-handler/:cat 'function-documentation "Skip package unless its Cat expression is non-nil")
      (setf (alist-get :cat use-package-keywords) 'use-package-handler/:cat)))
+
+(provide 'cat-use-package)

@@ -23,7 +23,7 @@ persist
 request
 
 # custom
-custom.el
+/custom.el
 
 # gnus
 network-security.data

@@ -110,7 +110,7 @@ stay disabled unless the Cat feature or expression is enabled:
   module list, and then each selected module.
 - =core/core.el= is the core entry point; it loads bootstrap files, then the
   module loader.
-- =core/package.el= registers the Cat =use-package= =:cat= keyword.
+- =core/use-package.el= registers the Cat =use-package= =:cat= keyword.
 - =modules/base/+package.el= configures package archives, mirrors,
   =use-package= defaults, =package-vc=, and package tools.
 - =core/module.el= defines the optional module loader.

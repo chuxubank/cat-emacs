@@ -1,37 +1,45 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'seq)
+
 (defconst cat-core-directory (file-name-directory load-file-name)
   "Directory containing Cat Emacs core files.")
 
-(defun cat-load-file (file context &optional noerror)
-  "Load FILE for CONTEXT with Cat benchmark and error reporting."
-  (condition-case-unless-debug err
-      (let (file-name-handler-alist)
-        (cat-benchmark 'beg file)
-        (load file noerror 'nomessage))
-    (error
-     (message "ERROR: %S when loading %s: %s\nBacktrace:\n%s"
-              err
-              context
-              (abbreviate-file-name file)
-              (with-output-to-string (backtrace))))))
+(defun cat-core-feature (file)
+  "Return the core feature provided by FILE."
+  (intern (concat "cat-" (file-name-base file))))
 
-(defvar cat-core-modules '(package utils)
-  "Core files loaded before optional Cat modules.")
+(defun cat-core-files ()
+  "Return Cat core files, excluding the core entry file itself."
+  (sort
+   (seq-remove
+    (lambda (file)
+      (string= (file-name-nondirectory file) "core.el"))
+    (directory-files cat-core-directory t "\\.el\\'"))
+   #'string<))
 
-(defun cat-load-core-file (module &optional noerror)
-  "Load core MODULE under the core directory."
-  (cat-load-file
-   (expand-file-name (symbol-name module) cat-core-directory)
-   "core file"
-   noerror))
+(defun cat-require-core-file (file)
+  "Require the core feature provided by FILE."
+  (let ((feature (cat-core-feature file)))
+    (unless (featurep feature)
+      (condition-case-unless-debug err
+          (progn
+            (cat-benchmark 'beg file)
+            (require feature file))
+        (error
+         (message "ERROR: %S when loading core feature: %s\nBacktrace:\n%s"
+                  err
+                  (abbreviate-file-name file)
+                  (with-output-to-string (backtrace))))))))
 
 (defun cat-load-core ()
   "Load Cat Emacs core files."
-  (dolist (module cat-core-modules)
-    (cat-load-core-file module)))
+  (dolist (file (cat-core-files))
+    (cat-require-core-file file)))
 
 (cat-load-core)
-(cat-load-file (expand-file-name "module" cat-core-directory) "core module loader")
+
+(unless IS-CI
+  (cat-load-modules))
 
 (provide 'cat-core)

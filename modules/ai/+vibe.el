@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar cat-prompt-dir (cat-config-directory "prompt")
+  "Directory for prompt templates.")
+
 (pretty-hydra-define cat-vibe
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))

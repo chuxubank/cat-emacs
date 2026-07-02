@@ -14,17 +14,24 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     p7zip \
     tzdata
 
-COPY . /root/.config/emacs
-
-RUN echo "(custom-set-variables \
-    '(use-short-answers t) \
-    '(package-native-compile t) \
-    '(system-packages-use-sudo nil) \
-    )" > $HOME/.config/emacs-custom.el
+COPY early-init.el /root/.config/emacs/early-init.el
+COPY init.el /root/.config/emacs/init.el
+COPY core /root/.config/emacs/core
+RUN mkdir -p $HOME/.config/emacs/templates
+COPY templates/custom.el /root/.config/emacs/templates/custom.el
 
 RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
     --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
-    yes | emacs --fg-daemon --debug-init -kill
+    yes | emacs --batch --debug-init \
+    --init-directory "$HOME/.config/emacs" \
+    -l "$HOME/.config/emacs/early-init.el" \
+    -l "$HOME/.config/emacs/init.el" \
+    --eval "(package-initialize)" \
+    --eval "(package-refresh-contents)" \
+    --eval "(package-install-selected-packages t)" \
+    --eval "(package-autoremove)"
+
+COPY . /root/.config/emacs
 
 RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
     --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \

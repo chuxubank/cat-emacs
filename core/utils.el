@@ -158,3 +158,5 @@ directories listed in `vc-directory-exclusion-list'."
                                    nil
                                  (dired-get-filename)) t))))
           (t (error "mark no more than 2 files")))))
+
+(provide 'cat-utils)
