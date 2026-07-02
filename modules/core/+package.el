@@ -76,7 +76,7 @@ expression."
      (setf (alist-get :cat use-package-keywords) 'use-package-handler/:cat)))
 
 (setq-default
- use-package-always-ensure t
+ use-package-always-ensure (not IS-CI)
  use-package-always-defer t
  use-package-vc-prefer-newest t)
 
