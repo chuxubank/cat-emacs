@@ -2,6 +2,8 @@
 
 (require 'cl-lib)
 
+(declare-function cat-load-file "core" (file context &optional noerror))
+
 (defvar cat-current-module nil
   "Current Cat module being loaded.")
 
@@ -71,15 +73,7 @@ When GROUP is omitted, check every module group."
   (let ((file (expand-file-name
                module
                (expand-file-name group (expand-file-name "modules" user-emacs-directory)))))
-    (condition-case-unless-debug err
-        (let (file-name-handler-alist)
-          (cat-benchmark 'beg file)
-          (load file noerror 'nomessage))
-      (error
-       (message "ERROR: %S when loading file: %s\nBacktrace:\n%s"
-                err
-                (abbreviate-file-name file)
-                (with-output-to-string (backtrace)))))))
+    (cat-load-file file "module" noerror)))
 
 (defun cat--module-name (module)
   "Return the file name for MODULE."

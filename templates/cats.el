@@ -7,9 +7,9 @@
 ;;; Code:
 
 (defconst cat-modules
-  '(:core
+  '(:base
     package
-    utils
+    select-package
     benchmark
     default
     env
@@ -28,6 +28,7 @@
     eudc
     term
     file
+    everywhere
 
     :ui
     ;; nano

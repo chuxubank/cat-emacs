@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+
 (defun +add-to-list-multi (list &rest args)
   "Add ARGS to LIST, but only if they are not already in LIST."
   (dolist (arg args)
@@ -156,5 +158,3 @@ directories listed in `vc-directory-exclusion-list'."
                                    nil
                                  (dired-get-filename)) t))))
           (t (error "mark no more than 2 files")))))
-
-(use-package emacs-everywhere)

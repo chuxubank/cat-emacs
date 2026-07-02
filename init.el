@@ -88,13 +88,13 @@ Each element is a variable passed to `custom-reevaluate-setting'.")
   (dolist (setting cat-custom-reevaluate-setting-list)
     (custom-reevaluate-setting setting)))
 
-;;; packages
+;;; load-path
 (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
   (add-to-list 'load-path default-directory)
   (normal-top-level-add-subdirs-to-load-path))
 
 ;;; modules
-(load (expand-file-name "module" user-emacs-directory) nil 'nomessage)
+(load (expand-file-name "core/core" user-emacs-directory) nil 'nomessage)
 (load (cat-config-file "cats") nil 'nomessage)
 (cat! cat-modules)
 
