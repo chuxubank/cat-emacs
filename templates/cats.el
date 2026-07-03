@@ -26,7 +26,7 @@
     diredx
     tramp
     eudc
-    term
+    term ;; (:cat vterm)
     file
     everywhere
 
@@ -128,6 +128,8 @@
     compile
 
     :apps
+    ;; atlassian
+    ;; org-jira
     beancount
     blog
     chezmoi

@@ -95,10 +95,10 @@ stay disabled unless the Cat feature or expression is enabled:
 #+begin_src emacs-lisp
 (defconst cat-modules
   '(:lang
-    (android :feature (android-mode compose-preview))
+    (term :cat vterm)
     ))
 
-(use-package compose-preview
+(use-package vterm
   :cat)
 #+end_src
 

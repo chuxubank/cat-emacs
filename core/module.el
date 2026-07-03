@@ -48,11 +48,11 @@ When MODULE and GROUP are nil, use the module currently being loaded."
    ((symbolp group) (symbol-name group))
    (t group)))
 
-(defmacro catp! (feature &optional module group)
+(defmacro catp! (cat &optional module group)
   "Return non-nil when FEATURE is enabled for MODULE in GROUP.
 When MODULE and GROUP are omitted, use the module currently being loaded."
-  `(memq ',feature
-         (cat--module-option :feature
+  `(memq ',cat
+         (cat--module-option :cat
                              ,(cat--query-symbol-form module)
                              ,(cat--query-group-form group))))
 
