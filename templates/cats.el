@@ -128,9 +128,6 @@
     compile
 
     :apps
-    (:if (eq HOST_ENV 'aa)
-         atlassian
-         org-jira)
     beancount
     blog
     chezmoi
