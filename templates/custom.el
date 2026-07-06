@@ -138,12 +138,10 @@
      ghostel
      git-link
      git-timemachine
-     glab
      go-mode
      go-template-helper-mode
      go-template-mode
      goggles
-     gogs
      golden-ratio
      gptel
      gptel-forge-prs

@@ -40,6 +40,7 @@
 (cat-load-core)
 
 (unless IS-CI
+  (message "%s not running on CI, load modules" cat-emacs-name)
   (cat-load-modules))
 
 (provide 'cat-core)
