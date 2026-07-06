@@ -7,8 +7,8 @@ EMACS_BATCH = $(EMACS) --batch --debug-init --init-directory "$(INIT_DIR)"
 sync-packages:
 	yes | $(EMACS_BATCH) \
 		-l "$(INIT_DIR)/early-init.el" \
-		--eval "(require 'package-vc)" \
 		-l "$(INIT_DIR)/init.el" \
+		--eval "(require 'package-vc)" \
 		--eval "(package-initialize)" \
 		--eval "(package-refresh-contents)" \
 		--eval "(package-install-selected-packages t)" \
