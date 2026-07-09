@@ -2,5 +2,5 @@
 
 (use-package dart-mode)
 
-(when (package-installed-p 'lsp)
-  (use-package lsp-dart))
+(use-package lsp-dart
+  :cat (modulep! lsp))

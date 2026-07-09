@@ -12,45 +12,52 @@
  '(package-native-compile t)
  '(system-packages-use-sudo nil)
  '(package-vc-selected-packages
-   '((android-mode . (:url "https://github.com/chuxubank/emacs-studio" :lisp-dir "android-mode/"))
-     (chezmoi . (:url "https://github.com/Lillenne/chezmoi.el"))
-     (code-review . (:url "https://github.com/doomelpa/code-review"))
-     (compose-preview . (:url "https://github.com/chuxubank/emacs-studio" :lisp-dir "compose-preview/"))
-     (diagram-preview . (:url "https://github.com/natrys/diagram-preview"))
-     (ejira3 . (:url "https://git.sr.ht/~madearl/ejira3"))
-     (elogcat . (:url "https://github.com/chuxubank/elogcat.el"))
-     (flymake-bridge . (:url "https://github.com/liuyinz/flymake-bridge"))
-     (gptel-model-updater . (:url "https://github.com/chuxubank/gptel-model-updater"))
-     (gptel-prompts . (:url "https://github.com/jwiegley/gptel-prompts"))
-     (gradle-el . (:url "https://git.sr.ht/~vhallac/gradle-el"))
-     (hydra-posframe . (:url "https://github.com/Ladicle/hydra-posframe"))
-     (kitty-graphics . (:url "https://github.com/cashmeredev/kitty-graphics.el"))
-     (lsp-bridge . (:url "https://github.com/manateelazycat/lsp-bridge"))
-     (lsp-proxy . (:url "https://github.com/jadestrong/lsp-proxy"))
-     (magit-difftastic . (:url "https://github.com/rschmukler/magit-difftastic"))
-     (markdown-xwidget . (:url "https://github.com/cfclrk/markdown-xwidget"))
-     (math-delimiters . (:url "https://github.com/oantolin/math-delimiters"))
-     (mcp-server . (:url "https://github.com/rhblind/emacs-mcp-server"))
-     (md-babel . (:url "https://github.com/md-babel/md-babel.el"))
-     (meow-vterm . (:url "https://github.com/accelbread/meow-vterm"))
-     (nano . (:url "https://github.com/rougier/nano-emacs"))
-     (nano-minibuffer . (:url "https://github.com/rougier/nano-minibuffer"))
-     (netease-cloud-music . (:url "https://github.com/chuxubank/netease-cloud-music.el"))
-     (ob-async . (:url "https://github.com/ezchi/ob-async" :branch "develop"))
-     (ob-kotlin . (:url "https://github.com/chuxubank/ob-kotlin"))
-     (org-agenda-count . (:url "https://github.com/sid-kurias/org-agenda-count"))
-     (org-cv . (:url "https://gitlab.com/Titan-C/org-cv"))
-     (org-dial . (:url "https://github.com/mistrey/org-dial"))
-     (org-fc . (:url "https://github.com/l3kn/org-fc"))
-     (org-imgtog . (:url "https://github.com/gaoDean/org-imgtog"))
-     (org-media-note . (:url "https://github.com/yuchen-lea/org-media-note"))
-     (org-mode . (:url "https://code.tecosaur.net/tec/org-mode" :lisp-dir "lisp/" :branch "dev"))
-     (org-remoteimg . (:url "https://github.com/gaoDean/org-remoteimg"))
-     (org-yt . (:url "https://github.com/TobiasZawada/org-yt"))
-     (treemacs-activities . (:url "https://github.com/chuxubank/treemacs-activities"))
-     (ultra-scroll . (:url "https://github.com/jdtsmith/ultra-scroll"))
-     (vbnet-mode . (:url "https://github.com/lelit/vbnet-mode"))
-      (video-trimmer . (:url "https://github.com/xenodium/video-trimmer"))))
+   '((android-mode :url "https://github.com/chuxubank/emacs-studio"
+                   :lisp-dir "android-mode/")
+     (chezmoi :url "https://github.com/Lillenne/chezmoi.el")
+     (code-review :url "https://github.com/doomelpa/code-review")
+     (compose-preview :url "https://github.com/chuxubank/emacs-studio"
+                      :lisp-dir "compose-preview/")
+     (diagram-preview :url "https://github.com/natrys/diagram-preview")
+     (elogcat :url "https://github.com/chuxubank/elogcat.el")
+     (gptel-model-updater :url
+                          "https://github.com/chuxubank/gptel-model-updater")
+     (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
+     (gradle-el :url "https://git.sr.ht/~vhallac/gradle-el")
+     (hydra-posframe :url "https://github.com/Ladicle/hydra-posframe")
+     (kitty-graphics :url
+                     "https://github.com/cashmeredev/kitty-graphics.el")
+     (lsp-proxy :url "https://github.com/jadestrong/lsp-proxy")
+     (magit-difftastic :url
+                       "https://github.com/rschmukler/magit-difftastic")
+     (markdown-xwidget :url
+                       "https://github.com/cfclrk/markdown-xwidget")
+     (math-delimiters :url
+                      "https://github.com/oantolin/math-delimiters")
+     (mcp-server :url "https://github.com/rhblind/emacs-mcp-server")
+     (md-babel :url "https://github.com/md-babel/md-babel.el")
+     (netease-cloud-music :url
+                          "https://github.com/chuxubank/netease-cloud-music.el")
+     (ob-async :url "https://github.com/ezchi/ob-async" :branch
+               "develop")
+     (ob-kotlin :url "https://github.com/chuxubank/ob-kotlin")
+     (org-agenda-count :url
+                       "https://github.com/sid-kurias/org-agenda-count")
+     (org-cv :url "https://gitlab.com/Titan-C/org-cv")
+     (org-dial :url "https://github.com/mistrey/org-dial")
+     (org-fc :url "https://github.com/l3kn/org-fc")
+     (org-imgtog :url "https://github.com/gaoDean/org-imgtog")
+     (org-media-note :url
+                     "https://github.com/yuchen-lea/org-media-note")
+     (org-mode :url "https://code.tecosaur.net/tec/org-mode" :lisp-dir
+               "lisp/" :branch "dev")
+     (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
+     (org-yt :url "https://github.com/TobiasZawada/org-yt")
+     (treemacs-activities :url
+                          "https://github.com/chuxubank/treemacs-activities")
+     (ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll")
+     (vbnet-mode :url "https://github.com/lelit/vbnet-mode")
+     (video-trimmer :url "https://github.com/xenodium/video-trimmer")))
  '(package-pinned-packages
    '((transient . "gnu")
      (eglot . "gnu")
@@ -186,7 +193,6 @@
      leetcode
      ligature
      logview
-     lsp-dart
      lua-mode
      magit
      magit-section
