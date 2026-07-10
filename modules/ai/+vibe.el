@@ -12,6 +12,15 @@ file name is resolved from the user or fallback template directory by
                  (file :tag "Prompt template"))
   :group 'cat-emacs)
 
+(defun cat/gptel-api-key-from-pass (path &optional field)
+  "Return a function that reads FIELD from the pass entry at PATH."
+  (lambda ()
+    (require 'password-store)
+    (or (if field
+            (password-store-get-field path field)
+          (password-store-get path))
+        (user-error "No GPTel API key found in pass entry %s" path))))
+
 (pretty-hydra-define cat-vibe
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
