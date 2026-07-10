@@ -3,6 +3,15 @@
 (defvar cat-prompt-dir (cat-config-directory "prompt")
   "Directory for prompt templates.")
 
+(defcustom cat-gptel-forge-prs-prompt-file nil
+  "Prompt template used by gptel-forge-prs.
+When nil, use the conventional prompt provided by gptel-forge-prs.  A relative
+file name is resolved from the user or fallback template directory by
+`cat-config-file'."
+  :type '(choice (const :tag "Use the conventional prompt" nil)
+                 (file :tag "Prompt template"))
+  :group 'cat-emacs)
+
 (pretty-hydra-define cat-vibe
   (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
   ("" ()))
@@ -123,9 +132,11 @@ Invokes CALLBACK with the generated message when done."
 (use-package gptel-forge-prs
   :hook (forge-post-mode . gptel-forge-prs-install)
   :custom
-  (gptel-forge-prs-pr-prompt (if (eq HOST_ENV 'iv)
-                                 (gptel-prompts-poet (cat-config-file "prompt/iv-mr.yml.j2"))
-                               gptel-forge-prs-prompt-conventional)))
+  (gptel-forge-prs-pr-prompt
+   (if cat-gptel-forge-prs-prompt-file
+       (gptel-prompts-poet
+        (cat-config-file cat-gptel-forge-prs-prompt-file))
+     gptel-forge-prs-prompt-conventional)))
 
 (use-package gptel-prompts
   :vc (:url "https://github.com/jwiegley/gptel-prompts")

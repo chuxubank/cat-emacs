@@ -1,5 +1,15 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom cat-forge-alist nil
+  "Additional Forge hosts to prepend to `forge-alist'.
+Each entry has the same format as an entry in `forge-alist'."
+  :type '(repeat (list (string :tag "Git host")
+                       (choice (string :tag "API endpoint")
+                               (const :tag "No API" nil))
+                       (string :tag "Web host")
+                       (symbol :tag "Repository class")))
+  :group 'cat-emacs)
+
 (use-package magit
   :pin melpa-stable
   :commands #'magit-read-repository
@@ -62,9 +72,4 @@
   :demand t
   :after magit
   :config
-  (when (eq HOST_ENV 'iv)
-    (push '("git.infinityparadise.com"        ; GITHOST
-            "git.infinityparadise.com/api/v4" ; APIHOST
-            "git.infinityparadise.com"        ; WEBHOST and INSTANCE-ID
-            forge-gitlab-repository)          ; CLASS
-          forge-alist)))
+  (setq forge-alist (append cat-forge-alist forge-alist)))

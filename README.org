@@ -36,7 +36,8 @@ Meow, meow, meow... Oh, that's a cat!
   Jira/Atlassian, PDFs, e-books, Beancount, maps, media, blogs, and online
   judges.
 - Cross-platform support for macOS, Linux, Windows, WSL, Android, daemon
-  sessions, CI, and host-specific configuration.
+  sessions, and CI, with machine-specific settings kept in the user
+  configuration.
 
 ** How It Is Organized
 
@@ -52,6 +53,23 @@ For example:
 - =~/.config/cat-emacs/lsp-proxy/languages.toml= falls back to =templates/lsp-proxy/languages.toml=.
 - =~/.config/cat-emacs/mermaid/config.json= falls back to =templates/mermaid/config.json=.
 - =~/.config/cat-emacs/prompt/= falls back to =templates/prompt/=.
+
+Machine- and account-specific settings belong in
+=~/.config/cat-emacs/custom.el=.  For example:
+
+#+begin_src emacs-lisp
+(custom-set-variables
+ '(telega-use-docker "podman")
+ '(telega-docker-run-arguments
+   "--platform linux/amd64 --userns=keep-id")
+ '(cat-forge-alist
+   '(("git.example.com" "git.example.com/api/v4"
+      "git.example.com" forge-gitlab-repository)))
+ '(cat-gptel-forge-prs-prompt-file "prompt/merge-request.yml.j2"))
+#+end_src
+
+The prompt file in this example lives at
+=~/.config/cat-emacs/prompt/merge-request.yml.j2=.
 
 Bootstrap files live under =core/=.  Optional module groups map directly to
 directories under =modules/=:

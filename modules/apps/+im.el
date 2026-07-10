@@ -25,14 +25,12 @@
                       'telega-completions-username-show-avatars)
   :custom
   (telega-chat-input-markups '("markdown2" nil))
-  (telega-docker-run-arguments (concat "--platform linux/amd64" (when (eq "podman" telega-use-docker) " --userns=keep-id")))
   (telega-docker-volumes nil)
   (telega-emoji-use-images nil)
   (telega-msg-heading-trail 'date-and-status)
   (telega-open-file-function #'org-open-file)
   (telega-symbol-video-chat-active "")
   (telega-symbol-video-chat-passive "")
-  (telega-use-docker (if (eq HOST_ENV 'aa) "podman" "docker"))
   (telega-use-images t)
   (telega-video-player-command "mpv")
   :custom-face
