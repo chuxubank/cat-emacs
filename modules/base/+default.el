@@ -71,16 +71,16 @@
       show-paren-when-point-in-periphery t)
 (show-paren-mode 1)
 
-(defun cat-show-trailing-whitespace ()
+(defun cat/show-trailing-whitespace ()
   "Set local variable `show-trailing-whitespace' to t."
   (setq show-trailing-whitespace t))
 
-(defun cat-hide-trailing-whitespace ()
+(defun cat/hide-trailing-whitespace ()
   "Set local variable `show-trailing-whitespace' to nil."
   (setq show-trailing-whitespace nil))
 
-(add-hook 'text-mode-hook #'cat-show-trailing-whitespace)
-(add-hook 'prog-mode-hook #'cat-show-trailing-whitespace)
+(add-hook 'text-mode-hook #'cat/show-trailing-whitespace)
+(add-hook 'prog-mode-hook #'cat/show-trailing-whitespace)
 
 ;;; isearch
 (setq isearch-lazy-count t)
@@ -134,15 +134,15 @@
 (use-package ediff
   :ensure nil
   :init
-  (defun +ediff-copy-both-to-C ()
+  (defun cat/ediff-copy-both-to-C ()
     (interactive)
     (ediff-copy-diff ediff-current-difference nil 'C nil
                      (concat
                       (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
                       (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
-  (defun +ediff-setup-keymap ()
-    (define-key ediff-mode-map "d" '+ediff-copy-both-to-C))
-  :hook (ediff-keymap-setup . +ediff-setup-keymap)
+  (defun cat/ediff-setup-keymap ()
+    (define-key ediff-mode-map "d" 'cat/ediff-copy-both-to-C))
+  :hook (ediff-keymap-setup . cat/ediff-setup-keymap)
   :custom
   (ediff-split-window-function #'split-window-horizontally))
 
@@ -186,7 +186,7 @@
   '((t (:inherit 'font-lock-comment-face :box t)))
   "Face used to display the fold text.")
 
-(defun cat-hs-folded-overlay-fn (ov)
+(defun cat/hs-folded-overlay-fn (ov)
   (when (eq 'code (overlay-get ov 'hs))
     (let* ((nlines (count-lines (overlay-start ov) (overlay-end ov)))
            (info (format " ... #%d " nlines)))
@@ -197,7 +197,7 @@
   :delight (hs-minor-mode " 󰡍")
   :hook (prog-mode . hs-minor-mode)
   :custom
-  (hs-set-up-overlay 'cat-hs-folded-overlay-fn))
+  (hs-set-up-overlay 'cat/hs-folded-overlay-fn))
 
 (use-package type-break
   :ensure nil
@@ -213,7 +213,7 @@
   :config
   (type-break-guesstimate-keystroke-threshold 60))
 
-(defun cat-type-break-buffer-p ()
+(defun cat/type-break-buffer-p ()
   (string= (buffer-file-name) type-break-file-name))
 
 (use-package epa-file
@@ -221,7 +221,7 @@
   :custom
   (epa-file-name-regexp "\\.\\(gpg\\|asc\\)\\(~\\|\\.~[0-9]+~\\)?\\'"))
 
-(defun cat-epa-file-p ()
+(defun cat/epa-file-p ()
   (and buffer-file-name
        (bound-and-true-p epa-file-name-regexp)
        (string-match-p epa-file-name-regexp buffer-file-name)))
@@ -257,7 +257,7 @@
       (setq i (1+ i)))
     res))
 
-(defun cat-colorize-after-shell-command-on-region (&rest _args)
+(defun cat/colorize-after-shell-command-on-region (&rest _args)
   "Apply ANSI colors to the `shell-command-buffer-name' buffer and `minibuffer' after `shell-command-on-region'."
   (let ((bufs (seq-filter
                (lambda (x)
@@ -268,7 +268,7 @@
       (with-current-buffer buf
         (cat-clean-buffer-output)))))
 
-(advice-add 'shell-command-on-region :after #'cat-colorize-after-shell-command-on-region)
+(advice-add 'shell-command-on-region :after #'cat/colorize-after-shell-command-on-region)
 
 (use-package ansi-color
   :ensure nil
@@ -314,7 +314,7 @@
   :ensure nil
   :delight (outline-minor-mode " 󰠶"))
 
-(defun cat-disable-electric-indent-chars ()
+(defun cat/disable-electric-indent-chars ()
   "Set local variable `electric-indent-chars' to nil."
   (setq-local electric-indent-chars nil))
 

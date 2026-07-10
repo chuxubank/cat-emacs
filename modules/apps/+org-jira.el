@@ -34,18 +34,18 @@
   :mode-hydra
   (org-mode
    ("Plugin"
-    (("j" cat-org-jira-dispatch "org jira dispatch"))))
+    (("j" cat/org-jira-dispatch "org jira dispatch"))))
   :config
   (+mkdir-p org-jira-working-dir)
-  (add-hook 'org-jira-mode-hook #'cat-hide-trailing-whitespace)
+  (add-hook 'org-jira-mode-hook #'cat/hide-trailing-whitespace)
   (add-to-list 'org-agenda-files org-jira-working-dir))
 
-(defun +org-jira-copy-current-issue-url ()
+(defun cat/org-jira-copy-current-issue-url ()
   "Copy current jira issue url."
   (interactive)
   (kill-new (concat (replace-regexp-in-string "/*$" "" jiralib-url) "/browse/" (org-jira-id))))
 
-(defun +org-jira-delete-custom-jql-files ()
+(defun cat/org-jira-delete-custom-jql-files ()
   "Delete cached custom jql files."
   (interactive)
   (dolist (jql org-jira-custom-jqls)
@@ -53,7 +53,7 @@
       (when filename
         (delete-file (expand-file-name (concat filename ".org") org-jira-working-dir))))))
 
-(defun +org-jira-save-jql-files ()
+(defun cat/org-jira-save-jql-files ()
   "Save cached jql files."
   (interactive)
   (save-some-buffers t (lambda ()
@@ -62,7 +62,7 @@
                                (expand-file-name org-jira-working-dir)
                                (file-name-directory (buffer-file-name)))))))
 
-(defun +org-jira-start-dev-work (issue-key action-id &rest _args)
+(defun cat/org-jira-start-dev-work (issue-key action-id &rest _args)
   "Create a branch with ISSUE-KEY and current org heading content if ACTION-ID is to start work."
   (let* ((open-next (cdr (assoc "Open" jiralib-available-actions-cache)))
          (start-action '("Start Dev Work" "Work Started"))
@@ -76,9 +76,9 @@
       (task-pull-remote-branch)
       (task-create-branch-with-key-and-text issue-key org-heading))))
 
-(advice-add 'jiralib-progress-workflow-action :after #'+org-jira-start-dev-work)
+(advice-add 'jiralib-progress-workflow-action :after #'cat/org-jira-start-dev-work)
 
-(defun cat-org-jira-dispatch ()
+(defun cat/org-jira-dispatch ()
   "If `org-jira-mode' is active, show Hydra; else push current TODO to JIRA."
   (interactive)
   (if (bound-and-true-p org-jira-mode)
@@ -97,15 +97,15 @@
   "j" #'org-jira-get-issues-from-custom-jql
   "p" #'org-jira-get-projects
   "v" #'org-jira-get-issues-by-fixversion
-  "s" #'+org-jira-save-jql-files
-  "d" #'+org-jira-delete-custom-jql-files)
+  "s" #'cat/org-jira-save-jql-files
+  "d" #'cat/org-jira-delete-custom-jql-files)
 
 (pretty-hydra-define cat-org-jira-issue
   (:title "Org-Jira Issue" :color teal :quit-key "q" :foreign-keys warn)
   ("Navigation"
    (("b" org-jira-browse-issue "Browse issue")
     ("w" org-jira-copy-current-issue-key "Copy issue key")
-    ("W" +org-jira-copy-current-issue-url "Copy URL"))
+    ("W" cat/org-jira-copy-current-issue-url "Copy URL"))
    
    "Comments"
    (("c" org-jira-update-comment "Update comment")

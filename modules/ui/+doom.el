@@ -23,10 +23,10 @@
   (doom-modeline-support-imenu t)
   (doom-modeline-unicode-number nil))
 
-(defun cat-enable-doom-modeline-minor-modes ()
+(defun cat/enable-doom-modeline-minor-modes ()
   (setq-local doom-modeline-minor-modes t))
 
-(defun cat-toggle-minor-modes ()
+(defun cat/toggle-minor-modes ()
   (interactive)
   (setq doom-modeline-minor-modes (not doom-modeline-minor-modes)))
 

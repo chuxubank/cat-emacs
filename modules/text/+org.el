@@ -60,8 +60,8 @@
     (("i" #'org-id-get-create "id"))
     "Toggle"
     (("tp" org-toggle-pretty-entities "pretty entities" :color red)
-     ("te" +org-toggle-emphasis "emphasis" :color red)
-     ("tm" +org-toggle-macro "macro" :color red))))
+     ("te" cat/org-toggle-emphasis "emphasis" :color red)
+     ("tm" cat/org-toggle-macro "macro" :color red))))
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
@@ -251,23 +251,23 @@
    ("Mode"
     (("a" org-appear-mode "appear" :color red)))))
 
-(defun +org-toggle-emphasis ()
+(defun cat/org-toggle-emphasis ()
   "Toggle org emphasize markers."
   (interactive)
   (setq-local org-hide-emphasis-markers (not org-hide-emphasis-markers))
   (org-restart-font-lock))
 
-(defun +org-toggle-macro ()
+(defun cat/org-toggle-macro ()
   "Toggle org macro markers."
   (interactive)
   (setq-local org-hide-macro-markers (not org-hide-macro-markers))
   (org-restart-font-lock))
 
-(defun +find-org-files ()
+(defun cat/find-org-files ()
   (interactive)
   (+project-find-file-in-dir cat-org-directory nil t))
 
-(defun cat-preload-org-agenda ()
+(defun cat/preload-org-agenda ()
   "Preload Org agenda files, useful when running as a daemon."
   (cat-benchmark 'beg "preload org agenda files.")
   (require 'org)
@@ -277,4 +277,4 @@
         (cat-benchmark 'end (format "preload %s org agenda files." (length files))))
     (message "Org agenda files not set, skipping preload.")))
 
-(add-hook 'cat-idle-preload-hook #'cat-preload-org-agenda)
+(add-hook 'cat-idle-preload-hook #'cat/preload-org-agenda)

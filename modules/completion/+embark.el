@@ -6,14 +6,14 @@
   ("C-M->" . embark-dwim)
   ("C-h B" . embark-bindings)
   (:map embark-general-map
-        ("G" . +embark-google-search))
+        ("G" . cat/embark-google-search))
   (:map embark-variable-map
-        (":" . +embark-act-with-eval))
+        (":" . cat/embark-act-with-eval))
   (:map embark-expression-map
-        (":" . +embark-act-with-eval))
+        (":" . cat/embark-act-with-eval))
   (:map embark-region-map
-        ("!" . +embark-shell)
-        ("&" . +embark-async-shell))
+        ("!" . cat/embark-shell)
+        ("&" . cat/embark-async-shell))
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -22,19 +22,19 @@
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  (defun +embark-google-search (term)
+  (defun cat/embark-google-search (term)
     (interactive "sSearch Term: ")
     (browse-url
      (format "http://google.com/search?q=%s" term)))
-  (defun +embark-act-with-eval (expression)
+  (defun cat/embark-act-with-eval (expression)
     "Evaluate EXPRESSION and call `embark-act' on the result."
     (interactive "sExpression: ")
     (with-temp-buffer
       (insert (eval (read expression)))
       (embark-act)))
-  (defun +embark-shell (term)
+  (defun cat/embark-shell (term)
     (shell-command term))
-  (defun +embark-async-shell (term)
+  (defun cat/embark-async-shell (term)
     (async-shell-command term))
   (when (package-installed-p 'password-store)
     (defvar-keymap embark-password-store-actions

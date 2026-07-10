@@ -47,9 +47,9 @@
                           code
                           verbatim)))
         t)))
-  (defun +pangu-spacing-disable ()
+  (defun cat/pangu-spacing-disable ()
     (pangu-spacing-mode -1))
-  (add-hook 'nxml-mode-hook #'+pangu-spacing-disable))
+  (add-hook 'nxml-mode-hook #'cat/pangu-spacing-disable))
 
 (use-package diff-hl
   :delight (diff-hl-amend-mode " ")

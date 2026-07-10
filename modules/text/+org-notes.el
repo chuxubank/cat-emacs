@@ -30,11 +30,11 @@
     (("n" org-noter "noter"))))
   :config
   (setq org-noter--inhibit-location-change-handler t)
-  (define-key org-noter-notes-mode-map (kbd "M-i") #'+org-noter-update-page-info)
+  (define-key org-noter-notes-mode-map (kbd "M-i") #'cat/org-noter-update-page-info)
   (add-to-list 'org-noter-parse-document-property-hook #'org-noter-orb-citar-find-document-from-refs)
   (add-to-list 'org-noter-find-additional-notes-functions #'org-noter-citar-find-key-from-this-file))
 
-(defun +org-noter-update-page-info (&optional arg)
+(defun cat/org-noter-update-page-info (&optional arg)
   "Update the (precise) page info of the current note."
   (interactive "P")
   (org-entry-put nil org-noter-property-note-location
@@ -81,7 +81,7 @@ user select one of them."
                                      "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
                                      "\\)"))
   :config
-  (defun +deft-parse-org-title (file contents)
+  (defun cat/deft-parse-org-title (file contents)
     "Parse the given FILE and CONTENTS and determine the title.
   If `deft-use-filename-as-title' is nil, the title is taken to
   be the first non-empty line of the FILE.  Else the base name of the FILE is
@@ -90,4 +90,4 @@ user select one of them."
       (if begin
           (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
         (deft-base-filename file))))
-  (advice-add 'deft-parse-title :override #'+deft-parse-org-title))
+  (advice-add 'deft-parse-title :override #'cat/deft-parse-org-title))

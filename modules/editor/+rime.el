@@ -47,7 +47,7 @@
 
 (with-eval-after-load 'nano-modeline
   (setq rime-title " ㄓ")
-  (defun +nano-modeline-rime-indicator (args)
+  (defun cat/nano-modeline-rime-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args
       (let* ((face (nano-modeline--base-face face-prefix))
              (left (append left '((rime-lighter)))))
@@ -56,13 +56,13 @@
           (eval `(face-spec-set ',rime-face '((t (:inherit ,face))))))
         (list left right face-prefix))))
 
-  (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-rime-indicator))
+  (advice-add #'nano-modeline--make :filter-args #'cat/nano-modeline-rime-indicator))
 
-(defun cat-preload-rime ()
+(defun cat/preload-rime ()
   "Preload rime, also sync the data."
   (cat-benchmark 'beg "preload rime.")
   (rime-activate "preload")
   (cat-benchmark 'end "preload rime.")
   (rime-sync))
 
-(add-hook 'cat-idle-preload-hook #'cat-preload-rime)
+(add-hook 'cat-idle-preload-hook #'cat/preload-rime)

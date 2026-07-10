@@ -40,12 +40,12 @@
   :vc (:url "https://github.com/gaoDean/org-imgtog")
   :hook (org-mode . org-imgtog-mode))
 
-(defun +org-inline-image-data-fn (_protocol link _description)
+(defun cat/org-inline-image-data-fn (_protocol link _description)
   "Interpret LINK as base64-encoded image data."
   (base64-decode-string link))
 
 (with-eval-after-load 'org
-  (org-link-set-parameters "img" :image-data-fun #'+org-inline-image-data-fn))
+  (org-link-set-parameters "img" :image-data-fun #'cat/org-inline-image-data-fn))
 
 (use-package org-dial
   :vc (:url "https://github.com/mistrey/org-dial")

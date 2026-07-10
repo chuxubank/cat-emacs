@@ -3,16 +3,16 @@
 (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 (put 'eldoc-minor-mode-string 'risky-local-variable t)
 
-(defun cat-elisp-eldoc-funcall (callback &rest _)
+(defun cat/elisp-eldoc-funcall (callback &rest _)
   "Document function call at point by calling CALLBACK.
 Intended for `eldoc-documentation-functions' (which see)."
   (let* ((func (function-called-at-point))
-         (docstring (cat-elisp-function-doc func)))
+         (docstring (cat/elisp-function-doc func)))
     (when docstring
       (funcall callback docstring
                :face 'font-lock-doc-face))))
 
-(defun cat-elisp-function-doc (function)
+(defun cat/elisp-function-doc (function)
   "Return documentation string for FUNCTION."
   (when function
     (with-temp-buffer
@@ -24,7 +24,7 @@ Intended for `eldoc-documentation-functions' (which see)."
         (buffer-string)))))
 
 (when EMACS29+
-  ;; (advice-add 'elisp-eldoc-funcall :before-while #'cat-elisp-eldoc-funcall)
+  ;; (advice-add 'elisp-eldoc-funcall :before-while #'cat/elisp-eldoc-funcall)
   (advice-add 'elisp-eldoc-var-docstring :override #'elisp-eldoc-var-docstring-with-value))
 
 (use-package eldoc-box

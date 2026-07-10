@@ -4,7 +4,7 @@
   :magic ("%PDF" . pdf-view-mode)
   :bind
   (:map pdf-view-mode-map
-        ("v" . +pdf-keyboard-select-region)
+        ("v" . cat/pdf-keyboard-select-region)
         ("C-S-l" . #'pdf-view-center-in-window))
   :custom
   (pdf-view-use-scaling t)
@@ -20,7 +20,7 @@
   (org-pdftools-use-isearch-link t))
 
 ;; https://github.com/dalanicolai/dala-emacs-lisp/blob/master/pdf-keyboard-highlight.el#L79
-(defun +pdf-keyboard-select-region (&optional all-pages)
+(defun cat/pdf-keyboard-select-region (&optional all-pages)
   "Select pdf region by search, search ALL-PAGES if have argument."
   (interactive "P")
   (pdf-view-deactivate-region)

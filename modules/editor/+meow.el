@@ -3,14 +3,14 @@
 (use-package meow
   :demand t
   :init
-  (defun cat-meow-toggle ()
+  (defun cat/meow-toggle ()
     (meow-normal-mode 'toggle))
   :hook
   (after-init . meow-global-mode)
   ((git-timemachine-mode
     mime-view-mode
     view-mode
-    wl-folder-mode) . cat-meow-toggle)
+    wl-folder-mode) . cat/meow-toggle)
   :custom
   (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-keypad-leader-dispatch "C-c")
@@ -132,7 +132,7 @@
                                        (keypad . "🅚"))))
 
 (with-eval-after-load 'nano-modeline
-  (defun +nano-modeline-meow-indicator (args)
+  (defun cat/nano-modeline-meow-indicator (args)
     (cl-destructuring-bind (left right face-prefix) args
       (let* ((face (nano-modeline--base-face face-prefix))
              (left (append left '((meow-indicator)))))
@@ -141,17 +141,17 @@
             (eval `(face-spec-set ',meow-face '((t (:inherit ,face)))))))
         (list left right face-prefix))))
 
-  (defun +meow-setup-nano-modeline ()
+  (defun cat/meow-setup-nano-modeline ()
     "Toggle meow-indicator for all buffers"
     (if meow-mode
-        (advice-add #'nano-modeline--make :filter-args #'+nano-modeline-meow-indicator)
-      (advice-remove #'nano-modeline--make #'+nano-modeline-meow-indicator)))
-  (add-hook 'meow-global-mode-hook #'+meow-setup-nano-modeline))
+        (advice-add #'nano-modeline--make :filter-args #'cat/nano-modeline-meow-indicator)
+      (advice-remove #'nano-modeline--make #'cat/nano-modeline-meow-indicator)))
+  (add-hook 'meow-global-mode-hook #'cat/meow-setup-nano-modeline))
 
 (with-eval-after-load 'doom-modeline
-  (add-hook 'doom-modeline-mode-hook #'+meow-setup-doom-modeline))
+  (add-hook 'doom-modeline-mode-hook #'cat/meow-setup-doom-modeline))
 
-(defun +meow-setup-doom-modeline ()
+(defun cat/meow-setup-doom-modeline ()
   "Toggle meow minor mode indicator"
   (if doom-modeline-mode
       (+change-lighter 'meow-beacon-mode ""

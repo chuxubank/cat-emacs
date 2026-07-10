@@ -8,7 +8,7 @@
   "e" #'+find-emacs-profile
   "f" #'find-function
   "l" #'find-library
-  "o" #'+find-org-files
+  "o" #'cat/find-org-files
   "O" #'consult-org-agenda
   "r" #'recentf-open-files)
 
@@ -19,7 +19,7 @@
   "d" #'toggle-debug-on-error
   "f" #'display-fill-column-indicator-mode
   "l" #'display-line-numbers-mode
-  "m" #'cat-toggle-minor-modes
+  "m" #'cat/toggle-minor-modes
   "s" #'whitespace-mode
   "t" #'toggle-truncate-lines
   "T" #'toggle-tab-bar-mode-from-frame

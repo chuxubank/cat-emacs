@@ -27,7 +27,7 @@
   '(org-agenda-skip-entry-if 'nottodo 'any)
   "Skip non-TODO entries in agenda commands without affecting `org-scan-tags'.")
 
-(defun cat-filter-todo-entries (args)
+(defun cat/filter-todo-entries (args)
   "Filter out non-TODO entries from the ARGS for `org-agenda--count'."
   (let* ((list (car args))
          (filtered-list (seq-filter (lambda (entry)
@@ -55,7 +55,7 @@
      ("X" agenda "" nil ("agenda.html" "agenda.ps"))
      ("Y" alltodo "" nil ("todo.html" "todo.ps"))))
   :config
-  (advice-add 'org-agenda--count :filter-args #'cat-filter-todo-entries))
+  (advice-add 'org-agenda--count :filter-args #'cat/filter-todo-entries))
 
 (use-package org-edna
   :delight " "

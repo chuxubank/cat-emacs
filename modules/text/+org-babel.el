@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(defun +org-redisplay-inline-images-in-babel-result-h ()
+(defun cat/org-redisplay-inline-images-in-babel-result-h ()
   (unless (or
            ;; ...but not while Emacs is exporting an org buffer (where
            ;; `org-display-inline-images' can be awfully slow).
@@ -16,7 +16,7 @@
 (use-package ob-core
   :ensure nil
   :hook
-  (org-babel-after-execute . #'+org-redisplay-inline-images-in-babel-result-h))
+  (org-babel-after-execute . #'cat/org-redisplay-inline-images-in-babel-result-h))
 
 (use-package ob-lob
   :ensure nil

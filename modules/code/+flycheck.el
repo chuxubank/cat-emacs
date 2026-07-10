@@ -23,9 +23,9 @@
   :hook (flycheck-mode . flycheck-posframe-mode))
 
 (with-eval-after-load 'doom-modeline
-  (add-hook 'doom-modeline-mode-hook #'+flycheck-setup-doom-modeline))
+  (add-hook 'doom-modeline-mode-hook #'cat/flycheck-setup-doom-modeline))
 
-(defun +flycheck-setup-doom-modeline ()
+(defun cat/flycheck-setup-doom-modeline ()
   "Toggle flycheck minor mode indicator"
   (if doom-modeline-mode
       (setq flycheck-mode-line nil)

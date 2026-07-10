@@ -38,7 +38,7 @@
 
     (setq elfeed-search-print-entry-function #'elfeed-search-print-valigned-entry))
 
-  (defun cat-elfeed-clear-cache ()
+  (defun cat/elfeed-clear-cache ()
     "Clear the elfeed cache."
     (interactive)
     (elfeed-db-unload)

@@ -9,7 +9,7 @@
          pikchr-mode
          d2-mode))
 
-(defun +diagram-preview-get-url ()
+(defun cat/diagram-preview-get-url ()
   "Return the URL of the diagram preview of STRING."
   (concat (diagram-preview--api-endpoint)
           (base64url-encode-string (buffer-string) t)))

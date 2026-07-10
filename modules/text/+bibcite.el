@@ -31,11 +31,11 @@ See `org-cite-csl-styles-dir'."
   :config
   (bibtex-completion-init))
 
-(defun +orb-note-citar (citekey)
+(defun cat/orb-note-citar (citekey)
   "Use `citar' to open the CITEKEY note file."
   (citar-run-default-action (ensure-list citekey)))
 
-(defun cat-org-roam-locate-file (name)
+(defun cat/org-roam-locate-file (name)
   "Choose directory and return with full file NAME."
   (let* ((default-directory cat-org-roam-directory)
          (dir-list (split-string (shell-command-to-string "fd --type d .") "\n" t))
@@ -45,11 +45,11 @@ See `org-cite-csl-styles-dir'."
       (make-directory dir t))
     (concat (file-name-as-directory dir) filename)))
 
-(defun cat-org-roam-template (&optional dir)
+(defun cat/org-roam-template (&optional dir)
   "Return org-roam template's content based on DIR."
-  (org-file-contents (cat-org-roam-get-template dir)))
+  (org-file-contents (cat/org-roam-get-template dir)))
 
-(defun cat-org-roam-relocate-file ()
+(defun cat/org-roam-relocate-file ()
   "Relocate and rename the Org-roam file."
   (interactive)
   (let* ((default-directory cat-org-roam-directory)
@@ -71,7 +71,7 @@ See `org-cite-csl-styles-dir'."
          (new-name (concat (format-time-string "%Y%m%d%H%M%S" time)
                            "-"
                            slug))
-         (new-file (cat-org-roam-locate-file new-name)))
+         (new-file (cat/org-roam-locate-file new-name)))
     (rename-file file new-file)
     (kill-buffer (get-file-buffer file))
     (org-roam-db-sync)
@@ -84,21 +84,21 @@ See `org-cite-csl-styles-dir'."
   :delight " 󱉟"
   :custom
   (orb-roam-ref-format 'org-cite)
-  (org-roam-extract-new-file-path "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")")
+  (org-roam-extract-new-file-path "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")")
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
-      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")" "#+title: ${title}")
+      :target (file+head "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")" "#+title: ${title}")
       :unnarrowed t)
      ("r" "bibliography reference")
      ("rd" "Bibliography reference default" plain "%?"
-      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}")
+      :target (file+head "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}")
       :unnarrowed t)
      ("rl" "Bibliography reference with link" plain "eww:%^{url}"
-      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
+      :target (file+head "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n#+date: ${date}"))
      ("rv" "Bibliography reference with video" plain "[[video:%^{url}#]]"
-      :target (file+head "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n"))
-     ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat-org-roam-template "exam")))
-      :target (file "%(cat-org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
+      :target (file+head "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")" "#+title: ${title}\n"))
+     ("re" "Bibliography reference past exam papers" plain (function (lambda () (cat/org-roam-template "exam")))
+      :target (file "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${title}\")")
       :unnarrowed t)))
   :pretty-hydra
   (org-roam-hydra
@@ -108,7 +108,7 @@ See `org-cite-csl-styles-dir'."
   (+add-to-list-multi 'orb-attached-file-extensions "docx" "doc" "epub")
   (+add-to-list-multi 'orb-preformat-keywords "title" "url" "annotation")
   (+add-to-list-multi 'orb-note-actions-user
-                      '("Open with citar" . +orb-note-citar))
+                      '("Open with citar" . cat/orb-note-citar))
   (org-roam-bibtex-mode 1))
 
 (use-package citar-org-roam

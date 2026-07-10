@@ -48,10 +48,10 @@
                       '(sh-mode         . bash-ts-mode)
                       '(typescript-mode . typescript-ts-mode))
   :config
-  (defun +treesit-langs-cleanup (&optional _)
+  (defun cat/treesit-langs-cleanup (&optional _)
     (interactive)
     (delete-directory (treesit-langs--bin-dir) t))
-  (advice-add 'treesit-langs-install-grammars :before #'+treesit-langs-cleanup))
+  (advice-add 'treesit-langs-install-grammars :before #'cat/treesit-langs-cleanup))
 
 (use-package treesit-auto
   :disabled
@@ -63,7 +63,7 @@
     (setq treesit-auto-langs (delete lang treesit-auto-langs))))
 
 (with-eval-after-load 'org-src
-  (defun +org-src-kill-treesit-fontification-buffer (lang &rest _)
+  (defun cat/org-src-kill-treesit-fontification-buffer (lang &rest _)
     "Kill reusable fontification buffer for tree-sitter modes.
 `org-src-font-lock-fontify-block' reuses a single buffer and skips
 mode re-initialization when already active, breaking tree-sitter
@@ -73,7 +73,7 @@ fontification on subsequent calls."
                 ((with-current-buffer buf (treesit-parser-list))))
       (kill-buffer buf)))
   (advice-add 'org-src-font-lock-fontify-block :before
-              #'+org-src-kill-treesit-fontification-buffer))
+              #'cat/org-src-kill-treesit-fontification-buffer))
 
 (with-eval-after-load 'meow
   (use-package meow-tree-sitter

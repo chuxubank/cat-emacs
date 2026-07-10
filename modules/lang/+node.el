@@ -25,5 +25,5 @@
   :config
   (add-to-list 'org-babel-load-languages '(typescript . t)))
 
-(defun cat-node-package-lock-buffer-p ()
+(defun cat/node-package-lock-buffer-p ()
   (string-match-p "package-lock.json" (buffer-name)))

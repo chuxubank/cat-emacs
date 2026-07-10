@@ -4,7 +4,7 @@
 
 (defvar cat-mermaid-theme "default")
 
-(defun cat-mermaid-auto-theme ()
+(defun cat/mermaid-auto-theme ()
   "Adjust `cat-mermaid-theme' to align with Emacs' current theme."
   (setq-default cat-mermaid-theme (if (+dark-mode-p) "dark" "default")
                 mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file cat-mermaid-theme)))
@@ -18,14 +18,14 @@
   (mermaid-output-format ".svg")
   :config
   (mkdir mermaid-tmp-dir t)
-  (add-hook 'cat-theme-refresh-hook #'cat-mermaid-auto-theme)
-  (cat-mermaid-auto-theme))
+  (add-hook 'cat-theme-refresh-hook #'cat/mermaid-auto-theme)
+  (cat/mermaid-auto-theme))
 
-(defun +mermaid-mode ()
+(defun cat/mermaid-mode ()
   (setq-local indent-line-function 'insert-tab)
   (setq-local tab-width 4))
 
-(add-hook 'mermaid-mode-hook #'+mermaid-mode)
+(add-hook 'mermaid-mode-hook #'cat/mermaid-mode)
 
 (with-eval-after-load 'mermaid-mode
   (defun org-babel-execute:mermaid (body params)

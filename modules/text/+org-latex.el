@@ -41,14 +41,14 @@
       org-preview-latex-image-directory (concat cat-cache-dir "org-latex/")
       org-preview-latex-default-process 'dvisvgm)
 
-(defun +org-src-redisplay-latex-preview ()
+(defun cat/org-src-redisplay-latex-preview ()
   (when (eq major-mode 'latex-mode)
     (with-current-buffer (org-src-source-buffer)
       (org-latex-preview))))
 
-;; (advice-add #'org-edit-src-save :after #'+org-src-redisplay-latex-preview)
+;; (advice-add #'org-edit-src-save :after #'cat/org-src-redisplay-latex-preview)
 
-(defun +org-redisplay-all-latex-preview ()
+(defun cat/org-redisplay-all-latex-preview ()
   "Copy from `org-revert-all-org-buffers', refresh all latex preview."
   (interactive)
   (save-excursion
@@ -61,9 +61,9 @@
 	      (org-latex-preview '(64))
           (org-latex-preview '(16)))))))
 
-;; (add-hook 'cat-theme-refresh-hook #'+org-redisplay-all-latex-preview)
+;; (add-hook 'cat-theme-refresh-hook #'cat/org-redisplay-all-latex-preview)
 
-(defun cat-org-preview-clear-cache ()
+(defun cat/org-preview-clear-cache ()
   (interactive)
   (delete-directory org-preview-latex-image-directory t)
   (message "`%s' cleared" org-preview-latex-image-directory))

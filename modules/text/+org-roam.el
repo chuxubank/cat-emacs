@@ -51,7 +51,7 @@ See `org-roam-dailies-directory'."
    ("Action"
     (("r" org-roam-buffer-toggle "toggle")
      ("e" org-roam-extract-subtree "extract")
-     ("R" cat-org-roam-relocate-file "relocate"))
+     ("R" cat/org-roam-relocate-file "relocate"))
     "Tags"
     (("at" #'org-roam-tag-add "add tag")
      ("dt" #'org-roam-tag-remove "remove tag"))
@@ -104,7 +104,7 @@ Ref: https://www.reddit.com/r/emacs/comments/veesun/comment/icsfzuw"
           (string-join (cons file-title (append effective-olp (list title)))
                        " > "))))))
 
-(defun cat-org-roam-get-template (&optional dir)
+(defun cat/org-roam-get-template (&optional dir)
   "Locate a template file based on DIR.
 If called interactively, open the selected template file.
 If called non-interactively, return the file name of the selected template.
@@ -139,10 +139,10 @@ DIR specifies a subdirectory under `cat-org-roam-default-templates-dir'."
   "F" #'org-roam-ref-find
   "g" #'org-roam-graph
   "i" #'org-roam-node-insert
-  "r" #'cat-org-roam-relocate-file
+  "r" #'cat/org-roam-relocate-file
   "R" #'org-roam-buffer-display-dedicated
   "u" #'org-roam-ui-mode
-  "t" #'cat-org-roam-get-template)
+  "t" #'cat/org-roam-get-template)
 
 (defvar-keymap org-roam-dailies-map
   :doc "Keymap for `org-roam-dailies' commands.

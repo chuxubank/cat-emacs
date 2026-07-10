@@ -5,7 +5,7 @@
   :custom
   (tramp-backup-directory-alist backup-directory-alist))
 
-(defun +sudo-edit-current-file ()
+(defun cat/sudo-edit-current-file ()
   (interactive)
   (let ((my-file-name)
         (position))
@@ -34,4 +34,4 @@
     (concat "/sudo:root@localhost:" tempfile)))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map [M-return] '+sudo-edit-current-file))
+  (define-key dired-mode-map [M-return] 'cat/sudo-edit-current-file))

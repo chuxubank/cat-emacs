@@ -10,9 +10,9 @@
   :pin jcs-elpa
   :bind
   (:map cat-cape-map
-        ("c" . cat-cape-codeium))
+        ("c" . cat/cape-codeium))
   :init
-  (defun cat-cape-codeium (&optional interactive)
+  (defun cat/cape-codeium (&optional interactive)
     "Allow codeium capf to be run by itself"
     (interactive (list t))
     (when interactive

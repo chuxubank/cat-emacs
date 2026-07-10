@@ -10,9 +10,9 @@
   :delight " 󰀲"
   :commands #'android-root
   :init
-  (defun +android-mode ()
+  (defun cat/android-mode ()
     (when (android-root) (android-mode t)))
-  :hook ((find-file dired-mode) . +android-mode)
+  :hook ((find-file dired-mode) . cat/android-mode)
   :custom
   (android-mode-cache-dir (concat cat-cache-dir "android"))
   :pretty-hydra
@@ -54,4 +54,4 @@
     (("l" #'elogcat "elogcat"))))
   :config
   (add-hook 'elogcat-mode-hook #'meow-motion-mode)
-  (add-hook 'elogcat-mode-hook #'cat-enable-doom-modeline-minor-modes))
+  (add-hook 'elogcat-mode-hook #'cat/enable-doom-modeline-minor-modes))

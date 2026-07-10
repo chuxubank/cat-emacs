@@ -30,7 +30,7 @@
 		  'project-file)))
   (find-file script))
 
-(defun cat-chezmoi-mode-p ()
+(defun cat/chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
   (bound-and-true-p chezmoi-mode))
 
@@ -40,11 +40,11 @@
     :demand t
     :after chezmoi company
     :config
-    (defun +add-or-remove-chezmoi-company-backend ()
+    (defun cat/add-or-remove-chezmoi-company-backend ()
       (if chezmoi-mode
           (add-to-list 'company-backends 'chezmoi-company-backend)
         (setq company-backends (delete 'chezmoi-company-backend company-backends))))
-    (add-hook 'chezmoi-mode-hook #'+add-or-remove-chezmoi-company-backend)))
+    (add-hook 'chezmoi-mode-hook #'cat/add-or-remove-chezmoi-company-backend)))
 
 (use-package chezmoi-dired
   :load-path cat-chezmoi-extensions-load-path
