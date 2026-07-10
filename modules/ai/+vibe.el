@@ -22,25 +22,6 @@ file name is resolved from the user or fallback template directory by
   (cat-idle-preload . gptel-model-updater-update-all)
   :custom
   (gptel-model-updater-metadata-overwrite-existing t)
-  (gptel-model-updater-models
-   '("IV:gpt-5.4"
-     "IV:claude-opus-4-7"
-     "IV:deepseek-v4-pro"
-     "OpenRouter:auto"))
-  (gptel-model-updater-backends
-   '(gptel--gemini
-     (gptel--iv :providers (all))
-     gptel--llama
-     gptel--mlx
-     gptel--ollama
-     gptel--openrouter))
-  (gptel-model-updater-external-targets
-   '((gptel-magit-backend gptel-magit-model "GPTel-Magit"
-                          ("IV:deepseek-v4-flash"
-                           "OpenRouter:openai/gpt-oss-120b:free"))
-     (gptel-forge-prs-backend gptel-forge-prs-model "GPTel-Forge-Prs"
-                              ("IV:deepseek-v4-flash"
-                               "OpenRouter:openai/gpt-oss-120b:free"))))
   :pretty-hydra
   (cat-vibe
    ("GPTel"
@@ -82,13 +63,6 @@ file name is resolved from the user or fallback template directory by
           :host "openrouter.ai"
           :key 'gptel-api-key
           :endpoint "/api/v1/chat/completions"
-          :stream t)
-        gptel--iv
-        (gptel-make-openai "IV"
-          :models '()
-          :host "llm.invalley.co"
-          :protocol "http"
-          :key 'gptel-api-key
           :stream t)
         gptel--mlx
         (gptel-make-openai "MLX"
