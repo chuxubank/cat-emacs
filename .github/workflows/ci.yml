@@ -15,23 +15,24 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: actions/checkout@v7
 
       - name: Set up Docker Buildx
         id: setup-buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -39,71 +40,58 @@ jobs:
             ghcr.io/${{ github.repository }}
 
       - name: Get current week
-        run: echo "WEEK=$(date +'%Y W%V')" >> $GITHUB_ENV
+        run: echo "WEEK=$(date +'%G-W%V')" >> "$GITHUB_ENV"
 
-      - name: Apt Cache for Docker
-        uses: actions/cache@v4
-        id: apt-cache
+      - name: Cache Docker build mounts
+        uses: actions/cache@v6
+        id: build-mount-cache
         with:
           path: |
             var-cache-apt
             var-lib-apt
-          key: apt-cache-${{ hashFiles('Dockerfile') }}
+            emacs-packages
+            emacs-eln-cache
+          key: build-mount-${{ runner.os }}-${{ hashFiles('Dockerfile') }}-${{ env.WEEK }}
+          restore-keys: |
+            build-mount-${{ runner.os }}-${{ hashFiles('Dockerfile') }}-
+            build-mount-${{ runner.os }}-
 
-      - name: Inject apt-cache into docker
+      - name: Restore Docker build mounts
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.setup-buildx.outputs.name }}
           cache-map: |
             {
               "var-cache-apt": "/var/cache/apt",
-              "var-lib-apt": "/var/lib/apt"
-            }
-          skip-extraction: ${{ steps.apt-cache.outputs.cache-hit }}
-
-      - name: Emacs Build Cache for Docker
-        uses: actions/cache@v4
-        id: emacs-cache
-        with:
-          path: |
-            emacs-packages
-            emacs-eln-cache
-          key: ${{ runner.os }}-emacs-cache-${{ env.WEEK }}
-
-      - name: Inject emacs-cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@v3
-        with:
-          builder: ${{ steps.setup-buildx.outputs.name }}
-          cache-map: |
-            {
+              "var-lib-apt": "/var/lib/apt",
               "emacs-packages": "/root/.config/emacs/elpa",
               "emacs-eln-cache": "/root/.config/emacs/eln-cache"
             }
-          skip-extraction: ${{ steps.emacs-cache.outputs.cache-hit }}
+          skip-extraction: ${{ steps.build-mount-cache.outputs.cache-hit }}
 
       - name: Login to Docker Hub
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=cat-emacs
+          cache-to: type=gha,scope=cat-emacs,mode=max
           build-args: |
             CI=true
