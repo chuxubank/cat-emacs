@@ -55,7 +55,6 @@ jobs:
           restore-keys: |
             build-mount-${{ runner.os }}-${{ hashFiles('Dockerfile') }}-
             build-mount-${{ runner.os }}-
-            ${{ runner.os }}-emacs-cache-
 
       - name: Restore Docker build mounts
         uses: reproducible-containers/buildkit-cache-dance@v3
