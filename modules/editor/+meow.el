@@ -120,6 +120,7 @@
                       '(diary-mode . normal)
                       '(ement-room-mode . motion)
                       '(eshell-mode . insert)
+                      '(ghostel-mode . insert)
                       '(gnus-mode . motion)
                       '(help-mode . motion)
                       '(helpful-mode . motion)
