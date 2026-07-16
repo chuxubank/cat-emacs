@@ -35,7 +35,7 @@
     doom
     font
     autodark
-    beauty
+    (beauty :cat valign)
     windows
     workspace
     dashboard

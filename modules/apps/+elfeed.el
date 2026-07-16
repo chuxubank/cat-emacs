@@ -4,7 +4,8 @@
   :config
   (setq elfeed-search-filter "@2-week-ago -nsfw -buy -news "
         elfeed-curl-timeout 10)
-  (when (functionp #'valign--put-overlay)
+  (when (catp! valign 'beauty :ui)
+    (require 'valign)
     (defun elfeed-search-print-valigned-entry (entry)
       "Print valign-ed ENTRY to the buffer."
       (let* ((date (elfeed-search-format-date (elfeed-entry-date entry)))

@@ -80,9 +80,9 @@
   :hook (prog-mode text-mode))
 
 (use-package valign
+  :cat
   :delight " 󱥣"
-  :commands (valign--space valign--put-overlay))
-
+  :hook ((org-mode markdown-mode) . valign-mode))
 
 (use-package ultra-scroll
   :vc (ultra-scroll
