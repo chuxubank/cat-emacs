@@ -69,6 +69,7 @@
   "f" #'chezmoi-find
   "F" #'chezmoi-find-scripts
   "g" #'chezmoi-magit-status
+  "T" #'chezmoi-transient
   "o" #'chezmoi-open-other
   "s" #'chezmoi-write
   "S" #'chezmoi-sync-files
