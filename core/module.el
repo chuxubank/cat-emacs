@@ -52,9 +52,10 @@ When MODULE and GROUP are nil, use the module currently being loaded."
   "Return non-nil when FEATURE is enabled for MODULE in GROUP.
 When MODULE and GROUP are omitted, use the module currently being loaded."
   `(memq ',cat
-         (cat--module-option :cat
-                             ,(cat--query-symbol-form module)
-                             ,(cat--query-group-form group))))
+         (ensure-list
+          (cat--module-option :cat
+                              ,(cat--query-symbol-form module)
+                              ,(cat--query-group-form group)))))
 
 (defmacro modulep! (module &optional group)
   "Return non-nil when MODULE is enabled in GROUP.
