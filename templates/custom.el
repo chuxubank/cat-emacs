@@ -33,6 +33,8 @@
                           "https://github.com/chuxubank/gptel-model-updater")
      (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
      (gradle-el :url "https://git.sr.ht/~vhallac/gradle-el")
+     (go-template-ts-mode :url
+                          "https://github.com/chuxubank/go-template-ts-mode")
      (hydra-posframe :url "https://github.com/Ladicle/hydra-posframe")
      (kitty-graphics :url
                      "https://github.com/cashmeredev/kitty-graphics.el")
@@ -178,8 +180,7 @@
      git-link
      git-timemachine
      go-mode
-     go-template-helper-mode
-     go-template-mode
+     go-template-ts-mode
      goggles
      golden-ratio
      gptel
