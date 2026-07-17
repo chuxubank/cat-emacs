@@ -57,20 +57,3 @@
     :after chezmoi cape
     :config
     (add-hook 'chezmoi-mode-hook #'cat/chezmoi-cape-setup)))
-
-(defvar-keymap chezmoi-map
-  :doc "Keymap for `chezmoi' commands."
-  :name "Chezmoi"
-  :prefix 'chezmoi-prefix
-  "a" #'chezmoi-dired-add-marked-files
-  "c" #'chezmoi-mode
-  "d" #'chezmoi-diff
-  "e" #'chezmoi-ediff
-  "f" #'chezmoi-find
-  "F" #'chezmoi-find-scripts
-  "g" #'chezmoi-magit-status
-  "T" #'chezmoi-transient
-  "o" #'chezmoi-open-other
-  "s" #'chezmoi-write
-  "S" #'chezmoi-sync-files
-  "t" #'chezmoi-template-buffer-display)

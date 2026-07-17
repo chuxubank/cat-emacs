@@ -33,7 +33,7 @@
   :prefix 'cat-plugin-prefix
   "a" #'cat-android/body
   "b" #'cat-blog/body
-  "c" 'chezmoi-prefix
+  "c" 'chezmoi-transient
   "d" 'cat-dev-doc-prefix
   "D" 'docker
   "g" #'cat-git-misc/body
