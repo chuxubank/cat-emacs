@@ -7,18 +7,6 @@
 (defvar cat-chezmoi-extensions-load-path
   (expand-file-name "extensions" (file-name-directory (locate-library "chezmoi"))))
 
-(defun chezmoi-find-scripts (script)
-  "Edit a source SCRIPT managed by chezmoi."
-  (interactive
-   (list (chezmoi--completing-read
-          "Select a script to edit: "
-		  (thread-last
-            "managed -i scripts -p source-absolute"
-            chezmoi--dispatch
-            (cl-map 'list #'abbreviate-file-name))
-		  'project-file)))
-  (find-file script))
-
 (defun cat/chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
   (bound-and-true-p chezmoi-mode))
