@@ -44,16 +44,15 @@
     :after chezmoi magit
     :commands #'chezmoi-magit-status))
 
-(when (package-installed-p 'cape)
-  (defun cat/chezmoi-cape-setup ()
-    "Use Chezmoi completion only in buffers with `chezmoi-mode'."
-    (if chezmoi-mode
-        (add-hook 'completion-at-point-functions #'chezmoi-capf nil t)
-      (remove-hook 'completion-at-point-functions #'chezmoi-capf t)))
+(defun cat/chezmoi-capf-setup ()
+  "Use Chezmoi completion only in buffers with `chezmoi-mode'."
+  (if chezmoi-mode
+      (add-hook 'completion-at-point-functions #'chezmoi-capf nil t)
+    (remove-hook 'completion-at-point-functions #'chezmoi-capf t)))
 
-  (use-package chezmoi-cape
-    :load-path cat-chezmoi-extensions-load-path
-    :demand t
-    :after chezmoi cape
-    :config
-    (add-hook 'chezmoi-mode-hook #'cat/chezmoi-cape-setup)))
+(use-package chezmoi-cape
+  :load-path cat-chezmoi-extensions-load-path
+  :demand t
+  :after chezmoi
+  :config
+  (add-hook 'chezmoi-mode-hook #'cat/chezmoi-capf-setup))
