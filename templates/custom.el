@@ -23,7 +23,6 @@
  '(package-vc-selected-packages
    '((android-mode :url "https://github.com/chuxubank/emacs-studio"
                    :lisp-dir "android-mode/")
-     (chezmoi :url "https://github.com/Lillenne/chezmoi.el")
      (code-review :url "https://github.com/doomelpa/code-review")
      (compose-preview :url "https://github.com/chuxubank/emacs-studio"
                       :lisp-dir "compose-preview/")
@@ -67,6 +66,7 @@
      (poly-any-go-template :url
                           "https://github.com/chuxubank/poly-any-template"
                           :main-file "poly-any-go-template.el")
+     (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
      (poly-any-jinja2 :url
                       "https://github.com/chuxubank/poly-any-template"
                       :main-file "poly-any-jinja2.el")

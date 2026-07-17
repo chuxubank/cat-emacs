@@ -1,19 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi
-  :vc (chezmoi :url "https://github.com/Lillenne/chezmoi.el")
-  :commands
-  (chezmoi-mode
-   chezmoi-diff
-   chezmoi-find
-   chezmoi-sync-files
-   chezmoi--completing-read)
-  :config
-  (defun chezmoi-managed ()
-    "List all files and directories managed by chezmoi."
-    (thread-last "managed -x externals,scripts -p absolute"
-	             chezmoi--dispatch
-	             (cl-map 'list #'abbreviate-file-name))))
+  :vc (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
+  :demand t)
 
 (defvar cat-chezmoi-extensions-load-path
   (expand-file-name "extensions" (file-name-directory (locate-library "chezmoi"))))
@@ -34,18 +23,6 @@
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
   (bound-and-true-p chezmoi-mode))
 
-(defun cat/chezmoi-activate-template-polymode ()
-  "Use Go-template polymode for Chezmoi source templates.
-Chezmoi selects the target file's mode before enabling `chezmoi-mode',
-which would otherwise leave Go actions to the host mode's font-lock rules."
-  (when (and (bound-and-true-p chezmoi-mode)
-             buffer-file-name
-             (string-match-p "\\.tmpl\\'" buffer-file-name))
-    (poly-any-go-template-mode)))
-
-(with-eval-after-load 'poly-any-go-template
-  (add-hook 'chezmoi-mode-hook #'cat/chezmoi-activate-template-polymode))
-
 (when (package-installed-p 'company)
   (use-package chezmoi-company
     :load-path cat-chezmoi-extensions-load-path
@@ -54,8 +31,11 @@ which would otherwise leave Go actions to the host mode's font-lock rules."
     :config
     (defun cat/add-or-remove-chezmoi-company-backend ()
       (if chezmoi-mode
-          (add-to-list 'company-backends 'chezmoi-company-backend)
-        (setq company-backends (delete 'chezmoi-company-backend company-backends))))
+          (setq-local company-backends
+                      (cons 'chezmoi-company-backend
+                            (remove 'chezmoi-company-backend company-backends)))
+        (setq-local company-backends
+                    (remove 'chezmoi-company-backend company-backends))))
     (add-hook 'chezmoi-mode-hook #'cat/add-or-remove-chezmoi-company-backend)))
 
 (use-package chezmoi-dired
@@ -77,12 +57,18 @@ which would otherwise leave Go actions to the host mode's font-lock rules."
     :commands #'chezmoi-magit-status))
 
 (when (package-installed-p 'cape)
+  (defun cat/chezmoi-cape-setup ()
+    "Use Chezmoi completion only in buffers with `chezmoi-mode'."
+    (if chezmoi-mode
+        (add-hook 'completion-at-point-functions #'chezmoi-capf nil t)
+      (remove-hook 'completion-at-point-functions #'chezmoi-capf t)))
+
   (use-package chezmoi-cape
     :load-path cat-chezmoi-extensions-load-path
     :demand t
     :after chezmoi cape
     :config
-    (add-to-list 'completion-at-point-functions #'chezmoi-capf)))
+    (add-hook 'chezmoi-mode-hook #'cat/chezmoi-cape-setup)))
 
 (defvar-keymap chezmoi-map
   :doc "Keymap for `chezmoi' commands."
