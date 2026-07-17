@@ -34,9 +34,7 @@ file name is resolved from the user or fallback template directory by
   :pretty-hydra
   (cat-vibe
    ("GPTel"
-    (("u" #'gptel-model-updater-update-backend "update")
-     ("U" #'gptel-model-updater-update-all "update all")
-     ("m" #'gptel-model-updater-select-all-targets "select targets")))))
+    (("u" #'gptel-model-updater-transient "updater")))))
 
 (use-package gptel
   :delight " 󱡄"
