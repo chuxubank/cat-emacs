@@ -7,4 +7,12 @@
 
 (use-package poly-any-jinja2
   :demand t
-  :ensure nil)
+  :vc (poly-any-jinja2
+       :url "https://github.com/chuxubank/poly-any-template"
+       :main-file "poly-any-jinja2.el"))
+
+(use-package poly-any-go-template
+  :demand t
+  :vc (poly-any-go-template
+       :url "https://github.com/chuxubank/poly-any-template"
+       :main-file "poly-any-go-template.el"))

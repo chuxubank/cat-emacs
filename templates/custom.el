@@ -33,6 +33,8 @@
                           "https://github.com/chuxubank/gptel-model-updater")
      (gptel-prompts :url "https://github.com/jwiegley/gptel-prompts")
      (gradle-el :url "https://git.sr.ht/~vhallac/gradle-el")
+     (go-template-ts-mode :url
+                          "https://github.com/chuxubank/go-template-ts-mode")
      (hydra-posframe :url "https://github.com/Ladicle/hydra-posframe")
      (kitty-graphics :url
                      "https://github.com/cashmeredev/kitty-graphics.el")
@@ -62,6 +64,12 @@
                "lisp/" :branch "dev")
      (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
      (org-yt :url "https://github.com/TobiasZawada/org-yt")
+     (poly-any-go-template :url
+                          "https://github.com/chuxubank/poly-any-template"
+                          :main-file "poly-any-go-template.el")
+     (poly-any-jinja2 :url
+                      "https://github.com/chuxubank/poly-any-template"
+                      :main-file "poly-any-jinja2.el")
      (treemacs-activities :url
                           "https://github.com/chuxubank/treemacs-activities")
      (ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll")
@@ -178,8 +186,7 @@
      git-link
      git-timemachine
      go-mode
-     go-template-helper-mode
-     go-template-mode
+     go-template-ts-mode
      goggles
      golden-ratio
      gptel
@@ -258,6 +265,8 @@
      pinyin-search
      plantuml-mode
      poetry
+     poly-any-go-template
+     poly-any-jinja2
      poly-ansible
      polymode
      powershell

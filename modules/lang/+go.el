@@ -15,6 +15,5 @@
 
 (use-package templ-ts-mode)
 
-(use-package go-template-mode)
-
-(use-package go-template-helper-mode)
+(use-package go-template-ts-mode
+  :vc (:url "https://github.com/chuxubank/go-template-ts-mode"))

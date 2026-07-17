@@ -131,7 +131,7 @@ font family, a list of font families, or a symbol whose value is either."
                        nxml-mode
                        sgml-mode
                        templ-ts-mode
-                       go-template-mode)
+                       go-template-ts-mode)
             :font code-config)
     (:modes (objc-mode swift-mode applescript-mode)
             :font code-apple)
