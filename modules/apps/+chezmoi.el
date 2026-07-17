@@ -23,18 +23,6 @@
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
   (bound-and-true-p chezmoi-mode))
 
-(defun cat/chezmoi-activate-template-polymode ()
-  "Use Go-template polymode for Chezmoi source templates.
-Chezmoi selects the target file's mode before enabling `chezmoi-mode',
-which would otherwise leave Go actions to the host mode's font-lock rules."
-  (when (and (bound-and-true-p chezmoi-mode)
-             buffer-file-name
-             (string-match-p "\\.tmpl\\'" buffer-file-name))
-    (poly-any-go-template-mode)))
-
-(with-eval-after-load 'poly-any-go-template
-  (add-hook 'chezmoi-mode-hook #'cat/chezmoi-activate-template-polymode))
-
 (when (package-installed-p 'company)
   (use-package chezmoi-company
     :load-path cat-chezmoi-extensions-load-path
