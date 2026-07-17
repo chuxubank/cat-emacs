@@ -64,6 +64,8 @@
                "lisp/" :branch "dev")
      (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
      (org-yt :url "https://github.com/TobiasZawada/org-yt")
+     (poly-any-template :url
+                        "https://github.com/chuxubank/poly-any-template")
      (treemacs-activities :url
                           "https://github.com/chuxubank/treemacs-activities")
      (ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll")
@@ -259,6 +261,7 @@
      pinyin-search
      plantuml-mode
      poetry
+     poly-any-template
      poly-ansible
      polymode
      powershell

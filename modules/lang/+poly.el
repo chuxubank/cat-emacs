@@ -5,11 +5,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.plist\\'" . nxml-mode))
 
-(use-package poly-any-jinja2
+(use-package poly-any-template
   :demand t
-  :ensure nil)
-
-(use-package poly-any-go-template
-  :demand t
-  :ensure nil
-  :after (polymode go-template-ts-mode))
+  :vc (:url "https://github.com/chuxubank/poly-any-template"))
