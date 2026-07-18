@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'cl-lib)
+(require 'lisp-mode)
 
 (defvar cat-current-module nil
   "Current Cat module being loaded.")
@@ -149,10 +150,25 @@ When GROUP is omitted, check every module group."
               (cat-current-module-options module-options))
           (cat-load (cat--module-name module-name) group)))))))
 
+(defun cat--read-data-file (file)
+  "Read and return the single Lisp data form in FILE."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (goto-char (point-min))
+    (let ((data (read (current-buffer))))
+      (with-syntax-table emacs-lisp-mode-syntax-table
+        (forward-comment (point-max)))
+      (unless (eobp)
+        (error "Unexpected extra data in %s" file))
+      data)))
+
 (defun cat-load-modules (&optional modules-file)
-  "Load Cat module declarations from MODULES-FILE.
-When MODULES-FILE is nil, load the configured cats file."
-  (load (or modules-file (cat-config-file "cats")) nil 'nomessage)
-  (cat! cat-modules))
+  "Load Cat module declarations from the data in MODULES-FILE.
+When MODULES-FILE is nil, read the configured cats file."
+  (let* ((file (or modules-file (cat-config-file "cats")))
+         (modules (cat--read-data-file file)))
+    (unless (listp modules)
+      (error "Cat module data in %s is not a list" file))
+    (cat! modules)))
 
 (provide 'cat-module)

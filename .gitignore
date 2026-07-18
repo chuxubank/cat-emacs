@@ -4,6 +4,7 @@
 # emacs
 auto-save-list
 eln-cache/
+/projects
 
 # backup
 *.*~

@@ -42,9 +42,10 @@ Meow, meow, meow... Oh, that's a cat!
 ** How It Is Organized
 
 Cat Emacs is organized as a distribution core plus a user module list.
-Users can define their own module list in =~/.config/cat-emacs/cats.el=.
+Users can define their own module list in =~/.config/cat-emacs/cats=.
 If that file does not exist, Cat Emacs loads the default example from
-=templates/cats.el=.
+=templates/cats=.  The file contains one Lisp data list; it is read as data,
+not loaded as executable Emacs Lisp.
 
 Other user-overridable configuration files follow the same rule: Cat Emacs
 first looks under =~/.config/cat-emacs/= and falls back to =templates/=.
@@ -91,7 +92,7 @@ directories under =modules/=:
 
 ** Default Module Profile
 
-The default profile in =templates/cats.el= enables a broad everyday
+The default profile in =templates/cats= enables a broad everyday
 setup:
 
 - UI: Doom themes/modeline, fonts, auto dark mode, window/workspace helpers,
@@ -111,11 +112,11 @@ keyword and =catp!=.  Package declarations guarded by =:cat= are optional and
 stay disabled unless the Cat feature or expression is enabled:
 
 #+begin_src emacs-lisp
-(defconst cat-modules
-  '(:lang
-    (term :cat vterm)
-    ))
+(:lang
+ (term :cat vterm))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package vterm
   :cat)
 #+end_src
@@ -134,7 +135,7 @@ stay disabled unless the Cat feature or expression is enabled:
 - =core/module.el= defines the optional module loader.
 - =modules/base/+keymap.el= defines the main =C-c= command map for files,
   toggles, Org, plugins, workspaces, search, and AI tools.
-- =templates/cats.el= is the reference module list for new users.
+- =templates/cats= is the reference module list for new users.
 
 ** Docker
 

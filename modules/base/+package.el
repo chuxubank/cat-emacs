@@ -12,6 +12,17 @@
  use-package-always-defer t
  use-package-vc-prefer-newest t)
 
+(use-package no-littering
+  :demand
+  :init
+  (setq no-littering-etc-directory cat-etc-dir
+        no-littering-var-directory cat-cache-dir)
+  :config
+  (no-littering-theme-backups)
+  (let ((dir (no-littering-expand-var-file-name "lock-files/")))
+    (make-directory dir t)
+    (setq lock-file-name-transforms `((".*" ,dir t)))))
+
 (use-package system-packages)
 (use-package delight)
 (use-package major-mode-hydra
