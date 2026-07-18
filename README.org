@@ -242,8 +242,8 @@ make -C ~/.config/emacs/elpa/org-mode compile autoloads
 
 #+HTML: <a href="https://www.star-history.com/?repos=chuxubank%2Fcat-emacs&type=date&legend=top-left">
 #+HTML:  <picture>
-#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=chuxubank/cat-emacs&type=date&theme=dark&legend=top-left" />
-#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=chuxubank/cat-emacs&type=date&legend=top-left" />
-#+HTML:    <img alt="Star History Chart" src="https://api.star-history.com/image?repos=chuxubank/cat-emacs&type=date&legend=top-left" />
+#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&theme=dark&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
+#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
+#+HTML:    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
 #+HTML:  </picture>
 #+HTML: </a>
