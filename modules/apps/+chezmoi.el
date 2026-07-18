@@ -2,7 +2,8 @@
 
 (use-package chezmoi
   :vc (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
-  :demand t)
+  :custom
+  (chezmoi-auto-enable-mode nil))
 
 (defvar cat-chezmoi-extensions-load-path
   (expand-file-name "extensions" (file-name-directory (locate-library "chezmoi"))))
