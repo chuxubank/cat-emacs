@@ -7,6 +7,16 @@
   :custom
   (treesit-font-lock-level 4))
 
+(defun cat/treesit-fold-indicators-refresh-unless-polymode (function &rest args)
+  "Call FUNCTION with ARGS unless the current buffer uses polymode."
+  (unless (bound-and-true-p polymode-mode)
+    (apply function args)))
+
+(defun cat/treesit-fold-disable-polymode-indicators ()
+  "Disable tree-sitter fold indicators in a polymode buffer."
+  (when (bound-and-true-p treesit-fold-indicators-mode)
+    (treesit-fold-indicators-mode -1)))
+
 (use-package treesit-fold
   :delight
   :pin jcs-elpa
@@ -27,11 +37,17 @@
   :custom-face
   (treesit-fold-replacement-face ,cat-hs-folded-face)
   :config
+  (advice-add 'treesit-fold-indicators-refresh :around
+              #'cat/treesit-fold-indicators-refresh-unless-polymode)
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
           . (lambda (node offset)
               (treesit-fold-range-line-comment node offset "import ")))
         (alist-get 'java-ts-mode treesit-fold-range-alist)))
+
+(with-eval-after-load 'poly-any-template
+  (add-hook 'poly-any-template-after-activate-hook
+            #'cat/treesit-fold-disable-polymode-indicators))
 
 (use-package treesit-langs
   :commands treesit-langs-major-mode-setup
