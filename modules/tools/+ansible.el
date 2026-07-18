@@ -1,5 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package poly-ansible
+  :delight " 󱂚")
+
 (use-package ansible
   :delight)
 
