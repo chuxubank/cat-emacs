@@ -11,12 +11,6 @@
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
   (bound-and-true-p chezmoi-mode))
 
-(when (package-installed-p 'company)
-  (use-package chezmoi-company
-    :load-path cat-chezmoi-extensions-load-path
-    :demand t
-    :after chezmoi company))
-
 (use-package chezmoi-dired
   :load-path cat-chezmoi-extensions-load-path
   :commands #'chezmoi-dired-add-marked-files)
@@ -34,8 +28,3 @@
     :demand t
     :after chezmoi magit
     :commands #'chezmoi-magit-status))
-
-(use-package chezmoi-cape
-  :load-path cat-chezmoi-extensions-load-path
-  :demand t
-  :after chezmoi)
