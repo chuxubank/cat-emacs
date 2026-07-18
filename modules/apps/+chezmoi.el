@@ -15,16 +15,7 @@
   (use-package chezmoi-company
     :load-path cat-chezmoi-extensions-load-path
     :demand t
-    :after chezmoi company
-    :config
-    (defun cat/add-or-remove-chezmoi-company-backend ()
-      (if chezmoi-mode
-          (setq-local company-backends
-                      (cons 'chezmoi-company-backend
-                            (remove 'chezmoi-company-backend company-backends)))
-        (setq-local company-backends
-                    (remove 'chezmoi-company-backend company-backends))))
-    (add-hook 'chezmoi-mode-hook #'cat/add-or-remove-chezmoi-company-backend)))
+    :after chezmoi company))
 
 (use-package chezmoi-dired
   :load-path cat-chezmoi-extensions-load-path
@@ -44,15 +35,7 @@
     :after chezmoi magit
     :commands #'chezmoi-magit-status))
 
-(defun cat/chezmoi-capf-setup ()
-  "Use Chezmoi completion only in buffers with `chezmoi-mode'."
-  (if chezmoi-mode
-      (add-hook 'completion-at-point-functions #'chezmoi-capf nil t)
-    (remove-hook 'completion-at-point-functions #'chezmoi-capf t)))
-
 (use-package chezmoi-cape
   :load-path cat-chezmoi-extensions-load-path
   :demand t
-  :after chezmoi
-  :config
-  (add-hook 'chezmoi-mode-hook #'cat/chezmoi-capf-setup))
+  :after chezmoi)
