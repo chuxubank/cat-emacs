@@ -1,8 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package poly-ansible
-  :delight " 󱂚")
-
 (use-package ansible
   :delight)
 
@@ -13,4 +10,3 @@
   :hook
   (ansible-mode . flymake-ansible-lint-setup)
   (ansible-mode . flymake-mode))
-
