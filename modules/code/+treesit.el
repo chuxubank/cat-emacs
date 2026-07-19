@@ -2,22 +2,11 @@
 
 ;; https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter
 
-(require 'treesit)
-
-(defvar treesit-fold-range-alist)
-
-(declare-function cat/org-src-kill-treesit-fontification-buffer nil)
-(declare-function cat/treesit-langs-cleanup nil (&optional ignored))
-(declare-function org-src-get-lang-mode-if-bound "org-src" (lang))
-(declare-function poly-treesit-fold-mode "poly-treesit-fold" (&optional arg))
-(declare-function treesit-fold-range-line-comment "treesit-fold"
-                  (node offset prefix))
-(declare-function treesit-langs--bin-dir "treesit-langs" ())
-
 (use-package treesit
   :ensure nil
   :custom
   (treesit-font-lock-level 4))
+
 (use-package poly-treesit-fold
   :vc (:url "https://github.com/chuxubank/poly-any-template"
             :main-file "poly-treesit-fold.el")
