@@ -2,8 +2,6 @@
 
 ;; https://git.savannah.gnu.org/cgit/emacs.git/tree/admin/notes/tree-sitter/starter-guide?h=feature/tree-sitter
 
-(require 'cl-lib)
-(require 'seq)
 (require 'treesit)
 
 (defvar treesit-fold-range-alist)
@@ -11,6 +9,7 @@
 (declare-function cat/org-src-kill-treesit-fontification-buffer nil)
 (declare-function cat/treesit-langs-cleanup nil (&optional ignored))
 (declare-function org-src-get-lang-mode-if-bound "org-src" (lang))
+(declare-function poly-treesit-fold-mode "poly-treesit-fold" (&optional arg))
 (declare-function treesit-fold-range-line-comment "treesit-fold"
                   (node offset prefix))
 (declare-function treesit-langs--bin-dir "treesit-langs" ())
@@ -19,75 +18,12 @@
   :ensure nil
   :custom
   (treesit-font-lock-level 4))
-
-(defvar-local cat/treesit-fold--language-cache nil
-  "Alist mapping major modes to compatible parser languages in this buffer.")
-
-(defconst cat/treesit-fold-mode-language-alist
-  '((go-template-ts-mode . gotmpl)
-    (sh-mode . bash))
-  "Tree-sitter languages whose names cannot be inferred from their modes.")
-
-(defun cat/treesit-fold--query-patterns ()
-  "Return the fold query patterns for the current major mode."
-  (when-let ((ranges (alist-get major-mode treesit-fold-range-alist)))
-    (seq-mapcat (lambda (range) `((,(car range)) @name)) ranges)))
-
-(defun cat/treesit-fold--language ()
-  "Return the parser language compatible with the current fold rules.
-This avoids using the first parser in polymode buffers, where parser order
-does not necessarily match `major-mode'."
-  (or (alist-get major-mode cat/treesit-fold--language-cache)
-      (let* ((parsers (treesit-parser-list))
-             (languages (mapcar #'treesit-parser-language parsers))
-             (mode-name (symbol-name major-mode))
-             (expected
-              (or (alist-get major-mode cat/treesit-fold-mode-language-alist)
-                  (when (string-match "\\`\\(.+\\)-ts-mode\\'" mode-name)
-                    (intern (match-string 1 mode-name)))))
-             (language
-              (if expected
-                  (and (memq expected languages) expected)
-                (when-let ((patterns (cat/treesit-fold--query-patterns)))
-                  (cl-loop for parser in parsers
-                           for candidate = (treesit-parser-language parser)
-                           when (ignore-errors
-                                  (treesit-query-compile candidate patterns))
-                           return candidate)))))
-        (when language
-          (push (cons major-mode language) cat/treesit-fold--language-cache)
-          language))))
-
-(defun cat/treesit-fold--root-node ()
-  "Return the parser root node compatible with the current fold rules."
-  (when-let ((language (cat/treesit-fold--language)))
-    (ignore-errors (treesit-buffer-root-node language))))
-
-(defun cat/treesit-fold-with-polymode-parser (function &rest args)
-  "Call FUNCTION with ARGS using the parser matching the polymode span."
-  (if (not (bound-and-true-p polymode-mode))
-      (apply function args)
-    (when-let ((root (cat/treesit-fold--root-node)))
-      (let ((root-function (symbol-function 'treesit-buffer-root-node)))
-        (cl-letf (((symbol-function 'treesit-buffer-root-node)
-                   (lambda (&optional language tag)
-                     (if language
-                         (funcall root-function language tag)
-                       root))))
-          (apply function args))))))
-
-(defun cat/treesit-fold-range-go-template-action (node offset)
-  "Fold the body of Go-template action NODE using OFFSET."
-  (let (begin end)
-    (dotimes (index (treesit-node-child-count node))
-      (let* ((child (treesit-node-child node index))
-             (type (treesit-node-type child)))
-        (when (and (not begin) (member type '("}}" "-}}")))
-          (setq begin (treesit-node-end child)))
-        (when (member type '("{{" "{{-"))
-          (setq end (treesit-node-start child)))))
-    (when (and begin end (<= begin end))
-      (cons (+ begin (car offset)) (+ end (cdr offset))))))
+(use-package poly-treesit-fold
+  :vc (:url "https://github.com/chuxubank/poly-any-template"
+            :main-file "poly-treesit-fold.el")
+  :demand t
+  :config
+  (poly-treesit-fold-mode 1))
 
 (use-package treesit-fold
   :delight
@@ -109,16 +45,6 @@ does not necessarily match `major-mode'."
   :custom-face
   (treesit-fold-replacement-face ,cat-hs-folded-face)
   :config
-  (dolist (function '(treesit-fold--foldable-node-at-pos
-                      treesit-fold-close-all
-                      treesit-fold-indicators-refresh))
-    (unless (advice-member-p #'cat/treesit-fold-with-polymode-parser function)
-      (advice-add function :around #'cat/treesit-fold-with-polymode-parser)))
-  (setf (alist-get 'go-template-ts-mode treesit-fold-range-alist)
-        (mapcar (lambda (type)
-                  (cons type #'cat/treesit-fold-range-go-template-action))
-                '(if_action range_action with_action
-                  define_action block_action)))
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
           . (lambda (node offset)
