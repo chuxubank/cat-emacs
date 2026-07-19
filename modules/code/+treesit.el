@@ -11,7 +11,6 @@
 (declare-function cat/org-src-kill-treesit-fontification-buffer nil)
 (declare-function cat/treesit-langs-cleanup nil (&optional ignored))
 (declare-function org-src-get-lang-mode-if-bound "org-src" (lang))
-(declare-function treesit-fold-parsers-bash "treesit-fold-parsers" ())
 (declare-function treesit-fold-range-line-comment "treesit-fold"
                   (node offset prefix))
 (declare-function treesit-langs--bin-dir "treesit-langs" ())
@@ -25,7 +24,8 @@
   "Alist mapping major modes to compatible parser languages in this buffer.")
 
 (defconst cat/treesit-fold-mode-language-alist
-  '((go-template-ts-mode . gotmpl))
+  '((go-template-ts-mode . gotmpl)
+    (sh-mode . bash))
   "Tree-sitter languages whose names cannot be inferred from their modes.")
 
 (defun cat/treesit-fold--query-patterns ()
@@ -119,8 +119,6 @@ does not necessarily match `major-mode'."
                   (cons type #'cat/treesit-fold-range-go-template-action))
                 '(if_action range_action with_action
                   define_action block_action)))
-  (setf (alist-get 'zsh-ts-mode treesit-fold-range-alist)
-        (treesit-fold-parsers-bash))
   (push '(import_list . (treesit-fold-range-seq 6 -1)) (alist-get 'kotlin-ts-mode treesit-fold-range-alist))
   (push '(import_declaration
           . (lambda (node offset)
