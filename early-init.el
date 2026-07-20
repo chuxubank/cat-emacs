@@ -18,6 +18,7 @@
 (defconst cat-emacs-name "Cat Emacs")
 
 (when IS-CI
+  (setq use-short-answers t)
   (message "%s is running on CI" cat-emacs-name))
 
 ;;; directory
