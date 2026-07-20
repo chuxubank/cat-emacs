@@ -270,7 +270,6 @@
      poetry
      poly-any-go-template
      poly-any-jinja2
-     poly-ansible
      polymode
      powershell
      promise
