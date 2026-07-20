@@ -75,6 +75,9 @@
      (poly-any-template :url
                         "https://github.com/chuxubank/poly-any-template"
                         :lisp-dir "lisp/shared")
+     (poly-ansible-jinja2 :url
+                          "https://github.com/chuxubank/poly-any-template"
+                          :lisp-dir "lisp/ansible")
      (poly-treesit-fold :url
                         "https://github.com/chuxubank/poly-any-template"
                         :lisp-dir "lisp/treesit-fold")
@@ -278,6 +281,7 @@
      poly-any-go-template
      poly-any-jinja2
      poly-any-template
+     poly-ansible-jinja2
      poly-treesit-fold
      polymode
      powershell
