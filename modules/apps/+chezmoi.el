@@ -15,7 +15,6 @@
   (chezmoi-template-mode . cat/chezmoi-template-mode-setup))
 
 (use-package poly-any-go-template
-  :after chezmoi-mode
   :init
   (setq poly-any-go-template-extra-file-name-rules
         '(chezmoi-template-source-file-p))
