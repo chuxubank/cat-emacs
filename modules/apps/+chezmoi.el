@@ -1,11 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
 (defun cat/chezmoi-template-mode-setup ()
-  "Compose a typed Chezmoi template with its inferred host mode."
-  (unless (or (eq major-mode 'go-template-ts-mode)
-              (bound-and-true-p polymode-mode)
-              (not (cat/chezmoi-template-host-mode-p buffer-file-name)))
-    (poly-any-go-template-mode)))
+  "Select a pure or host-composed mode for a Chezmoi template."
+  (cond ((or (eq major-mode 'go-template-ts-mode)
+             (bound-and-true-p polymode-mode)))
+        ((cat/chezmoi-template-host-mode-p buffer-file-name)
+         (poly-any-go-template-mode))
+        (t
+         (go-template-ts-mode))))
 
 (defun cat/chezmoi-template-host-mode-p (filename)
   "Return non-nil when FILENAME is a typed Chezmoi template."
