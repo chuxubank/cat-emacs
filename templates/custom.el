@@ -35,6 +35,8 @@
      (go-template-ts-mode :url
                           "https://github.com/chuxubank/go-template-ts-mode")
      (hydra-posframe :url "https://github.com/Ladicle/hydra-posframe")
+     (jinja2-ts-mode :url
+                     "https://github.com/chuxubank/jinja2-ts-mode")
      (kitty-graphics :url
                      "https://github.com/cashmeredev/kitty-graphics.el")
      (lsp-proxy :url "https://github.com/jadestrong/lsp-proxy")
@@ -187,6 +189,7 @@
      git-timemachine
      go-mode
      go-template-ts-mode
+     jinja2-ts-mode
      goggles
      golden-ratio
      gptel
