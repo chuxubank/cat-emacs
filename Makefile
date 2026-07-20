@@ -9,7 +9,8 @@ PACKAGE_ACTION ?= $(PACKAGE_SYNC)
 PACKAGE_CLEANUP = --eval "(setq package-selected-packages (delete-dups (append (mapcar (function car) package-vc-selected-packages) package-selected-packages)))" --eval "(package-autoremove)"
 PACKAGE_FINALIZE ?= $(PACKAGE_CLEANUP)
 
-.PHONY: packages sync-packages upgrade-packages sync-upgrade-packages compile-org
+.PHONY: packages sync-packages upgrade-packages sync-upgrade-packages compile-org \
+	test-ansible
 
 packages:
 	yes | $(EMACS_BATCH) $(PACKAGE_BOOTSTRAP) \
@@ -27,3 +28,13 @@ sync-upgrade-packages:
 
 compile-org:
 	$(MAKE) -C "$(INIT_DIR)/elpa/org-mode" compile autoloads
+
+test-ansible:
+	$(EMACS) -Q --batch \
+		--eval "(setq user-emacs-directory \"$(INIT_DIR)/\")" \
+		--eval "(require 'package)" \
+		--eval "(package-initialize)" \
+		--eval "(require 'use-package)" \
+		-L "$(INIT_DIR)/test" \
+		-l cat-ansible-test \
+		-f ert-run-tests-batch-and-exit
