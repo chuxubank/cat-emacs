@@ -67,11 +67,17 @@
      (org-yt :url "https://github.com/TobiasZawada/org-yt")
      (poly-any-go-template :url
                           "https://github.com/chuxubank/poly-any-template"
-                          :main-file "poly-any-go-template.el")
+                          :lisp-dir "lisp/go-template")
      (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
      (poly-any-jinja2 :url
                       "https://github.com/chuxubank/poly-any-template"
-                      :main-file "poly-any-jinja2.el")
+                      :lisp-dir "lisp/jinja2")
+     (poly-any-template :url
+                        "https://github.com/chuxubank/poly-any-template"
+                        :lisp-dir "lisp/shared")
+     (poly-treesit-fold :url
+                        "https://github.com/chuxubank/poly-any-template"
+                        :lisp-dir "lisp/treesit-fold")
      (treemacs-activities :url
                           "https://github.com/chuxubank/treemacs-activities")
      (ultra-scroll :url "https://github.com/jdtsmith/ultra-scroll")
@@ -270,6 +276,8 @@
      poetry
      poly-any-go-template
      poly-any-jinja2
+     poly-any-template
+     poly-treesit-fold
      polymode
      powershell
      promise

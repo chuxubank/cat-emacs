@@ -9,7 +9,7 @@
 
 (use-package poly-treesit-fold
   :vc (:url "https://github.com/chuxubank/poly-any-template"
-            :main-file "poly-treesit-fold.el")
+            :lisp-dir "lisp/treesit-fold")
   :demand t
   :config
   (poly-treesit-fold-mode 1))

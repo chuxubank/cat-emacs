@@ -2,25 +2,9 @@
 
 (defun cat/chezmoi-template-mode-setup ()
   "Select a pure or host-composed mode for a Chezmoi template."
-  (cond ((or (eq major-mode 'go-template-ts-mode)
-             (bound-and-true-p polymode-mode)))
-        ((cat/chezmoi-template-host-mode-p buffer-file-name)
-         (poly-any-go-template-mode))
-        (t
-         (go-template-ts-mode))))
-
-(defun cat/chezmoi-template-host-mode-p (filename)
-  "Return non-nil when FILENAME is a typed Chezmoi template."
-  (when (chezmoi-template-source-file-p filename)
-    (require 'poly-any-template)
-    (let* ((template-suffix-p
-            (string-match-p "\\.\\(?:gotmpl\\|tmpl\\)\\'" filename))
-           (host-filename
-            (if template-suffix-p
-                (file-name-sans-extension filename)
-              filename)))
-      (poly-any-template-host-mode-for-file
-       (chezmoi-template-normalize-host-filename host-filename)))))
+  (unless (or (eq major-mode 'go-template-ts-mode)
+              (bound-and-true-p polymode-mode))
+    (poly-any-go-template-mode)))
 
 (use-package chezmoi
   :vc (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
@@ -34,7 +18,7 @@
   :after chezmoi
   :init
   (setq poly-any-go-template-extra-file-name-rules
-        '(cat/chezmoi-template-host-mode-p))
+        '(chezmoi-template-source-file-p))
   :config
   (add-hook 'poly-any-template-host-filename-functions
             #'chezmoi-template-normalize-host-filename))
