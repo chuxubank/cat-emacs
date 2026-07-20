@@ -6,8 +6,8 @@
               (bound-and-true-p polymode-mode))
     (poly-any-go-template-mode)))
 
-(use-package chezmoi
-  :vc (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
+(use-package chezmoi-mode
+  :vc (:url "https://github.com/chuxubank/chezmoi-mode")
   :delight " "
   :custom
   (chezmoi-auto-enable-mode nil)
@@ -15,7 +15,7 @@
   (chezmoi-template-mode . cat/chezmoi-template-mode-setup))
 
 (use-package poly-any-go-template
-  :after chezmoi
+  :after chezmoi-mode
   :init
   (setq poly-any-go-template-extra-file-name-rules
         '(chezmoi-template-source-file-p))
@@ -24,7 +24,8 @@
             #'chezmoi-template-normalize-host-filename))
 
 (defvar cat-chezmoi-extensions-load-path
-  (expand-file-name "extensions" (file-name-directory (locate-library "chezmoi"))))
+  (expand-file-name "extensions" (file-name-directory
+                                    (locate-library "chezmoi-mode"))))
 
 (defun cat/chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
@@ -45,5 +46,5 @@
   (use-package chezmoi-magit
     :load-path cat-chezmoi-extensions-load-path
     :demand t
-    :after chezmoi magit
+    :after chezmoi-mode magit
     :commands #'chezmoi-magit-status))

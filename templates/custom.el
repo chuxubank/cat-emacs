@@ -68,7 +68,7 @@
      (poly-any-go-template :url
                           "https://github.com/chuxubank/poly-any-template"
                           :lisp-dir "lisp/go-template")
-     (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
+     (chezmoi-mode :url "https://github.com/chuxubank/chezmoi-mode")
      (poly-any-jinja2 :url
                       "https://github.com/chuxubank/poly-any-template"
                       :lisp-dir "lisp/jinja2")
@@ -134,6 +134,7 @@
      cape
      cdlatex
      chatgpt-shell
+     chezmoi-mode
      citar
      citar-embark
      citar-org-roam
