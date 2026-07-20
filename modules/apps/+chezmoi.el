@@ -2,6 +2,7 @@
 
 (use-package chezmoi
   :vc (chezmoi :url "https://github.com/chuxubank/chezmoi.el")
+  :delight " "
   :custom
   (chezmoi-auto-enable-mode nil))
 
