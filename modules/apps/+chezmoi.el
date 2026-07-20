@@ -12,6 +12,7 @@
 (defun cat/chezmoi-template-host-mode-p (filename)
   "Return non-nil when FILENAME is a typed Chezmoi template."
   (when (chezmoi-template-source-file-p filename)
+    (require 'poly-any-template)
     (let* ((template-suffix-p
             (string-match-p "\\.\\(?:gotmpl\\|tmpl\\)\\'" filename))
            (host-filename
