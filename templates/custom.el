@@ -273,6 +273,7 @@
      osm
      osx-dictionary
      ox-hugo
+     package-vc-skip-unchanged
      pangu-spacing
      pass
      password-store

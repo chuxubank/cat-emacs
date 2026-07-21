@@ -9,6 +9,7 @@
 
 (add-to-list 'package-vc-selected-packages
              cat-package-vc-skip-unchanged-spec)
+(add-to-list 'package-selected-packages 'package-vc-skip-unchanged)
 
 (unless (package-installed-p 'package-vc-skip-unchanged)
   (package-vc-install cat-package-vc-skip-unchanged-spec))

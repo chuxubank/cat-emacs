@@ -1,9 +1,10 @@
 EMACS ?= emacs
 INIT_DIR ?= $(CURDIR)
 EMACS_BATCH = $(EMACS) --batch --debug-init --init-directory "$(INIT_DIR)"
-PACKAGE_BOOTSTRAP = -l "$(INIT_DIR)/early-init.el" -l "$(INIT_DIR)/init.el" --eval "(package-initialize)" --eval "(package-refresh-contents)"
+PACKAGE_BOOTSTRAP = -l "$(INIT_DIR)/early-init.el" --eval "(package-initialize)" -l "$(INIT_DIR)/init.el" --eval "(package-refresh-contents)"
 PACKAGE_SYNC = --eval "(package-install-selected-packages t)" --eval "(package-vc-install-selected-packages)"
-PACKAGE_UPGRADE = --eval "(package-upgrade-all nil)" --eval "(package-vc-upgrade-all)"
+# Emacs 30 includes VC descriptors in package-upgrade-all; upgrade them below.
+PACKAGE_UPGRADE = --eval "(let ((package-alist (seq-remove (lambda (entry) (seq-some (function package-vc-p) (cdr entry))) package-alist))) (package-upgrade-all nil))" --eval "(package-vc-upgrade-all)"
 PACKAGE_SYNC_UPGRADE = $(PACKAGE_SYNC) $(PACKAGE_CLEANUP) $(PACKAGE_UPGRADE)
 PACKAGE_ACTION ?= $(PACKAGE_SYNC)
 PACKAGE_CLEANUP = --eval "(setq package-selected-packages (delete-dups (append (mapcar (function car) package-vc-selected-packages) package-selected-packages)))" --eval "(package-autoremove)"
