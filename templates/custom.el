@@ -65,6 +65,8 @@
                "lisp/" :branch "dev")
      (org-remoteimg :url "https://github.com/gaoDean/org-remoteimg")
      (org-yt :url "https://github.com/TobiasZawada/org-yt")
+     (package-vc-skip-unchanged :url
+                                "https://github.com/chuxubank/package-vc-skip-unchanged")
      (poly-any-go-template :url
                           "https://github.com/chuxubank/poly-any-template"
                           :lisp-dir "lisp/go-template")
