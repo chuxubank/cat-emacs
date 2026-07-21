@@ -53,8 +53,8 @@
 
 (when (package-installed-p 'consult)
   (use-package embark-consult
-    :hook
-    (embark-collect-mode . consult-preview-at-point-mode)))
+    :after (embark consult)
+    :demand t))
 
 (when (package-installed-p 'avy)
   (use-package avy-embark-collect

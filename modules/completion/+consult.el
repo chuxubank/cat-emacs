@@ -45,7 +45,6 @@
   (:map minibuffer-local-map
         ("M-s" . consult-history)             ;; orig. next-matching-history-element
         ("M-r" . consult-history))            ;; orig. previous-matching-history-element
-  :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   (setq register-preview-delay 0.5
         register-preview-function #'consult-register-format
