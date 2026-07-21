@@ -12,6 +12,12 @@
   :vc (:url "https://github.com/chuxubank/poly-any-template"
             :lisp-dir "lisp/shared"))
 
+(use-package poly-any-template-indent-bars
+  :vc (:url "https://github.com/chuxubank/poly-any-template"
+            :lisp-dir "lisp/indent-bars")
+  :hook
+  (poly-any-template-after-activate . poly-any-template-indent-bars-mode))
+
 (use-package poly-any-jinja2
   :vc (:url "https://github.com/chuxubank/poly-any-template"
             :lisp-dir "lisp/jinja2")
