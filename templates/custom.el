@@ -75,6 +75,9 @@
      (poly-any-template :url
                         "https://github.com/chuxubank/poly-any-template"
                         :lisp-dir "lisp/shared")
+     (poly-any-template-indent-bars :url
+                                    "https://github.com/chuxubank/poly-any-template"
+                                    :lisp-dir "lisp/indent-bars")
      (poly-ansible-jinja2 :url
                           "https://github.com/chuxubank/poly-any-template"
                           :lisp-dir "lisp/ansible")
@@ -281,6 +284,7 @@
      poly-any-go-template
      poly-any-jinja2
      poly-any-template
+     poly-any-template-indent-bars
      poly-ansible-jinja2
      poly-treesit-fold
      polymode
