@@ -12,11 +12,11 @@
   (chezmoi-template-mode . cat/chezmoi-template-mode-setup))
 
 (use-package poly-any-go-template
-  :init
-  (setq poly-any-go-template-extra-file-name-rules
-        '(chezmoi-template-source-file-p))
-  (add-hook 'poly-any-template-host-filename-functions
-            #'chezmoi-template-normalize-host-filename))
+  :custom
+  (poly-any-go-template-extra-file-name-rules
+   '(chezmoi-template-source-file-p))
+  (poly-any-template-host-filename-functions
+   '(chezmoi-template-normalize-host-filename)))
 
 (defun cat/chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
