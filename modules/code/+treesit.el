@@ -50,9 +50,10 @@
                       '(conf-toml-mode  . toml-ts-mode)
                       '(js-mode         . js-ts-mode)
                       '(kotlin-mode     . kotlin-ts-mode)
+                      '(ruby-mode       . ruby-ts-mode)
                       '(rust-mode       . rust-ts-mode)
-                      '(swift-mode      . swift-ts-mode)
                       '(sh-mode         . bash-ts-mode)
+                      '(swift-mode      . swift-ts-mode)
                       '(typescript-mode . typescript-ts-mode))
   :config
   (defun cat/treesit-langs-cleanup (&optional _)
