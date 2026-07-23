@@ -4,7 +4,7 @@
 (require 'package)
 (require 'seq)
 
-(defvar package-vc-selected-packages)
+(defvar package-vc-selected-packages nil)
 (defvar use-package-ensure-function)
 
 (defconst cat-package-manifest-format-version 1
