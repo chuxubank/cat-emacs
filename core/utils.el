@@ -111,14 +111,7 @@ directories listed in `vc-directory-exclusion-list'."
 (defun +find-emacs-profile ()
   "Find a file in the Emacs user directory, excluding specified directories."
   (interactive)
-  (let ((exclude-dirs (list ".local"
-                            "elpa"
-                            "eln-cache"
-                            "tree-sitter")))
-    (+project-find-file-in-dir
-     user-emacs-directory
-     exclude-dirs
-     t)))
+  (+project-find-file-in-dir user-emacs-directory))
 
 (defun +emacs-debug-init ()
   "Start Emacs in debug mode."
