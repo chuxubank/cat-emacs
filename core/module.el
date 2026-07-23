@@ -18,6 +18,9 @@
 (defvar cat-modules-enabled nil
   "Alist of enabled Cat modules grouped by module group.")
 
+(defvar cat-modules-loaded-p nil
+  "Non-nil after the configured Cat modules have been loaded.")
+
 (defun cat--plist-get (plist prop)
   "Return PLIST value for PROP, preserving explicit nil values."
   (when (memq prop plist)
@@ -79,7 +82,8 @@ When GROUP is omitted, check every module group."
               err
               context
               (abbreviate-file-name file)
-              (with-output-to-string (backtrace))))))
+              (with-output-to-string (backtrace)))
+     (signal (car err) (cdr err)))))
 
 (defun cat-load (module group &optional noerror)
   "Load MODULE from GROUP under the modules directory."
@@ -127,28 +131,46 @@ When GROUP is omitted, check every module group."
       (setf (alist-get module group-options nil nil #'equal) options)
       (setf (alist-get group cat-module-options nil nil #'equal) group-options))))
 
+(defun cat--module-declarations (modules &optional group)
+  "Return enabled declarations from MODULES, starting in GROUP."
+  (let (declarations)
+    (dolist (module modules)
+      (cond
+       ((keywordp module)
+        (setq group (cat--module-group module)))
+       ((and (consp module) (eq (car module) :if))
+        (when (eval (cadr module) lexical-binding)
+          (setq declarations
+                (append declarations
+                        (cat--module-declarations (cddr module) group)))))
+       (t
+        (unless group
+          (error "Cat module %S has no group" module))
+        (setq declarations
+              (append declarations
+                      (list (list group
+                                  (cat--module-symbol module)
+                                  (cat--module-options module))))))))
+    declarations))
+
 (defun cat! (modules &optional group)
-  "Load MODULES with grouped declarations like Doom's `doom!':
+  "Register and load MODULES with grouped declarations like Doom's `doom!':
 
   (cat! '(:ui doom font
           :editor meow avy))"
-  (dolist (module modules)
-    (cond
-     ((keywordp module)
-      (setq group (cat--module-group module)))
-     ((and (consp module) (eq (car module) :if))
-      (when (eval (cadr module) lexical-binding)
-        (cat! (cddr module) group)))
-     (t
-      (unless group
-        (error "Cat module %S has no group" module))
-      (let* ((module-name (cat--module-symbol module))
-             (module-options (cat--module-options module)))
-        (cat--register-module-options group module-name module-options)
+  (let ((declarations (cat--module-declarations modules group)))
+    (dolist (declaration declarations)
+      (pcase-let ((`(,module-group ,module-name ,module-options)
+                   declaration))
+        (cat--register-module-options
+         module-group module-name module-options)))
+    (dolist (declaration declarations)
+      (pcase-let ((`(,module-group ,module-name ,module-options)
+                   declaration))
         (let ((cat-current-module module-name)
-              (cat-current-module-group group)
+              (cat-current-module-group module-group)
               (cat-current-module-options module-options))
-          (cat-load (cat--module-name module-name) group)))))))
+          (cat-load (cat--module-name module-name) module-group))))))
 
 (defun cat--read-data-file (file)
   "Read and return the single Lisp data form in FILE."
@@ -169,6 +191,10 @@ When MODULES-FILE is nil, read the configured cats file."
          (modules (cat--read-data-file file)))
     (unless (listp modules)
       (error "Cat module data in %s is not a list" file))
-    (cat! modules)))
+    (setq cat-module-options nil
+          cat-modules-enabled nil
+          cat-modules-loaded-p nil)
+    (cat! modules)
+    (setq cat-modules-loaded-p t)))
 
 (provide 'cat-module)

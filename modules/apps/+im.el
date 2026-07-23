@@ -43,8 +43,8 @@
   (telega-transient-keymaps-mode))
 
 (defvar cat-telega-contrib-load-path
-  (when (package-installed-p 'telega)
-    (expand-file-name "contrib" (file-name-directory (locate-library "telega")))))
+  (when-let ((library (locate-library "telega")))
+    (expand-file-name "contrib" (file-name-directory library))))
 
 (use-package telega-mnz
   :load-path cat-telega-contrib-load-path

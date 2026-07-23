@@ -36,7 +36,7 @@
     (shell-command term))
   (defun cat/embark-async-shell (term)
     (async-shell-command term))
-  (when (package-installed-p 'password-store)
+  (when (modulep! pass)
     (defvar-keymap embark-password-store-actions
       :doc "Keymap for actions for password-store."
       "c" #'password-store-copy
@@ -51,20 +51,20 @@
     (add-to-list 'embark-keymap-alist '(password-store . embark-password-store-actions))
     (add-to-list 'marginalia-prompt-categories '("Password entry" . password-store))))
 
-(when (package-installed-p 'consult)
-  (use-package embark-consult
-    :after (embark consult)
-    :demand t))
+(use-package embark-consult
+  :cat (modulep! consult)
+  :after (embark consult)
+  :demand t)
 
-(when (package-installed-p 'avy)
-  (use-package avy-embark-collect
-    :after embark
-    :bind
-    (:map embark-collect-mode-map
-          ("C-'" . avy-embark-collect-choose)
-          ("C-\"" . avy-embark-collect-act))))
+(use-package avy-embark-collect
+  :cat (modulep! avy)
+  :after embark
+  :bind
+  (:map embark-collect-mode-map
+        ("C-'" . avy-embark-collect-choose)
+        ("C-\"" . avy-embark-collect-act)))
 
-(when (package-installed-p 'which-key)
+(when (modulep! which-key)
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the

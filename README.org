@@ -125,19 +125,30 @@ stay disabled unless the Cat feature or expression is enabled:
 
 - =early-init.el= defines platform flags, cache directories, benchmark logging,
   and OS modifier keys.
-- =init.el= loads custom variables, local elisp, the core bootstrap, the user
-  module list, and then each selected module.
-- =core/core.el= is the core entry point; it loads bootstrap files, then the
-  module loader.
-- =core/package-vc-skip-unchanged.el= installs and enables the standalone
-  [[https://github.com/chuxubank/package-vc-skip-unchanged][package-vc-skip-unchanged]] package.
-- =core/use-package.el= registers the Cat =use-package= =:cat= keyword.
+- =init.el= adds local elisp to =load-path= and calls =cat-core-initialize=.
+- =core/core.el= is the core entry point.  It explicitly loads configuration,
+  module declarations, package management, and utilities in dependency order,
+  then collects packages while loading the selected modules.
+- =core/package/= contains package management implementations loaded explicitly
+  by the core entry point: archive configuration, package-root collection, the
+  =use-package= =:cat= keyword, and
+  [[https://github.com/chuxubank/package-vc-skip-unchanged][package-vc-skip-unchanged]].
 - =modules/base/+package.el= configures package archives, mirrors,
   =use-package= defaults, =package-vc=, and package tools.
 - =core/module.el= defines the optional module loader.
 - =modules/base/+keymap.el= defines the main =C-c= command map for files,
   toggles, Org, plugins, workspaces, search, and AI tools.
 - =templates/cats= is the reference module list for new users.
+
+** Package Synchronization
+
+The selected =cats= modules are the source of truth for managed packages.
+Run =make sync-packages= to install their ELPA and VC dependencies and remove
+packages that are no longer referenced.  The derived
+=package-selected-packages= and =package-vc-selected-packages= values remain
+in memory and are not written to =custom.el=.  Packages intentionally managed
+outside a module can be retained in =cat-package-extra-packages= or
+=cat-package-extra-vc-packages=.
 
 ** Docker
 

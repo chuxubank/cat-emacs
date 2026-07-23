@@ -10,6 +10,7 @@
 
 ;;; core
 (require 'cat-core (expand-file-name "core/core" user-emacs-directory))
+(cat-core-initialize)
 
 ;;; ui
 (add-to-list 'default-frame-alist '(fullscreen . maximized))

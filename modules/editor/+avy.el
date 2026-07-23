@@ -6,7 +6,7 @@
   (:map isearch-mode-map
         ("M-j" . avy-isearch))
   :config
-  (when (package-installed-p 'embark)
+  (when (modulep! embark)
     (defun avy-action-embark (pt)
       (unwind-protect
           (save-excursion

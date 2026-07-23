@@ -108,9 +108,9 @@
    '("C-%" . meow-query-replace-regexp)
    '("'" . repeat)
    '("<escape>" . ESC-prefix)
-   (when (package-installed-p 'embark)
+   (when (modulep! embark)
      '(">" . embark-act))
-   (when (package-installed-p 'avy)
+   (when (modulep! avy)
      '(":" . avy-goto-char-timer)))
   (meow-setup-line-number)
   (+add-to-list-multi 'meow-mode-state-list
