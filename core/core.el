@@ -39,9 +39,7 @@ The value is one of `new', `initializing', `ready', or `failed'.")
         (progn
           (dolist (library cat-core--libraries)
             (cat-core--require (car library) (cdr library)))
-          (unless IS-CI
-            (message "%s not running on CI, load modules" cat-emacs-name)
-            (cat-package-collect #'cat-load-modules))
+          (cat-package-collect #'cat-load-modules)
           (setq cat-core-state 'ready
                 succeeded t))
         (unless succeeded

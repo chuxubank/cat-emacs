@@ -2,7 +2,6 @@
 
 (:base
  package
- select-package
  benchmark
  default
  env

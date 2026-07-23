@@ -95,3 +95,4 @@ jobs:
           cache-to: type=gha,scope=cat-emacs,mode=max
           build-args: |
             CI=true
+            PACKAGE_CACHE_EPOCH=${{ env.WEEK }}

@@ -8,7 +8,7 @@
 (require 'ignore-builtin)
 
 (setq-default
- use-package-always-ensure (not IS-CI)
+ use-package-always-ensure t
  use-package-always-defer t
  use-package-vc-prefer-newest t)
 

@@ -8,9 +8,6 @@
     :url "https://github.com/chuxubank/package-vc-skip-unchanged")
   "VC package specification for `package-vc-skip-unchanged'.")
 
-(add-to-list 'package-vc-selected-packages
-             cat-package-vc-skip-unchanged-spec)
-(add-to-list 'package-selected-packages 'package-vc-skip-unchanged)
 (cat-package--register-bootstrap-vc
  cat-package-vc-skip-unchanged-spec)
 

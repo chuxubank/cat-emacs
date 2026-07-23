@@ -1,5 +1,6 @@
 # syntax = docker/dockerfile:1.2
-FROM silex/emacs as builder
+ARG EMACS_PLATFORM=linux/amd64
+FROM --platform=$EMACS_PLATFORM silex/emacs AS base
 ARG CI
 ENV CI=$CI
 
@@ -14,21 +15,39 @@ RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     p7zip \
     tzdata
 
-COPY early-init.el /root/.config/emacs/early-init.el
-COPY init.el /root/.config/emacs/init.el
-COPY core /root/.config/emacs/core
-COPY Makefile /root/.config/emacs/Makefile
-RUN mkdir -p $HOME/.config/emacs/templates
-COPY templates/custom.el /root/.config/emacs/templates/custom.el
+WORKDIR /root/.config/emacs
 
-RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
-    --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
-    make -C $HOME/.config/emacs sync-packages
+FROM base AS manifest
 
-COPY . /root/.config/emacs
+COPY . .
 
-RUN --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/elpa \
-    --mount=type=cache,sharing=locked,target=$HOME/.config/emacs/eln-cache \
-    make -C $HOME/.config/emacs compile-org
+RUN --mount=type=cache,id=emacs-packages,sharing=locked,target=/root/.config/emacs/elpa \
+    --mount=type=cache,id=emacs-eln-cache,sharing=locked,target=/root/.config/emacs/eln-cache \
+    XDG_CONFIG_HOME=/tmp/cat-emacs-config \
+    make package-manifest \
+    PACKAGE_MANIFEST=/tmp/cat-emacs-package-manifest.eld
+
+FROM base AS packages
+ARG PACKAGE_CACHE_EPOCH
+
+COPY early-init.el Makefile ./
+COPY core/package/archives.el core/package/manifest.el ./core/package/
+COPY --from=manifest /tmp/cat-emacs-package-manifest.eld /tmp/cat-emacs-package-manifest.eld
+
+RUN --mount=type=cache,id=emacs-packages,sharing=locked,target=/root/.config/emacs/elpa \
+    --mount=type=cache,id=emacs-eln-cache,sharing=locked,target=/root/.config/emacs/eln-cache \
+    echo "Package cache epoch: ${PACKAGE_CACHE_EPOCH:-manual}" && \
+    make sync-package-manifest \
+      PACKAGE_MANIFEST=/tmp/cat-emacs-package-manifest.eld && \
+    make compile-org && \
+    mkdir -p /opt/cat-emacs && \
+    cp -a elpa /opt/cat-emacs/elpa && \
+    cp -a eln-cache /opt/cat-emacs/eln-cache
+
+FROM base AS final
+
+COPY --from=packages /opt/cat-emacs/elpa ./elpa
+COPY --from=packages /opt/cat-emacs/eln-cache ./eln-cache
+COPY . .
 
 ENTRYPOINT ["emacs"]

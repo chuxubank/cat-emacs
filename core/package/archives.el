@@ -46,6 +46,18 @@
                               ("melpa" . 3)
                               ("jcs-elpa" . 0)))
 
+(defun cat-package-refresh-contents-if-needed ()
+  "Read cached package archives, refreshing when any archive is missing."
+  (if (cl-every
+       (lambda (archive)
+         (file-readable-p
+          (expand-file-name
+           (format "archives/%s/archive-contents" (car archive))
+           package-user-dir)))
+       package-archives)
+      (package-read-all-archive-contents)
+    (package-refresh-contents)))
+
 (defun cat/find-fastest-elpa-mirror ()
   "Measure response times for the configured ELPA mirrors."
   (interactive)

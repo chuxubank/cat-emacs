@@ -77,7 +77,7 @@ directories under =modules/=:
 
 | Group       | Purpose                                                                                                            |
 |-------------+--------------------------------------------------------------------------------------------------------------------|
-| =:base=       | Package tools, selected-package editing, benchmarking, defaults, environment helpers, local settings, and keymaps. |
+| =:base=       | Package setup, benchmarking, defaults, environment helpers, local settings, and keymaps.                          |
 | =:system=     | OS and session integration such as daemon and macOS support.                                                       |
 | =:emacs=      | Enhancements for built-in features such as Dired, TRAMP, EUDC, terminal, and file handling.                        |
 | =:ui=         | Themes, fonts, appearance, windows, workspaces, and dashboard.                                                     |
@@ -146,11 +146,18 @@ The selected =cats= modules are the source of truth for managed packages.
 Run =make sync-packages= to install their ELPA and VC dependencies and remove
 packages that are no longer referenced.  The derived
 =package-selected-packages= and =package-vc-selected-packages= values remain
-in memory and are not written to =custom.el=.  Packages intentionally managed
-outside a module can be retained in =cat-package-extra-packages= or
-=cat-package-extra-vc-packages=.
+in memory and are not written to =custom.el=.  Add or remove managed packages
+through =use-package= declarations in modules and enable those modules in the
+=cats= file; there is no separate package list to maintain.
 
 ** Docker
+
+The Docker build derives a temporary package manifest from =templates/cats=
+and the modules' =use-package= declarations.  The package layer depends on
+that generated manifest and the package core, so configuration-only changes
+reuse the installed-package layer.  ELPA and native-compilation cache mounts
+are copied into the final image rather than treated as image contents
+themselves.
 
 *** macOS
 [[https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949][Docker X11 macOS]]
