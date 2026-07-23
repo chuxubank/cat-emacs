@@ -75,20 +75,20 @@ The prompt file in this example lives at
 Bootstrap files live under =core/=.  Optional module groups map directly to
 directories under =modules/=:
 
-| Group       | Purpose                                                                                                            |
-|-------------+--------------------------------------------------------------------------------------------------------------------|
-| =:base=       | Package setup, benchmarking, defaults, environment helpers, local settings, and keymaps.                          |
-| =:system=     | OS and session integration such as daemon and macOS support.                                                       |
-| =:emacs=      | Enhancements for built-in features such as Dired, TRAMP, EUDC, terminal, and file handling.                        |
-| =:ui=         | Themes, fonts, appearance, windows, workspaces, and dashboard.                                                     |
-| =:editor=     | Modal editing, jumping, structural editing, hydras, and input methods.                                             |
-| =:completion= | Completion, minibuffer UI, narrowing, actions, and snippets.                                                       |
-| =:text=       | Org, LaTeX, Markdown, bibliography, publishing, notes, and learning workflows.                                     |
-| =:code=       | Formatting, diagnostics, Tree-sitter, documentation, sideline, and LSP clients.                                    |
-| =:ai=         | AI-assisted coding, chat, agents, model metadata, and MCP integration.                                             |
-| =:lang=       | Programming languages, markup/data formats, build files, diagrams, and CSV.                                        |
-| =:tools=      | Search, Git, containers, compile commands, and infrastructure helpers.                                             |
-| =:apps=       | Mail, feeds, maps, media, password store, PDF, GitHub, issue trackers, and user workflows.                         |
+| Group       | Purpose                                                                                     |
+|-------------+---------------------------------------------------------------------------------------------|
+| =:base=       | Package setup, benchmarking, defaults, environment helpers, local settings, and keymaps.    |
+| =:system=     | OS and session integration such as daemon and macOS support.                                |
+| =:emacs=      | Enhancements for built-in features such as Dired, TRAMP, EUDC, terminal, and file handling. |
+| =:ui=         | Themes, fonts, appearance, windows, workspaces, and dashboard.                              |
+| =:editor=     | Modal editing, jumping, structural editing, hydras, and input methods.                      |
+| =:completion= | Completion, minibuffer UI, narrowing, actions, and snippets.                                |
+| =:text=       | Org, LaTeX, Markdown, bibliography, publishing, notes, and learning workflows.              |
+| =:code=       | Formatting, diagnostics, Tree-sitter, documentation, sideline, and LSP clients.             |
+| =:ai=         | AI-assisted coding, chat, agents, model metadata, and MCP integration.                      |
+| =:lang=       | Programming languages, markup/data formats, build files, diagrams, and CSV.                 |
+| =:tools=      | Search, Git, containers, compile commands, and infrastructure helpers.                      |
+| =:apps=       | Mail, feeds, maps, media, password store, PDF, GitHub, issue trackers, and user workflows.  |
 
 ** Default Module Profile
 
