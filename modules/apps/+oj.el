@@ -22,7 +22,7 @@
         ("C-c C-c" . leetcode-org-roam-capture)))
 
 (use-package oj
-  :disabled
+  :cat cli
   :pretty-hydra
   (cat-oj
    ("Online Judge Tools"

@@ -22,7 +22,7 @@
     (("v" #'pet-verify-setup "pet verify")))))
 
 (use-package poetry
-  :disabled
+  :cat
   :hook (python-base-mode . poetry-tracking-mode)
   :custom
   (poetry-tracking-strategy 'switch-buffer))

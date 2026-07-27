@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package nano
-  :disabled
+  :cat core
   :vc (:url "https://github.com/rougier/nano-emacs"))
 
 (use-package nano-theme
@@ -38,7 +38,7 @@
   (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode))
 
 (use-package nano-minibuffer
-  :disabled
+  :cat minibuffer
   :predicate
   (use-package mini-buffer)
   :demand t

@@ -75,4 +75,4 @@
      ("gd" #'gt-delete-render-overlays "go translate delete ov")))))
 
 (use-package immersive-translate
-  :disabled)
+  :cat it)

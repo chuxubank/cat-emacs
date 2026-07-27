@@ -20,7 +20,7 @@
                (cons org-drill-question-tag ?d)))
 
 (use-package org-fc
-  :disabled
+  :cat fc
   :vc (:url "https://github.com/l3kn/org-fc")
   :demand t
   :after org
@@ -52,5 +52,5 @@
     (("a" org-anki-hydra/body "anki")))))
 
 (use-package promise
-  :disabled
+  :cat
   :after org-anki)

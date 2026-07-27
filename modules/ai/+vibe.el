@@ -102,13 +102,13 @@ Invokes CALLBACK with the generated message when done."
                                    nil))
           (diff (magit-git-output "diff" "--cached")))
       (gptel-magit--request diff
-                            :system gptel-magit-commit-prompt
-                            :context nil
-                            :callback (lambda (response info)
-                                        (print info)
-                                        (when (and (stringp response)
-                                                   (not (string-empty-p response)))
-                                          (funcall callback response)))))))
+        :system gptel-magit-commit-prompt
+        :context nil
+        :callback (lambda (response info)
+                    (print info)
+                    (when (and (stringp response)
+                               (not (string-empty-p response)))
+                      (funcall callback response)))))))
 
 (use-package gptel-forge-prs
   :hook (forge-post-mode . gptel-forge-prs-install)

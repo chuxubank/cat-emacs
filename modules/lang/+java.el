@@ -1,13 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package java-imports
-  :disabled
+  :cat imports
   :hook (java-mode . java-imports-scan-file)
   :custom
   (java-imports-find-block-function 'java-imports-find-place-sorted-block))
 
 (use-package eglot-java
-  :disabled
+  :cat eglot
   :hook ((java-mode
           java-ts-mode) . eglot-java-mode)
   :custom

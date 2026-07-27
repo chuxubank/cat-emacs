@@ -64,4 +64,4 @@
     (("e" #'ement-hydra/body "ement")))))
 
 (use-package jabber
-  :disabled)
+  :cat)

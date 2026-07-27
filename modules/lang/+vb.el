@@ -11,7 +11,7 @@
   :mode "\\.\\(bas\\|vb\\)$")
 
 (use-package vbnet-mode
-  :disabled
+  :cat vbnet
   :vc (:url "https://github.com/lelit/vbnet-mode")
   :mode "\\.\\(frm\\|bas\\|cls\\|vb\\)$"
   :custom

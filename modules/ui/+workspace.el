@@ -39,7 +39,7 @@
      ("R" #'tab-bar-rename-tab-by-name "rename by name")))))
 
 (use-package burly
-  :disabled
+  :cat
   :hook
   (after-init . burly-tabs-mode)
   :pretty-hydra
@@ -60,7 +60,7 @@
     (("m" #'burly-hydra/body "burly")))))
 
 (use-package bufler
-  :disabled
+  :cat
   :hook
   (burly-tabs-after . bufler-workspace-mode)
   :bind
@@ -84,7 +84,7 @@
     (("b" #'bufler-hydra/body "bufler")))))
 
 (use-package tabspaces
-  :disabled
+  :cat
   :hook
   (after-init . tabspaces-mode)
   :custom

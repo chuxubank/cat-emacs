@@ -19,7 +19,7 @@
   (add-to-list 'sideline-backends-right #'sideline-flymake))
 
 (use-package sideline-blame
-  :disabled
+  :cat blame
   :demand t
   :after sideline
   :custom

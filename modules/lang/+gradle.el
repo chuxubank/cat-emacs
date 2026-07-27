@@ -4,7 +4,7 @@
   :mode "\\.gradle\\'")
 
 (use-package gradle
-  :disabled
+  :cat tasks
   :demand t
   :vc (gradle-el :url "https://git.sr.ht/~vhallac/gradle-el")
   :init

@@ -1,13 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package confluence
+  :cat
+  :vc (:url "https://github.com/jahlborn/confluence-el"))
+
 (use-package ox-confluence
-  :disabled
+  :cat confluence
   :ensure org-contrib
   :after org)
-
-(use-package confluence
-  :disabled
-  :vc (:url "https://github.com/jahlborn/confluence-el"))
 
 (use-package tributary
   :vc (:url "https://github.com/mrkrd/tributary")

@@ -62,7 +62,7 @@
   (advice-add 'treesit-langs-install-grammars :before #'cat/treesit-langs-cleanup))
 
 (use-package treesit-auto
-  :disabled
+  :cat auto
   :hook (after-init . global-treesit-auto-mode)
   :custom
   (treesit-auto-install 'prompt)

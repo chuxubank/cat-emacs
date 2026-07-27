@@ -15,11 +15,11 @@
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list-or-sideline))
 
 (use-package flycheck-pos-tip
-  :disabled
+  :cat pos-tip
   :hook (flycheck-mode . flycheck-pos-tip-mode))
 
 (use-package flycheck-posframe
-  :disabled
+  :cat posframe
   :hook (flycheck-mode . flycheck-posframe-mode))
 
 (with-eval-after-load 'doom-modeline

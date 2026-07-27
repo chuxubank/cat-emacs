@@ -18,18 +18,18 @@
  diredx
  tramp
  eudc
- term ;; (:cat vterm)
+ term ;; :cat vterm
  file
  everywhere
 
  :ui
- ;; nano
+ ;; (nano :cat core minibuffer)
  doom
  font
  autodark
  (beauty :cat valign)
- windows
- workspace
+ windows ;; :cat golden-ratio
+ workspace ;; :cat burly bufler tabspaces
  dashboard
 
  :editor
@@ -57,7 +57,7 @@
  org-roam
  org-notes
  org-latex
- org-srs
+ org-srs ;; :cat fc promise
  org-cv
  org-link
  bibcite
@@ -68,13 +68,13 @@
 
  :code
  format
- flycheck
+ flycheck ;; :cat pos-tip posframe
  (:if EMACS29+
-      treesit)
+      treesit) ;; :cat auto
  (:if (not EMACS29+)
       tree-sitter)
  doc
- sideline
+ sideline ;; :cat blame
  ;; lsp
  ;; lsp-bridge
  eglot
@@ -82,6 +82,7 @@
  :ai
  copilot
  vibe
+ ;; (mcp :cat server)
 
  :lang
  android
@@ -90,9 +91,9 @@
  csv
  dart
  go
- gradle
+ gradle ;; :cat tasks
  graphql
- ;; java
+ ;; (java :cat imports eglot)
  kotlin
  kdl
  lua
@@ -102,11 +103,11 @@
  plantuml
  poly
  protobuf
- python
+ python ;; :cat poetry
  rust
  shell
  swift
- vb
+ vb ;; :cat vbnet
  web
  yaml
 
@@ -120,7 +121,7 @@
  compile
 
  :apps
- ;; atlassian
+ ;; (atlassian :cat confluence)
  ;; org-jira
  beancount
  blog
@@ -128,15 +129,15 @@
  diagram-preview
  elfeed
  github
- im
- language
+ im ;; :cat jabber
+ language ;; :cat it
  log
  mail
  map
  media
  music
  nov
- oj
+ oj ;; :cat cli
  pass
  pdf
  toc
