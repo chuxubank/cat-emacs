@@ -5,6 +5,14 @@
   (unless (bound-and-true-p polymode-mode)
     (poly-any-go-template-mode)))
 
+(defun cat/chezmoi-template-shell-host-filename (filename)
+  "Preserve a shell host selected from the shebang for FILENAME."
+  (if (and filename
+           (derived-mode-p 'sh-mode)
+           (not (file-name-extension filename)))
+      (concat filename ".sh")
+    filename))
+
 (use-package chezmoi-mode
   :vc (:url "https://github.com/chuxubank/chezmoi-mode")
   :delight " "
@@ -16,7 +24,8 @@
   (poly-any-go-template-extra-file-name-rules
    '(chezmoi-template-source-file-p))
   (poly-any-template-host-filename-functions
-   '(chezmoi-template-normalize-host-filename)))
+   '(chezmoi-template-normalize-host-filename
+     cat/chezmoi-template-shell-host-filename)))
 
 (defun cat/chezmoi-mode-p ()
   "Return non-nil if `chezmoi-mode' minor mode is enabled in the current buffer."
