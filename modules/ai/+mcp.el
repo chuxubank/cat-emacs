@@ -21,4 +21,10 @@
 (use-package org-mcp
   :commands org-mcp-enable
   :hook
-  (cat-idle-preload . org-mcp-enable))
+  (cat-idle-preload . org-mcp-enable)
+  :custom
+  (org-mcp-allowed-files
+   (directory-files-recursively cat-org-directory "\\.org\\'")))
+
+(provide '+mcp)
+;;; +mcp.el ends here
