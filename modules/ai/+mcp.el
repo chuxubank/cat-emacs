@@ -14,6 +14,11 @@
   :custom
   (mcp-server-lib-install-directory cat-etc-dir))
 
-(use-package elisp-dev-mcp)
+(use-package elisp-dev-mcp
+  :hook
+  (cat-idle-preload . elisp-dev-mcp-enable))
 
-(use-package org-mcp)
+(use-package org-mcp
+  :commands org-mcp-enable
+  :hook
+  (cat-idle-preload . org-mcp-enable))
