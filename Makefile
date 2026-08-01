@@ -1,6 +1,11 @@
 EMACS ?= emacs
 INIT_DIR ?= $(CURDIR)
 PACKAGE_MANIFEST ?= $(INIT_DIR)/.local/package-manifest.eld
+
+# Package setup and upgrade are non-interactive CI-style runs. Export CI so
+# early-init.el can derive the Emacs-side `IS-CI` flag for every make target.
+export CI ?= true
+
 EMACS_BATCH = $(EMACS) --batch --debug-init --init-directory "$(INIT_DIR)"
 PACKAGE_INITIALIZE = -l "$(INIT_DIR)/early-init.el" \
 	--eval "(package-initialize)"
