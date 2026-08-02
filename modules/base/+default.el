@@ -314,7 +314,7 @@
 (use-package table
   :ensure nil
   :config
-  (+safe-set-face-fonts 'table-cell cat-mono-thin-fonts))
+  (+safe-set-face-fonts 'table-cell 'table))
 
 (use-package comp-run
   :ensure nil
