@@ -108,7 +108,7 @@ font family, a list of font families, or a symbol whose value is either."
 (defcustom cat-mode-font-rules
   `((:modes (org-mode)
             :font text-mono
-            :faces ((org-document-title text-serif)
+            :faces ((org-document-title text-serif :height 1.4)
                     (org-table table)
                     (org-formula table)
                     (org-column-title table)
@@ -162,7 +162,8 @@ Each rule is a plist.  Supported keys are:
 :modes       A mode or list of modes matched with `derived-mode-p'.
 :buffer-name A regexp matched against `buffer-name'.
 :font        Font profile, font family, font list, or font variable.
-:faces       Face rules in the form (FACE FONTS).
+:faces       Face rules in the form (FACE FONTS &rest ATTRIBUTES).
+             ATTRIBUTES are passed to `set-face-attribute'.
 :rescale     Buffer-local `face-font-rescale-alist' value."
   :type 'sexp)
 
@@ -299,8 +300,10 @@ If ADD is nil, the first existing font is set as replacement, and others are app
   "Apply a mode font RULE to the current buffer."
   (when-let* ((font (plist-get rule :font)))
     (+safe-buffer-face-set-fonts font))
-  (pcase-dolist (`(,face ,fonts) (plist-get rule :faces))
-    (+safe-set-face-fonts face fonts))
+  (pcase-dolist (`(,face ,fonts . ,attributes) (plist-get rule :faces))
+    (+safe-set-face-fonts face fonts)
+    (when attributes
+      (apply #'set-face-attribute face nil attributes)))
   (when-let* ((rescale (plist-get rule :rescale)))
     (setq-local face-font-rescale-alist rescale)))
 
