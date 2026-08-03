@@ -22,132 +22,33 @@
   "Fonts for unicode characters."
   :type '(repeat string))
 
-(defcustom cat-font-family-alternatives
-  '(("Iosevka Term" "Iosevka" "DejaVu Sans Mono")
-    ("DejaVu Serif" "Roboto Serif" "Georgia")
-    ("DejaVu Sans Mono" "Roboto Mono" "Menlo")
-    ("Iosevka Etoile" "Roboto Slab" "Charter" "DejaVu Serif")
-    ("Iosevka Aile" "Inter" "Avenir Next" "DejaVu Sans")
-    ("Maple Mono" "JetBrains Mono" "Cascadia Code" "Fira Code"
-     "SF Mono" "IBM Plex Mono" "Menlo" "DejaVu Sans Mono")
-    ("Big Caslon" "Iowan Old Style" "Hoefler Text" "Charter"
-     "Georgia")
-    ("Iowan Old Style" "Charter" "Hoefler Text" "Georgia"
-     "DejaVu Serif")
-    ("DIN Condensed" "Avenir Next Condensed" "Avenir Next" "Inter"
-     "DejaVu Sans")
-    ("STIX Two Text" "Charter" "Roboto Serif" "DejaVu Serif")
-    ("Avenir Next" "Inter" "Optima" "DejaVu Sans")
-    ("Charter" "Iowan Old Style" "Georgia" "DejaVu Serif")
-    ("SF Mono" "Menlo" "JetBrains Mono" "DejaVu Sans Mono")
-    ("Menlo" "SF Mono" "DejaVu Sans Mono")
-    ("JetBrains Mono" "Maple Mono" "Cascadia Code" "DejaVu Sans Mono")
-    ("Cascadia Code" "JetBrains Mono" "Maple Mono" "DejaVu Sans Mono")
-    ("Fira Code" "JetBrains Mono" "Maple Mono" "DejaVu Sans Mono")
-    ("IBM Plex Mono" "JetBrains Mono" "Maple Mono" "DejaVu Sans Mono"))
-  "Alternative families used when a requested face family is unavailable.
-Each entry has the form (FAMILY ALTERNATIVE...).  Missing glyphs are
-handled separately by `cat-fontset-font-rules'."
-  :type '(repeat (repeat string)))
-
-(defcustom cat-font-specialized-roles
-  '((code-jvm :extends code :family "JetBrains Mono")
-    (code-python :extends code :family "Cascadia Code")
-    (code-diagram :extends code :family "Fira Code")
-    (code-apple :extends code :family "SF Mono")
-    (code-config :extends code :family "IBM Plex Mono")
-    (terminal :extends mono :family "Menlo"))
-  "Specialized font roles shared by every preset.
-Each role uses :extends to inherit size and weight from a base role."
-  :type 'sexp)
-
-(defcustom cat-font-preset 'classic
-  "Active font preset."
-  :type 'symbol)
-
-(defcustom cat-font-presets
-  `((classic
-     (default :family "Iosevka Term"
-              :height ,(if IS-MAC 160 140) :weight regular)
-     (heading :family "DejaVu Serif"
-              :weight semi-bold)
-     (title :extends heading :height 1.4)
-     (heading-1 :extends heading :height 1.25)
-     (heading-2 :extends heading :height 1.15)
-     (heading-3 :extends heading :height 1.08)
-     (body :family "DejaVu Sans Mono"
-           :height 1.0 :weight regular)
-     (prose :family "Iosevka Etoile"
-            :height 1.0 :weight regular)
-     (ui :family "Iosevka Aile"
-         :height 1.0 :weight regular)
-     (mono :family "DejaVu Sans Mono"
-           :height 1.0 :weight regular)
-     (code :family "Maple Mono"
-           :height 1.0 :weight regular)
-     (table :family "Iosevka Term"
-            :height 1.0 :weight regular))
-    (artistic
-     (default :family "Iosevka Term"
-              :height ,(if IS-MAC 160 140) :weight regular)
-     (title :family "Big Caslon" :height 1.55 :weight medium)
-     (heading :family "Iowan Old Style" :weight bold)
-     (heading-1 :extends heading :height 1.25)
-     (heading-2 :extends heading :height 1.15)
-     (heading-3 :extends heading :height 1.08)
-     (body :family "Iowan Old Style" :height 1.0 :weight regular)
-     (prose :extends body)
-     (ui :family "Avenir Next" :height 1.0 :weight regular)
-     (mono :family "Menlo" :height 1.0 :weight regular)
-     (code :extends mono)
-     (table :family "Iosevka Term" :height 1.0 :weight regular))
-    (technical
-     (default :family "Iosevka Term"
-              :height ,(if IS-MAC 160 140) :weight regular)
-     (title :family "DIN Condensed" :height 1.5 :weight bold)
-     (heading :family "Avenir Next" :weight semi-bold)
-     (heading-1 :extends heading :height 1.25)
-     (heading-2 :extends heading :height 1.15)
-     (heading-3 :extends heading :height 1.08)
-     (body :family "STIX Two Text" :height 1.0 :weight regular)
-     (prose :extends body)
-     (ui :family "Avenir Next" :height 1.0 :weight regular)
-     (mono :family "SF Mono" :height 1.0 :weight regular)
-     (code :extends mono)
-     (table :extends mono))
-    (modern
-     (default :family "Iosevka Term"
-              :height ,(if IS-MAC 160 140) :weight regular)
-     (heading :family "Avenir Next" :weight semi-bold)
-     (title :extends heading :height 1.5 :weight bold)
-     (heading-1 :extends heading :height 1.25)
-     (heading-2 :extends heading :height 1.15)
-     (heading-3 :extends heading :height 1.08)
-     (body :family "Avenir Next" :height 1.0 :weight regular)
-     (prose :extends body)
-     (ui :extends body)
-     (mono :family "SF Mono" :height 1.0 :weight regular)
-     (code :extends mono)
-     (table :extends mono))
-    (mono-editorial
-     (default :family "Iosevka Term"
-              :height ,(if IS-MAC 160 140) :weight regular)
-     (heading :family "Charter" :weight bold)
-     (title :extends heading :height 1.5 :weight regular)
-     (heading-1 :extends heading :height 1.25)
-     (heading-2 :extends heading :height 1.15)
-     (heading-3 :extends heading :height 1.08)
-     (body :family "Iosevka Term" :height 1.0 :weight regular)
-     (prose :extends body)
-     (ui :family "Avenir Next" :height 0.95 :weight regular)
-     (mono :family "Iosevka Term" :height 1.0 :weight regular)
-     (code :family "Maple Mono" :height 0.95 :weight regular)
-     (table :extends mono)))
-  "Typography presets organized by semantic role.
-Each role has the form (ROLE :family FAMILY &rest ATTRIBUTES).  The
+(defcustom cat-font-preset
+  `((default :family "Monospace"
+             :height ,(if IS-MAC 160 140) :weight regular)
+    (heading :family "Serif" :weight semi-bold)
+    (title :extends heading :height 1.4)
+    (heading-1 :extends heading :height 1.25)
+    (heading-2 :extends heading :height 1.15)
+    (heading-3 :extends heading :height 1.08)
+    (body :family "Monospace" :weight regular)
+    (prose :family "Monospace Serif" :weight regular)
+    (ui :family "Sans Serif" :weight regular)
+    (mono :family "Monospace" :weight regular)
+    (code :family "Monospace Sans Serif" :weight regular)
+    (table :extends mono)
+    (code-jvm :extends code :fonts ("JetBrains Mono"))
+    (code-python :extends code :fonts ("Cascadia Code"))
+    (code-diagram :extends code :fonts ("Fira Code"))
+    (code-apple :extends code :fonts ("SF Mono"))
+    (code-config :extends code :fonts ("IBM Plex Mono"))
+    (terminal :extends mono :fonts ("Menlo")))
+  "Typography preset organized by semantic role.
+Each role has the form (ROLE :family FAMILY &rest ATTRIBUTES).  FAMILY
+should normally name a logical family in
+`face-font-family-alternatives'.  The
 `default' role uses an absolute face height in tenths of a point;
-content roles use heights relative to it.  Family availability fallback
-is configured separately by `cat-font-family-alternatives'."
+content roles use heights relative to it.  A role can use :extends and
+:fonts to prepend concrete families to the inherited logical family."
   :type 'sexp)
 
 (defcustom cat-fontset-font-rules
@@ -233,9 +134,6 @@ Each rule is a plist.  Supported keys are:
 (defvar cat-setup-fonts-hook nil
   "Hook runs after setup fonts.")
 
-(defvar cat-font-preset-change-hook nil
-  "Hook run after selecting a font preset.")
-
 (defun cat--merge-font-attributes (base overrides)
   "Return face attributes from BASE with OVERRIDES applied."
   (let ((attributes (copy-sequence base)))
@@ -247,23 +145,11 @@ Each rule is a plist.  Supported keys are:
 (defun cat--font-role-spec (role)
   "Return the font specification for ROLE."
   (when (symbolp role)
-    (let ((shared (alist-get role cat-font-specialized-roles))
-          (overrides
-           (alist-get role (alist-get cat-font-preset cat-font-presets))))
-      (let* ((spec (cat--merge-font-attributes shared overrides))
-             (parent (plist-get spec :extends)))
-        (if parent
-            (cat--merge-font-attributes (cat--font-role-spec parent) spec)
-          spec)))))
-
-(defun cat--install-font-family-alternatives ()
-  "Install Cat family alternatives without replacing unrelated entries."
-  (dolist (entry cat-font-family-alternatives)
-    (setf (alist-get (car entry) face-font-family-alternatives
-                     nil nil #'string-equal)
-          (copy-sequence (cdr entry)))))
-
-(cat--install-font-family-alternatives)
+    (let* ((spec (alist-get role cat-font-preset))
+           (parent (plist-get spec :extends)))
+      (if parent
+          (cat--merge-font-attributes (cat--font-role-spec parent) spec)
+        spec))))
 
 (defun cat--font-value (fonts)
   "Return resolved FONTS.
@@ -271,8 +157,13 @@ FONTS can be a value, a font role, or a variable symbol."
   (let ((spec (cat--font-role-spec fonts)))
     (cond
      (spec
-      (cat--font-value (or (plist-get spec :family)
-                           (plist-get spec :fonts))))
+      (let ((preferred (plist-get spec :fonts))
+            (family (plist-get spec :family)))
+        (if preferred
+            (delete-dups
+             (append (cat--font-list preferred)
+                     (cat--font-list family)))
+          (cat--font-value family))))
      ((and (symbolp fonts) (boundp fonts))
       (symbol-value fonts))
      (t fonts))))
@@ -298,7 +189,7 @@ FONTS can be a value, a font role, or a variable symbol."
    (cl-loop for family in (cat--font-list fonts)
             append
             (cons family
-                  (alist-get family cat-font-family-alternatives
+                  (alist-get family face-font-family-alternatives
                              nil nil #'string-equal)))))
 
 (defun cat--first-existing-font (fonts &optional frame)
@@ -369,7 +260,6 @@ If ADD is nil, the first existing font is set as replacement, and others are app
 
 (defun cat-setup-fonts (&optional frame)
   "Set fonts on FRAME for Cat Emacs."
-  (cat--install-font-family-alternatives)
   (when (display-graphic-p frame)
     (cat-benchmark 'beg "setup fonts.")
     (when-let* ((family (cat--face-family 'default frame)))
@@ -438,7 +328,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
         (string-match-p regexp (buffer-name)))))
 
 (defvar-local cat--mode-font-state nil
-  "Font preset state last applied to the current buffer.")
+  "Mode font state last applied to the current buffer.")
 
 (defvar-local cat--mode-face-remap-cookies nil
   "Face remapping cookies owned by Cat in the current buffer.")
@@ -482,42 +372,18 @@ If ADD is nil, the first existing font is set as replacement, and others are app
 
 (defun cat-setup-mode-font (&optional force)
   "Set fonts according to the current major mode.
-With FORCE, reapply the active preset.  Respect a `buffer-face-mode'
+With FORCE, reapply the configured fonts.  Respect a `buffer-face-mode'
 owned by other configuration."
   (unless (and (bound-and-true-p buffer-face-mode)
                (not (equal buffer-face-mode-face cat--mode-buffer-face)))
     (let* ((rule (seq-find #'cat--mode-font-rule-matches-p
                            cat-mode-font-rules))
-           (state (list cat-font-preset major-mode rule)))
+           (state (list major-mode rule)))
       (when (or force (not (equal state cat--mode-font-state)))
         (if rule
             (cat--apply-mode-font-rule rule)
           (cat--clear-mode-font))
         (setq cat--mode-font-state state)))))
-
-(defun cat-refresh-mode-fonts ()
-  "Reapply the active font preset in every live buffer."
-  (interactive)
-  (dolist (buffer (buffer-list))
-    (when (buffer-live-p buffer)
-      (with-current-buffer buffer
-        (cat-setup-mode-font t)))))
-
-(defun cat-set-font-preset (preset)
-  "Select font PRESET and refresh live buffers."
-  (interactive
-   (list (intern
-          (completing-read "Font preset: "
-                           (mapcar #'car cat-font-presets)
-                           nil t nil nil
-                           (symbol-name cat-font-preset)))))
-  (unless (assq preset cat-font-presets)
-    (user-error "Unknown font preset: %s" preset))
-  (setq cat-font-preset preset)
-  (mapc #'cat-setup-fonts (frame-list))
-  (run-hooks 'cat-font-preset-change-hook)
-  (cat-refresh-mode-fonts)
-  (message "Selected %s font preset" preset))
 
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 (add-hook 'after-change-major-mode-hook 'cat-setup-mode-font)

@@ -7,10 +7,12 @@ family-name string.  Emacs chooses a font from the face's family, weight,
 slant, and width, and searches for the closest match when an exact font is not
 available.  [`face-font-family-alternatives`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Font-Selection.html)
 adds ordered substitute families, but only when the requested family itself is
-unavailable.  It is not a per-character glyph fallback list.  Cat presets now
-assign one nominal `:family` per role, while `cat-font-family-alternatives`
-installs the cross-machine substitutes in one place.  Legacy `:fonts` role
-values remain readable for compatibility.
+unavailable.  It is not a per-character glyph fallback list.  Cat assigns a
+logical `:family` such as `Sans Serif`, `Serif`, or `Monospace` to each role,
+while `face-font-family-alternatives` maps those categories to ordered
+cross-machine substitutes in one place.  Specialized roles can prepend
+concrete `:fonts`; their logical fallback family is inherited from the base
+role.
 
 A fontset solves a different problem.  It is a collection of font
 specifications assigned to character ranges, charsets, or scripts, and a
