@@ -96,7 +96,8 @@
         (setq minor-mode-alist
               (append '((dired-omit-mode
 		                 (:eval (if (eq major-mode 'dired-mode)
-				                    " " ""))))
+				                    (concat " " (+with-icon "nf-seti-ignored"))
+				                  ""))))
 		              minor-mode-alist))))
   (setq dired-omit-files
         (concat dired-omit-files
@@ -107,7 +108,8 @@
                   "\\|.DS_Store")))))
 
 (use-package nerd-icons-dired
-  :delight " "
+  :delight (nerd-icons-dired-mode
+            (:eval (concat " " (+with-icon "nf-fa-fonticons"))))
   :hook
   (dired-mode . nerd-icons-dired-mode))
 

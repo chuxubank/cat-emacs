@@ -35,7 +35,7 @@
   (markdown-xwidget-auto-theme))
 
 (use-package grip-mode
-  :delight " "
+  :delight (grip-mode (:eval (concat " " (+with-icon "nf-cod-open_preview"))))
   :demand t
   :after markdown-mode
   :bind

@@ -29,8 +29,8 @@
   (telega-emoji-use-images nil)
   (telega-msg-heading-trail 'date-and-status)
   (telega-open-file-function #'org-open-file)
-  (telega-symbol-video-chat-active "")
-  (telega-symbol-video-chat-passive "")
+  (telega-symbol-video-chat-active (+with-icon "nf-fa-video"))
+  (telega-symbol-video-chat-passive (+with-icon "nf-fa-video_slash"))
   (telega-use-images t)
   (telega-video-player-command "mpv")
   :custom-face

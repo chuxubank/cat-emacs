@@ -7,7 +7,7 @@
   (blink-cursor-mode 0))
 
 (use-package face-remap
-  :delight (buffer-face-mode " 󰛖"))
+  :delight (buffer-face-mode (:eval (concat " " (+with-icon "nf-md-format_font")))))
 
 (use-package scroll-bar
   :demand t
@@ -45,7 +45,10 @@
 (use-package simple
   :ensure nil
   :delight
-  (visual-line-mode (:eval (if word-wrap " " " 󰖶")))
+  (visual-line-mode
+   (:eval (concat " " (+with-icon (if word-wrap
+                                       "nf-cod-word_wrap"
+                                     "nf-md-wrap")))))
   :hook
   (after-init . column-number-mode)
   (after-init . size-indication-mode)
@@ -80,7 +83,7 @@
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode)
   :custom
-  (flyspell-mode-line-string " "))
+  (flyspell-mode-line-string (concat " " (+with-icon "nf-oct-typography"))))
 
 ;;; select
 (delete-selection-mode 1)
@@ -161,8 +164,8 @@
   :ensure nil
   :hook (after-init . global-auto-revert-mode)
   :custom
-  (auto-revert-mode-text " 󰁪")
-  (auto-revert-tail-mode-text " 󰨿")
+  (auto-revert-mode-text (concat " " (+with-icon "nf-md-autorenew")))
+  (auto-revert-tail-mode-text (concat " " (+with-icon "nf-md-contain_end")))
   (global-auto-revert-ignore-modes '(logview-mode)))
 
 (use-package files
@@ -183,7 +186,8 @@
 
 (use-package hideshow
   :ensure nil
-  :delight (hs-minor-mode " 󰡍")
+  :delight (hs-minor-mode
+            (:eval (concat " " (+with-icon "nf-md-arrow_collapse_vertical"))))
   :hook (prog-mode . hs-minor-mode)
   :custom
   (hs-set-up-overlay 'cat/hs-folded-overlay-fn))
@@ -267,7 +271,8 @@
 
 (use-package compile
   :ensure nil
-  :delight (compilation-shell-minor-mode " "))
+  :delight (compilation-shell-minor-mode
+            (:eval (concat " " (+with-icon "nf-cod-terminal_powershell")))))
 
 (use-package profiler
   :ensure nil
@@ -301,7 +306,8 @@
 
 (use-package outline
   :ensure nil
-  :delight (outline-minor-mode " 󰠶"))
+  :delight (outline-minor-mode
+            (:eval (concat " " (+with-icon "nf-md-table_of_contents")))))
 
 (defun cat/disable-electric-indent-chars ()
   "Set local variable `electric-indent-chars' to nil."
@@ -309,7 +315,8 @@
 
 (use-package follow
   :ensure nil
-  :custom (follow-mode-line-text " "))
+  :custom
+  (follow-mode-line-text (concat " " (+with-icon "nf-cod-split_horizontal"))))
 
 (use-package table
   :ensure nil

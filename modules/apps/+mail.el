@@ -81,15 +81,15 @@ The first character of NAME is used as the shortcut."
   (+add-to-list-multi 'mu4e-headers-actions
                       '("print" . cat/mu4e-action-print-by-type))
   (+add-to-list-multi 'mu4e-marks
-                      '(print
-                        :char ("p" . "󰐪")
+                      `(print
+                        :char ("p" . ,(+with-icon "nf-md-printer"))
                         :prompt "print"
                         :ask-target cat/mu4e-print-type-read
                         :action (lambda (docid msg type)
                                   (cat/mu4e-action-print-by-type msg type)
                                   (mu4e-action-retag-message msg "+printed")))
-                      '(tag
-                        :char ("t" . "")
+                      `(tag
+                        :char ("t" . ,(+with-icon "nf-oct-tag"))
                         :prompt "tag"
                         :ask-target (lambda () (read-string "Edit tag (use '+' for add, '-' for remove and ',' for separate): "))
                         :action (lambda (docid msg target)

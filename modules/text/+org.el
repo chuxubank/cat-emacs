@@ -5,7 +5,7 @@
                 :lisp-dir "lisp/"
                 :rev "dev")
   :delight
-  (org-cdlatex-mode " ")
+  (org-cdlatex-mode (:eval (concat " " (+with-icon "nf-seti-tex"))))
   :commands
   (org-store-link)
   :custom
@@ -140,11 +140,12 @@
 
 (use-package org-indent
   :ensure nil
-  :delight  " 󰉶")
+  :delight (org-indent-mode
+            (:eval (concat " " (+with-icon "nf-md-format_indent_increase")))))
 
 (use-package org-src
   :ensure nil
-  :delight " ")
+  :delight (org-src-mode (:eval (concat " " (+with-icon "nf-fa-code")))))
 
 (use-package org-keys
   :ensure nil
@@ -190,44 +191,45 @@
                            ("HOLD" :inverse-video t :inherit +org-todo-onhold)
                            ("PROJ" :inverse-video t :inherit +org-todo-project)
                            ("KILL" :inverse-video t :inherit +org-todo-cancel)))
-  (org-modern-keyword `(;; (info "(org) In-Buffer Settings")
-                        ("archive" . "")
-                        ("category" . "")
-                        ("columns" . "󰕭")
-                        ("constants" . "")
-                        ("filetags" . "")
-                        ("link" . "")
-                        ("priorities" . "")
-                        ("property" . "")
-                        ("setupfile" . "")
-                        ("startup" . "")
-                        ("tags" . "")
-                        ("todo" . "")
-                        ;; (info "(org) Export Settings")
-                        ("author" . "")
-                        ("creator" . "")
-                        ("date" . "")
-                        ("email" . "")
-                        ("language" . "")
-                        ("select_tags" . "󰜢")
-                        ("exclude_tags" . "󰤐")
-                        ("title" . "")
-                        ("export_file_name" . "󰈝")
-                        ("options" . "")
-                        ;; (info "(org) LaTeX specific export settings")
-                        ("description" . "")
-                        ("latex_class" . " ")
-                        ("latex_class_options" . "  ")
-                        ("latex_header" . " 󰛼")
-                        ("latex" . "")
-                        ;; inpage
-                        ("tblfm" . "󰿉")
-                        ("name" . "󱈤")
-                        ("call" . "")
-                        ("include" . ,(+with-icon "nf-oct-cross_reference"))
-                        ("macro" . "")
-                        ("results" . ":")
-                        (t . t)))
+  (org-modern-keyword
+   `(("archive" . ,(+with-icon "nf-cod-archive"))
+     ("category" . ,(+with-icon "nf-cod-folder"))
+     ("columns" . ,(+with-icon "nf-md-view_column"))
+     ("constants" . ,(+with-icon "nf-cod-symbol_constant"))
+     ("filetags" . ,(+with-icon "nf-fa-tags"))
+     ("link" . ,(+with-icon "nf-cod-link"))
+     ("priorities" . ,(+with-icon "nf-cod-flame"))
+     ("property" . ,(+with-icon "nf-cod-symbol_property"))
+     ("setupfile" . ,(+with-icon "nf-cod-file"))
+     ("startup" . ,(+with-icon "nf-cod-rocket"))
+     ("tags" . ,(+with-icon "nf-fa-hashtag"))
+     ("todo" . ,(+with-icon "nf-cod-checklist"))
+     ("author" . ,(+with-icon "nf-oct-person"))
+     ("creator" . ,(+with-icon "nf-oct-pencil"))
+     ("date" . ,(+with-icon "nf-oct-calendar"))
+     ("email" . ,(+with-icon "nf-oct-mail"))
+     ("language" . ,(+with-icon "nf-fa-language"))
+     ("select_tags" . ,(+with-icon "nf-md-tag_plus"))
+     ("exclude_tags" . ,(+with-icon "nf-md-tag_minus"))
+     ("title" . ,(+with-icon "nf-cod-bookmark"))
+     ("export_file_name" . ,(+with-icon "nf-md-file_export"))
+     ("options" . ,(+with-icon "nf-cod-settings"))
+     ("description" . ,(+with-icon "nf-cod-note"))
+     ("latex_class" . ,(concat (+with-icon "nf-seti-tex") " "
+                                (+with-icon "nf-cod-file_code")))
+     ("latex_class_options" . ,(concat (+with-icon "nf-seti-tex") " "
+                                        (+with-icon "nf-cod-file_code") " "
+                                        (+with-icon "nf-cod-settings")))
+     ("latex_header" . ,(concat (+with-icon "nf-seti-tex") " "
+                                 (+with-icon "nf-md-page_layout_header")))
+     ("latex" . ,(+with-icon "nf-seti-tex"))
+     ("tblfm" . ,(+with-icon "nf-md-math_integral_box"))
+     ("name" . ,(+with-icon "nf-md-tag_text"))
+     ("call" . ,(+with-icon "nf-cod-terminal"))
+     ("include" . ,(+with-icon "nf-oct-cross_reference"))
+     ("macro" . ,(+with-icon "nf-fa-cog"))
+     ("results" . ,(concat (+with-icon "nf-cod-output") ":"))
+     (t . t)))
   :mode-hydra
   (org-mode
    ("Mode"

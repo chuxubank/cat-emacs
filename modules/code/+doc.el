@@ -34,9 +34,11 @@ Intended for `eldoc-documentation-functions' (which see)."
   :custom
   (eldoc-box-lighter nil)
   (eldoc-minor-mode-string
-   '(" " (:eval (cond (eldoc-box-hover-at-point-mode "󰷉")
-                      (eldoc-box-hover-mode "󱔘")
-                      (t "󰧮"))))))
+   '(" " (:eval (cond (eldoc-box-hover-at-point-mode
+                       (+with-icon "nf-md-file_document_edit_outline"))
+                      (eldoc-box-hover-mode
+                       (+with-icon "nf-md-file_document_multiple_outline"))
+                      (t (+with-icon "nf-md-file_document_outline")))))))
 
 (use-package eldoc-toml
   :delight

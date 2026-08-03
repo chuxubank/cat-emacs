@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package polymode
-  :delight (polymode-minor-mode " "))
+  :delight (polymode-minor-mode
+            (:eval (concat " " (+with-icon "nf-cod-layers")))))
 
 (add-to-list 'auto-mode-alist '("\\.plist\\'" . nxml-mode))
 
@@ -22,10 +23,14 @@
   :vc (:url "https://github.com/chuxubank/poly-any-template"
             :lisp-dir "lisp/jinja2")
   :custom
-  (poly-any-jinja2-lighter "  "))
+  (poly-any-jinja2-lighter
+   (concat " " (+with-icon "nf-seti-jinja") " "
+           (+with-icon "nf-cod-layers_active"))))
 
 (use-package poly-any-go-template
   :vc (:url "https://github.com/chuxubank/poly-any-template"
             :lisp-dir "lisp/go-template")
   :custom
-  (poly-any-go-template-lighter "  "))
+  (poly-any-go-template-lighter
+   (concat " " (+with-icon "nf-dev-go") " "
+           (+with-icon "nf-cod-layers_active"))))

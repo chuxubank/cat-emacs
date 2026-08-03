@@ -7,7 +7,7 @@
 (use-package android-mode
   :vc (android-mode :url "https://github.com/chuxubank/emacs-studio"
                     :lisp-dir "android-mode/")
-  :delight " 󰀲"
+  :delight (android-mode (:eval (concat " " (+with-icon "nf-md-android"))))
   :commands #'android-root
   :init
   (defun cat/android-mode ()

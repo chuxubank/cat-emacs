@@ -83,7 +83,8 @@ See `org-cite-csl-styles-dir'."
   :commands (orb-get-node-citekey)
   :demand t
   :after org-roam
-  :delight " 󱉟"
+  :delight (org-roam-bibtex-mode
+            (:eval (concat " " (+with-icon "nf-md-bookshelf"))))
   :custom
   (orb-roam-ref-format 'org-cite)
   (org-roam-extract-new-file-path "%(cat/org-roam-locate-file \"%<%Y%m%d%H%M%S>-${slug}\")")

@@ -5,7 +5,8 @@
   ("" ()))
 
 (use-package git-timemachine
-  :delight " "
+  :delight (git-timemachine-mode
+            (:eval (concat " " (+with-icon "nf-cod-history"))))
   :pretty-hydra
   (cat-git-misc
    ("Git History"

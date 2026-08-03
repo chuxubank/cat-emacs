@@ -52,7 +52,7 @@
 
 (use-package lsp-proxy
   :vc (:url "https://github.com/jadestrong/lsp-proxy")
-  :delight " 󰑣"
+  :delight (lsp-proxy-mode (:eval (concat " " (+with-icon "nf-md-rocket"))))
   :custom
   (lsp-proxy-user-languages-config (cat-config-file "lsp-proxy/languages.toml"))
   :hook

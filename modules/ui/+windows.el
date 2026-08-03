@@ -68,7 +68,7 @@
   :config
   (define-minor-mode golden-ratio-mode
     "Enable automatic window resizing with golden ratio."
-    :lighter " 󰨤"
+    :lighter (:eval (concat " " (+with-icon "nf-md-aspect_ratio")))
     :global t
     (if golden-ratio-mode
         (add-hook 'buffer-list-update-hook 'golden-ratio-maybe)

@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package makefile-executor
-  :delight " "
+  :delight (makefile-executor-mode
+            (:eval (concat " " (+with-icon "nf-cod-run_all"))))
   :hook (makefile-mode . makefile-executor-mode))

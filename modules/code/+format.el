@@ -6,7 +6,7 @@
   :hook (after-init . apheleia-global-mode)
   :custom
   (apheleia-remote-algorithm 'local)
-  (apheleia-mode-lighter " 󰿞")
+  (apheleia-mode-lighter (concat " " (+with-icon "nf-md-silverware_clean")))
   (apheleia-formatters-respect-indent-level t)
   :config
   (setf (alist-get 'latexindent apheleia-formatters)

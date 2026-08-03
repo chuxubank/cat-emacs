@@ -121,8 +121,8 @@ DIR specifies a subdirectory under `cat-org-roam-default-templates-dir'."
 
 (use-package org-roam-ui
   :delight
-  (org-roam-ui-mode " 󰴠")
-  (org-roam-ui-follow-mode " 󰓾")
+  (org-roam-ui-mode (:eval (concat " " (+with-icon "nf-md-map_marker_path"))))
+  (org-roam-ui-follow-mode (:eval (concat " " (+with-icon "nf-md-target"))))
   :custom
   (org-roam-ui-sync-theme t)
   (org-roam-ui-follow t)

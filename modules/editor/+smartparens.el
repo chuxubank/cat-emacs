@@ -1,7 +1,10 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package smartparens
-  :delight '(:eval (if smartparens-strict-mode " 󱃗" " 󰅲"))
+  :delight (smartparens-mode
+            (:eval (concat " " (+with-icon (if smartparens-strict-mode
+                                                "nf-md-code_parentheses_box"
+                                              "nf-md-code_parentheses")))))
   :hook ((prog-mode text-mode) . smartparens-mode)
   :config
   (require 'smartparens-config)

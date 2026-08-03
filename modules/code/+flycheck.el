@@ -10,7 +10,7 @@
   :hook (after-init . global-flycheck-mode)
   :custom
   (flycheck-emacs-lisp-load-path 'inherit)
-  (flycheck-mode-line-prefix "")
+  (flycheck-mode-line-prefix (+with-icon "nf-oct-checklist"))
   (flycheck-indication-mode 'left-margin)
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list-or-sideline))
 

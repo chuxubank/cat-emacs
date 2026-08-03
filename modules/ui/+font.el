@@ -4,9 +4,19 @@
   "Font settings for Cat Emacs."
   :group 'cat)
 
-(defcustom cat-cjk-mono-fonts '("LXGW WenKai")
-  "Font for cjk scripts."
-  :type '(repeat string))
+(defcustom cat-font-family-cjk-alist
+  '(("Sans Serif UI" . "CJK Sans Serif")
+    ("Serif" . "CJK Serif")
+    ("Slab Serif" . "CJK Serif")
+    ("Quasi Proportional" . "CJK Serif")
+    ("Monospace Narrow" . "CJK Monospace")
+    ("Monospace Code" . "CJK Monospace")
+    ("Monospace Sans Serif" . "CJK Monospace"))
+  "CJK logical family associated with each logical font family."
+  :type '(alist :key-type string :value-type string))
+
+(defconst cat-cjk-scripts '(han kana hangul bopomofo cjk-misc)
+  "Scripts configured by Cat's CJK font rules.")
 
 (defcustom cat-math-fonts '("STIX Two Math"
                             "DejaVu Math TeX Gyre"
@@ -53,7 +63,6 @@ content roles use heights relative to it.  A role can use :extends and
 
 (defcustom cat-fontset-font-rules
   '((unicode cat-unicode-fonts append)
-    ((han kana hangul bopomofo cjk-misc) cat-cjk-mono-fonts)
     (mathematical cat-math-fonts))
   "Rules for `set-fontset-font'.
 Each rule has the form (CHARACTERS FONTS &optional ADD).  CHARACTERS
@@ -74,6 +83,8 @@ font family, a list of font families, or a symbol whose value is either."
                     (org-meta-line code)
                     (org-special-keyword metadata-label)
                     (org-drawer metadata-label)
+                    (org-todo metadata-label)
+                    (org-done metadata-label)
                     (org-date metadata-value)
                     (org-property-value metadata-value)))
     (:modes (markdown-mode)
@@ -185,6 +196,28 @@ FONTS can be a value, a font role, or a variable symbol."
            unless (memq attribute '(:family :fonts :extends))
            append (list attribute value)))
 
+(defun cat--font-role-face (role)
+  "Return the face owned by font ROLE, creating it when necessary."
+  (when (cat--font-role-spec role)
+    (let ((face (intern (format "cat-font-role-%s" role))))
+      (unless (facep face)
+        (make-empty-face face))
+      face)))
+
+(defun cat--configure-font-role-face (role &optional frame fontset)
+  "Configure ROLE's face on FRAME, optionally using FONTSET."
+  (let ((face (cat--font-role-face role))
+        (family (plist-get (cat--font-role-spec role) :family)))
+    ;; `:font' resolves a fontset to its Latin font and drops script mappings.
+    (apply #'set-face-attribute face frame
+           (append (list :family family)
+                   (when fontset (list :fontset fontset))
+                   (cat--font-role-attributes role)))
+    face))
+
+(dolist (role cat-font-preset)
+  (cat--configure-font-role-face (car role)))
+
 (defun cat--font-family-candidates (fonts)
   "Return FONTS expanded with family availability alternatives."
   (delete-dups
@@ -193,6 +226,89 @@ FONTS can be a value, a font role, or a variable symbol."
             (cons family
                   (alist-get family face-font-family-alternatives
                              nil nil #'string-equal)))))
+
+(defvar cat--fontset-signatures (make-hash-table :test 'eq)
+  "Last configured signature for each Cat role fontset.")
+
+(defun cat--fontset-name (role)
+  "Return the fontset name owned by ROLE."
+  (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s"
+          (replace-regexp-in-string "-" "_" (symbol-name role))))
+
+(defun cat--font-role-cjk-candidates (role)
+  "Return CJK candidates selected by ROLE's logical family."
+  (let* ((family (plist-get (cat--font-role-spec role) :family))
+         (cjk-family (alist-get family cat-font-family-cjk-alist
+                                nil nil #'string-equal))
+         (candidates (and cjk-family
+                          (alist-get cjk-family
+                                     face-font-family-alternatives
+                                     nil nil #'string-equal))))
+    (unless candidates
+      (error "No CJK alternatives for font family %S" family))
+    candidates))
+
+(defun cat--fontset-signature (role)
+  "Return the configuration signature for ROLE's fontset."
+  (list
+   (cat--font-family-candidates role)
+   (cat--font-role-cjk-candidates role)
+   (mapcar (lambda (rule)
+             (list (car rule)
+                   (cat--font-list (cadr rule))
+                   (caddr rule)))
+           cat-fontset-font-rules)))
+
+(defun cat--set-fontset-candidates (fontset characters fonts &optional add)
+  "Set ordered FONTS for CHARACTERS in FONTSET."
+  (let ((specs (mapcar (lambda (family)
+                         (font-spec :family family
+                                    :registry "iso10646-1"))
+                       fonts)))
+    (cond
+     ((null specs)
+      (set-fontset-font fontset characters nil))
+     (add
+      (dolist (spec specs)
+        (set-fontset-font fontset characters spec nil add)))
+     (t
+      ;; Replace with the least preferred candidate, then prepend the rest.
+      ;; This preserves the configured order ahead of inherited fallbacks.
+      (setq specs (nreverse specs))
+      (set-fontset-font fontset characters (pop specs))
+      (dolist (spec specs)
+        (set-fontset-font fontset characters spec nil 'prepend))))))
+
+(defun cat--configure-role-fontset (fontset signature)
+  "Configure FONTSET from a role SIGNATURE."
+  (cat--set-fontset-candidates fontset 'ascii (nth 0 signature))
+  (dolist (script cat-cjk-scripts)
+    (cat--set-fontset-candidates fontset script (nth 1 signature)))
+  (pcase-dolist (`(,characters ,fonts ,add) (nth 2 signature))
+    (dolist (character (ensure-list characters))
+      (cat--set-fontset-candidates fontset character fonts add))))
+
+(defun cat--fontset-for-role (role &optional frame)
+  "Return the configured fontset for ROLE, or nil for a non-role."
+  (when (cat--font-role-spec role)
+    (let* ((fontset (cat--fontset-name role))
+           (signature (cat--fontset-signature role)))
+      (cond
+       ((display-graphic-p frame)
+        (let ((created (not (query-fontset fontset))))
+          (when created
+            (create-fontset-from-fontset-spec fontset))
+          (when (or created
+                    (not (equal signature
+                                (gethash role cat--fontset-signatures))))
+            (cat--configure-role-fontset fontset signature)
+            (puthash role signature cat--fontset-signatures)))
+        fontset)
+       ;; `query-fontset' signals before any graphical backend is initialized.
+       ((condition-case nil
+            (query-fontset fontset)
+          (error nil))
+        fontset)))))
 
 (defun cat--first-existing-font (fonts &optional frame)
   "Return the first font from FONTS available on FRAME."
@@ -217,41 +333,46 @@ Direct candidate lists are resolved to an installed family on FRAME."
 
 (defun cat--resolved-face-spec (fonts &optional overrides)
   "Return a face spec for FONTS with role attributes and OVERRIDES."
-  (let ((attributes
-         (cat--merge-font-attributes
-          (cat--font-role-attributes fonts) overrides)))
-    (when-let* ((family (cat--face-family fonts)))
-      (setq attributes (plist-put attributes :family family)))
-    attributes))
+  (if-let* ((face (cat--font-role-face fonts)))
+      (if overrides
+          (cat--merge-font-attributes (list :inherit face) overrides)
+        face)
+    (let ((attributes (copy-sequence overrides)))
+      (when-let* ((family (cat--face-family fonts)))
+        (setq attributes (plist-put attributes :family family)))
+      attributes)))
 
 (defun +safe-set-fontset-fonts (fontset characters font-list &optional frame add)
   "Safely set fontset fonts.
 If ADD is non-nil, all fonts in FONT-LIST are set with given ADD parameter.
-If ADD is nil, the first existing font is set as replacement, and others are appended."
+If ADD is nil, use the existing fonts as an ordered replacement."
   (when (display-graphic-p frame)
     (let ((fonts (cat--font-list font-list))
           (families (font-family-list frame))
-          (first-set nil))
+          available)
       (dolist (font fonts)
         (if (member font families)
-            (progn
-              (set-fontset-font
-               fontset characters font frame
-               (cond
-                (add add) ; use whatever was passed in
-                (first-set 'append) ; already set one => append
-                (t nil))) ; first time => replace
-              (setq first-set t)
-              (message "Set %s fontset font to %s" characters font))
-          (warn "Font %s not found" font))))))
+            (push font available)
+          (warn "Font %s not found" font)))
+      (setq available (nreverse available))
+      (when available
+        (cat--set-fontset-candidates fontset characters available add)
+        (dolist (font available)
+          (message "Set %s fontset font to %s" characters font))))))
 
 
 (defun +safe-set-face-fonts (face fonts &optional frame)
   "Safely set FACE family from FONTS or a font role."
-  (when-let* ((family (cat--face-family fonts frame)))
-    (set-face-attribute face frame :family family :inherit 'fixed-pitch)
-    (message "Set %s face font to %s" face family)
-    family))
+  (if-let* ((role-face (cat--font-role-face fonts)))
+      (progn
+        (set-face-attribute face frame
+                            :inherit (list role-face 'fixed-pitch))
+        (message "Set %s face font role to %s" face fonts)
+        role-face)
+    (when-let* ((family (cat--face-family fonts frame)))
+      (set-face-attribute face frame :family family :inherit 'fixed-pitch)
+      (message "Set %s face font to %s" face family)
+      family)))
 
 (defun +safe-buffer-face-set-fonts (fonts)
   "Safely set the current buffer face from FONTS or a font role."
@@ -264,9 +385,17 @@ If ADD is nil, the first existing font is set as replacement, and others are app
   "Set fonts on FRAME for Cat Emacs."
   (when (display-graphic-p frame)
     (cat-benchmark 'beg "setup fonts.")
-    (when-let* ((family (cat--face-family 'default frame)))
-      (apply #'set-face-attribute 'default frame :family family
+    ;; Configure all role fontsets before their scripts are first displayed.
+    (dolist (role cat-font-preset)
+      (let* ((name (car role))
+             (fontset (cat--fontset-for-role name frame)))
+        (cat--configure-font-role-face name frame fontset)))
+    (when-let* ((fontset (cat--fontset-for-role 'default frame)))
+      (apply #'set-face-attribute 'default frame :font fontset
              (cat--font-role-attributes 'default)))
+    (dolist (script cat-cjk-scripts)
+      (+safe-set-fontset-fonts
+       t script (cat--font-role-cjk-candidates 'default) frame))
     (pcase-dolist (`(,scripts ,fonts . ,args) cat-fontset-font-rules)
       (dolist (script (ensure-list scripts))
         (+safe-set-fontset-fonts t script fonts frame (car args))))
@@ -274,6 +403,8 @@ If ADD is nil, the first existing font is set as replacement, and others are app
     (cat-benchmark 'end "setup fonts.")))
 
 (add-hook 'cat-theme-refresh-hook #'cat-setup-fonts)
+(add-hook 'after-init-hook #'cat-setup-fonts)
+(add-hook 'after-make-frame-functions #'cat-setup-fonts)
 
 (if IS-MACPORT
     (mac-auto-operator-composition-mode)
@@ -368,7 +499,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
                  (face-list))
                 (lambda (left right)
                   (string< (symbol-name left) (symbol-name right)))))
-      (list face))))
+      (and (facep face) (list face)))))
 
 (defun cat--apply-mode-font-rule (rule)
   "Apply a mode font RULE to the current buffer."
@@ -402,6 +533,17 @@ owned by other configuration."
           (cat--clear-mode-font))
         (setq cat--mode-font-state state)))))
 
+(defun cat--refresh-mode-fonts (&rest _)
+  "Reapply Cat's buffer-local font rules in every live buffer."
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when cat--mode-font-state
+        (cat-setup-mode-font t)))))
+
+(add-hook 'cat-setup-fonts-hook #'cat--refresh-mode-fonts)
 (add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
 (add-hook 'after-change-major-mode-hook 'cat-setup-mode-font)
 (add-hook 'after-revert-hook 'cat-setup-mode-font)
+
+(when (and after-init-time (display-graphic-p))
+  (cat-setup-fonts))

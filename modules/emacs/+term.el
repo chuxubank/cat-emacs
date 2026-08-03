@@ -99,7 +99,8 @@
 
 (use-package kitty-graphics
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el")
-  :delight " 󰘒"
+  :delight (kitty-graphics-mode
+            (:eval (concat " " (+with-icon "nf-md-watermark"))))
   :when (not (display-graphic-p))
   :custom
   (kitty-gfx-enable-video t)

@@ -37,7 +37,7 @@ file name is resolved from the user or fallback template directory by
     (("u" #'gptel-model-updater-transient "updater")))))
 
 (use-package gptel
-  :delight " 󱡄"
+  :delight (gptel-mode (:eval (concat " " (+with-icon "nf-md-magic_staff"))))
   :custom
   (gptel-expert-commands t)
   (gptel-default-mode 'org-mode)

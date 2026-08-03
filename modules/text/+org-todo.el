@@ -58,7 +58,8 @@
   (advice-add 'org-agenda--count :filter-args #'cat/filter-todo-entries))
 
 (use-package org-edna
-  :delight " "
+  :delight (org-edna-mode
+            (:eval (concat " " (+with-icon "nf-cod-debug_disconnect"))))
   :hook (org-mode . org-edna-mode)
   :custom
   (org-edna-finder-use-cache t)

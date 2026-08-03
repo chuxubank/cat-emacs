@@ -2,7 +2,7 @@
 
 (use-package cdlatex
   :delight
-  (cdlatex-mode " ")
+  (cdlatex-mode (:eval (concat " " (+with-icon "nf-seti-tex"))))
   :hook (org-mode . org-cdlatex-mode))
 
 (setq cdlatex-env-alist

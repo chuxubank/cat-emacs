@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package tree-sitter
-  :delight " "
+  :delight (tree-sitter-mode (:eval (concat " " (+with-icon "nf-fa-tree"))))
   :hook
   (after-init . global-tree-sitter-mode)
   (tree-sitter-after-on . tree-sitter-hl-mode))
@@ -26,7 +26,8 @@ more information."
 
 (use-package ts-fold
   :pin jcs-elpa
-  :delight " "
+  :delight (ts-fold-mode
+            (:eval (concat " " (+with-icon "nf-fa-folder_tree"))))
   :hook
   (prog-mode . ts-fold-indicators-mode)
   :bind

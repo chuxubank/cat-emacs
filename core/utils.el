@@ -56,6 +56,7 @@ List contains pairs mode lighter, see `minor-mode-alist'"
 
 (defun +with-icon (icon &optional str)
   "Combine ICON with STR."
+  (require 'nerd-icons)
   (let* ((category (nth 1 (split-string icon "-")))
          (nd-icon (pcase category
                     ("oct" (nerd-icons-octicon icon))
@@ -77,6 +78,7 @@ List contains pairs mode lighter, see `minor-mode-alist'"
 
 (defun +with-mode-icon (mode &optional str)
   "Give icon for MODE and STR."
+  (require 'nerd-icons)
   (let ((nd-icon (nerd-icons-icon-for-mode mode)))
     (if (or (null str)
             (string-empty-p str))

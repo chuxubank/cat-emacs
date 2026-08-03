@@ -14,7 +14,7 @@ Each entry has the same format as an entry in `forge-alist'."
   :pin melpa-stable
   :commands #'magit-read-repository
   :custom
-  (magit-blame-mode-lighter " ")
+  (magit-blame-mode-lighter (concat " " (+with-icon "nf-oct-history")))
   (magit-repository-directories `(("~/Developer/" . 5)
                                   (,(getenv "XDG_CONFIG_HOME") . 3)
                                   (,(getenv "XDG_DATA_HOME") . 3)

@@ -52,7 +52,8 @@
   (add-hook 'nxml-mode-hook #'cat/pangu-spacing-disable))
 
 (use-package diff-hl
-  :delight (diff-hl-amend-mode " ")
+  :delight (diff-hl-amend-mode
+            (:eval (concat " " (+with-icon "nf-oct-history"))))
   :hook
   (after-init . global-diff-hl-mode)
   (after-init . diff-hl-margin-mode)
@@ -76,12 +77,14 @@
   :hook (after-init . solaire-global-mode))
 
 (use-package rainbow-mode
-  :delight " "
+  :delight (rainbow-mode
+            (:eval (concat " " (+with-icon "nf-cod-symbol_color"))))
   :hook (prog-mode text-mode))
 
 (use-package valign
   :cat
-  :delight " 󱥣"
+  :delight (valign-mode
+            (:eval (concat " " (+with-icon "nf-md-align_vertical_distribute"))))
   :hook ((org-mode markdown-mode) . valign-mode))
 
 (use-package ultra-scroll
@@ -103,7 +106,7 @@
   (fset 'breadcrumb--project-crumbs-1 #'ignore))
 
 (use-package minimap
-  :delight " "
+  :delight (minimap-mode (:eval (concat " " (+with-icon "nf-fa-map"))))
   :custom
   (minimap-major-modes '(prog-mode text-mode))
   (minimap-width-fraction 0.1)

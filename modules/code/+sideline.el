@@ -23,7 +23,7 @@
   :demand t
   :after sideline
   :custom
-  (sideline-blame-commit-format " %s")
+  (sideline-blame-commit-format (+with-icon "nf-oct-git_commit" "%s"))
   :config
   (add-to-list 'sideline-backends-right #'sideline-blame))
 
@@ -32,6 +32,7 @@
   :demand t
   :after sideline eglot
   :custom
-  (sideline-eglot-code-actions-prefix " ")
+  (sideline-eglot-code-actions-prefix
+   (concat (+with-icon "nf-fa-lightbulb") " "))
   :config
   (add-to-list 'sideline-backends-right #'sideline-eglot))

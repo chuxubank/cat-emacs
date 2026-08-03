@@ -16,9 +16,13 @@ the base role.
 
 A fontset solves a different problem.  It is a collection of font
 specifications assigned to character ranges, charsets, or scripts, and a
-fontset name can be used wherever Emacs accepts a font name.  Cat currently
-modifies `fontset-default`, whose entries can serve as fallbacks for the
-fontsets Emacs derives or uses.  See the GNU manuals on
+fontset name can be used wherever Emacs accepts a font name.  Cat creates one
+named fontset per semantic role.  Its ASCII entries come from the role's
+logical family and `face-font-family-alternatives`; its CJK entries come from
+the `CJK Serif`, `CJK Sans Serif`, or `CJK Monospace` alternatives associated
+with the inherited logical family.  Thus a `Serif` heading uses a serif CJK
+fallback while a `Sans Serif UI` label uses a sans serif CJK fallback.  See
+the GNU manuals on
 [modifying fontsets](https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html)
 and [`set-fontset-font`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html).
 The latter can replace, prepend, or append specifications for a character
@@ -28,19 +32,19 @@ documents the same overwrite/prepend/append semantics.
 
 Consequences for this configuration:
 
-- Keep semantic roles responsible for Latin typography: one selected family
-  plus size and weight.
-- Keep a single, global fontset layer for CJK, mathematical symbols, emoji, and
-  other script coverage.  Apply these rules before the characters are first
-  displayed because Emacs can cache script font selection.
+- Keep semantic roles responsible for Latin typography, size, weight, and the
+  matching CJK category.
+- Create a named fontset for every semantic role and configure all of them
+  before the relevant scripts are first displayed, because Emacs can cache
+  script font selection.
+- Share mathematical-symbol and emoji rules across the role fontsets.  The
+  default fontset retains the same rules for faces outside Cat's role system.
 - Keep ordered family alternatives only for cross-machine availability, and
-  centralize them outside typography presets.
-- Creating one named fontset per semantic role is possible, but it would mix
-  Latin design choices with script coverage and multiply fontsets, weight
-  variants, and frame lifecycle work.  It is not simpler for this module.
+  centralize both Latin and CJK candidates outside typography presets.
 
 In short: family alternatives answer "which installed Latin family can fulfill
-this role?"; fontsets answer "which font should render this character?".
+this role?"; a role fontset answers "which font should render this character
+without losing that role's serif, sans serif, or monospace character?".
 
 ## Typography principles
 
@@ -112,7 +116,7 @@ the reading surface does not become a collage of typefaces.
   and UI labels, `STIX Two Text` for prose, and `SF Mono` for code and tables.
 - Suggested hierarchy: title `1.50` bold; heading levels `1.25`, `1.15`, and
   `1.08` bold; body `1.0` regular with medium leading.
-- Mathematical script in the global fontset: `STIX Two Math`, followed by
+- Mathematical script in every role fontset: `STIX Two Math`, followed by
   `DejaVu Math TeX Gyre`.
 
 The condensed industrial title gives the set a technical signal without
@@ -153,8 +157,9 @@ has cleaner, more delicate forms.
 This preset treats the monospaced grid as a deliberate editorial texture
 rather than merely a coding convention.  Charter interrupts the grid at
 structural boundaries, Avenir keeps editor chrome quiet, and Maple Mono gives
-source code a texture distinct from the Iosevka prose.  The shared fontset
-continues to own CJK, mathematical, emoji, and symbol coverage.
+source code a texture distinct from the Iosevka prose.  Role fontsets keep the
+CJK style aligned with those semantic choices while sharing mathematical,
+emoji, and symbol coverage.
 
 ## PDF comparison method
 
@@ -165,6 +170,5 @@ fallback model.  Page size, margins, content structure, and line lengths stay
 fixed, while each preset receives a palette appropriate to its voice.
 
 The PDFs focus on Latin typography.  CJK, mathematical, emoji, and symbol
-coverage should be tested separately because the recommended architecture
-shares those fonts through the global fontset rather than varying them with
-the Latin typography preset.
+coverage should be tested separately because CJK families vary by semantic
+role while mathematical, emoji, and symbol fallbacks remain shared.
