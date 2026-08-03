@@ -18,7 +18,7 @@
   :custom
   (eglot-connect-timeout (* 30 60))
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-cod-server_environment" "Eglot"))
+  ((:color teal :title (+with-icon "nf-cod-server_environment" nil " Eglot"))
    ("Commands"
     (("s" #'eglot "start")
      ("S" #'eglot-reconnect "reconnect")
@@ -52,7 +52,7 @@
 
 (use-package lsp-proxy
   :vc (:url "https://github.com/jadestrong/lsp-proxy")
-  :delight (lsp-proxy-mode (:eval (concat " " (+with-icon "nf-md-rocket"))))
+  :delight (lsp-proxy-mode (:eval (+with-icon "nf-md-rocket" " ")))
   :custom
   (lsp-proxy-user-languages-config (cat-config-file "lsp-proxy/languages.toml"))
   :hook
@@ -64,7 +64,7 @@
   (lsp-proxy-mode
    lsp-proxy-open-config-file)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-md-rocket" "LSP Proxy"))
+  ((:color teal :title (+with-icon "nf-md-rocket" nil " LSP Proxy"))
    ("Commands"
     (("t" #'lsp-proxy-mode "toggle")
      ("s" #'lsp-proxy-workspace-restart "restart")

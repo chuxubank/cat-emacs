@@ -54,8 +54,9 @@ List contains pairs mode lighter, see `minor-mode-alist'"
       (setq list (nthcdr 2 list)))
     (reverse output)))
 
-(defun +with-icon (icon &optional str)
-  "Combine ICON with STR."
+(defun +with-icon (icon &optional prefix suffix)
+  "Wrap ICON with optional PREFIX and SUFFIX."
+  (require 'nerd-icons)
   (let* ((category (nth 1 (split-string icon "-")))
          (nd-icon (pcase category
                     ("oct" (nerd-icons-octicon icon))
@@ -70,10 +71,7 @@ List contains pairs mode lighter, see `minor-mode-alist'"
                     ("seti" (nerd-icons-sucicon icon))
                     ("custom" (nerd-icons-sucicon icon))
                     ("pl" (nerd-icons-powerline icon)))))
-    (if (or (null str)
-            (string-empty-p str))
-        nd-icon
-      (concat nd-icon " " str))))
+    (concat prefix nd-icon suffix)))
 
 (defun +with-mode-icon (mode &optional str)
   "Give icon for MODE and STR."

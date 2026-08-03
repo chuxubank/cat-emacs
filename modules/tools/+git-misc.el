@@ -1,12 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-git-misc
-  (:color teal :title (+with-icon "nf-md-git" "Git misc"))
+  (:color teal :title (+with-icon "nf-md-git" nil " Git misc"))
   ("" ()))
 
 (use-package git-timemachine
   :delight (git-timemachine-mode
-            (:eval (concat " " (+with-icon "nf-cod-history"))))
+            (:eval (+with-icon "nf-cod-history" " ")))
   :pretty-hydra
   (cat-git-misc
    ("Git History"

@@ -10,7 +10,7 @@
   (python-indent-guess-indent-offset-verbose nil))
 
 (use-package pet
-  :delight (pet-mode (:eval (concat " " (+with-icon "nf-md-language_python"))))
+  :delight (pet-mode (:eval (+with-icon "nf-md-language_python" " ")))
   :ensure-system-package (dasel)
   :hook (python-base-mode . pet-mode)
   :custom

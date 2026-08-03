@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-eudc
-  (:color teal :title (+with-icon "nf-md-contacts" "EUDC"))
+  (:color teal :title (+with-icon "nf-md-contacts" nil " EUDC"))
   ("" ()))
 
 (use-package eudc

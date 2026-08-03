@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-blog
-  (:color teal :title (+with-icon "nf-fa-blog" "Blog"))
+  (:color teal :title (+with-icon "nf-fa-blog" nil " Blog"))
   ("" ()))
 
 (defcustom cat-blog-directory

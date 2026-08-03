@@ -3,7 +3,7 @@
 (use-package diagram-preview
   :vc (:url "https://github.com/natrys/diagram-preview")
   :delight (diagram-preview-mode
-            (:eval (concat " " (+with-icon "nf-fa-diagram_project"))))
+            (:eval (+with-icon "nf-fa-diagram_project" " ")))
   :hook (graphviz-dot-mode
          plantuml-mode
          mermaid-mode

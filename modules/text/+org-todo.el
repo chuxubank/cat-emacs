@@ -59,7 +59,7 @@
 
 (use-package org-edna
   :delight (org-edna-mode
-            (:eval (concat " " (+with-icon "nf-cod-debug_disconnect"))))
+            (:eval (+with-icon "nf-cod-debug_disconnect" " ")))
   :hook (org-mode . org-edna-mode)
   :custom
   (org-edna-finder-use-cache t)

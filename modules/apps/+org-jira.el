@@ -5,7 +5,7 @@
   :after org)
 
 (use-package org-jira
-  :delight (org-jira-mode (:eval (concat " " (+with-icon "nf-md-jira"))))
+  :delight (org-jira-mode (:eval (+with-icon "nf-md-jira" " ")))
   :after org
   :init
   ;; prevent `org-jira-mode' load keymap

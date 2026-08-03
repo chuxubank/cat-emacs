@@ -24,7 +24,7 @@
     (setq lock-file-name-transforms `((".*" ,dir t)))))
 
 (use-package system-packages)
-(use-package nerd-icons :demand t)
+(use-package nerd-icons)
 (use-package delight)
 (use-package major-mode-hydra
   :demand t

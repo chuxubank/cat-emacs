@@ -7,7 +7,7 @@
   (blink-cursor-mode 0))
 
 (use-package face-remap
-  :delight (buffer-face-mode (:eval (concat " " (+with-icon "nf-md-format_font")))))
+  :delight (buffer-face-mode (:eval (+with-icon "nf-md-format_font" " "))))
 
 (use-package scroll-bar
   :demand t
@@ -46,9 +46,10 @@
   :ensure nil
   :delight
   (visual-line-mode
-   (:eval (concat " " (+with-icon (if word-wrap
-                                       "nf-cod-word_wrap"
-                                     "nf-md-wrap")))))
+   (:eval (+with-icon (if word-wrap
+                         "nf-cod-word_wrap"
+                       "nf-md-wrap")
+                     " ")))
   :hook
   (after-init . column-number-mode)
   (after-init . size-indication-mode)
@@ -83,7 +84,7 @@
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode)
   :custom
-  (flyspell-mode-line-string (concat " " (+with-icon "nf-oct-typography"))))
+  (flyspell-mode-line-string (+with-icon "nf-oct-typography" " ")))
 
 ;;; select
 (delete-selection-mode 1)
@@ -164,8 +165,8 @@
   :ensure nil
   :hook (after-init . global-auto-revert-mode)
   :custom
-  (auto-revert-mode-text (concat " " (+with-icon "nf-md-autorenew")))
-  (auto-revert-tail-mode-text (concat " " (+with-icon "nf-md-contain_end")))
+  (auto-revert-mode-text (+with-icon "nf-md-autorenew" " "))
+  (auto-revert-tail-mode-text (+with-icon "nf-md-contain_end" " "))
   (global-auto-revert-ignore-modes '(logview-mode)))
 
 (use-package files
@@ -187,7 +188,7 @@
 (use-package hideshow
   :ensure nil
   :delight (hs-minor-mode
-            (:eval (concat " " (+with-icon "nf-md-arrow_collapse_vertical"))))
+            (:eval (+with-icon "nf-md-arrow_collapse_vertical" " ")))
   :hook (prog-mode . hs-minor-mode)
   :custom
   (hs-set-up-overlay 'cat/hs-folded-overlay-fn))
@@ -272,12 +273,12 @@
 (use-package compile
   :ensure nil
   :delight (compilation-shell-minor-mode
-            (:eval (concat " " (+with-icon "nf-cod-terminal_powershell")))))
+            (:eval (+with-icon "nf-cod-terminal_powershell" " "))))
 
 (use-package profiler
   :ensure nil
   :pretty-hydra
-  ((:color pink :title (+with-icon "nf-fa-tachometer" "Profiler") :quit-key "q")
+  ((:color pink :title (+with-icon "nf-fa-tachometer" nil " Profiler") :quit-key "q")
    ("Actions"
     (("s" profiler-start "start")
      ("r" (progn (profiler-report) (profiler-stop)) "stop & report" :exit t)))))
@@ -307,7 +308,7 @@
 (use-package outline
   :ensure nil
   :delight (outline-minor-mode
-            (:eval (concat " " (+with-icon "nf-md-table_of_contents")))))
+            (:eval (+with-icon "nf-md-table_of_contents" " "))))
 
 (defun cat/disable-electric-indent-chars ()
   "Set local variable `electric-indent-chars' to nil."
@@ -316,7 +317,7 @@
 (use-package follow
   :ensure nil
   :custom
-  (follow-mode-line-text (concat " " (+with-icon "nf-cod-split_horizontal"))))
+  (follow-mode-line-text (+with-icon "nf-cod-split_horizontal" " ")))
 
 (use-package table
   :ensure nil

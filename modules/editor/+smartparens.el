@@ -2,9 +2,10 @@
 
 (use-package smartparens
   :delight (smartparens-mode
-            (:eval (concat " " (+with-icon (if smartparens-strict-mode
-                                                "nf-md-code_parentheses_box"
-                                              "nf-md-code_parentheses")))))
+            (:eval (+with-icon (if smartparens-strict-mode
+                                  "nf-md-code_parentheses_box"
+                                "nf-md-code_parentheses")
+                              " ")))
   :hook ((prog-mode text-mode) . smartparens-mode)
   :config
   (require 'smartparens-config)

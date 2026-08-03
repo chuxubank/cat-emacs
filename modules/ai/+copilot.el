@@ -34,7 +34,7 @@
 (use-package copilot
   :unless IS-CI
   :pin melpa-stable
-  :delight (copilot-mode (:eval (concat " " (+with-icon "nf-oct-copilot"))))
+  :delight (copilot-mode (:eval (+with-icon "nf-oct-copilot" " ")))
   :hook (prog-mode . copilot-mode)
   :bind
   (:map copilot-completion-map

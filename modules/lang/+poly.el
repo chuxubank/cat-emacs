@@ -2,7 +2,7 @@
 
 (use-package polymode
   :delight (polymode-minor-mode
-            (:eval (concat " " (+with-icon "nf-cod-layers")))))
+            (:eval (+with-icon "nf-cod-layers" " "))))
 
 (add-to-list 'auto-mode-alist '("\\.plist\\'" . nxml-mode))
 
@@ -24,7 +24,7 @@
             :lisp-dir "lisp/jinja2")
   :custom
   (poly-any-jinja2-lighter
-   (concat " " (+with-icon "nf-seti-jinja") " "
+   (concat (+with-icon "nf-seti-jinja" " " " ")
            (+with-icon "nf-cod-layers_active"))))
 
 (use-package poly-any-go-template
@@ -32,5 +32,5 @@
             :lisp-dir "lisp/go-template")
   :custom
   (poly-any-go-template-lighter
-   (concat " " (+with-icon "nf-dev-go") " "
+   (concat (+with-icon "nf-dev-go" " " " ")
            (+with-icon "nf-cod-layers_active"))))

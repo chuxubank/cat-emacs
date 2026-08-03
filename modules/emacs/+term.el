@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-term
-  (:color teal :title (+with-icon "nf-oct-terminal" "Term"))
+  (:color teal :title (+with-icon "nf-oct-terminal" nil " Term"))
   ("" ()))
 
 (use-package term
@@ -100,7 +100,7 @@
 (use-package kitty-graphics
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el")
   :delight (kitty-graphics-mode
-            (:eval (concat " " (+with-icon "nf-md-watermark"))))
+            (:eval (+with-icon "nf-md-watermark" " ")))
   :when (not (display-graphic-p))
   :custom
   (kitty-gfx-enable-video t)

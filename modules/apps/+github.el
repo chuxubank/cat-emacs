@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-github
-  (:color teal :title (+with-icon "nf-cod-github" "GitHub"))
+  (:color teal :title (+with-icon "nf-cod-github" nil " GitHub"))
   ("" ()))
 
 (use-package igist

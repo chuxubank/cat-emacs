@@ -2,7 +2,7 @@
 
 (use-package chezmoi-mode
   :vc (:url "https://github.com/chuxubank/chezmoi-mode")
-  :delight (chezmoi-mode (:eval (concat " " (+with-icon "nf-cod-home"))))
+  :delight (chezmoi-mode (:eval (+with-icon "nf-cod-home" " ")))
   :hook
   (chezmoi-template-mode . poly-any-go-template-mode)
   :config

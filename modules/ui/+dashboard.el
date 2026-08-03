@@ -2,6 +2,22 @@
 
 (defconst cat-logo-file (concat cat-assets-dir "logo.svg"))
 
+(defun cat/dashboard-load-bookmarks ()
+  "Load dashboard bookmarks without activating editing hooks."
+  (require 'bookmark)
+  (unless bookmark-bookmarks-timestamp
+    (let ((existing-buffer (get-file-buffer bookmark-default-file))
+          find-file-hook
+          prog-mode-hook
+          emacs-lisp-mode-hook
+          lisp-data-mode-hook
+          after-change-major-mode-hook)
+      (unwind-protect
+          (bookmark-maybe-load-default-file)
+        (unless existing-buffer
+          (when-let* ((buffer (get-file-buffer bookmark-default-file)))
+            (kill-buffer buffer)))))))
+
 (use-package dashboard
   :demand t
   :bind
@@ -29,4 +45,6 @@
   (dashboard-set-file-icons t)
   (dashboard-icon-type 'nerd-icons)
   :config
+  (add-hook 'dashboard-before-initialize-hook
+            #'cat/dashboard-load-bookmarks)
   (dashboard-setup-startup-hook))

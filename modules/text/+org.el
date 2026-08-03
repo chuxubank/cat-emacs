@@ -5,7 +5,7 @@
                 :lisp-dir "lisp/"
                 :rev "dev")
   :delight
-  (org-cdlatex-mode (:eval (concat " " (+with-icon "nf-seti-tex"))))
+  (org-cdlatex-mode (:eval (+with-icon "nf-seti-tex" " ")))
   :commands
   (org-store-link)
   :custom
@@ -55,7 +55,7 @@
   (+org-todo-cancel  ((t (:inherit (bold org-done) :strike-through t))))
   :mode-hydra
   (org-mode
-   (:title (+with-icon "nf-custom-orgmode" "Org Mode"))
+   (:title (+with-icon "nf-custom-orgmode" nil " Org Mode"))
    ("Notes"
     (("i" #'org-id-get-create "id"))
     "Toggle"
@@ -141,11 +141,11 @@
 (use-package org-indent
   :ensure nil
   :delight (org-indent-mode
-            (:eval (concat " " (+with-icon "nf-md-format_indent_increase")))))
+            (:eval (+with-icon "nf-md-format_indent_increase" " "))))
 
 (use-package org-src
   :ensure nil
-  :delight (org-src-mode (:eval (concat " " (+with-icon "nf-fa-code")))))
+  :delight (org-src-mode (:eval (+with-icon "nf-fa-code" " "))))
 
 (use-package org-keys
   :ensure nil
@@ -228,7 +228,7 @@
      ("call" . ,(+with-icon "nf-cod-terminal"))
      ("include" . ,(+with-icon "nf-oct-cross_reference"))
      ("macro" . ,(+with-icon "nf-fa-cog"))
-     ("results" . ,(concat (+with-icon "nf-cod-output") ":"))
+     ("results" . ,(+with-icon "nf-cod-output" nil ":"))
      (t . t)))
   :mode-hydra
   (org-mode

@@ -47,7 +47,7 @@ See `org-roam-dailies-directory'."
                                      :target (file "roam/cs/oj/leetcode/${number}/${title-slug}.org")
                                      :unnarrowed t)))
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-md-map_marker_path" "Org Roam"))
+  ((:color teal :title (+with-icon "nf-md-map_marker_path" nil " Org Roam"))
    ("Action"
     (("r" org-roam-buffer-toggle "toggle")
      ("e" org-roam-extract-subtree "extract")
@@ -121,8 +121,8 @@ DIR specifies a subdirectory under `cat-org-roam-default-templates-dir'."
 
 (use-package org-roam-ui
   :delight
-  (org-roam-ui-mode (:eval (concat " " (+with-icon "nf-md-map_marker_path"))))
-  (org-roam-ui-follow-mode (:eval (concat " " (+with-icon "nf-md-target"))))
+  (org-roam-ui-mode (:eval (+with-icon "nf-md-map_marker_path" " ")))
+  (org-roam-ui-follow-mode (:eval (+with-icon "nf-md-target" " ")))
   :custom
   (org-roam-ui-sync-theme t)
   (org-roam-ui-follow t)

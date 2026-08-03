@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-oj
-  (:color teal :title (+with-icon "nf-md-code_tags_check" "Online Judging"))
+  (:color teal :title (+with-icon "nf-md-code_tags_check" nil " Online Judging"))
   ("" ()))
 
 (use-package leetcode

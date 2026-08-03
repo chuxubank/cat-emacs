@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-language
-  (:color teal :title (+with-icon "nf-fa-language" "Language"))
+  (:color teal :title (+with-icon "nf-fa-language" nil " Language"))
   ("" ()))
 
 (use-package bing-dict

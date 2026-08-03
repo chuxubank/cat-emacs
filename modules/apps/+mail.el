@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-mail
-  (:color teal :title (+with-icon "nf-oct-mail" "Mail"))
+  (:color teal :title (+with-icon "nf-oct-mail" nil " Mail"))
   ("" ()))
 
 (defcustom cat/mu4e-print-types

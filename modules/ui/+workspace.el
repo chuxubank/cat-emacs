@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-workspace
-  (:color teal :title (+with-icon "nf-oct-codespaces" "Workspace"))
+  (:color teal :title (+with-icon "nf-oct-codespaces" nil " Workspace"))
   ("" ()))
 
 (use-package project
@@ -43,7 +43,7 @@
   :hook
   (after-init . burly-tabs-mode)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-oct-bookmark" "Burly"))
+  ((:color teal :title (+with-icon "nf-oct-bookmark" nil " Burly"))
    ("Bookmark"
     (("o" #'burly-open-bookmark "open")
      ("l" #'burly-open-last-bookmark "open last")
@@ -68,7 +68,7 @@
   :custom
   (bufler-workspace-mode-lighter (+with-icon "nf-oct-codespaces"))
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-oct-project" "Bufler"))
+  ((:color teal :title (+with-icon "nf-oct-project" nil " Bufler"))
    ("Workspace"
     (("b" #'bufler-workspace-switch-buffer "switch buffer")
      ("f" #'bufler-workspace-focus-buffer "focus buffer")
@@ -91,7 +91,7 @@
   (tabspaces-include-buffers nil)
   (tabspaces-initialize-project-with-todo nil)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-md-tab" "Tabspaces"))
+  ((:color teal :title (+with-icon "nf-md-tab" nil " Tabspaces"))
    ("Buffer"
     (("C" tabspaces-clear-buffers "clear")
      ("b" tabspaces-switch-to-buffer "switch buffer")
@@ -145,7 +145,7 @@
   :custom
   (activities-kill-buffers t)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" "Activities"))
+  ((:color teal :title (+with-icon "nf-cod-layout_activitybar_left" nil " Activities"))
    ("Manage"
     (("n" activities-new)
      ("d" activities-define)

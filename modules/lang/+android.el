@@ -1,13 +1,13 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-android
-  (:color teal :title (+with-icon "nf-md-android" "Android"))
+  (:color teal :title (+with-icon "nf-md-android" nil " Android"))
   ("" ()))
 
 (use-package android-mode
   :vc (android-mode :url "https://github.com/chuxubank/emacs-studio"
                     :lisp-dir "android-mode/")
-  :delight (android-mode (:eval (concat " " (+with-icon "nf-md-android"))))
+  :delight (android-mode (:eval (+with-icon "nf-md-android" " ")))
   :commands #'android-root
   :init
   (defun cat/android-mode ()

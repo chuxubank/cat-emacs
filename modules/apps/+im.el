@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (pretty-hydra-define cat-im
-  (:color teal :title (+with-icon "nf-md-chat" "Instant Messaging"))
+  (:color teal :title (+with-icon "nf-md-chat" nil " Instant Messaging"))
   ("" ()))
 
 (use-package telega

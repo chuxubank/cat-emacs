@@ -22,7 +22,7 @@ file name is resolved from the user or fallback template directory by
         (user-error "No GPTel API key found in pass entry %s" path))))
 
 (pretty-hydra-define cat-vibe
-  (:color teal :title (+with-icon "nf-fa-wand_sparkles" "Vibe Coding"))
+  (:color teal :title (+with-icon "nf-fa-wand_sparkles" nil " Vibe Coding"))
   ("" ()))
 
 (use-package gptel-model-updater
@@ -37,12 +37,12 @@ file name is resolved from the user or fallback template directory by
     (("u" #'gptel-model-updater-transient "updater")))))
 
 (use-package gptel
-  :delight (gptel-mode (:eval (concat " " (+with-icon "nf-md-magic_staff"))))
+  :delight (gptel-mode (:eval (+with-icon "nf-md-magic_staff" " ")))
   :custom
   (gptel-expert-commands t)
   (gptel-default-mode 'org-mode)
   :pretty-hydra
-  ((:color teal :title (+with-icon "nf-dev-emacs" "GPTel"))
+  ((:color teal :title (+with-icon "nf-dev-emacs" nil " GPTel"))
    ("Send"
     (("g" #'gptel "gptel")
      ("s" #'gptel-send "send")
@@ -183,7 +183,7 @@ Invokes CALLBACK with the generated message when done."
   (agent-shell-dot-subdir-function #'agent-shell--dot-subdir-in-cache)
   :pretty-hydra
   (agent-shell
-   (:color teal :title (+with-icon "nf-dev-terminal" "Agent Shell"))
+   (:color teal :title (+with-icon "nf-dev-terminal" nil " Agent Shell"))
    ("Action"
     (("s" #'agent-shell "agent-shell")
      ("n" #'agent-shell-new-shell "new shell"))))

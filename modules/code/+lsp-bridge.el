@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package lsp-bridge
-  :delight (lsp-bridge-mode (:eval (concat " " (+with-icon "nf-md-bridge"))))
+  :delight (lsp-bridge-mode (:eval (+with-icon "nf-md-bridge" " ")))
   :vc (:url "https://github.com/manateelazycat/lsp-bridge")
   :hook
   (after-init . global-lsp-bridge-mode)
