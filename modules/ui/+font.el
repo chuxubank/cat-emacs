@@ -434,24 +434,25 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\\\" "://"))))
 
-(defun cat--setup-nerd-icons-font (frame)
-  "Configure Nerd Icons after graphical FRAME has been displayed."
-  (when (and (frame-live-p frame) (display-graphic-p frame))
-    (with-selected-frame frame
+(defvar cat--nerd-icons-fontset-configurations nil
+  "Nerd Icons fontset and family pairs already configured.")
+
+(defun cat--setup-nerd-icons-font (&optional _font-family frame)
+  "Configure Nerd Icons once for graphical FRAME's named fontset."
+  (let* ((frame (or frame (selected-frame)))
+         (fontset (and (display-graphic-p frame)
+                       (frame-parameter frame 'font))))
+    (when fontset
       (require 'nerd-icons)
-      (nerd-icons-set-font nil frame))))
+      (let ((configuration (cons fontset nerd-icons-font-family)))
+        (unless (member configuration
+                        cat--nerd-icons-fontset-configurations)
+          (with-selected-frame frame
+            (nerd-icons-set-font nil frame))
+          (push configuration
+                cat--nerd-icons-fontset-configurations))))))
 
-(defun cat--schedule-nerd-icons-font (&optional _font-family frame)
-  "Schedule Nerd Icons font setup for graphical FRAME."
-  (let ((frame (or frame (selected-frame))))
-    (when (display-graphic-p frame)
-      (run-with-idle-timer 0 nil #'cat--setup-nerd-icons-font frame))))
-
-(if (daemonp)
-    ;; Run after `cat-client-frame-config' and return to the event loop first.
-    (add-hook 'server-after-make-frame-hook
-              #'cat--schedule-nerd-icons-font t)
-  (add-hook 'cat-setup-fonts-hook #'cat--schedule-nerd-icons-font))
+(add-hook 'cat-setup-fonts-hook #'cat--setup-nerd-icons-font)
 
 (use-package nerd-icons-completion
   :hook (after-init . nerd-icons-completion-mode))
