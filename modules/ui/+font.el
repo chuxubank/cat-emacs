@@ -23,19 +23,17 @@
   :type '(repeat string))
 
 (defcustom cat-font-preset
-  `((default :family "Monospace"
-             :height ,(if IS-MAC 160 140) :weight regular)
+  `((default :family "Monospace Narrow"
+             :height ,(if IS-MAC 160 140))
     (heading :family "Serif" :weight semi-bold)
     (title :extends heading :height 1.4)
-    (heading-1 :extends heading :height 1.25)
-    (heading-2 :extends heading :height 1.15)
-    (heading-3 :extends heading :height 1.08)
-    (body :family "Monospace" :weight regular)
-    (prose :family "Monospace Serif" :weight regular)
-    (ui :family "Sans Serif" :weight regular)
-    (mono :family "Monospace" :weight regular)
-    (code :family "Monospace Sans Serif" :weight regular)
-    (table :extends mono)
+    (body :family "Monospace Sans Serif")
+    (documentation :extends body)
+    (prose :family "Quasi Proportional")
+    (ui :family "Sans Serif UI")
+    (mono :family "Monospace Sans Serif")
+    (code :family "Monospace Code")
+    (table :extends mono :family "Monospace Narrow")
     (code-jvm :extends code :fonts ("JetBrains Mono"))
     (code-python :extends code :fonts ("Cascadia Code"))
     (code-diagram :extends code :fonts ("Fira Code"))
@@ -65,9 +63,7 @@ font family, a list of font families, or a symbol whose value is either."
   `((:modes (org-mode)
             :font body
             :faces ((org-document-title title)
-                    (org-level-1 heading-1)
-                    (org-level-2 heading-2)
-                    (org-level-3 heading-3)
+                    (org-level-* heading)
                     (org-table table)
                     (org-formula table)
                     (org-column-title table)
@@ -78,9 +74,6 @@ font family, a list of font families, or a symbol whose value is either."
             :font body
             :faces ((markdown-header-face heading)
                     (markdown-header-face-1 title)
-                    (markdown-header-face-2 heading-1)
-                    (markdown-header-face-3 heading-2)
-                    (markdown-header-face-4 heading-3)
                     (markdown-table-face table)
                     (markdown-code-face code)
                     (markdown-inline-code-face code)))
@@ -118,7 +111,9 @@ font family, a list of font families, or a symbol whose value is either."
                   :font code)
     (:modes (text-mode)
             :font prose)
-    (:modes (Info-mode man-common treemacs-mode)
+    (:modes (Info-mode man-common)
+            :font documentation)
+    (:modes (treemacs-mode)
             :font ui))
   "Rules for buffer-local font selection.
 Each rule is a plist.  Supported keys are:
@@ -127,6 +122,7 @@ Each rule is a plist.  Supported keys are:
 :buffer-name A regexp matched against `buffer-name'.
 :font        Font role, family, list, or font variable.
 :faces       Face rules in the form (FACE FONTS-OR-ROLE &rest ATTRIBUTES).
+             A FACE ending in * matches every face with that prefix.
              Role attributes are merged with rule ATTRIBUTES.
 :rescale     Buffer-local `face-font-rescale-alist' value."
   :type 'sexp)
@@ -286,7 +282,7 @@ If ADD is nil, the first existing font is set as replacement, and others are app
     ;; Enable traditional ligature support in eww-mode, if the
     ;; `variable-pitch' face supports it
     (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-    ;; Enable all Cascadia Code ligatures in programming modes
+    ;; Enable all ligatures in programming modes
     (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
                                          ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
                                          "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
@@ -354,6 +350,20 @@ If ADD is nil, the first existing font is set as replacement, and others are app
         (kill-local-variable 'face-font-rescale-alist)))
     (setq cat--mode-font-rescale-state nil)))
 
+(defun cat--font-rule-faces (face)
+  "Return faces matched by FACE or its trailing wildcard."
+  (let ((name (symbol-name face)))
+    (if (and (> (length name) 0)
+             (eq (aref name (1- (length name))) ?*))
+        (let ((prefix (substring name 0 -1)))
+          (sort (seq-filter
+                 (lambda (candidate)
+                   (string-prefix-p prefix (symbol-name candidate)))
+                 (face-list))
+                (lambda (left right)
+                  (string< (symbol-name left) (symbol-name right)))))
+      (list face))))
+
 (defun cat--apply-mode-font-rule (rule)
   "Apply a mode font RULE to the current buffer."
   (cat--clear-mode-font)
@@ -361,9 +371,10 @@ If ADD is nil, the first existing font is set as replacement, and others are app
     (when-let* ((spec (+safe-buffer-face-set-fonts font)))
       (setq cat--mode-buffer-face spec)))
   (pcase-dolist (`(,face ,fonts . ,attributes) (plist-get rule :faces))
-    (when-let* ((spec (cat--resolved-face-spec fonts attributes)))
-      (push (face-remap-add-relative face spec)
-            cat--mode-face-remap-cookies)))
+    (dolist (matched-face (cat--font-rule-faces face))
+      (when-let* ((spec (cat--resolved-face-spec fonts attributes)))
+        (push (face-remap-add-relative matched-face spec)
+              cat--mode-face-remap-cookies))))
   (when-let* ((rescale (plist-get rule :rescale)))
     (setq cat--mode-font-rescale-state
           (list (local-variable-p 'face-font-rescale-alist)
