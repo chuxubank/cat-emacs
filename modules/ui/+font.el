@@ -434,8 +434,7 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\\\" "://"))))
 
-(use-package nerd-icons
-  :hook (cat-setup-fonts . nerd-icons-set-font))
+(add-hook 'cat-setup-fonts-hook #'nerd-icons-set-font)
 
 (use-package nerd-icons-completion
   :hook (after-init . nerd-icons-completion-mode))
