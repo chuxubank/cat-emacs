@@ -238,6 +238,36 @@ Each rule is a plist.  Supported keys are:
 (defvar cat--default-fontset-signature nil
   "Last Cat configuration applied to the default fontset.")
 
+(defvar cat--nerd-icons-fontset-entry-cache nil
+  "Fontset entries discovered from `nerd-icons-set-font'.")
+
+(defun cat--nerd-icons-fontset-entries ()
+  "Return fontset entries maintained by Nerd Icons."
+  (or cat--nerd-icons-fontset-entry-cache
+      (progn
+        (require 'nerd-icons)
+        ;; Keep Nerd Icons as the source of truth for its evolving PUA ranges.
+        (let (entries)
+          (cl-letf (((symbol-function 'set-fontset-font)
+                     (lambda (_fontset characters _font-spec
+                                      &optional _frame add)
+                       (push (cons characters add) entries))))
+            (nerd-icons-set-font))
+          (unless entries
+            (error "Nerd Icons provided no fontset entries"))
+          (setq cat--nerd-icons-fontset-entry-cache
+                (nreverse entries))))))
+
+(defun cat--font-rules ()
+  "Return configured script and generated Nerd Icons font rules."
+  (require 'nerd-icons)
+  (append cat-font-script-rules
+          (mapcar (lambda (entry)
+                    (list (list (car entry))
+                          (list nerd-icons-font-family)
+                          (cdr entry)))
+                  (cat--nerd-icons-fontset-entries))))
+
 (defun cat--fontset-name (role)
   "Return the fontset name owned by ROLE."
   (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s"
@@ -252,7 +282,7 @@ Each rule is a plist.  Supported keys are:
              (list (car rule)
                    (cat--font-list (cadr rule))
                    (caddr rule)))
-           cat-font-script-rules)))
+           (cat--font-rules))))
 
 (defun cat--set-fontset-candidates (fontset characters fonts &optional add)
   "Set ordered FONTS for CHARACTERS in FONTSET."
@@ -431,26 +461,6 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                                          "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\\\" "://"))))
-
-(defvar cat--nerd-icons-fontset-configurations nil
-  "Nerd Icons fontset and family pairs already configured.")
-
-(defun cat--setup-nerd-icons-font (&optional _font-family frame)
-  "Configure Nerd Icons once for graphical FRAME's named fontset."
-  (let* ((frame (or frame (selected-frame)))
-         (fontset (and (display-graphic-p frame)
-                       (frame-parameter frame 'font))))
-    (when fontset
-      (require 'nerd-icons)
-      (let ((configuration (cons fontset nerd-icons-font-family)))
-        (unless (member configuration
-                        cat--nerd-icons-fontset-configurations)
-          (with-selected-frame frame
-            (nerd-icons-set-font nil frame))
-          (push configuration
-                cat--nerd-icons-fontset-configurations))))))
-
-(add-hook 'cat-setup-fonts-hook #'cat--setup-nerd-icons-font)
 
 (use-package nerd-icons-completion
   :hook (after-init . nerd-icons-completion-mode))

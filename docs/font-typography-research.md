@@ -23,6 +23,10 @@ target, so multiple fonts there are a real ordered glyph fallback chain.  The
 [corresponding Emacs source change](https://lists.gnu.org/archive/html/emacs-diffs/2022-04/msg00656.html)
 documents the same overwrite/prepend/append semantics.
 
+Nerd Icons uses the same path.  Cat reads the private-use character ranges
+from `nerd-icons-set-font` and adds them to every role fontset, leaving the
+package as the single source of truth for those evolving ranges.
+
 Consequences for this configuration:
 
 - Keep physical ASCII and CJK candidates together in reusable font stacks.
