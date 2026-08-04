@@ -4,48 +4,52 @@
   "Font settings for Cat Emacs."
   :group 'cat)
 
-(defcustom cat-font-family-cjk-alist
-  '(("Sans Serif UI" . "CJK Sans Serif")
-    ("Serif" . "CJK Serif")
-    ("Slab Serif" . "CJK Serif")
-    ("Quasi Proportional" . "CJK Serif")
-    ("Monospace Narrow" . "CJK Monospace")
-    ("Monospace Code" . "CJK Monospace")
-    ("Monospace Sans Serif" . "CJK Monospace"))
-  "CJK logical family associated with each logical font family."
-  :type '(alist :key-type string :value-type string))
+(defcustom cat-font-stacks
+  '((sans-serif-ui
+     :ascii ("Inter" "Avenir Next" "DejaVu Sans")
+     :cjk ("PingFang SC" "Hiragino Sans GB" "Noto Sans CJK SC"
+           "Source Han Sans SC" "Microsoft YaHei"))
+    (serif
+     :ascii ("Charter" "Roboto Serif" "DejaVu Serif" "Georgia")
+     :cjk ("Songti SC" "LXGW WenKai" "Noto Serif CJK SC"
+           "Source Han Serif SC"))
+    (slab-serif
+     :extends serif
+     :ascii ("Roboto Slab" "American Typewriter"))
+    (quasi-proportional
+     :extends serif
+     :ascii ("Iosevka Etoile" "Iosevka Aile"))
+    (monospace-narrow
+     :ascii ("Iosevka" "Iosevka Term")
+     :cjk ("LXGW WenKai Mono" "Sarasa Mono SC"))
+    (monospace-code
+     :extends monospace-narrow
+     :ascii ("Maple Mono" "Source Code Pro"))
+    (monospace-sans-serif
+     :extends monospace-narrow
+     :ascii ("Roboto Mono" "DejaVu Sans Mono")))
+  "Physical font candidates grouped into reusable stacks.
+Each entry has the form (STACK :ascii FONTS :cjk FONTS).  A stack can
+inherit missing properties from another stack with :extends."
+  :type 'sexp)
 
 (defconst cat-cjk-scripts '(han kana hangul bopomofo cjk-misc)
   "Scripts configured by Cat's CJK font rules.")
 
-(defcustom cat-math-fonts '("STIX Two Math"
-                            "DejaVu Math TeX Gyre"
-                            "Noto Sans Math")
-  "Fonts for characters in `mathematical' script."
-  :type '(repeat string))
-
-(defcustom cat-symbol-fonts '("Apple Symbols")
-  "Fonts for symbol characters."
-  :type '(repeat string))
-
-(defcustom cat-unicode-fonts '("Apple Color Emoji" "Symbola")
-  "Fonts for unicode characters."
-  :type '(repeat string))
-
 (defcustom cat-font-preset
-  `((default :family "Monospace Narrow"
+  `((default :stack monospace-narrow
              :height ,(if IS-MAC 160 140))
-    (heading :family "Serif" :weight semi-bold)
+    (heading :stack serif :weight semi-bold)
     (title :extends heading :height 1.4)
-    (body :family "Monospace Sans Serif")
+    (body :stack monospace-sans-serif)
     (documentation :extends body)
-    (prose :family "Quasi Proportional")
-    (ui :family "Sans Serif UI")
+    (prose :stack quasi-proportional)
+    (ui :stack sans-serif-ui)
     (metadata-label :extends ui)
-    (metadata-value :family "Monospace Narrow")
-    (mono :family "Monospace Sans Serif")
-    (code :family "Monospace Code")
-    (table :extends mono :family "Monospace Narrow")
+    (metadata-value :stack monospace-narrow)
+    (mono :stack monospace-sans-serif)
+    (code :stack monospace-code)
+    (table :extends mono :stack monospace-narrow)
     (code-jvm :extends code :fonts ("JetBrains Mono"))
     (code-python :extends code :fonts ("Cascadia Code"))
     (code-diagram :extends code :fonts ("Fira Code"))
@@ -53,21 +57,22 @@
     (code-config :extends code :fonts ("IBM Plex Mono"))
     (terminal :extends mono :fonts ("Menlo")))
   "Typography preset organized by semantic role.
-Each role has the form (ROLE :family FAMILY &rest ATTRIBUTES).  FAMILY
-should normally name a logical family in
-`face-font-family-alternatives'.  The
+Each role has the form (ROLE :stack STACK &rest ATTRIBUTES).  STACK
+names an entry in `cat-font-stacks'.  The
 `default' role uses an absolute face height in tenths of a point;
 content roles use heights relative to it.  A role can use :extends and
-:fonts to prepend concrete families to the inherited logical family."
+:fonts to prepend concrete families to its inherited stack."
   :type 'sexp)
 
-(defcustom cat-fontset-font-rules
-  '((unicode cat-unicode-fonts append)
-    (mathematical cat-math-fonts))
+(defcustom cat-font-script-rules
+  '((unicode ("Apple Color Emoji" "Symbola") append)
+    (mathematical ("STIX Two Math"
+                   "DejaVu Math TeX Gyre"
+                   "Noto Sans Math")))
   "Rules for `set-fontset-font'.
 Each rule has the form (CHARACTERS FONTS &optional ADD).  CHARACTERS
-can be a script symbol or a list of script symbols.  FONTS can be a
-font family, a list of font families, or a symbol whose value is either."
+can be a script symbol or a list of script symbols.  FONTS is an
+ordered list of concrete font families."
   :type 'sexp)
 
 (defcustom cat-mode-font-rules
@@ -137,7 +142,7 @@ Each rule is a plist.  Supported keys are:
 
 :modes       A mode or list of modes matched with `derived-mode-p'.
 :buffer-name A regexp matched against `buffer-name'.
-:font        Font role, family, list, or font variable.
+:font        Font role, concrete family, or ordered family list.
 :faces       Face rules in the form (FACE FONTS-OR-ROLE &rest ATTRIBUTES).
              A FACE ending in * matches every face with that prefix.
              Role attributes are merged with rule ATTRIBUTES.
@@ -164,36 +169,47 @@ Each rule is a plist.  Supported keys are:
           (cat--merge-font-attributes (cat--font-role-spec parent) spec)
         spec))))
 
-(defun cat--font-value (fonts)
-  "Return resolved FONTS.
-FONTS can be a value, a font role, or a variable symbol."
-  (let ((spec (cat--font-role-spec fonts)))
-    (cond
-     (spec
-      (let ((preferred (plist-get spec :fonts))
-            (family (plist-get spec :family)))
-        (if preferred
-            (delete-dups
-             (append (cat--font-list preferred)
-                     (cat--font-list family)))
-          (cat--font-value family))))
-     ((and (symbolp fonts) (boundp fonts))
-      (symbol-value fonts))
-     (t fonts))))
+(defun cat--font-stack-spec (stack)
+  "Return the inherited specification for font STACK."
+  (when (symbolp stack)
+    (let* ((spec (alist-get stack cat-font-stacks))
+           (parent (plist-get spec :extends)))
+      (unless spec
+        (error "Unknown font stack: %S" stack))
+      (if parent
+          (cat--merge-font-attributes (cat--font-stack-spec parent) spec)
+        spec))))
+
+(defun cat--font-role-candidates (role script)
+  "Return ordered font candidates for ROLE and SCRIPT category."
+  (let* ((role-spec (cat--font-role-spec role))
+         (stack (plist-get role-spec :stack))
+         (stack-spec (cat--font-stack-spec stack))
+         (property (pcase script
+                     ('ascii :ascii)
+                     ('cjk :cjk)
+                     (_ (error "Unknown font script category: %S" script))))
+         (fonts (copy-sequence (plist-get stack-spec property))))
+    (when (eq script 'ascii)
+      (setq fonts (append (plist-get role-spec :fonts) fonts)))
+    (unless (and fonts (seq-every-p #'stringp fonts))
+      (error "No %s fonts configured for role %S" script role))
+    (delete-dups fonts)))
 
 (defun cat--font-list (fonts)
-  "Return resolved FONTS as a list."
-  (let ((value (cat--font-value fonts)))
-    (cond
-     ((null value) nil)
-     ((stringp value) (list value))
-     ((and (listp value) (seq-every-p #'stringp value)) value)
-     (t (error "Invalid font value: %S" value)))))
+  "Return concrete FONTS or a font role as an ordered list."
+  (cond
+   ((cat--font-role-spec fonts)
+    (cat--font-role-candidates fonts 'ascii))
+   ((null fonts) nil)
+   ((stringp fonts) (list fonts))
+   ((and (listp fonts) (seq-every-p #'stringp fonts)) fonts)
+   (t (error "Invalid font value: %S" fonts))))
 
 (defun cat--font-role-attributes (role)
   "Return face attributes associated with font ROLE."
   (cl-loop for (attribute value) on (cat--font-role-spec role) by #'cddr
-           unless (memq attribute '(:family :fonts :extends))
+           unless (memq attribute '(:stack :fonts :extends))
            append (list attribute value)))
 
 (defun cat--font-role-face (role)
@@ -206,58 +222,37 @@ FONTS can be a value, a font role, or a variable symbol."
 
 (defun cat--configure-font-role-face (role &optional frame fontset)
   "Configure ROLE's face on FRAME, optionally using FONTSET."
-  (let ((face (cat--font-role-face role))
-        (family (plist-get (cat--font-role-spec role) :family)))
-    ;; `:font' resolves a fontset to its Latin font and drops script mappings.
+  (let ((face (cat--font-role-face role)))
+    ;; `:font' resolves the Latin font; `:fontset' restores script mappings.
     (apply #'set-face-attribute face frame
-           (append (list :family family)
-                   (when fontset (list :fontset fontset))
+           (append (when fontset (list :font fontset :fontset fontset))
                    (cat--font-role-attributes role)))
     face))
 
 (dolist (role cat-font-preset)
   (cat--configure-font-role-face (car role)))
 
-(defun cat--font-family-candidates (fonts)
-  "Return FONTS expanded with family availability alternatives."
-  (delete-dups
-   (cl-loop for family in (cat--font-list fonts)
-            append
-            (cons family
-                  (alist-get family face-font-family-alternatives
-                             nil nil #'string-equal)))))
-
 (defvar cat--fontset-signatures (make-hash-table :test 'eq)
   "Last configured signature for each Cat role fontset.")
+
+(defvar cat--default-fontset-signature nil
+  "Last Cat configuration applied to the default fontset.")
 
 (defun cat--fontset-name (role)
   "Return the fontset name owned by ROLE."
   (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s"
           (replace-regexp-in-string "-" "_" (symbol-name role))))
 
-(defun cat--font-role-cjk-candidates (role)
-  "Return CJK candidates selected by ROLE's logical family."
-  (let* ((family (plist-get (cat--font-role-spec role) :family))
-         (cjk-family (alist-get family cat-font-family-cjk-alist
-                                nil nil #'string-equal))
-         (candidates (and cjk-family
-                          (alist-get cjk-family
-                                     face-font-family-alternatives
-                                     nil nil #'string-equal))))
-    (unless candidates
-      (error "No CJK alternatives for font family %S" family))
-    candidates))
-
 (defun cat--fontset-signature (role)
   "Return the configuration signature for ROLE's fontset."
   (list
-   (cat--font-family-candidates role)
-   (cat--font-role-cjk-candidates role)
+   (cat--font-role-candidates role 'ascii)
+   (cat--font-role-candidates role 'cjk)
    (mapcar (lambda (rule)
              (list (car rule)
                    (cat--font-list (cadr rule))
                    (caddr rule)))
-           cat-fontset-font-rules)))
+           cat-font-script-rules)))
 
 (defun cat--set-fontset-candidates (fontset characters fonts &optional add)
   "Set ordered FONTS for CHARACTERS in FONTSET."
@@ -313,7 +308,7 @@ FONTS can be a value, a font role, or a variable symbol."
 (defun cat--first-existing-font (fonts &optional frame)
   "Return the first font from FONTS available on FRAME."
   (when (display-graphic-p frame)
-    (let* ((candidates (cat--font-family-candidates fonts))
+    (let* ((candidates (cat--font-list fonts))
            (families (font-family-list frame))
            (font (seq-find (lambda (candidate)
                              (member candidate families))
@@ -324,12 +319,8 @@ FONTS can be a value, a font role, or a variable symbol."
       font)))
 
 (defun cat--face-family (fonts &optional frame)
-  "Return the nominal face family for FONTS.
-Direct candidate lists are resolved to an installed family on FRAME."
-  (let ((value (cat--font-value fonts)))
-    (if (stringp value)
-        value
-      (cat--first-existing-font value frame))))
+  "Return the first installed family for FONTS on FRAME."
+  (cat--first-existing-font fonts frame))
 
 (defun cat--resolved-face-spec (fonts &optional overrides)
   "Return a face spec for FONTS with role attributes and OVERRIDES."
@@ -381,6 +372,16 @@ If ADD is nil, use the existing fonts as an ordered replacement."
     (message "Set buffer %s face to %s" (current-buffer) fonts)
     spec))
 
+(defun cat--configure-default-fontset (signature frame)
+  "Apply default fontset SIGNATURE once using graphical FRAME."
+  (unless (equal signature cat--default-fontset-signature)
+    (dolist (script cat-cjk-scripts)
+      (+safe-set-fontset-fonts t script (nth 1 signature) frame))
+    (pcase-dolist (`(,scripts ,fonts . ,args) (nth 2 signature))
+      (dolist (script (ensure-list scripts))
+        (+safe-set-fontset-fonts t script fonts frame (car args))))
+    (setq cat--default-fontset-signature signature)))
+
 (defun cat-setup-fonts (&optional frame)
   "Set fonts on FRAME for Cat Emacs."
   (when (display-graphic-p frame)
@@ -391,14 +392,11 @@ If ADD is nil, use the existing fonts as an ordered replacement."
              (fontset (cat--fontset-for-role name frame)))
         (cat--configure-font-role-face name frame fontset)))
     (when-let* ((fontset (cat--fontset-for-role 'default frame)))
-      (apply #'set-face-attribute 'default frame :font fontset
+      (apply #'set-face-attribute 'default frame
+             :font fontset :fontset fontset
              (cat--font-role-attributes 'default)))
-    (dolist (script cat-cjk-scripts)
-      (+safe-set-fontset-fonts
-       t script (cat--font-role-cjk-candidates 'default) frame))
-    (pcase-dolist (`(,scripts ,fonts . ,args) cat-fontset-font-rules)
-      (dolist (script (ensure-list scripts))
-        (+safe-set-fontset-fonts t script fonts frame (car args))))
+    (cat--configure-default-fontset
+     (cat--fontset-signature 'default) frame)
     (run-hook-with-args 'cat-setup-fonts-hook nil frame)
     (cat-benchmark 'end "setup fonts.")))
 

@@ -3,26 +3,19 @@
 ## Emacs font selection
 
 A face does not natively accept an ordered list for `:family`: the value is one
-family-name string.  Emacs chooses a font from the face's family, weight,
-slant, and width, and searches for the closest match when an exact font is not
-available.  [`face-font-family-alternatives`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Font-Selection.html)
-adds ordered substitute families, but only when the requested family itself is
-unavailable.  It is not a per-character glyph fallback list.  Cat assigns a
-logical `:family` such as `Sans Serif UI`, `Serif`, or `Monospace Code` to
-each role, while `face-font-family-alternatives` maps those categories to
-ordered cross-machine substitutes in one place.  Specialized roles can
-prepend concrete `:fonts`; their logical fallback family is inherited from
-the base role.
+family-name string.  A fontset does accept ordered font specifications for
+character ranges, charsets, and scripts, and its name can be used wherever
+Emacs accepts a font name.  Cat therefore keeps physical font candidates in
+`cat-font-stacks` and compiles one named fontset per semantic role.  Each stack
+owns both its ASCII and CJK candidates; stack inheritance shares CJK choices
+between related serif or monospace stacks without a separate mapping table.
 
-A fontset solves a different problem.  It is a collection of font
-specifications assigned to character ranges, charsets, or scripts, and a
-fontset name can be used wherever Emacs accepts a font name.  Cat creates one
-named fontset per semantic role.  Its ASCII entries come from the role's
-logical family and `face-font-family-alternatives`; its CJK entries come from
-the `CJK Serif`, `CJK Sans Serif`, or `CJK Monospace` alternatives associated
-with the inherited logical family.  Thus a `Serif` heading uses a serif CJK
-fallback while a `Sans Serif UI` label uses a sans serif CJK fallback.  See
-the GNU manuals on
+Cat applies each role fontset to a face through both `:font` and `:fontset`.
+`:font` resolves the first available ASCII candidate into the face's concrete
+Latin family, while the following `:fontset` attribute preserves the role's
+CJK, mathematical, emoji, and other script mappings.  Using only `:fontset`
+would leave the face's Latin family inherited from the default face; using
+only `:font` would discard the script mappings.  See the GNU manuals on
 [modifying fontsets](https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html)
 and [`set-fontset-font`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html).
 The latter can replace, prepend, or append specifications for a character
@@ -32,19 +25,17 @@ documents the same overwrite/prepend/append semantics.
 
 Consequences for this configuration:
 
-- Keep semantic roles responsible for Latin typography, size, weight, and the
-  matching CJK category.
-- Create a named fontset for every semantic role and configure all of them
-  before the relevant scripts are first displayed, because Emacs can cache
-  script font selection.
-- Share mathematical-symbol and emoji rules across the role fontsets.  The
-  default fontset retains the same rules for faces outside Cat's role system.
-- Keep ordered family alternatives only for cross-machine availability, and
-  centralize both Latin and CJK candidates outside typography presets.
+- Keep physical ASCII and CJK candidates together in reusable font stacks.
+- Keep semantic roles responsible for selecting a stack, size, weight, and
+  other typography attributes.
+- Create and apply every role fontset before its scripts are first displayed,
+  because Emacs can cache script font selection.
+- Share mathematical and emoji rules across role fontsets, and retain the same
+  rules in the default fontset for faces outside Cat's role system.
 
-In short: family alternatives answer "which installed Latin family can fulfill
-this role?"; a role fontset answers "which font should render this character
-without losing that role's serif, sans serif, or monospace character?".
+In short: a font stack answers both "which installed Latin family can fulfill
+this role?" and "which font should render this character without losing that
+role's serif, sans serif, or monospace character?".
 
 ## Typography principles
 
