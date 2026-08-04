@@ -138,6 +138,8 @@ stay disabled unless the Cat feature or expression is enabled:
 - =core/module.el= defines the optional module loader.
 - =modules/base/+keymap.el= defines the main =C-c= command map for files,
   toggles, Org, plugins, workspaces, search, and AI tools.
+- =modules/ui/+font.el= builds semantic role fontsets from reusable ASCII/CJK
+  stacks; see [[file:docs/font-typography-research.md][the font and typography notes]] for the model and fallback behavior.
 - =templates/cats= is the reference module list for new users.
 
 ** Package Synchronization

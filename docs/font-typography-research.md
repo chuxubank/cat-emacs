@@ -1,21 +1,92 @@
-# Font and typography research
+# Font system and typography research
 
-## Emacs font selection
+## Current Cat font model
+
+The implementation in [`modules/ui/+font.el`](../modules/ui/+font.el)
+separates physical font fallback, semantic typography, and mode-specific
+application.  It does not use `face-font-family-alternatives` as configuration
+input.
+
+### Font stacks and roles
+
+`cat-font-stacks` owns the physical candidates.  Each entry has this shape:
+
+```elisp
+(STACK
+ :ascii (ASCII-FAMILY ...)
+ :cjk (CJK-FAMILY ...)
+ :extends PARENT-STACK)
+```
+
+`:extends` supplies properties omitted by the child.  Defining `:ascii` or
+`:cjk` on the child replaces that inherited property; it does not append to
+the parent's list.  This lets related stacks share CJK choices while keeping
+their Latin candidates independent.  For example, `monospace-code` inherits
+the CJK list from `monospace-narrow` but replaces its ASCII list.
+
+`cat-font-preset` maps semantic roles to those stacks:
+
+```elisp
+(ROLE
+ :stack STACK
+ :extends PARENT-ROLE
+ :fonts (PREFERRED-ASCII-FAMILY ...)
+ FACE-ATTRIBUTE VALUE ...)
+```
+
+A role inherits and then overrides its parent role.  `:fonts` prepends
+role-specific ASCII candidates to the selected stack; CJK candidates always
+come from the stack.  Remaining properties such as `:height` and `:weight`
+become face attributes.  This keeps language-specific code roles on one CJK
+monospace fallback while allowing `JetBrains Mono`, `Cascadia Code`, or another
+Latin family to take priority for a particular language group.
+
+The current roles form this hierarchy:
+
+- `default` selects the base frame font and absolute height.
+- `title` extends `heading`; both use the serif stack.
+- `documentation` extends `body`; `body`, `prose`, and `ui` remain separate
+  reading, prose, and interface choices.
+- `metadata-label`, `metadata-value`, `mono`, `code`, and `table` cover compact
+  structural content.
+- `code-*` and `terminal` extend their general roles and prepend a specialized
+  ASCII family.
+
+### Role fontsets
 
 A face does not natively accept an ordered list for `:family`: the value is one
-family-name string.  A fontset does accept ordered font specifications for
+family-name string.  A fontset does accept ordered specifications for
 character ranges, charsets, and scripts, and its name can be used wherever
-Emacs accepts a font name.  Cat therefore keeps physical font candidates in
-`cat-font-stacks` and compiles one named fontset per semantic role.  Each stack
-owns both its ASCII and CJK candidates; stack inheritance shares CJK choices
-between related serif or monospace stacks without a separate mapping table.
+Emacs accepts a font name.  Cat therefore compiles one named fontset per role
+from three inputs:
 
-Cat applies each role fontset to a face through both `:font` and `:fontset`.
-`:font` resolves the first available ASCII candidate into the face's concrete
-Latin family, while the following `:fontset` attribute preserves the role's
-CJK, mathematical, emoji, and other script mappings.  Using only `:fontset`
-would leave the face's Latin family inherited from the default face; using
-only `:font` would discard the script mappings.  See the GNU manuals on
+1. The role's ordered ASCII candidates.
+2. The role stack's ordered CJK candidates for Han, Kana, Hangul, Bopomofo,
+   and miscellaneous CJK characters.
+3. Shared `cat-font-script-rules` plus the private-use ranges owned by Nerd
+   Icons.
+
+Cat obtains the Nerd Icons ranges by temporarily intercepting the
+`set-fontset-font` calls made by `nerd-icons-set-font`.  It caches those range
+descriptions and applies them with `nerd-icons-font-family` to every role
+fontset.  Nerd Icons remains the source of truth when its private-use ranges
+change, and Cat does not maintain a duplicate range list.
+
+The resolved inputs also form a signature.  Existing role fontsets are rebuilt
+only when their signature changes.  The default fontset has a separate
+signature cache because it is shared by faces outside the role system.  Font
+setup runs after initialization, for new graphical frames, after theme
+refreshes, and immediately when the module is loaded into an already
+initialized graphical session.
+
+Cat applies each role fontset to its role face through both `:font` and
+`:fontset`.  `:font` resolves the first available ASCII candidate into the
+face's concrete Latin font, while `:fontset` preserves the CJK, mathematical,
+emoji, and icon mappings.  Using only `:fontset` would leave the Latin family
+inherited from the default face; using only `:font` would discard the script
+mappings.
+
+See the GNU manuals on
 [modifying fontsets](https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html)
 and [`set-fontset-font`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html).
 The latter can replace, prepend, or append specifications for a character
@@ -23,23 +94,25 @@ target, so multiple fonts there are a real ordered glyph fallback chain.  The
 [corresponding Emacs source change](https://lists.gnu.org/archive/html/emacs-diffs/2022-04/msg00656.html)
 documents the same overwrite/prepend/append semantics.
 
-Nerd Icons uses the same path.  Cat reads the private-use character ranges
-from `nerd-icons-set-font` and adds them to every role fontset, leaving the
-package as the single source of truth for those evolving ranges.
+### Mode and face rules
 
-Consequences for this configuration:
+`cat-mode-font-rules` applies the role system buffer-locally.  The first rule
+whose `:modes` or `:buffer-name` matches is used:
 
-- Keep physical ASCII and CJK candidates together in reusable font stacks.
-- Keep semantic roles responsible for selecting a stack, size, weight, and
-  other typography attributes.
-- Create and apply every role fontset before its scripts are first displayed,
-  because Emacs can cache script font selection.
-- Share mathematical and emoji rules across role fontsets, and retain the same
-  rules in the default fontset for faces outside Cat's role system.
+- `:font` selects the buffer's base role or concrete family list.
+- `:faces` remaps individual faces.  A face name ending in `*`, such as
+  `org-level-*`, expands to every currently defined face with that prefix.
+- Extra face attributes override the selected role's attributes.
+- `:rescale` installs a buffer-local `face-font-rescale-alist`.
 
-In short: a font stack answers both "which installed Latin family can fulfill
-this role?" and "which font should render this character without losing that
-role's serif, sans serif, or monospace character?".
+Cat records every remapping cookie and the previous rescale state, so changing
+major mode or forcing a refresh removes only the settings owned by this
+module.  It also leaves a `buffer-face-mode` installed by other configuration
+alone.  Theme and font refreshes reapply active mode rules to live buffers.
+
+In short: a stack answers which physical Latin and CJK fonts are available, a
+role describes their semantic typography, and a mode rule decides where that
+role is used.
 
 ## Typography principles
 
