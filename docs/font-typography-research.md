@@ -73,6 +73,23 @@ fontset.  Nerd Icons remains the source of truth when its private-use ranges
 change, and Cat does not maintain a duplicate range list.  The glyph face from
 `+with-icon` is still preserved where possible; for example, Flycheck keeps
 the prefix separate from the status string colored with `success` or `error`.
+Using exact PUA ranges is intentional.  A catch-all Nerd Font entry is not a
+safe substitute:
+
+- `CHARACTERS=nil` in `set-fontset-font` only supplies a font for characters
+  that have no specification in the fontset.  It is not a highest-priority
+  fallback.
+- A charset-wide `'unicode` entry also covers ordinary text.  In a clean NS
+  Emacs probe, prepending `Symbols Nerd Font Mono` for `'unicode` selected it
+  even for ASCII `A`, despite that font having no `A` cmap entry.  Font backend
+  matching therefore cannot be treated as a guaranteed per-glyph cascade.
+- `prepend` and `append` order specifications for the same target; they do not
+  make a broad target narrower than a character range or guarantee that every
+  backend rejects a font by inspecting its cmap first.
+
+The exact ranges give Nerd Icons priority only where it owns glyphs, while all
+other characters continue through the role's normal ASCII, CJK, symbol, math,
+and emoji rules.
 
 The resolved inputs also form a signature.  Existing role fontsets are rebuilt
 only when their signature changes.  The default fontset has a separate
@@ -91,8 +108,13 @@ mappings.
 See the GNU manuals on
 [modifying fontsets](https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html)
 and [`set-fontset-font`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Fontsets.html).
-The latter can replace, prepend, or append specifications for a character
-target, so multiple fonts there are a real ordered glyph fallback chain.  The
+The latter can replace, prepend, or append specifications for one character
+target.  This defines candidate order within that target, subject to face font
+selection and the platform font backend; it is not a universal glyph-by-glyph
+fallback guarantee.  A `nil` target only fills characters without an existing
+font specification.  Font changes should also happen before affected
+characters are displayed, because Emacs caches fonts in character
+compositions.  The
 [corresponding Emacs source change](https://lists.gnu.org/archive/html/emacs-diffs/2022-04/msg00656.html)
 documents the same overwrite/prepend/append semantics.
 
