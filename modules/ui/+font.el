@@ -396,11 +396,12 @@ If ADD is nil, use the existing fonts as an ordered replacement."
       family)))
 
 (defun +safe-buffer-face-set-fonts (fonts)
-  "Safely set the current buffer face from FONTS or a font role."
-  (when-let* ((spec (cat--resolved-face-spec fonts)))
-    (buffer-face-set spec)
-    (message "Set buffer %s face to %s" (current-buffer) fonts)
-    spec))
+  "Set the current graphical buffer face from FONTS or a font role."
+  (when (display-graphic-p)
+    (when-let* ((spec (cat--resolved-face-spec fonts)))
+      (buffer-face-set spec)
+      (message "Set buffer %s face to %s" (current-buffer) fonts)
+      spec)))
 
 (defun cat--configure-default-fontset (signature frame)
   "Apply default fontset SIGNATURE once using graphical FRAME."

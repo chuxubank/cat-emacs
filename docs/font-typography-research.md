@@ -70,7 +70,9 @@ Cat obtains the Nerd Icons ranges by temporarily intercepting the
 `set-fontset-font` calls made by `nerd-icons-set-font`.  It caches those range
 descriptions and applies them with `nerd-icons-font-family` to every role
 fontset.  Nerd Icons remains the source of truth when its private-use ranges
-change, and Cat does not maintain a duplicate range list.
+change, and Cat does not maintain a duplicate range list.  The glyph face from
+`+with-icon` is still preserved where possible; for example, Flycheck keeps
+the prefix separate from the status string colored with `success` or `error`.
 
 The resolved inputs also form a signature.  Existing role fontsets are rebuilt
 only when their signature changes.  The default fontset has a separate
