@@ -37,6 +37,12 @@
     (cat-font-validate-rule symbol rule))
   (set-default symbol value))
 
+(defun cat-font--set-stacks (symbol value)
+  "Set SYMBOL to font stacks VALUE and refresh configured fonts."
+  (set-default symbol value)
+  (when (fboundp 'cat-setup-fonts)
+    (cat-setup-fonts)))
+
 (defcustom cat-font-stacks
   '((fallback
      :symbol ("Apple Symbols" "Symbola")
@@ -51,9 +57,8 @@
            "Source Han Sans SC" "Microsoft YaHei"))
     (serif
      :extends fallback
-     :ascii ("Charter" "Roboto Serif" "DejaVu Serif" "Georgia")
-     :cjk ("Songti SC" "LXGW WenKai" "Noto Serif CJK SC"
-           "Source Han Serif SC"))
+     :ascii ("Big Caslon" "Roboto Serif" "DejaVu Serif" "Georgia")
+     :cjk ("Source Han Serif SC" "LXGW WenKai" "Noto Serif CJK SC" "Songti SC"))
     (slab-serif
      :extends serif
      :ascii ("Roboto Slab" "American Typewriter"))
@@ -76,7 +81,8 @@ Each entry has the form (STACK :CATEGORY FONTS...).  Categories include
 :ascii, :cjk, :symbol, :mathematical, and :emoji.  A stack can inherit
 missing properties from another stack with :extends."
   :type 'sexp
-  :group 'cat-font)
+  :group 'cat-font
+  :set #'cat-font--set-stacks)
 
 (defcustom cat-font-preset
   `((default :stack monospace-narrow

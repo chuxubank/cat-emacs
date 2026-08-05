@@ -1,29 +1,30 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org
-  :cat-font (body
-             :modes org-mode
-             :faces ((org-document-title title)
-                     (org-level-* heading)
-                     (org-table table)
-                     (org-formula table)
-                     (org-column-title table)
-                     (org-code code)
-                     (org-block code)
-                     (org-meta-line code)
-                     (org-special-keyword metadata-label)
-                     (org-drawer metadata-label)
-                     (org-todo metadata-label)
-                     (org-done metadata-label)
-                     (org-date metadata-value)
-                     (org-property-value metadata-value)))
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode"
                 :lisp-dir "lisp/"
                 :rev "dev")
-  :delight
-  (org-cdlatex-mode (:eval (+with-icon "nf-seti-tex" " ")))
   :commands
   (org-store-link)
+  :delight
+  (org-cdlatex-mode (:eval (+with-icon "nf-seti-tex" " ")))
+  :cat-font (body
+             :modes org-mode
+             :faces ((org-block code)
+                     (org-code code)
+                     (org-column-title table)
+                     (org-date metadata-value)
+                     (org-document-title title)
+                     (org-done metadata-label)
+                     (org-drawer metadata-label)
+                     (org-formula table)
+                     (org-level-* heading)
+                     (org-link metadata-label)
+                     (org-meta-line code)
+                     (org-property-value metadata-value)
+                     (org-special-keyword metadata-label)
+                     (org-table table)
+                     (org-todo metadata-label)))
   :custom
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))
@@ -232,12 +233,12 @@
      ("options" . ,(+with-icon "nf-cod-settings"))
      ("description" . ,(+with-icon "nf-cod-note"))
      ("latex_class" . ,(concat (+with-icon "nf-seti-tex") " "
-                                (+with-icon "nf-cod-file_code")))
+                               (+with-icon "nf-cod-file_code")))
      ("latex_class_options" . ,(concat (+with-icon "nf-seti-tex") " "
-                                        (+with-icon "nf-cod-file_code") " "
-                                        (+with-icon "nf-cod-settings")))
+                                       (+with-icon "nf-cod-file_code") " "
+                                       (+with-icon "nf-cod-settings")))
      ("latex_header" . ,(concat (+with-icon "nf-seti-tex") " "
-                                 (+with-icon "nf-md-page_layout_header")))
+                                (+with-icon "nf-md-page_layout_header")))
      ("latex" . ,(+with-icon "nf-seti-tex"))
      ("tblfm" . ,(+with-icon "nf-md-math_integral_box"))
      ("name" . ,(+with-icon "nf-md-tag_text"))
