@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+(cat-register-font-rule
+ 'comint
+ '(:modes comint-mode
+   :font terminal
+   :rescale (("Symbols Nerd Font" . 1.2))))
+
 (pretty-hydra-define cat-term
   (:color teal :title (+with-icon "nf-oct-terminal" nil " Term"))
   ("" ()))
@@ -29,6 +35,8 @@
 
 (use-package vterm
   :cat
+  :cat-font (terminal
+             :rescale (("Symbols Nerd Font" . 1.2)))
   :ensure-system-package
   (cmake . cmake)
   :init
@@ -52,6 +60,8 @@
     (("v" #'vterm "vterm")))))
 
 (use-package mistty
+  :cat-font (terminal
+             :rescale (("Symbols Nerd Font" . 1.2)))
   :bind
   (:map project-prefix-map
         ("M" . mistty-in-project))
@@ -92,6 +102,8 @@
   (meow-vterm-enable))
 
 (use-package ghostel
+  :cat-font (terminal
+             :rescale (("Symbols Nerd Font" . 1.2)))
   :pretty-hydra
   (cat-term
    ("Ghostty"

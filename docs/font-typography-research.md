@@ -135,8 +135,9 @@ documents the same overwrite/prepend/append semantics.
 
 ### Mode and face rules
 
-`cat-mode-font-rules` applies the role system buffer-locally.  The first rule
-whose `:modes` or `:buffer-name` matches is used:
+`cat-mode-font-rules` holds global fallback rules and applies the role system
+buffer-locally.  The first rule whose `:modes` or `:buffer-name` matches is
+used:
 
 - `:font` selects the buffer's base role or concrete family list.
 - `:faces` remaps individual faces.  A face name ending in `*`, such as
@@ -144,7 +145,7 @@ whose `:modes` or `:buffer-name` matches is used:
 - Extra face attributes override the selected role's attributes.
 - `:rescale` installs a buffer-local `face-font-rescale-alist`.
 
-Package modules can register higher-priority rules through the `:cat-font'
+Modules register higher-priority, module-owned rules through the `:cat-font`
 use-package keyword.  A role alone applies to the conventional major mode
 derived from the package name; the full form can override `:modes` and assign
 roles to faces:
@@ -161,8 +162,27 @@ roles to faces:
 ```
 
 A face-only declaration starts with a keyword, for example
-`:cat-font (:faces ((foo-title heading)))`.  Package rules retain declaration
-order and take priority over the centralized fallback rules.
+`:cat-font (:faces ((foo-title heading)))`.  Registered rules retain
+declaration order and take priority over the centralized fallback rules.
+
+For settings without a suitable `use-package` declaration, register the same
+rule format directly in its owning module:
+
+```elisp
+(cat-register-font-rule
+ 'foo-special-buffer
+ '(:buffer-name "Foo" :font code))
+```
+
+The owner identifies the declaration and lets a later declaration replace it
+without changing rule order.
+
+Role definitions remain centralized in `cat-font-preset`; package modules only
+declare where those roles are used.  Registration validates every referenced
+role against the active preset.  Declarations made before the font module loads
+are validated when it initializes, and later registrations are validated
+immediately.  Customizing either the preset or the centralized fallback rules
+also rejects references to missing roles.
 
 Cat records every remapping cookie and the previous rescale state, so changing
 major mode or forcing a refresh removes only the settings owned by this

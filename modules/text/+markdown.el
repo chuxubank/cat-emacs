@@ -8,6 +8,12 @@
 (use-package mustache)
 
 (use-package markdown-mode
+  :cat-font (body
+             :faces ((markdown-header-face heading)
+                     (markdown-header-face-1 title)
+                     (markdown-table-face table)
+                     (markdown-code-face code)
+                     (markdown-inline-code-face code)))
   :pin melpa-stable
   :mode ("README\\.md\\'" . gfm-mode)
   :custom

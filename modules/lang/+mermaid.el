@@ -10,6 +10,7 @@
                 mermaid-flags (format "-b transparent -f -c %s -t %s" cat-mermaid-config-file cat-mermaid-theme)))
 
 (use-package mermaid-mode
+  :cat-font (code-diagram :modes (mermaid-mode mermaid-ts-mode))
   :ensure-system-package
   (mmdc . "bun add -g @mermaid-js/mermaid-cli && bunx puppeteer browsers install chrome-headless-shell")
   :mode "\\.mmd\\'"

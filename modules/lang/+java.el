@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(use-package cc-mode
+  :ensure nil
+  :cat-font (code-jvm :modes (java-mode java-ts-mode)))
+
 (use-package java-imports
   :cat imports
   :hook (java-mode . java-imports-scan-file)

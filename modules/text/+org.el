@@ -1,6 +1,22 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package org
+  :cat-font (body
+             :modes org-mode
+             :faces ((org-document-title title)
+                     (org-level-* heading)
+                     (org-table table)
+                     (org-formula table)
+                     (org-column-title table)
+                     (org-code code)
+                     (org-block code)
+                     (org-meta-line code)
+                     (org-special-keyword metadata-label)
+                     (org-drawer metadata-label)
+                     (org-todo metadata-label)
+                     (org-done metadata-label)
+                     (org-date metadata-value)
+                     (org-property-value metadata-value)))
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode"
                 :lisp-dir "lisp/"
                 :rev "dev")

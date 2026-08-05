@@ -169,6 +169,7 @@
   :hook (after-init . sow-mode))
 
 (use-package treemacs
+  :cat-font ui
   :bind
   ("M-0" . treemacs-select-window)
   :custom

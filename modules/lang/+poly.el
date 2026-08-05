@@ -7,6 +7,7 @@
 (add-to-list 'auto-mode-alist '("\\.plist\\'" . nxml-mode))
 
 (use-package jinja2-ts-mode
+  :cat-font code-config
   :vc (:url "https://github.com/chuxubank/jinja2-ts-mode"))
 
 (use-package poly-any-template

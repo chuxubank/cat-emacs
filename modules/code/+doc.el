@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(cat-register-font-rule
+ 'emacs-documentation
+ '(:modes (Info-mode man-common) :font documentation))
+
 (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 (put 'eldoc-minor-mode-string 'risky-local-variable t)
 

@@ -1,5 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
+(cat-register-font-rule
+ 'meow-cheatsheet
+ '(:buffer-name "Meow Cheatsheet" :font code))
+
 (use-package meow
   :demand t
   :init

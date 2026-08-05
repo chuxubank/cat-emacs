@@ -6,16 +6,18 @@
 
 (defvar use-package-keywords)
 
-(defvar cat-use-package-font-rule-alist nil
-  "Package font rules registered by `:cat-font' in declaration order.")
+(defvar cat-font-rule-alist nil
+  "Module font rules in declaration order.")
 
-(defun cat-use-package-register-font-rule (package rule)
-  "Register PACKAGE font RULE, replacing its previous declaration."
-  (if-let* ((entry (assq package cat-use-package-font-rule-alist)))
+(defun cat-register-font-rule (owner rule)
+  "Register OWNER's font RULE, replacing its previous declaration."
+  (when (fboundp 'cat-font-validate-rule)
+    (cat-font-validate-rule owner rule))
+  (if-let* ((entry (assq owner cat-font-rule-alist)))
       (setcdr entry rule)
-    (setq cat-use-package-font-rule-alist
-          (append cat-use-package-font-rule-alist
-                  (list (cons package rule))))))
+    (setq cat-font-rule-alist
+          (append cat-font-rule-alist
+                  (list (cons owner rule))))))
 
 (defun use-package-handler/:cat (name _keyword args rest state)
   "Handler for the `:cat' keyword in `use-package'.
@@ -66,12 +68,31 @@ expression."
         (unless (plist-member spec :modes)
           (setq spec (plist-put spec :modes
                                 (cat-use-package--default-font-mode name))))
+        (let ((font-present-p (plist-member spec :font))
+              (role (plist-get spec :font))
+              (faces-present-p (plist-member spec :faces))
+              (faces (plist-get spec :faces)))
+          (when (and font-present-p
+                     (not (and role (symbolp role))))
+            (use-package-error ":cat-font :font must name a role"))
+          (when (and faces-present-p (not (listp faces)))
+            (use-package-error ":cat-font :faces must be a list"))
+          (dolist (face-rule faces)
+            (unless (and (consp face-rule)
+                         (symbolp (car face-rule))
+                         (cadr face-rule)
+                         (symbolp (cadr face-rule)))
+              (use-package-error
+               ":cat-font face rules must have the form (FACE ROLE ...)")))
+          (unless (or (and font-present-p role)
+                      (and faces-present-p faces))
+            (use-package-error ":cat-font requires :font or :faces")))
         spec))))
 
 (defun use-package-handler/:cat-font (name _keyword rule rest state)
   "Register normalized font RULE for package NAME."
   (use-package-concat
-   `((cat-use-package-register-font-rule ',name ',rule))
+   `((cat-register-font-rule ',name ',rule))
    (use-package-process-keywords name rest state)))
 
 (defun cat-package--position-cat-keyword ()
@@ -90,7 +111,7 @@ when it runs as an outer (earlier) keyword than `:ensure'."
 (defun cat-package--position-font-keyword ()
   "Process `:cat-font' eagerly after conditional keywords."
   (setq use-package-keywords (delq :cat-font use-package-keywords))
-  (let ((position (or (cl-position :after use-package-keywords)
+  (let ((position (or (cl-position :catch use-package-keywords)
                       (length use-package-keywords))))
     (setq use-package-keywords
           (append (seq-take use-package-keywords position)

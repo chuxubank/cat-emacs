@@ -4,6 +4,39 @@
   "Font settings for Cat Emacs."
   :group 'cat)
 
+(defun cat-font--rule-roles (rule)
+  "Return semantic font roles referenced by RULE."
+  (delq nil
+        (cons (when (symbolp (plist-get rule :font))
+                (plist-get rule :font))
+              (mapcar (lambda (face-rule)
+                        (when (symbolp (cadr face-rule))
+                          (cadr face-rule)))
+                      (plist-get rule :faces)))))
+
+(defun cat-font-validate-rule (owner rule &optional preset)
+  "Validate roles in OWNER's font RULE against PRESET."
+  (let ((preset (or preset cat-font-preset)))
+    (dolist (role (cat-font--rule-roles rule))
+      (unless (assq role preset)
+        (error "Unknown font role %S in font rule for %S" role owner))))
+  rule)
+
+(defun cat-font--set-preset (symbol value)
+  "Set SYMBOL to VALUE after validating registered font rules."
+  (dolist (entry cat-font-rule-alist)
+    (cat-font-validate-rule (car entry) (cdr entry) value))
+  (when (boundp 'cat-mode-font-rules)
+    (dolist (rule cat-mode-font-rules)
+      (cat-font-validate-rule 'cat-mode-font-rules rule value)))
+  (set-default symbol value))
+
+(defun cat-font--set-mode-rules (symbol value)
+  "Set SYMBOL to mode font rules VALUE after validating their roles."
+  (dolist (rule value)
+    (cat-font-validate-rule symbol rule))
+  (set-default symbol value))
+
 (defcustom cat-font-stacks
   '((fallback
      :symbol ("Apple Symbols" "Symbola")
@@ -70,7 +103,8 @@ names an entry in `cat-font-stacks'.  The
 `default' role uses an absolute face height in tenths of a point;
 content roles use heights relative to it.  A role can use :extends and
 :fonts to prepend concrete families to its inherited stack."
-  :type 'sexp)
+  :type 'sexp
+  :set #'cat-font--set-preset)
 
 (defcustom cat-font-script-rules
   '(((han kana hangul bopomofo cjk-misc) cjk)
@@ -83,70 +117,13 @@ can be a script symbol or a list of script symbols.  CATEGORY names a
 font category configured in `cat-font-stacks'."
   :type 'sexp)
 
-(setq use-default-font-for-symbols (not STIPPLE-COMPATIBLE-P))
-
 (defcustom cat-mode-font-rules
-  `((:modes (org-mode)
-            :font body
-            :faces ((org-document-title title)
-                    (org-level-* heading)
-                    (org-table table)
-                    (org-formula table)
-                    (org-column-title table)
-                    (org-code code)
-                    (org-block code)
-                    (org-meta-line code)
-                    (org-special-keyword metadata-label)
-                    (org-drawer metadata-label)
-                    (org-todo metadata-label)
-                    (org-done metadata-label)
-                    (org-date metadata-value)
-                    (org-property-value metadata-value)))
-    (:modes (markdown-mode)
-            :font body
-            :faces ((markdown-header-face heading)
-                    (markdown-header-face-1 title)
-                    (markdown-table-face table)
-                    (markdown-code-face code)
-                    (markdown-inline-code-face code)))
-    (:modes (csv-mode)
-            :font table)
-    (:modes (beancount-mode)
-            :font mono)
-    (:modes (json-mode json-ts-mode
-                       yaml-mode yaml-ts-mode
-                       toml-ts-mode
-                       conf-mode
-                       nxml-mode
-                       sgml-mode
-                       templ-ts-mode
-                       go-template-ts-mode
-                       jinja2-ts-mode)
+  `((:modes (nxml-mode sgml-mode toml-ts-mode conf-mode)
             :font code-config)
-    (:modes (objc-mode swift-mode applescript-mode)
-            :font code-apple)
-    (:modes (plantuml-mode mermaid-mode mermaid-ts-mode)
-            :font code-diagram)
-    (:modes (python-base-mode)
-            :font code-python)
-    (:modes (kotlin-ts-mode kotlin-mode
-                            java-ts-mode java-mode
-                            js-base-mode
-                            typescript-ts-base-mode typescript-mode)
-            :font code-jvm)
-    (:modes (comint-mode mistty-mode vterm-mode ghostel-mode logview-mode)
-            :font terminal
-            :rescale (("Symbols Nerd Font" . 1.2)))
     (:modes (prog-mode)
             :font code)
-    (:buffer-name "Meow Cheatsheet"
-                  :font code)
     (:modes (text-mode)
-            :font prose)
-    (:modes (Info-mode man-common)
-            :font documentation)
-    (:modes (treemacs-mode)
-            :font ui))
+            :font prose))
   "Rules for buffer-local font selection.
 Each rule is a plist.  Supported keys are:
 
@@ -157,7 +134,15 @@ Each rule is a plist.  Supported keys are:
              A FACE ending in * matches every face with that prefix.
              Role attributes are merged with rule ATTRIBUTES.
 :rescale     Buffer-local `face-font-rescale-alist' value."
-  :type 'sexp)
+  :type 'sexp
+  :set #'cat-font--set-mode-rules)
+
+(setq use-default-font-for-symbols (not STIPPLE-COMPATIBLE-P))
+
+(dolist (entry cat-font-rule-alist)
+  (cat-font-validate-rule (car entry) (cdr entry)))
+(dolist (rule cat-mode-font-rules)
+  (cat-font-validate-rule 'cat-mode-font-rules rule))
 
 (defvar cat-setup-fonts-hook nil
   "Hook runs after setup fonts.")
@@ -574,7 +559,7 @@ owned by other configuration."
                (not (equal buffer-face-mode-face cat--mode-buffer-face)))
     (let* ((rule (seq-find #'cat--mode-font-rule-matches-p
                            (append (mapcar #'cdr
-                                           cat-use-package-font-rule-alist)
+                                           cat-font-rule-alist)
                                    cat-mode-font-rules)))
            (state (list major-mode rule)))
       (when (or force (not (equal state cat--mode-font-state)))

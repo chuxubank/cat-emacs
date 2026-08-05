@@ -10,6 +10,7 @@
                   org-plantuml-args args)))
 
 (use-package plantuml-mode
+  :cat-font code-diagram
   :mode ("\\.puml\\'" . plantuml-mode)
   :custom
   (plantuml-default-exec-mode 'executable)

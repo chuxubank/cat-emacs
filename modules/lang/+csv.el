@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(use-package csv-mode)
+(use-package csv-mode
+  :cat-font table)
 
 (use-package rainbow-csv
   :pin jcs-elpa

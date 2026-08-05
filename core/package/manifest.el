@@ -6,7 +6,7 @@
 
 (defvar package-vc-selected-packages nil)
 (defvar use-package-ensure-function)
-(defvar cat-use-package-font-rule-alist nil)
+(defvar cat-font-rule-alist nil)
 
 (defconst cat-package-manifest-format-version 1
   "Current generated package manifest format version.")
@@ -188,14 +188,14 @@ nonlocal exit."
   (let ((previous-state cat-package-manifest-state)
         (previous-elpa-roots (copy-sequence cat-package--elpa-roots))
         (previous-vc-roots (copy-tree cat-package--vc-roots))
-        (previous-font-rules (copy-tree cat-use-package-font-rule-alist))
+        (previous-font-rules (copy-tree cat-font-rule-alist))
         (previous-selection (copy-sequence package-selected-packages))
         (previous-vc-selection (copy-tree package-vc-selected-packages))
         succeeded
         result)
     (setq cat-package-manifest-state 'collecting)
     (cat-package--reset-manifest)
-    (setq cat-use-package-font-rule-alist nil)
+    (setq cat-font-rule-alist nil)
     (unwind-protect
         (condition-case err
             (progn
@@ -211,7 +211,7 @@ nonlocal exit."
         (setq cat-package-manifest-state previous-state
               cat-package--elpa-roots previous-elpa-roots
               cat-package--vc-roots previous-vc-roots
-              cat-use-package-font-rule-alist previous-font-rules
+              cat-font-rule-alist previous-font-rules
               package-selected-packages previous-selection
               package-vc-selected-packages previous-vc-selection)))))
 
