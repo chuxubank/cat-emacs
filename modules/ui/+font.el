@@ -88,7 +88,7 @@ missing properties from another stack with :extends."
   `((default :stack monospace-narrow
              :height ,(if IS-MAC 160 140))
     (heading :stack serif :weight semi-bold)
-    (title :extends heading :height 1.4)
+    (title :extends heading :height 1.4 :fonts ("DIN Condensed"))
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)

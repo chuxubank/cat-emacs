@@ -32,7 +32,7 @@
           (memq api '(GetCompletions Heartbeat CancelRequest GetAuthToken RegisterUser auth-redirect AcceptCompletion)))))
 
 (use-package copilot
-  :unless IS-CI
+  :unless (or IS-CI (getenv "CAT_EMACS_DEBUG_INIT"))
   :pin melpa-stable
   :delight (copilot-mode (:eval (+with-icon "nf-oct-copilot" " ")))
   :hook (prog-mode . copilot-mode)

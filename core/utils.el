@@ -115,7 +115,7 @@ directories listed in `vc-directory-exclusion-list'."
   "Start Emacs in debug mode."
   (interactive)
   (type-break-mode -1)
-  (shell-command "emacs --debug")
+  (shell-command "CAT_EMACS_DEBUG_INIT=1 emacs --debug")
   (type-break-mode 1))
 
 (provide 'cat-utils)
