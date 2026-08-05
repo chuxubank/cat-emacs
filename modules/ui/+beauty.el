@@ -69,8 +69,9 @@
   :custom
   (indent-bars-treesit-support t)
   :config
-  (when (or IS-MACPLUS
-            IS-WINDOWS)
+  (when (or (and IS-MACPLUS (not EMACS31+))
+            IS-WINDOWS
+            (not EMACS30+))
     (setq indent-bars-prefer-character t)))
 
 (use-package solaire-mode
