@@ -30,6 +30,7 @@
     (monospace-narrow
      :extends fallback
      :ascii ("Iosevka" "Iosevka Term")
+     :symbol ("Iosevka")
      :cjk ("LXGW WenKai Mono" "Sarasa Mono SC"))
     (monospace-code
      :extends monospace-narrow
