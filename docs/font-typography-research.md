@@ -98,10 +98,13 @@ other characters continue through the role's normal ASCII, CJK, symbol, math,
 and emoji rules.
 
 `cat-font-script-rules` maps Emacs character targets to categories inherited
-from each role's stack.  `use-default-font-for-symbols` must be nil so symbol
-characters honor those role fontsets.  In particular, Emoji fallback must not
-be assigned to the broad `unicode` charset: text symbols such as Org Modern's
-`▶` also belong to that charset and would otherwise be rendered as Emoji.
+from each role's stack.  On systems without compatible stipple support,
+`use-default-font-for-symbols` is non-nil so character-based indentation bars
+use the default face's full-height box-drawing glyphs.  On compatible systems,
+indentation bars use stipple and symbols honor their role fontsets.  Emoji
+fallback must not be assigned to the broad `unicode` charset: text symbols
+such as Org Modern's `▶` also belong to that charset and could otherwise be
+rendered as Emoji.
 
 The resolved inputs also form a signature.  Existing role fontsets are rebuilt
 only when their signature changes.  The default fontset has a separate

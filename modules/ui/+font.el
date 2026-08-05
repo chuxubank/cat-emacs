@@ -82,7 +82,7 @@ can be a script symbol or a list of script symbols.  CATEGORY names a
 font category configured in `cat-font-stacks'."
   :type 'sexp)
 
-(setq use-default-font-for-symbols nil)
+(setq use-default-font-for-symbols (not STIPPLE-COMPATIBLE-P))
 
 (defcustom cat-mode-font-rules
   `((:modes (org-mode)

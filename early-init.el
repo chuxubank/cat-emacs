@@ -15,6 +15,10 @@
 (defconst IS-MINGW64 (and IS-WINDOWS (string-match "mingw64" (getenv "emacs_dir"))))
 (defconst IS-WSL     (string-match-p "WSL2" operating-system-release))
 (defconst IS-CI      (getenv "CI"))
+(defconst STIPPLE-COMPATIBLE-P
+  (not (or (and IS-MACPLUS (not EMACS31+))
+           IS-WINDOWS
+           (not EMACS30+))))
 
 (defconst cat-emacs-name "Cat Emacs")
 

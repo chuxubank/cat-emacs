@@ -68,11 +68,7 @@
   :hook (prog-mode . indent-bars-mode)
   :custom
   (indent-bars-treesit-support t)
-  :config
-  (when (or (and IS-MACPLUS (not EMACS31+))
-            IS-WINDOWS
-            (not EMACS30+))
-    (setq indent-bars-prefer-character t)))
+  (indent-bars-prefer-character (not STIPPLE-COMPATIBLE-P)))
 
 (use-package solaire-mode
   :hook (after-init . solaire-global-mode))
