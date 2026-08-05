@@ -147,7 +147,9 @@ whose `:modes` or `:buffer-name` matches is used:
 Cat records every remapping cookie and the previous rescale state, so changing
 major mode or forcing a refresh removes only the settings owned by this
 module.  It also leaves a `buffer-face-mode` installed by other configuration
-alone.  Theme and font refreshes reapply active mode rules to live buffers.
+alone.  Mode rules are applied when a buffer first appears in a window; hidden
+buffers remain untouched.  Theme and font refreshes reapply active rules only
+to buffers visible on live frames.
 
 In short: a stack answers which physical Latin and CJK fonts are available, a
 role describes their semantic typography, and a mode rule decides where that

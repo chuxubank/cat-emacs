@@ -581,17 +581,33 @@ owned by other configuration."
           (cat--clear-mode-font))
         (setq cat--mode-font-state state)))))
 
+(defun cat--setup-window-fonts (window-or-frame)
+  "Apply mode fonts to buffers visible in WINDOW-OR-FRAME."
+  (dolist (window (if (windowp window-or-frame)
+                      (list window-or-frame)
+                    (window-list window-or-frame 'no-minibuf)))
+    (with-current-buffer (window-buffer window)
+      (cat-setup-mode-font))))
+
+(defun cat--setup-visible-mode-font (&rest _)
+  "Apply mode fonts when the current buffer is visible."
+  (when (get-buffer-window (current-buffer) 'visible)
+    (cat-setup-mode-font)))
+
 (defun cat--refresh-mode-fonts (&rest _)
-  "Reapply Cat's buffer-local font rules in every live buffer."
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer
-      (when cat--mode-font-state
+  "Reapply Cat's mode font rules to visible buffers."
+  (let (buffers)
+    (walk-windows (lambda (window)
+                    (cl-pushnew (window-buffer window) buffers))
+                  'no-minibuf 'visible)
+    (dolist (buffer buffers)
+      (with-current-buffer buffer
         (cat-setup-mode-font t)))))
 
 (add-hook 'cat-setup-fonts-hook #'cat--refresh-mode-fonts)
-(add-hook 'window-configuration-change-hook 'cat-setup-mode-font)
-(add-hook 'after-change-major-mode-hook 'cat-setup-mode-font)
-(add-hook 'after-revert-hook 'cat-setup-mode-font)
+(add-hook 'window-buffer-change-functions #'cat--setup-window-fonts)
+(add-hook 'after-change-major-mode-hook #'cat--setup-visible-mode-font)
+(add-hook 'after-revert-hook #'cat--setup-visible-mode-font)
 
 (when (and after-init-time (display-graphic-p))
   (cat-setup-fonts))
