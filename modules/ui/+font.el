@@ -463,6 +463,26 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\\\" "://"))))
 
+(defvar cat--nerd-icons-fontset-configurations nil
+  "Nerd Icons frame, fontset, and family triples already configured.")
+
+(defun cat--setup-nerd-icons-font (&optional _font-family frame)
+  "Configure Nerd Icons once for graphical FRAME's active fontset."
+  (let* ((frame (or frame (selected-frame)))
+         (fontset (and (display-graphic-p frame)
+                       (frame-parameter frame 'font))))
+    (when fontset
+      (require 'nerd-icons)
+      (let ((configuration (list frame fontset nerd-icons-font-family)))
+        (unless (member configuration
+                        cat--nerd-icons-fontset-configurations)
+          (with-selected-frame frame
+            (nerd-icons-set-font nil frame))
+          (push configuration
+                cat--nerd-icons-fontset-configurations))))))
+
+(add-hook 'cat-setup-fonts-hook #'cat--setup-nerd-icons-font)
+
 (use-package nerd-icons-completion
   :hook (after-init . nerd-icons-completion-mode))
 

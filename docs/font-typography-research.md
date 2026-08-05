@@ -70,9 +70,12 @@ Cat obtains the Nerd Icons ranges by temporarily intercepting the
 `set-fontset-font` calls made by `nerd-icons-set-font`.  It caches those range
 descriptions and applies them with `nerd-icons-font-family` to every role
 fontset.  Nerd Icons remains the source of truth when its private-use ranges
-change, and Cat does not maintain a duplicate range list.  The glyph face from
-`+with-icon` is still preserved where possible; for example, Flycheck keeps
-the prefix separate from the status string colored with `success` or `error`.
+change, and Cat does not maintain a duplicate range list.  Cat also lets
+`nerd-icons-set-font` apply those ranges to each graphical frame's active
+fontset.  This second path covers mode-line formatters that replace an icon
+string's face with `mode-line`; role fontsets alone cannot affect those
+strings.
+
 Using exact PUA ranges is intentional.  A catch-all Nerd Font entry is not a
 safe substitute:
 
