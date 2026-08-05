@@ -5,11 +5,19 @@
   :group 'cat)
 
 (defcustom cat-font-stacks
-  '((sans-serif-ui
+  '((fallback
+     :symbol ("Apple Symbols" "Symbola")
+     :mathematical ("STIX Two Math"
+                    "DejaVu Math TeX Gyre"
+                    "Noto Sans Math")
+     :emoji ("Apple Color Emoji"))
+    (sans-serif-ui
+     :extends fallback
      :ascii ("Inter" "Avenir Next" "DejaVu Sans")
      :cjk ("PingFang SC" "Hiragino Sans GB" "Noto Sans CJK SC"
            "Source Han Sans SC" "Microsoft YaHei"))
     (serif
+     :extends fallback
      :ascii ("Charter" "Roboto Serif" "DejaVu Serif" "Georgia")
      :cjk ("Songti SC" "LXGW WenKai" "Noto Serif CJK SC"
            "Source Han Serif SC"))
@@ -20,6 +28,7 @@
      :extends serif
      :ascii ("Iosevka Etoile" "Iosevka Aile"))
     (monospace-narrow
+     :extends fallback
      :ascii ("Iosevka" "Iosevka Term")
      :cjk ("LXGW WenKai Mono" "Sarasa Mono SC"))
     (monospace-code
@@ -29,12 +38,10 @@
      :extends monospace-narrow
      :ascii ("Roboto Mono" "DejaVu Sans Mono")))
   "Physical font candidates grouped into reusable stacks.
-Each entry has the form (STACK :ascii FONTS :cjk FONTS).  A stack can
-inherit missing properties from another stack with :extends."
+Each entry has the form (STACK :CATEGORY FONTS...).  Categories include
+:ascii, :cjk, :symbol, :mathematical, and :emoji.  A stack can inherit
+missing properties from another stack with :extends."
   :type 'sexp)
-
-(defconst cat-cjk-scripts '(han kana hangul bopomofo cjk-misc)
-  "Scripts configured by Cat's CJK font rules.")
 
 (defcustom cat-font-preset
   `((default :stack monospace-narrow
@@ -65,15 +72,17 @@ content roles use heights relative to it.  A role can use :extends and
   :type 'sexp)
 
 (defcustom cat-font-script-rules
-  '((unicode ("Apple Color Emoji" "Symbola") append)
-    (mathematical ("STIX Two Math"
-                   "DejaVu Math TeX Gyre"
-                   "Noto Sans Math")))
-  "Rules for `set-fontset-font'.
-Each rule has the form (CHARACTERS FONTS &optional ADD).  CHARACTERS
-can be a script symbol or a list of script symbols.  FONTS is an
-ordered list of concrete font families."
+  '(((han kana hangul bopomofo cjk-misc) cjk)
+    (symbol symbol)
+    (mathematical mathematical)
+    (emoji emoji))
+  "Map fontset character targets to stack categories.
+Each rule has the form (CHARACTERS CATEGORY &optional ADD).  CHARACTERS
+can be a script symbol or a list of script symbols.  CATEGORY names a
+font category configured in `cat-font-stacks'."
   :type 'sexp)
+
+(setq use-default-font-for-symbols nil)
 
 (defcustom cat-mode-font-rules
   `((:modes (org-mode)
@@ -185,10 +194,7 @@ Each rule is a plist.  Supported keys are:
   (let* ((role-spec (cat--font-role-spec role))
          (stack (plist-get role-spec :stack))
          (stack-spec (cat--font-stack-spec stack))
-         (property (pcase script
-                     ('ascii :ascii)
-                     ('cjk :cjk)
-                     (_ (error "Unknown font script category: %S" script))))
+         (property (intern (format ":%s" script)))
          (fonts (copy-sequence (plist-get stack-spec property))))
     (when (eq script 'ascii)
       (setq fonts (append (plist-get role-spec :fonts) fonts)))
@@ -250,7 +256,7 @@ Each rule is a plist.  Supported keys are:
         (let (entries)
           (cl-letf (((symbol-function 'set-fontset-font)
                      (lambda (_fontset characters _font-spec
-                                      &optional _frame add)
+                                       &optional _frame add)
                        (push (cons characters add) entries))))
             (nerd-icons-set-font))
           (unless entries
@@ -258,10 +264,14 @@ Each rule is a plist.  Supported keys are:
           (setq cat--nerd-icons-fontset-entry-cache
                 (nreverse entries))))))
 
-(defun cat--font-rules ()
-  "Return configured script and generated Nerd Icons font rules."
+(defun cat--font-rules (role)
+  "Return ROLE's configured script and generated Nerd Icons font rules."
   (require 'nerd-icons)
-  (append cat-font-script-rules
+  (append (mapcar (lambda (rule)
+                    (list (car rule)
+                          (cat--font-role-candidates role (cadr rule))
+                          (caddr rule)))
+                  cat-font-script-rules)
           (mapcar (lambda (entry)
                     (list (list (car entry))
                           (list nerd-icons-font-family)
@@ -277,12 +287,7 @@ Each rule is a plist.  Supported keys are:
   "Return the configuration signature for ROLE's fontset."
   (list
    (cat--font-role-candidates role 'ascii)
-   (cat--font-role-candidates role 'cjk)
-   (mapcar (lambda (rule)
-             (list (car rule)
-                   (cat--font-list (cadr rule))
-                   (caddr rule)))
-           (cat--font-rules))))
+   (cat--font-rules role)))
 
 (defun cat--set-fontset-candidates (fontset characters fonts &optional add)
   "Set ordered FONTS for CHARACTERS in FONTSET."
@@ -307,9 +312,7 @@ Each rule is a plist.  Supported keys are:
 (defun cat--configure-role-fontset (fontset signature)
   "Configure FONTSET from a role SIGNATURE."
   (cat--set-fontset-candidates fontset 'ascii (nth 0 signature))
-  (dolist (script cat-cjk-scripts)
-    (cat--set-fontset-candidates fontset script (nth 1 signature)))
-  (pcase-dolist (`(,characters ,fonts ,add) (nth 2 signature))
+  (pcase-dolist (`(,characters ,fonts ,add) (nth 1 signature))
     (dolist (character (ensure-list characters))
       (cat--set-fontset-candidates fontset character fonts add))))
 
@@ -406,9 +409,7 @@ If ADD is nil, use the existing fonts as an ordered replacement."
 (defun cat--configure-default-fontset (signature frame)
   "Apply default fontset SIGNATURE once using graphical FRAME."
   (unless (equal signature cat--default-fontset-signature)
-    (dolist (script cat-cjk-scripts)
-      (+safe-set-fontset-fonts t script (nth 1 signature) frame))
-    (pcase-dolist (`(,scripts ,fonts . ,args) (nth 2 signature))
+    (pcase-dolist (`(,scripts ,fonts . ,args) (nth 1 signature))
       (dolist (script (ensure-list scripts))
         (+safe-set-fontset-fonts t script fonts frame (car args))))
     (setq cat--default-fontset-signature signature)))

@@ -15,14 +15,18 @@ input.
 (STACK
  :ascii (ASCII-FAMILY ...)
  :cjk (CJK-FAMILY ...)
+ :symbol (SYMBOL-FAMILY ...)
+ :mathematical (MATH-FAMILY ...)
+ :emoji (EMOJI-FAMILY ...)
  :extends PARENT-STACK)
 ```
 
-`:extends` supplies properties omitted by the child.  Defining `:ascii` or
-`:cjk` on the child replaces that inherited property; it does not append to
-the parent's list.  This lets related stacks share CJK choices while keeping
-their Latin candidates independent.  For example, `monospace-code` inherits
-the CJK list from `monospace-narrow` but replaces its ASCII list.
+`:extends` supplies properties omitted by the child.  Defining a category on
+the child replaces that inherited property; it does not append to the parent's
+list.  The shared `fallback` stack owns symbol, mathematical, and emoji
+candidates.  Concrete stacks inherit it while defining their own ASCII and CJK
+choices.  For example, `monospace-code` inherits the CJK list from
+`monospace-narrow` but replaces its ASCII list.
 
 `cat-font-preset` maps semantic roles to those stacks:
 
@@ -58,13 +62,12 @@ A face does not natively accept an ordered list for `:family`: the value is one
 family-name string.  A fontset does accept ordered specifications for
 character ranges, charsets, and scripts, and its name can be used wherever
 Emacs accepts a font name.  Cat therefore compiles one named fontset per role
-from three inputs:
+from two inputs:
 
 1. The role's ordered ASCII candidates.
-2. The role stack's ordered CJK candidates for Han, Kana, Hangul, Bopomofo,
-   and miscellaneous CJK characters.
-3. Shared `cat-font-script-rules` plus the private-use ranges owned by Nerd
-   Icons.
+2. Shared `cat-font-script-rules`, which maps CJK, symbol, mathematical, and
+   Emoji targets to categories inherited from the role's stack, plus the
+   private-use ranges owned by Nerd Icons.
 
 Cat obtains the Nerd Icons ranges by temporarily intercepting the
 `set-fontset-font` calls made by `nerd-icons-set-font`.  It caches those range
@@ -93,6 +96,12 @@ safe substitute:
 The exact ranges give Nerd Icons priority only where it owns glyphs, while all
 other characters continue through the role's normal ASCII, CJK, symbol, math,
 and emoji rules.
+
+`cat-font-script-rules` maps Emacs character targets to categories inherited
+from each role's stack.  `use-default-font-for-symbols` must be nil so symbol
+characters honor those role fontsets.  In particular, Emoji fallback must not
+be assigned to the broad `unicode` charset: text symbols such as Org Modern's
+`▶` also belong to that charset and would otherwise be rendered as Emoji.
 
 The resolved inputs also form a signature.  Existing role fontsets are rebuilt
 only when their signature changes.  The default fontset has a separate
