@@ -75,7 +75,8 @@
 Each entry has the form (STACK :CATEGORY FONTS...).  Categories include
 :ascii, :cjk, :symbol, :mathematical, and :emoji.  A stack can inherit
 missing properties from another stack with :extends."
-  :type 'sexp)
+  :type 'sexp
+  :group 'cat-font)
 
 (defcustom cat-font-preset
   `((default :stack monospace-narrow
@@ -104,6 +105,7 @@ names an entry in `cat-font-stacks'.  The
 content roles use heights relative to it.  A role can use :extends and
 :fonts to prepend concrete families to its inherited stack."
   :type 'sexp
+  :group 'cat-font
   :set #'cat-font--set-preset)
 
 (defcustom cat-font-script-rules
@@ -115,7 +117,8 @@ content roles use heights relative to it.  A role can use :extends and
 Each rule has the form (CHARACTERS CATEGORY &optional ADD).  CHARACTERS
 can be a script symbol or a list of script symbols.  CATEGORY names a
 font category configured in `cat-font-stacks'."
-  :type 'sexp)
+  :type 'sexp
+  :group 'cat-font)
 
 (defcustom cat-mode-font-rules
   `((:modes (nxml-mode sgml-mode toml-ts-mode conf-mode)
@@ -135,6 +138,7 @@ Each rule is a plist.  Supported keys are:
              Role attributes are merged with rule ATTRIBUTES.
 :rescale     Buffer-local `face-font-rescale-alist' value."
   :type 'sexp
+  :group 'cat-font
   :set #'cat-font--set-mode-rules)
 
 (setq use-default-font-for-symbols (not STIPPLE-COMPATIBLE-P))
