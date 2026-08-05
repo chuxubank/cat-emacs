@@ -144,6 +144,26 @@ whose `:modes` or `:buffer-name` matches is used:
 - Extra face attributes override the selected role's attributes.
 - `:rescale` installs a buffer-local `face-font-rescale-alist`.
 
+Package modules can register higher-priority rules through the `:cat-font'
+use-package keyword.  A role alone applies to the conventional major mode
+derived from the package name; the full form can override `:modes` and assign
+roles to faces:
+
+```elisp
+(use-package foo
+  :cat-font code)
+
+(use-package org
+  :cat-font (body
+             :modes (org-mode)
+             :faces ((org-level-* heading)
+                     (org-table table))))
+```
+
+A face-only declaration starts with a keyword, for example
+`:cat-font (:faces ((foo-title heading)))`.  Package rules retain declaration
+order and take priority over the centralized fallback rules.
+
 Cat records every remapping cookie and the previous rescale state, so changing
 major mode or forcing a refresh removes only the settings owned by this
 module.  It also leaves a `buffer-face-mode` installed by other configuration

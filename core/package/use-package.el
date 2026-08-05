@@ -2,8 +2,20 @@
 
 (require 'cl-lib)
 (require 'seq)
+(require 'subr-x)
 
 (defvar use-package-keywords)
+
+(defvar cat-use-package-font-rule-alist nil
+  "Package font rules registered by `:cat-font' in declaration order.")
+
+(defun cat-use-package-register-font-rule (package rule)
+  "Register PACKAGE font RULE, replacing its previous declaration."
+  (if-let* ((entry (assq package cat-use-package-font-rule-alist)))
+      (setcdr entry rule)
+    (setq cat-use-package-font-rule-alist
+          (append cat-use-package-font-rule-alist
+                  (list (cons package rule))))))
 
 (defun use-package-handler/:cat (name _keyword args rest state)
   "Handler for the `:cat' keyword in `use-package'.
@@ -25,6 +37,43 @@ expression."
          ((symbolp arg) `(catp! ,arg))
          (t arg))))))
 
+(defun cat-use-package--default-font-mode (name)
+  "Return the conventional major mode associated with package NAME."
+  (let ((name (symbol-name name)))
+    (intern (if (string-suffix-p "-mode" name)
+                name
+              (concat name "-mode")))))
+
+(defun use-package-normalize/:cat-font (name _keyword args)
+  "Normalize a `:cat-font' declaration for package NAME."
+  (use-package-only-one ":cat-font" args
+    (lambda (_label arg)
+      (let* ((spec (cond
+                    ((symbolp arg) (list :font arg))
+                    ((and (listp arg) (keywordp (car arg))) arg)
+                    ((and (consp arg) (symbolp (car arg)))
+                     (cons :font arg))
+                    (t (use-package-error
+                        ":cat-font expects ROLE or (ROLE :KEY VALUE...)"))))
+             (allowed '(:modes :font :faces :rescale))
+             (tail spec))
+        (unless (zerop (% (length spec) 2))
+          (use-package-error ":cat-font expects a property list"))
+        (while tail
+          (unless (memq (pop tail) allowed)
+            (use-package-error ":cat-font contains an unknown property"))
+          (pop tail))
+        (unless (plist-member spec :modes)
+          (setq spec (plist-put spec :modes
+                                (cat-use-package--default-font-mode name))))
+        spec))))
+
+(defun use-package-handler/:cat-font (name _keyword rule rest state)
+  "Register normalized font RULE for package NAME."
+  (use-package-concat
+   `((cat-use-package-register-font-rule ',name ',rule))
+   (use-package-process-keywords name rest state)))
+
 (defun cat-package--position-cat-keyword ()
   "Ensure `:cat' is processed before `:ensure' in `use-package'.
 
@@ -38,15 +87,31 @@ when it runs as an outer (earlier) keyword than `:ensure'."
                   (list :cat)
                   (seq-drop use-package-keywords position)))))
 
+(defun cat-package--position-font-keyword ()
+  "Process `:cat-font' eagerly after conditional keywords."
+  (setq use-package-keywords (delq :cat-font use-package-keywords))
+  (let ((position (or (cl-position :after use-package-keywords)
+                      (length use-package-keywords))))
+    (setq use-package-keywords
+          (append (seq-take use-package-keywords position)
+                  (list :cat-font)
+                  (seq-drop use-package-keywords position)))))
+
 (eval-after-load 'use-package-core
   '(progn
      (put 'use-package-handler/:cat
           'function-documentation
           "Skip package unless its Cat expression is non-nil")
-     (cat-package--position-cat-keyword)))
+     (put 'use-package-handler/:cat-font
+          'function-documentation
+          "Register semantic font roles for a package's major modes")
+     (cat-package--position-cat-keyword)
+     (cat-package--position-font-keyword)))
 
 ;; `use-package-ensure' prepends `:ensure' when it loads, so restore the order.
 (eval-after-load 'use-package-ensure
-  '(cat-package--position-cat-keyword))
+  '(progn
+     (cat-package--position-cat-keyword)
+     (cat-package--position-font-keyword)))
 
 (provide 'cat-package-use-package)

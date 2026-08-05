@@ -11,7 +11,7 @@
                     "DejaVu Math TeX Gyre"
                     "Noto Sans Math")
      :emoji ("Apple Color Emoji"))
-    (sans-serif-ui
+    (sans-serif
      :extends fallback
      :ascii ("Inter" "Avenir Next" "DejaVu Sans")
      :cjk ("PingFang SC" "Hiragino Sans GB" "Noto Sans CJK SC"
@@ -52,7 +52,7 @@ missing properties from another stack with :extends."
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)
-    (ui :stack sans-serif-ui)
+    (ui :stack sans-serif)
     (metadata-label :extends ui)
     (metadata-value :stack monospace-narrow)
     (mono :stack monospace-sans-serif)
@@ -573,7 +573,9 @@ owned by other configuration."
   (unless (and (bound-and-true-p buffer-face-mode)
                (not (equal buffer-face-mode-face cat--mode-buffer-face)))
     (let* ((rule (seq-find #'cat--mode-font-rule-matches-p
-                           cat-mode-font-rules))
+                           (append (mapcar #'cdr
+                                           cat-use-package-font-rule-alist)
+                                   cat-mode-font-rules)))
            (state (list major-mode rule)))
       (when (or force (not (equal state cat--mode-font-state)))
         (if rule
