@@ -58,8 +58,8 @@
     (serif
      :extends fallback
      :ascii ("EB Garamond" "Roboto Serif" "DejaVu Serif" "Georgia")
-     :cjk ("LXGW Neo ZhiSong" "Source Han Serif SC VF" "LXGW WenKai TC"
-           "Noto Serif CJK SC" "Songti SC"))
+     :cjk ("LXGW WenKai TC" "Source Han Serif SC VF" "Noto Serif CJK SC"
+           "LXGW Neo ZhiSong" "Songti SC"))
     (slab-serif
      :extends serif
      :ascii ("Roboto Slab" "American Typewriter"))
