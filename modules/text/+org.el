@@ -15,7 +15,7 @@
                      (org-column-title table)
                      (org-date metadata-value)
                      (org-document-title title)
-                     (org-done metadata-label)
+                     (org-done mono)
                      (org-drawer metadata-label)
                      (org-formula table)
                      (org-level-* heading)
@@ -24,7 +24,7 @@
                      (org-property-value metadata-value)
                      (org-special-keyword metadata-label)
                      (org-table table)
-                     (org-todo metadata-label)))
+                     (org-todo mono)))
   :custom
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))

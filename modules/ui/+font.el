@@ -88,8 +88,8 @@ missing properties from another stack with :extends."
 (defcustom cat-font-preset
   `((default :stack monospace-narrow
              :height ,(if IS-MAC 160 140))
-    (heading :stack serif :height 1.618)
-    (title :extends heading :weight bold :height 2.618)
+    (heading :stack serif :height 1.5)
+    (title :extends heading :weight bold :height 2.0)
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)
