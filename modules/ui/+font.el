@@ -53,12 +53,13 @@
     (sans-serif
      :extends fallback
      :ascii ("Inter" "Avenir Next" "DejaVu Sans")
-     :cjk ("PingFang SC" "Hiragino Sans GB" "Noto Sans CJK SC"
-           "Source Han Sans SC" "Microsoft YaHei"))
+     :cjk ("LXGW Neo XiHei" "Source Han Sans SC" "PingFang SC" "Noto Sans CJK SC"
+           "Hiragino Sans GB" "Microsoft YaHei"))
     (serif
      :extends fallback
-     :ascii ("Big Caslon" "Roboto Serif" "DejaVu Serif" "Georgia")
-     :cjk ("Source Han Serif SC" "LXGW WenKai" "Noto Serif CJK SC" "Songti SC"))
+     :ascii ("EB Garamond" "Roboto Serif" "DejaVu Serif" "Georgia")
+     :cjk ("LXGW Neo ZhiSong" "Source Han Serif SC VF" "LXGW WenKai TC"
+           "Noto Serif CJK SC" "Songti SC"))
     (slab-serif
      :extends serif
      :ascii ("Roboto Slab" "American Typewriter"))
@@ -87,13 +88,13 @@ missing properties from another stack with :extends."
 (defcustom cat-font-preset
   `((default :stack monospace-narrow
              :height ,(if IS-MAC 160 140))
-    (heading :stack serif :weight semi-bold)
-    (title :extends heading :height 1.4 :fonts ("DIN Condensed"))
+    (heading :stack serif :height 1.618)
+    (title :extends heading :weight bold :height 2.618)
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)
     (ui :stack sans-serif)
-    (metadata-label :extends ui)
+    (metadata-label :stack monospace-sans-serif)
     (metadata-value :stack monospace-narrow)
     (mono :stack monospace-sans-serif)
     (code :stack monospace-code)
