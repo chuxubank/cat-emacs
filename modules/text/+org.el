@@ -18,7 +18,10 @@
                      (org-done mono)
                      (org-drawer metadata-label)
                      (org-formula table)
-                     (org-level-* heading)
+                     (org-level-* heading
+                                  :height-step -0.05
+                                  :weight bold
+                                  :weight-step -0.5)
                      (org-link metadata-label)
                      (org-meta-line code)
                      (org-property-value metadata-value)

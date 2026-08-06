@@ -15,11 +15,20 @@
                       (plist-get rule :faces)))))
 
 (defun cat-font-validate-rule (owner rule &optional preset)
-  "Validate roles in OWNER's font RULE against PRESET."
+  "Validate roles and stepped faces in OWNER's font RULE against PRESET."
   (let ((preset (or preset cat-font-preset)))
     (dolist (role (cat-font--rule-roles rule))
       (unless (assq role preset)
-        (error "Unknown font role %S in font rule for %S" role owner))))
+        (error "Unknown font role %S in font rule for %S" role owner)))
+    (dolist (face-rule (plist-get rule :faces))
+      (let ((attributes (cddr face-rule)))
+        (unless (zerop (% (length attributes) 2))
+          (error "Invalid face attributes in font rule for %S" owner))
+        (dolist (property '(:height-step :weight-step))
+          (when (and (plist-member attributes property)
+                     (not (numberp (plist-get attributes property))))
+            (error "%S must be numeric in font rule for %S"
+                   property owner))))))
   rule)
 
 (defun cat-font--set-preset (symbol value)
@@ -142,8 +151,10 @@ Each rule is a plist.  Supported keys are:
 :buffer-name A regexp matched against `buffer-name'.
 :font        Font role, concrete family, or ordered family list.
 :faces       Face rules in the form (FACE FONTS-OR-ROLE &rest ATTRIBUTES).
-             A FACE ending in * matches every face with that prefix.
-             Role attributes are merged with rule ATTRIBUTES.
+             A FACE ending in * matches every face with that prefix, in
+             version-aware name order.  :height-step adds a numeric delta and
+             :weight-step moves through standard font weights for each match
+             after the first.  Role attributes provide their starting values.
 :rescale     Buffer-local `face-font-rescale-alist' value."
   :type 'sexp
   :group 'cat-font
@@ -532,6 +543,48 @@ If ADD is nil, use the existing fonts as an ordered replacement."
         (kill-local-variable 'face-font-rescale-alist)))
     (setq cat--mode-font-rescale-state nil)))
 
+(defun cat--font-step-weight (weight step index)
+  "Move WEIGHT by STEP for wildcard match INDEX."
+  (let* ((entry (seq-find (lambda (candidate)
+                            (seq-contains-p candidate weight))
+                          font-weight-table))
+         (position (and entry (seq-position font-weight-table entry))))
+    (unless position
+      (error "Cannot step unknown font weight %S" weight))
+    (aref (aref font-weight-table
+                (max 0
+                     (min (1- (length font-weight-table))
+                          (floor (+ position (* step index) 0.5)))))
+          1)))
+
+(defun cat--font-stepped-attributes (fonts attributes index)
+  "Resolve stepped face ATTRIBUTES for FONTS at wildcard match INDEX."
+  (let* ((role-spec (cat--font-role-spec fonts))
+         (height-step (plist-get attributes :height-step))
+         (weight-step (plist-get attributes :weight-step))
+         (attributes
+          (cl-loop for (property value) on attributes by #'cddr
+                   unless (memq property '(:height-step :weight-step))
+                   append (list property value))))
+    (when height-step
+      (let* ((base (or (plist-get attributes :height)
+                       (plist-get role-spec :height)
+                       1.0))
+             (height (+ base (* height-step index))))
+        (unless (and (numberp base)
+                     (> height 0)
+                     (or (floatp base) (integerp height)))
+          (error "Invalid stepped face height %S from base %S" height base))
+        (setq attributes (plist-put attributes :height height))))
+    (when weight-step
+      (let ((base (or (plist-get attributes :weight)
+                      (plist-get role-spec :weight)
+                      'normal)))
+        (setq attributes
+              (plist-put attributes :weight
+                         (cat--font-step-weight base weight-step index)))))
+    attributes))
+
 (defun cat--font-rule-faces (face)
   "Return faces matched by FACE or its trailing wildcard."
   (let ((name (symbol-name face)))
@@ -543,7 +596,8 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                    (string-prefix-p prefix (symbol-name candidate)))
                  (face-list))
                 (lambda (left right)
-                  (string< (symbol-name left) (symbol-name right)))))
+                  (string-version-lessp (symbol-name left)
+                                        (symbol-name right)))))
       (and (facep face) (list face)))))
 
 (defun cat--apply-mode-font-rule (rule)
@@ -553,10 +607,14 @@ If ADD is nil, use the existing fonts as an ordered replacement."
     (when-let* ((spec (+safe-buffer-face-set-fonts font)))
       (setq cat--mode-buffer-face spec)))
   (pcase-dolist (`(,face ,fonts . ,attributes) (plist-get rule :faces))
-    (dolist (matched-face (cat--font-rule-faces face))
-      (when-let* ((spec (cat--resolved-face-spec fonts attributes)))
-        (push (face-remap-add-relative matched-face spec)
-              cat--mode-face-remap-cookies))))
+    (cl-loop for matched-face in (cat--font-rule-faces face)
+             for index from 0
+             for stepped = (cat--font-stepped-attributes
+                            fonts attributes index)
+             for spec = (cat--resolved-face-spec fonts stepped)
+             when spec
+             do (push (face-remap-add-relative matched-face spec)
+                      cat--mode-face-remap-cookies)))
   (when-let* ((rescale (plist-get rule :rescale)))
     (setq cat--mode-font-rescale-state
           (list (local-variable-p 'face-font-rescale-alist)
