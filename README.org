@@ -1,13 +1,13 @@
 #+HTML:  <picture>
-#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/chuxubank/cat-emacs/raw/main/assets/banner-dark.svg" />
-#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://github.com/chuxubank/cat-emacs/raw/main/assets/banner-light.svg" />
-#+HTML:    <img alt="Cat Emacs" src="https://github.com/chuxubank/cat-emacs/raw/main/assets/banner-light.svg" />
+#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cat-emacs/cat-emacs/raw/main/assets/banner-dark.svg" />
+#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://github.com/cat-emacs/cat-emacs/raw/main/assets/banner-light.svg" />
+#+HTML:    <img alt="Cat Emacs" src="https://github.com/cat-emacs/cat-emacs/raw/main/assets/banner-light.svg" />
 #+HTML:  </picture>
 
 * Cat Emacs
 
 #+ATTR_HTML: :title CI
-[[https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml][https://github.com/chuxubank/cat-emacs/actions/workflows/ci.yml/badge.svg]]
+[[https://github.com/cat-emacs/cat-emacs/actions/workflows/ci.yml][https://github.com/cat-emacs/cat-emacs/actions/workflows/ci.yml/badge.svg]]
 
 Cat Emacs is a modular Emacs configuration built as a personal workbench for
 code, notes, writing, communication, and day-to-day automation.  It keeps a
@@ -132,7 +132,7 @@ stay disabled unless the Cat feature or expression is enabled:
 - =core/package/= contains package management implementations loaded explicitly
   by the core entry point: archive configuration, package-root collection, the
   =use-package= =:cat= keyword, and
-  [[https://github.com/chuxubank/package-vc-skip-unchanged][package-vc-skip-unchanged]].
+  [[https://github.com/cat-emacs/package-vc-skip-unchanged][package-vc-skip-unchanged]].
 - =modules/base/+package.el= configures package archives, mirrors,
   =use-package= defaults, =package-vc=, and package tools.
 - =core/module.el= defines the optional module loader.
@@ -263,10 +263,10 @@ make -C ~/.config/emacs/elpa/org-mode compile autoloads
 
 ** Star History
 
-#+HTML: <a href="https://www.star-history.com/?repos=chuxubank%2Fcat-emacs&type=date&legend=top-left">
+#+HTML: <a href="https://www.star-history.com/?repos=cat-emacs%2Fcat-emacs&type=date&legend=top-left">
 #+HTML:  <picture>
-#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&theme=dark&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
-#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
-#+HTML:    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=chuxubank/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
+#+HTML:    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=cat-emacs/cat-emacs&type=date&theme=dark&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
+#+HTML:    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=cat-emacs/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
+#+HTML:    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=cat-emacs/cat-emacs&type=date&legend=top-left&sealed_token=-94dltFZxqFtYVNQMqBr4Jhm7bEVC365xkIIE3gmexBSDRHIXZQEMDrOfhHRpTzlb185nZAxvJc9JhW79_ecAgT5N23Y2CBxBRZdKXDJE1ToRVbHPxL06w" />
 #+HTML:  </picture>
 #+HTML: </a>

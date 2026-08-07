@@ -23,7 +23,7 @@
      ("l" kotlin-ts-test-rerun "rerun last test")))))
 
 (use-package ob-kotlin
-  :vc (:url "https://github.com/chuxubank/ob-kotlin")
+  :vc (:url "https://github.com/cat-emacs/ob-kotlin")
   :demand
   :after org
   :config

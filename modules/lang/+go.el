@@ -18,4 +18,4 @@
 
 (use-package go-template-ts-mode
   :cat-font code-config
-  :vc (:url "https://github.com/chuxubank/go-template-ts-mode"))
+  :vc (:url "https://github.com/cat-emacs/go-template-ts-mode"))

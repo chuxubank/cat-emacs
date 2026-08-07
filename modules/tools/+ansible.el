@@ -7,7 +7,7 @@
   :delight)
 
 (use-package poly-ansible-jinja2
-  :vc (:url "https://github.com/chuxubank/poly-any-template"
+  :vc (:url "https://github.com/cat-emacs/poly-any-template"
        :lisp-dir "lisp/ansible"))
 
 (use-package flymake-ansible-lint

@@ -26,7 +26,7 @@ file name is resolved from the user or fallback template directory by
   ("" ()))
 
 (use-package gptel-model-updater
-  :vc (:url "https://github.com/chuxubank/gptel-model-updater")
+  :vc (:url "https://github.com/cat-emacs/gptel-model-updater")
   :hook
   (cat-idle-preload . gptel-model-updater-update-all)
   :custom

@@ -5,7 +5,7 @@
 
 (defconst cat-package-vc-skip-unchanged-spec
   '(package-vc-skip-unchanged
-    :url "https://github.com/chuxubank/package-vc-skip-unchanged")
+    :url "https://github.com/cat-emacs/package-vc-skip-unchanged")
   "VC package specification for `package-vc-skip-unchanged'.")
 
 (cat-package--register-bootstrap-vc

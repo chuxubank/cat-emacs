@@ -8,7 +8,7 @@
   (treesit-font-lock-level 4))
 
 (use-package poly-treesit-fold
-  :vc (:url "https://github.com/chuxubank/poly-any-template"
+  :vc (:url "https://github.com/cat-emacs/poly-any-template"
             :lisp-dir "lisp/treesit-fold")
   :demand t
   :config

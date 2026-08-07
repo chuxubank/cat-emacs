@@ -5,7 +5,7 @@
   ("" ()))
 
 (use-package android-mode
-  :vc (android-mode :url "https://github.com/chuxubank/emacs-studio"
+  :vc (android-mode :url "https://github.com/cat-emacs/emacs-studio"
                     :lisp-dir "android-mode/")
   :delight (android-mode (:eval (+with-icon "nf-md-android" " ")))
   :commands #'android-root
@@ -31,7 +31,7 @@
      ("R" #'android-refresh-flavors "refresh")))))
 
 (use-package compose-preview
-  :vc (compose-preview :url "https://github.com/chuxubank/emacs-studio"
+  :vc (compose-preview :url "https://github.com/cat-emacs/emacs-studio"
                        :lisp-dir "compose-preview/")
   :pretty-hydra
   (cat-android

@@ -7,7 +7,7 @@
 ;; Version: 0.3.0
 ;; Package-Requires: ((emacs "30.1") (kotlin-ts-mode))
 ;; Keywords: languages, kotlin, tools
-;; URL: https://github.com/chuxubank/cat-emacs
+;; URL: https://github.com/cat-emacs/cat-emacs
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
