@@ -9,8 +9,11 @@
 
 (use-package markdown-mode
   :cat-font (body
-             :faces ((markdown-header-face heading)
-                     (markdown-header-face-1 title)
+             :faces ((markdown-header-face-* heading
+                                              :height 1.6
+                                              :height-step -0.075
+                                              :weight bold
+                                              :weight-step -0.5)
                      (markdown-table-face table)
                      (markdown-code-face code)
                      (markdown-inline-code-face code)))
