@@ -15,7 +15,7 @@ small distribution core and moves almost every feature into named modules that
 can be enabled, replaced, or skipped from a user module list.
 
 #+begin_quote
-  Meow, meow, meow... Oh, that's a cat!
+  Meow, meow, modular... Pick your cats before they pick your keybindings.
 #+end_quote
 
 ** Highlights
