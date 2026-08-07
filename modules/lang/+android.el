@@ -43,7 +43,7 @@
      ("v" #'compose-preview-set-variant "set variant")))))
 
 (use-package elogcat
-  :vc (:url "https://github.com/chuxubank/elogcat.el")
+  :vc (:url "https://github.com/cat-emacs/elogcat.el")
   :bind
   (:map elogcat-mode-map
         ("n" . #'next-line)
