@@ -74,6 +74,10 @@
     (slab-serif
      :extends serif
      :ascii ("Roboto Slab" "American Typewriter"))
+    (cursive
+     :extends serif
+     :ascii ("Snell Roundhand" "Apple Chancery" "Zapfino")
+     :cjk ("Xingkai SC" "Kaiti SC" "STKaiti"))
     (quasi-proportional
      :extends serif
      :ascii ("Iosevka Etoile" "Iosevka Aile")
@@ -112,6 +116,7 @@ removed."
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)
+    (decorative :stack cursive)
     (ui :stack sans-serif)
     (metadata-label :stack monospace-sans-serif)
     (metadata-value :stack monospace-narrow)
@@ -543,9 +548,9 @@ If ADD is nil, use the existing fonts as an ordered replacement."
    ("Apple Color Emoji" . 0.8)
    ("Sinhala Sangam MN". 0.8)
    ("Apple Symbols" . 0.9)
+   ("Apple Chancery" . 0.9)
    ("Noto Serif .+" . 0.9)
-   ("Source Han Sans" . 0.9)
-   ("Source Han Serif" . 0.9)
+   ("Source Han .+" . 0.9)
    ("Zhuque Fangsong .+" . 0.9)
    ("-cdac$" . 1.3)))
 
