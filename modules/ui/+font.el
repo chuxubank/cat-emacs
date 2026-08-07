@@ -4,6 +4,93 @@
   "Font settings for Cat Emacs."
   :group 'cat)
 
+(defconst cat-font--role-override-properties
+  '(:stack :fonts :height :weight :slant :width)
+  "Properties accepted in named and buffer-local role overrides.")
+
+(defvar cat--font-configuration-version 0
+  "Generation number of the current font configuration.")
+
+(defun cat-font--valid-face-attribute-value-p (property value)
+  "Return non-nil when VALUE is valid for face PROPERTY."
+  (let ((table (pcase property
+                 (:weight font-weight-table)
+                 (:slant font-slant-table)
+                 (:width font-width-table))))
+    (and (symbolp value)
+         (seq-some (lambda (entry) (seq-contains-p entry value)) table))))
+
+(defun cat-font--validate-role-overrides
+    (owner overrides &optional preset stacks)
+  "Validate OWNER's role OVERRIDES against PRESET and STACKS."
+  (let ((preset (or preset cat-font-preset))
+        (stacks (or stacks cat-font-stacks))
+        roles)
+    (unless (proper-list-p overrides)
+      (error "Font role overrides for %S must be a list" owner))
+    (dolist (entry overrides)
+      (unless (and (consp entry)
+                   (symbolp (car entry))
+                   (proper-list-p (cdr entry))
+                   (zerop (% (length (cdr entry)) 2)))
+        (error "Invalid font role override for %S: %S" owner entry))
+      (let ((role (car entry))
+            (properties (cdr entry)))
+        (unless (assq role preset)
+          (error "Unknown font role %S in preset %S" role owner))
+        (when (memq role roles)
+          (error "Duplicate font role %S in preset %S" role owner))
+        (push role roles)
+        (cl-loop for (property value) on properties by #'cddr
+                 unless (memq property cat-font--role-override-properties)
+                 do (error "Unsupported font role property %S in preset %S"
+                           property owner)
+                 when (and (eq property :stack)
+                           (not (assq value stacks)))
+                 do (error "Unknown font stack %S in preset %S" value owner)
+                 when (and (eq property :fonts)
+                           (not (and (proper-list-p value)
+                                     (seq-every-p #'stringp value))))
+                 do (error ":fonts must be a list of strings in preset %S"
+                           owner)
+                 when (and (eq property :height)
+                           (not (and (numberp value) (> value 0))))
+                 do (error ":height must be positive in preset %S" owner)
+                 when (and (memq property '(:weight :slant :width))
+                           (not (cat-font--valid-face-attribute-value-p
+                                 property value)))
+                 do (error "Invalid %S value %S in preset %S"
+                           property value owner)))))
+  overrides)
+
+(defun cat-font--validate-presets (presets &optional preset stacks)
+  "Validate named PRESETS against the base PRESET and STACKS."
+  (unless (proper-list-p presets)
+    (error "Font presets must be a list"))
+  (let (names)
+    (dolist (entry presets)
+      (unless (and (consp entry) (symbolp (car entry)))
+        (error "Invalid named font preset: %S" entry))
+      (when (memq (car entry) names)
+        (error "Duplicate font preset %S" (car entry)))
+      (push (car entry) names)
+      (cat-font--validate-role-overrides
+       (car entry) (cdr entry) preset stacks)))
+  presets)
+
+(defun cat-font--configuration-changed ()
+  "Invalidate generated font state and refresh visible buffers."
+  (cl-incf cat--font-configuration-version)
+  (when (boundp 'cat--fontset-signatures)
+    (clrhash cat--fontset-signatures))
+  (when (boundp 'cat--font-role-face-signatures)
+    (clrhash cat--font-role-face-signatures))
+  (when (fboundp 'cat-setup-fonts)
+    (if (display-graphic-p)
+        (cat-setup-fonts)
+      (when (fboundp 'cat--refresh-mode-fonts)
+        (cat--refresh-mode-fonts)))))
+
 (defun cat-font--rule-roles (rule)
   "Return semantic font roles referenced by RULE."
   (delq nil
@@ -38,7 +125,29 @@
   (when (boundp 'cat-mode-font-rules)
     (dolist (rule cat-mode-font-rules)
       (cat-font-validate-rule 'cat-mode-font-rules rule value)))
-  (set-default symbol value))
+  (when (boundp 'cat-font-presets)
+    (cat-font--validate-presets cat-font-presets value))
+  (set-default symbol value)
+  (cat-font--configuration-changed))
+
+(defun cat-font--set-presets (symbol value)
+  "Set named font preset SYMBOL to VALUE after validation."
+  (cat-font--validate-presets value)
+  (set-default symbol value)
+  (cat-font--configuration-changed))
+
+(defun cat-font--set-buffer-preset (symbol value)
+  "Set the default buffer-local preset SYMBOL to VALUE."
+  (unless (or (null value) (assq value cat-font-presets))
+    (error "Unknown font preset %S" value))
+  (set-default symbol value)
+  (cat-font--configuration-changed))
+
+(defun cat-font--set-buffer-role-overrides (symbol value)
+  "Set default buffer-local role override SYMBOL to VALUE."
+  (cat-font--validate-role-overrides symbol value)
+  (set-default symbol value)
+  (cat-font--configuration-changed))
 
 (defun cat-font--set-mode-rules (symbol value)
   "Set SYMBOL to mode font rules VALUE after validating their roles."
@@ -48,9 +157,15 @@
 
 (defun cat-font--set-stacks (symbol value)
   "Set SYMBOL to font stacks VALUE and refresh configured fonts."
+  (when (boundp 'cat-font-preset)
+    (dolist (entry cat-font-preset)
+      (when-let* ((stack (plist-get (cdr entry) :stack)))
+        (unless (assq stack value)
+          (error "Unknown font stack %S for role %S" stack (car entry)))))
+    (when (boundp 'cat-font-presets)
+      (cat-font--validate-presets cat-font-presets cat-font-preset value)))
   (set-default symbol value)
-  (when (fboundp 'cat-setup-fonts)
-    (cat-setup-fonts)))
+  (cat-font--configuration-changed))
 
 (defcustom cat-font-stacks
   '((fallback
@@ -122,7 +237,7 @@ removed."
     (metadata-value :stack monospace-narrow)
     (mono :stack monospace-sans-serif)
     (code :stack monospace-code)
-    (table :extends mono :stack monospace-align)
+    (table :stack monospace-align)
     (code-jvm :extends code :fonts ("JetBrains Mono"))
     (code-python :extends code :fonts ("Cascadia Code"))
     (code-diagram :extends code :fonts ("Fira Code"))
@@ -138,6 +253,75 @@ content roles use heights relative to it.  A role can use :extends and
   :type 'sexp
   :group 'cat-font
   :set #'cat-font--set-preset)
+
+(defcustom cat-font-presets
+  '((modern
+     (title :stack sans-serif :fonts ("Inter Display") :weight bold)
+     (heading :stack sans-serif :fonts ("Inter") :weight semi-bold)
+     (body :stack sans-serif :fonts ("Inter"))
+     (prose :stack sans-serif :fonts ("Inter"))
+     (decorative :stack sans-serif :fonts ("Inter") :slant italic)
+     (ui :stack sans-serif :fonts ("Inter"))
+     (metadata-label :stack sans-serif :fonts ("Inter")
+                     :weight semi-bold))
+    (classical
+     (title :stack serif :fonts ("EB Garamond"))
+     (heading :stack serif :fonts ("Athelas"))
+     (body :stack serif :fonts ("Iowan Old Style"))
+     (prose :stack serif :fonts ("Iowan Old Style"))
+     (decorative :stack cursive)
+     (metadata-label :stack slab-serif))
+    (technical
+     (title :stack sans-serif :fonts ("DIN Condensed") :weight bold)
+     (heading :stack sans-serif :fonts ("Avenir Next") :weight semi-bold)
+     (body :stack serif :fonts ("STIX Two Text"))
+     (prose :stack serif :fonts ("STIX Two Text"))
+     (decorative :stack slab-serif :fonts ("Roboto Slab"))
+     (ui :stack sans-serif :fonts ("Avenir Next"))
+     (metadata-label :stack sans-serif :fonts ("Avenir Next")
+                     :weight semi-bold)
+     (mono :stack monospace-narrow :fonts ("SF Mono"))
+     (code :stack monospace-code :fonts ("SF Mono"))))
+  "Named role overrides applied on top of `cat-font-preset'.
+Each entry has the form (NAME (ROLE PROPERTY VALUE ...) ...).  Supported
+properties are :stack, :fonts, :height, :weight, :slant, and :width."
+  :type 'sexp
+  :group 'cat-font
+  :set #'cat-font--set-presets)
+
+(defcustom cat-font-buffer-preset nil
+  "Named font preset selected for the current buffer.
+Nil uses the base `cat-font-preset'."
+  :type '(choice (const :tag "Base preset" nil) symbol)
+  :group 'cat-font
+  :set #'cat-font--set-buffer-preset)
+(make-variable-buffer-local 'cat-font-buffer-preset)
+
+(defcustom cat-font-buffer-role-overrides nil
+  "Role overrides applied only to the current buffer.
+The value uses the same role override format as `cat-font-presets'."
+  :type 'sexp
+  :group 'cat-font
+  :set #'cat-font--set-buffer-role-overrides)
+(make-variable-buffer-local 'cat-font-buffer-role-overrides)
+
+(defun cat-font--safe-buffer-preset-p (value)
+  "Return non-nil when VALUE names a configured font preset."
+  (or (null value)
+      (and (symbolp value) (assq value cat-font-presets))))
+
+(defun cat-font--safe-buffer-role-overrides-p (value)
+  "Return non-nil when VALUE is a valid local role override list."
+  (condition-case nil
+      (progn
+        (cat-font--validate-role-overrides 'file-local value)
+        t)
+    (error nil)))
+
+(put 'cat-font-buffer-preset 'safe-local-variable
+     #'cat-font--safe-buffer-preset-p)
+(put 'cat-font-buffer-role-overrides 'safe-local-variable
+     #'cat-font--safe-buffer-role-overrides-p)
 
 (defcustom cat-font-script-rules
   '(((han kana hangul bopomofo cjk-misc) cjk)
@@ -194,14 +378,62 @@ used only when no module rule matches.  Each rule is a plist.  Supported keys ar
             (plist-put attributes (pop overrides) (pop overrides))))
     attributes))
 
-(defun cat--font-role-spec (role)
-  "Return the font specification for ROLE."
+(defvar-local cat--effective-font-preset-cache nil
+  "Cached effective font preset for the current buffer.")
+
+(defun cat--merge-font-role-overrides (preset overrides)
+  "Return PRESET with role OVERRIDES merged into it."
+  (let ((result (copy-tree preset)))
+    (dolist (entry overrides)
+      (let ((role (assq (car entry) result)))
+        (setcdr role
+                (cat--merge-font-attributes (cdr role) (cdr entry)))))
+    result))
+
+(defun cat--effective-font-preset ()
+  "Return the effective role preset for the current buffer."
+  (let ((key (list cat--font-configuration-version
+                   cat-font-buffer-preset
+                   cat-font-buffer-role-overrides)))
+    (if (equal key (car cat--effective-font-preset-cache))
+        (cadr cat--effective-font-preset-cache)
+      (let* ((named
+              (when cat-font-buffer-preset
+                (or (cdr (assq cat-font-buffer-preset cat-font-presets))
+                    (error "Unknown font preset %S"
+                           cat-font-buffer-preset))))
+             (_ (cat-font--validate-role-overrides
+                 'buffer-local cat-font-buffer-role-overrides))
+             (preset (cat--merge-font-role-overrides
+                      cat-font-preset named))
+             (preset (cat--merge-font-role-overrides
+                      preset cat-font-buffer-role-overrides)))
+        (setq cat--effective-font-preset-cache
+              (list (copy-tree key) preset))
+        preset))))
+
+(defun cat--font-role-spec-from-preset (role preset &optional seen)
+  "Return ROLE's inherited specification from PRESET."
   (when (symbolp role)
-    (let* ((spec (alist-get role cat-font-preset))
-           (parent (plist-get spec :extends)))
-      (if parent
-          (cat--merge-font-attributes (cat--font-role-spec parent) spec)
-        spec))))
+    (when (memq role seen)
+      (error "Circular font role inheritance involving %S" role))
+    (when-let* ((spec (alist-get role preset)))
+      (let ((parent (plist-get spec :extends)))
+        (if parent
+            (cat--merge-font-attributes
+             (or (cat--font-role-spec-from-preset
+                  parent preset (cons role seen))
+                 (error "Unknown parent font role %S for %S" parent role))
+             spec)
+          spec)))))
+
+(defun cat--font-role-spec (role)
+  "Return ROLE's effective font specification for the current buffer."
+  (cat--font-role-spec-from-preset role (cat--effective-font-preset)))
+
+(defun cat--base-font-role-spec (role)
+  "Return ROLE's specification from the base font preset."
+  (cat--font-role-spec-from-preset role cat-font-preset))
 
 (defun cat--merge-font-stack-specs (parent child)
   "Merge PARENT and CHILD stack specs with child candidates first."
@@ -257,28 +489,45 @@ used only when no module rule matches.  Each rule is a plist.  Supported keys ar
            unless (memq attribute '(:stack :fonts :extends))
            append (list attribute value)))
 
-(defun cat--font-role-face (role)
-  "Return the face owned by font ROLE, creating it when necessary."
-  (when (cat--font-role-spec role)
-    (let ((face (intern (format "cat-font-role-%s" role))))
+(defun cat--font-data-hash (data)
+  "Return a short stable hash for font configuration DATA."
+  (substring (secure-hash 'sha1 (prin1-to-string data)) 0 12))
+
+(defun cat--font-role-face-name (role spec)
+  "Return the face name for ROLE with effective SPEC."
+  (intern
+   (if (equal spec (cat--base-font-role-spec role))
+       (format "cat-font-role-%s" role)
+     (format "cat-font-role-%s-%s" role (cat--font-data-hash spec)))))
+
+(defvar cat--font-role-face-signatures (make-hash-table :test 'equal)
+  "Last configured signature for each Cat role face and frame.")
+
+(defun cat--font-role-face (role &optional frame)
+  "Return ROLE's face for the current buffer, creating it on FRAME."
+  (when-let* ((spec (cat--font-role-spec role)))
+    (let* ((face (cat--font-role-face-name role spec))
+           (frame (or frame (selected-frame))))
       (unless (facep face)
         (make-empty-face face))
+      (let* ((fontset (and (fboundp 'cat--fontset-for-role)
+                           (cat--fontset-for-role role frame)))
+             (signature (list spec fontset))
+             (key (cons face frame)))
+        (unless (equal signature
+                       (gethash key cat--font-role-face-signatures))
+          (dolist (attribute (mapcar #'car face-attribute-name-alist))
+            (set-face-attribute face frame attribute 'unspecified))
+          ;; `:font' resolves Latin; `:fontset' restores script mappings.
+          (apply #'set-face-attribute face frame
+                 (append (when fontset
+                           (list :font fontset :fontset fontset))
+                         (cat--font-role-attributes role)))
+          (puthash key signature cat--font-role-face-signatures)))
       face)))
 
-(defun cat--configure-font-role-face (role &optional frame fontset)
-  "Configure ROLE's face on FRAME, optionally using FONTSET."
-  (let ((face (cat--font-role-face role)))
-    ;; `:font' resolves the Latin font; `:fontset' restores script mappings.
-    (apply #'set-face-attribute face frame
-           (append (when fontset (list :font fontset :fontset fontset))
-                   (cat--font-role-attributes role)))
-    face))
-
-(dolist (role cat-font-preset)
-  (cat--configure-font-role-face (car role)))
-
-(defvar cat--fontset-signatures (make-hash-table :test 'eq)
-  "Last configured signature for each Cat role fontset.")
+(defvar cat--fontset-signatures (make-hash-table :test 'equal)
+  "Last configured signature for each Cat fontset name.")
 
 (defvar cat--default-fontset-signature nil
   "Last Cat configuration applied to the default fontset.")
@@ -317,10 +566,11 @@ used only when no module rule matches.  Each rule is a plist.  Supported keys ar
                           (cdr entry)))
                   (cat--nerd-icons-fontset-entries))))
 
-(defun cat--fontset-name (role)
-  "Return the fontset name owned by ROLE."
-  (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s"
-          (replace-regexp-in-string "-" "_" (symbol-name role))))
+(defun cat--fontset-name (role signature)
+  "Return the fontset name for ROLE and resolved SIGNATURE."
+  (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s_%s"
+          (replace-regexp-in-string "-" "_" (symbol-name role))
+          (cat--font-data-hash signature)))
 
 (defun cat--fontset-signature (role &optional frame)
   "Return ROLE's available fontset configuration on FRAME."
@@ -371,8 +621,8 @@ used only when no module rule matches.  Each rule is a plist.  Supported keys ar
 (defun cat--fontset-for-role (role &optional frame)
   "Return the configured fontset for ROLE, or nil for a non-role."
   (when (cat--font-role-spec role)
-    (let* ((fontset (cat--fontset-name role))
-           (signature (cat--fontset-signature role frame)))
+    (let* ((signature (cat--fontset-signature role frame))
+           (fontset (cat--fontset-name role signature)))
       (cond
        ((display-graphic-p frame)
         (let ((created (not (query-fontset fontset))))
@@ -380,9 +630,9 @@ used only when no module rule matches.  Each rule is a plist.  Supported keys ar
             (create-fontset-from-fontset-spec fontset))
           (when (or created
                     (not (equal signature
-                                (gethash role cat--fontset-signatures))))
+                                (gethash fontset cat--fontset-signatures))))
             (cat--configure-role-fontset fontset signature)
-            (puthash role signature cat--fontset-signatures)))
+            (puthash fontset signature cat--fontset-signatures)))
         fontset)
        ;; `query-fontset' signals before any graphical backend is initialized.
        ((condition-case nil
@@ -439,16 +689,18 @@ If ADD is nil, use the existing fonts as an ordered replacement."
 
 (defun +safe-set-face-fonts (face fonts &optional frame)
   "Safely set FACE family from FONTS or a font role."
-  (if-let* ((role-face (cat--font-role-face fonts)))
-      (progn
-        (set-face-attribute face frame
-                            :inherit (list role-face 'fixed-pitch))
-        (message "Set %s face font role to %s" face fonts)
-        role-face)
-    (when-let* ((family (cat--face-family fonts frame)))
-      (set-face-attribute face frame :family family :inherit 'fixed-pitch)
-      (message "Set %s face font to %s" face family)
-      family)))
+  (let ((cat-font-buffer-preset nil)
+        (cat-font-buffer-role-overrides nil))
+    (if-let* ((role-face (cat--font-role-face fonts frame)))
+        (progn
+          (set-face-attribute face frame
+                              :inherit (list role-face 'fixed-pitch))
+          (message "Set %s face font role to %s" face fonts)
+          role-face)
+      (when-let* ((family (cat--face-family fonts frame)))
+        (set-face-attribute face frame :family family :inherit 'fixed-pitch)
+        (message "Set %s face font to %s" face family)
+        family))))
 
 (defun +safe-buffer-face-set-fonts (fonts)
   "Set the current graphical buffer face from FONTS or a font role."
@@ -469,20 +721,20 @@ If ADD is nil, use the existing fonts as an ordered replacement."
 (defun cat-setup-fonts (&optional frame)
   "Set fonts on FRAME for Cat Emacs."
   (when (display-graphic-p frame)
-    (cat-benchmark 'beg "setup fonts.")
-    ;; Configure all role fontsets before their scripts are first displayed.
-    (dolist (role cat-font-preset)
-      (let* ((name (car role))
-             (fontset (cat--fontset-for-role name frame)))
-        (cat--configure-font-role-face name frame fontset)))
-    (when-let* ((fontset (cat--fontset-for-role 'default frame)))
-      (apply #'set-face-attribute 'default frame
-             :font fontset :fontset fontset
-             (cat--font-role-attributes 'default)))
-    (cat--configure-default-fontset
-     (cat--fontset-signature 'default frame) frame)
-    (run-hook-with-args 'cat-setup-fonts-hook nil frame)
-    (cat-benchmark 'end "setup fonts.")))
+    (let ((cat-font-buffer-preset nil)
+          (cat-font-buffer-role-overrides nil))
+      (cat-benchmark 'beg "setup fonts.")
+      ;; Configure the base role fontsets before scripts are first displayed.
+      (dolist (role cat-font-preset)
+        (cat--font-role-face (car role) frame))
+      (when-let* ((fontset (cat--fontset-for-role 'default frame)))
+        (apply #'set-face-attribute 'default frame
+               :font fontset :fontset fontset
+               (cat--font-role-attributes 'default)))
+      (cat--configure-default-fontset
+       (cat--fontset-signature 'default frame) frame)
+      (run-hook-with-args 'cat-setup-fonts-hook nil frame)
+      (cat-benchmark 'end "setup fonts."))))
 
 (add-hook 'cat-theme-refresh-hook #'cat-setup-fonts)
 (add-hook 'after-init-hook #'cat-setup-fonts)
@@ -728,7 +980,10 @@ owned by other configuration."
   (unless (and (bound-and-true-p buffer-face-mode)
                (not (equal buffer-face-mode-face cat--mode-buffer-face)))
     (let* ((rules (cat--matching-mode-font-rules))
-           (state (list major-mode rules)))
+           (state (list major-mode rules
+                        cat--font-configuration-version
+                        cat-font-buffer-preset
+                        (copy-tree cat-font-buffer-role-overrides))))
       (when (or force (not (equal state cat--mode-font-state)))
         (if rules
             (cat--apply-mode-font-rules rules)
@@ -758,10 +1013,61 @@ owned by other configuration."
       (with-current-buffer buffer
         (cat-setup-mode-font t)))))
 
+(defun cat-font-refresh-buffer ()
+  "Refresh font settings and native fontification in the current buffer."
+  (interactive)
+  (setq cat--effective-font-preset-cache nil
+        cat--mode-font-state nil)
+  (when (get-buffer-window (current-buffer) 'visible)
+    (cat-setup-mode-font t))
+  (when (bound-and-true-p font-lock-mode)
+    (font-lock-flush)
+    (when (get-buffer-window (current-buffer) 'visible)
+      (font-lock-ensure))))
+
+(defun cat-font-select-buffer-preset (selection)
+  "Select a named font preset for the current buffer.
+SELECTION may also restore the default value or select the base preset."
+  (interactive
+   (let* ((choices
+           (append '("<default>" "<base>")
+                   (mapcar (lambda (entry) (symbol-name (car entry)))
+                           cat-font-presets)))
+          (current (if (local-variable-p 'cat-font-buffer-preset)
+                       (if cat-font-buffer-preset
+                           (symbol-name cat-font-buffer-preset)
+                         "<base>")
+                     "<default>")))
+     (list (completing-read "Buffer font preset: " choices nil t
+                            nil nil current))))
+  (pcase selection
+    ("<default>" (kill-local-variable 'cat-font-buffer-preset))
+    ("<base>" (setq-local cat-font-buffer-preset nil))
+    ((pred symbolp)
+     (unless (assq selection cat-font-presets)
+       (user-error "Unknown font preset %S" selection))
+     (setq-local cat-font-buffer-preset selection))
+    ((pred stringp)
+     (let ((preset (intern selection)))
+       (unless (assq preset cat-font-presets)
+         (user-error "Unknown font preset %S" preset))
+       (setq-local cat-font-buffer-preset preset))))
+  (cat-font-refresh-buffer)
+  (message "Buffer font preset: %s"
+           (or cat-font-buffer-preset "base")))
+
+(defun cat-font--refresh-after-local-variables ()
+  "Refresh explicit buffer-local font configuration after loading it."
+  (when (or (local-variable-p 'cat-font-buffer-preset)
+            (local-variable-p 'cat-font-buffer-role-overrides))
+    (cat-font-refresh-buffer)))
+
 (add-hook 'cat-setup-fonts-hook #'cat--refresh-mode-fonts)
 (add-hook 'window-buffer-change-functions #'cat--setup-window-fonts)
 (add-hook 'after-change-major-mode-hook #'cat--setup-visible-mode-font)
 (add-hook 'after-revert-hook #'cat--setup-visible-mode-font)
+(add-hook 'hack-local-variables-hook
+          #'cat-font--refresh-after-local-variables)
 
 (when (and after-init-time (display-graphic-p))
   (cat-setup-fonts))

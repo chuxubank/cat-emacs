@@ -21,12 +21,13 @@ input.
  :extends PARENT-STACK)
 ```
 
-`:extends` supplies properties omitted by the child.  Defining a category on
-the child replaces that inherited property; it does not append to the parent's
-list.  The shared `fallback` stack owns symbol, mathematical, and emoji
+`:extends` supplies properties omitted by the child.  When both stacks define
+the same font category, Cat combines their candidates child-first and removes
+duplicates.  The shared `fallback` stack owns symbol, mathematical, and emoji
 candidates.  Concrete stacks inherit it while defining their own ASCII and CJK
-choices.  For example, `monospace-code` inherits the CJK list from
-`monospace-narrow` but replaces its ASCII list.
+choices.  For example, `monospace-code` places its ASCII candidates before
+those inherited through `monospace-align`, while retaining the inherited CJK
+fallbacks.
 
 `cat-font-preset` maps semantic roles to those stacks:
 
@@ -48,13 +49,66 @@ Latin family to take priority for a particular language group.
 The current roles form this hierarchy:
 
 - `default` selects the base frame font and absolute height.
-- `title` extends `heading`; both use the serif stack.
+- `title` and `heading` independently use the serif stack.
 - `documentation` extends `body`; `body`, `prose`, and `ui` remain separate
   reading, prose, and interface choices.
 - `metadata-label`, `metadata-value`, `mono`, `code`, and `table` cover compact
   structural content.
 - `code-*` and `terminal` extend their general roles and prepend a specialized
   ASCII family.
+
+### Named and buffer-local presets
+
+`cat-font-presets` defines named, differential presets on top of
+`cat-font-preset`.  Its names describe a visual or working context rather than
+exposing physical stack categories.  All roles not mentioned by a preset
+continue to use the base definition.
+
+| Preset | Primary typography | Intended context |
+| --- | --- | --- |
+| `modern` | Cohesive Inter sans serif, including restrained italic quotes | Contemporary notes and documentation |
+| `classical` | Garamond/Athelas display with old-style serif prose | Essays, literature, and traditional documents |
+| `technical` | DIN/Avenir structure, STIX prose, and SF Mono utility text | Scientific and engineering material |
+
+Preset entries use the same role names and can override `:stack`, `:fonts`,
+`:height`, `:weight`, `:slant`, or `:width`.
+
+Two automatically buffer-local variables select and refine the effective
+preset:
+
+```elisp
+(setq-local cat-font-buffer-preset 'technical)
+(setq-local cat-font-buffer-role-overrides
+            '((prose :stack sans-serif)
+              (code-python :fonts ("Iosevka"))))
+(cat-font-refresh-buffer)
+```
+
+The resolution order, from highest to lowest priority, is
+`cat-font-buffer-role-overrides`, the selected entry in `cat-font-presets`,
+the base `cat-font-preset`, and inherited role properties.  `:fonts` replaces
+the role's own preferred ASCII list but keeps its stack as fallback.  A parent
+role override is visible to descendants, so changing `code` also changes the
+stack inherited by `code-python`.
+
+Use `M-x cat-font-select-buffer-preset` for an interactive buffer-local
+selection.  Choosing `<base>` explicitly ignores a non-nil default preset;
+choosing `<default>` removes the local binding.  Both variables are safe as
+file locals when every role, stack, property, and face attribute value
+validates:
+
+```text
+;; Local Variables:
+;; cat-font-buffer-preset: classical
+;; cat-font-buffer-role-overrides: ((code :fonts ("SF Mono")))
+;; End:
+```
+
+Cat derives role faces and fontsets from the effective specification and
+reuses them by content.  Buffers with the same effective role share generated
+faces, while different presets receive separate faces and fontsets.  Embedded
+Org and Markdown code blocks resolve their language role in the outer buffer,
+so they inherit its selected preset and local role overrides.
 
 ### Role fontsets
 
