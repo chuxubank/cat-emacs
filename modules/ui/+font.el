@@ -554,12 +554,42 @@ If ADD is nil, use the existing fonts as an ordered replacement."
    ("Zhuque Fangsong .+" . 0.9)
    ("-cdac$" . 1.3)))
 
+(defun cat--font-rule-matches-mode-p (rule mode)
+  "Return non-nil when font RULE applies to major MODE."
+  (when-let* ((modes (plist-get rule :modes)))
+    (or (memq mode (ensure-list modes))
+        (provided-mode-derived-p mode modes))))
+
 (defun cat--mode-font-rule-matches-p (rule)
   "Return non-nil when RULE applies to the current buffer."
-  (or (when-let* ((modes (plist-get rule :modes)))
-        (apply #'derived-mode-p (ensure-list modes)))
+  (or (cat--font-rule-matches-mode-p rule major-mode)
       (when-let* ((regexp (plist-get rule :buffer-name)))
         (string-match-p regexp (buffer-name)))))
+
+(defun cat-font-for-mode (mode)
+  "Return the font selected for major MODE by Cat's font rules."
+  (let ((rules
+         (seq-filter
+          (lambda (rule) (cat--font-rule-matches-mode-p rule mode))
+          (mapcar #'cdr cat-font-rule-alist))))
+    (unless rules
+      (when-let* ((fallback
+                   (seq-find (lambda (rule)
+                               (cat--font-rule-matches-mode-p rule mode))
+                             cat-mode-font-rules)))
+        (setq rules (list fallback))))
+    (when-let* ((rule (seq-find (lambda (candidate)
+                                  (plist-get candidate :font))
+                                rules)))
+      (plist-get rule :font))))
+
+(defun cat-font-apply-mode-to-region (mode start end)
+  "Prepend the font selected for MODE to the region from START to END."
+  (when-let* ((font (cat-font-for-mode mode))
+              (spec (cat--resolved-face-spec font)))
+    (with-silent-modifications
+      (add-face-text-property start end spec))
+    font))
 
 (defvar-local cat--mode-font-state nil
   "Mode font state last applied to the current buffer.")

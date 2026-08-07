@@ -1,5 +1,15 @@
 ;; -*- lexical-binding: t; -*-
 
+(defun cat/org-fontify-src-font-role (lang start end)
+  "Apply LANG's configured font role between START and END."
+  (when (fboundp 'cat-font-apply-mode-to-region)
+    (when-let* ((mode (org-src-get-lang-mode-if-bound lang)))
+      (cat-font-apply-mode-to-region mode start end))))
+
+(with-eval-after-load 'org-src
+  (advice-add 'org-src-font-lock-fontify-block :after
+              #'cat/org-fontify-src-font-role))
+
 (use-package org
   :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode"
                 :lisp-dir "lisp/"

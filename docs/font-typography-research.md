@@ -177,6 +177,12 @@ rule format directly in its owning module:
 The owner identifies the declaration and lets a later declaration replace it
 without changing rule order.
 
+Natively fontified Org and Markdown code blocks reuse the font selected for
+their language's major mode.  A Python block therefore uses `code-python`, a
+JS or Kotlin block uses `code-jvm`, and a language without a module-specific
+rule falls back to `code`.  The role face is prepended to the block region so
+the embedded mode's syntax highlighting remains intact.
+
 Role definitions remain centralized in `cat-font-preset`; package modules only
 declare where those roles are used.  Registration validates every referenced
 role against the active preset.  Declarations made before the font module loads

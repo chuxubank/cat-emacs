@@ -5,6 +5,14 @@
   (setq-default markdown-xwidget-github-theme (if (+dark-mode-p) "dark" "light")
                 markdown-xwidget-mermaid-theme (if (+dark-mode-p) "dark" "default")))
 
+(defun cat/markdown-fontify-code-font-role (lang start end)
+  "Apply LANG's configured font role between START and END."
+  (when (fboundp 'cat-font-apply-mode-to-region)
+    (when-let* ((mode (if lang
+                          (markdown-get-lang-mode lang)
+                        markdown-fontify-code-block-default-mode)))
+      (cat-font-apply-mode-to-region mode start end))))
+
 (use-package mustache)
 
 (use-package markdown-mode
@@ -32,7 +40,11 @@
   :pin melpa-stable
   :mode ("README\\.md\\'" . gfm-mode)
   :custom
-  (markdown-command "pandoc"))
+  (markdown-command "pandoc")
+  (markdown-fontify-code-blocks-natively t)
+  :config
+  (advice-add 'markdown-fontify-code-block-natively :after
+              #'cat/markdown-fontify-code-font-role))
 
 (use-package md-babel
   :vc (:url "https://github.com/md-babel/md-babel.el")
