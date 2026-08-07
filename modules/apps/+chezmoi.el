@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package chezmoi-mode
-  :vc (:url "https://github.com/chuxubank/chezmoi-mode")
+  :vc (:url "https://github.com/cat-emacs/chezmoi-mode")
   :delight (chezmoi-mode (:eval (+with-icon "nf-cod-home" " ")))
   :hook
   (chezmoi-template-mode . poly-any-go-template-mode)
