@@ -8,15 +8,27 @@
 (use-package mustache)
 
 (use-package markdown-mode
-  :cat-font (body
-             :faces ((markdown-header-face-* heading
+  :cat-font (prose
+             :faces ((markdown-blockquote-face decorative)
+                     (markdown-code-face code)
+                     (markdown-gfm-checkbox-face mono)
+                     (markdown-header-face-* heading
                                               :height 1.6
                                               :height-step -0.075
                                               :weight bold
                                               :weight-step -0.5)
+                     (markdown-inline-code-face code)
+                     (markdown-language-info-face code :height 0.9)
+                     (markdown-language-keyword-face code :height 0.9)
+                     (markdown-link-face prose :weight semi-bold)
+                     (markdown-markup-face code :height 0.9)
+                     (markdown-math-face table)
+                     (markdown-metadata-key-face metadata-label :height 0.9)
+                     (markdown-metadata-value-face metadata-value :height 0.9)
+                     (markdown-pre-face code)
+                     (markdown-reference-face metadata-label)
                      (markdown-table-face table)
-                     (markdown-code-face code)
-                     (markdown-inline-code-face code)))
+                     (markdown-url-face metadata-value :height 0.9)))
   :pin melpa-stable
   :mode ("README\\.md\\'" . gfm-mode)
   :custom
