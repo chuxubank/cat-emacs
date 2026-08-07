@@ -66,31 +66,40 @@
            "Hiragino Sans GB" "Microsoft YaHei"))
     (serif
      :extends fallback
-     :ascii ("EB Garamond" "Roboto Serif" "DejaVu Serif" "Georgia")
-     :cjk ("Zhuque Fangsong (technical preview)" "STFangsong"
-           "LXGW WenKai TC" "Source Han Serif SC VF" "Noto Serif CJK SC"
-           "LXGW Neo ZhiSong" "Songti SC"))
+     :ascii ("EB Garamond" "Athelas" "Iowan Old Style" "Baskerville"
+             "Roboto Serif" "DejaVu Serif" "Georgia")
+     :cjk ("Zhuque Fangsong (technical preview)" "LXGW Neo ZhiSong"
+           "Source Han Serif SC VF" "Songti SC" "STFangsong"
+           "LXGW WenKai" "Noto Serif CJK SC"))
     (slab-serif
      :extends serif
      :ascii ("Roboto Slab" "American Typewriter"))
     (quasi-proportional
      :extends serif
-     :ascii ("Iosevka Etoile" "Iosevka Aile"))
+     :ascii ("Iosevka Etoile" "Iosevka Aile")
+     :cjk ("LXGW WenKai TC" "LXGW WenKai"
+           "Source Han Serif SC VF" "Noto Serif CJK SC"))
     (monospace-narrow
      :extends fallback
      :ascii ("Iosevka" "Iosevka Term")
      :symbol ("Iosevka")
      :cjk ("LXGW WenKai Mono" "Sarasa Mono SC"))
-    (monospace-code
+    (monospace-align
      :extends monospace-narrow
-     :ascii ("Maple Mono" "Source Code Pro"))
+     :ascii ("Maple Mono")
+     :cjk ("Maple Mono CN"))
+    (monospace-code
+     :extends monospace-align
+     :ascii ("Source Code Pro"))
     (monospace-sans-serif
      :extends monospace-narrow
      :ascii ("Roboto Mono" "DejaVu Sans Mono")))
   "Physical font candidates grouped into reusable stacks.
 Each entry has the form (STACK :CATEGORY FONTS...).  Categories include
 :ascii, :cjk, :symbol, :mathematical, and :emoji.  A stack can inherit
-missing properties from another stack with :extends."
+missing properties from another stack with :extends.  Font categories defined
+by both stacks are combined with the child candidates first and duplicates
+removed."
   :type 'sexp
   :group 'cat-font
   :set #'cat-font--set-stacks)
@@ -98,8 +107,8 @@ missing properties from another stack with :extends."
 (defcustom cat-font-preset
   `((default :stack monospace-narrow
              :height ,(if IS-MAC 160 140))
+    (title :stack serif :weight heavy :height 2.0)
     (heading :stack serif :height 1.5)
-    (title :extends heading :weight bold :height 2.0)
     (body :stack monospace-sans-serif)
     (documentation :extends body)
     (prose :stack quasi-proportional)
@@ -108,7 +117,7 @@ missing properties from another stack with :extends."
     (metadata-value :stack monospace-narrow)
     (mono :stack monospace-sans-serif)
     (code :stack monospace-code)
-    (table :extends mono :stack monospace-narrow)
+    (table :extends mono :stack monospace-align)
     (code-jvm :extends code :fonts ("JetBrains Mono"))
     (code-python :extends code :fonts ("Cascadia Code"))
     (code-diagram :extends code :fonts ("Fira Code"))
@@ -144,8 +153,10 @@ font category configured in `cat-font-stacks'."
             :font code)
     (:modes (text-mode)
             :font prose))
-  "Rules for buffer-local font selection.
-Each rule is a plist.  Supported keys are:
+  "Fallback rules for buffer-local font selection.
+Matching module rules are layered in declaration order, while the first one
+providing :font or :rescale owns that setting.  The first matching rule here is
+used only when no module rule matches.  Each rule is a plist.  Supported keys are:
 
 :modes       A mode or list of modes matched with `derived-mode-p'.
 :buffer-name A regexp matched against `buffer-name'.
@@ -187,6 +198,20 @@ Each rule is a plist.  Supported keys are:
           (cat--merge-font-attributes (cat--font-role-spec parent) spec)
         spec))))
 
+(defun cat--merge-font-stack-specs (parent child)
+  "Merge PARENT and CHILD stack specs with child candidates first."
+  (let ((result (copy-sequence parent)))
+    (cl-loop for (property value) on child by #'cddr
+             do (setq result
+                      (plist-put
+                       result property
+                       (if (memq property
+                                 '(:ascii :cjk :symbol :mathematical :emoji))
+                           (delete-dups
+                            (append value (plist-get result property) nil))
+                         value))))
+    result))
+
 (defun cat--font-stack-spec (stack)
   "Return the inherited specification for font STACK."
   (when (symbolp stack)
@@ -195,7 +220,7 @@ Each rule is a plist.  Supported keys are:
       (unless spec
         (error "Unknown font stack: %S" stack))
       (if parent
-          (cat--merge-font-attributes (cat--font-stack-spec parent) spec)
+          (cat--merge-font-stack-specs (cat--font-stack-spec parent) spec)
         spec))))
 
 (defun cat--font-role-candidates (role script)
@@ -292,11 +317,24 @@ Each rule is a plist.  Supported keys are:
   (format "-*-cat-*-*-*-*-*-*-*-*-*-*-fontset-cat_%s"
           (replace-regexp-in-string "-" "_" (symbol-name role))))
 
-(defun cat--fontset-signature (role)
-  "Return the configuration signature for ROLE's fontset."
-  (list
-   (cat--font-role-candidates role 'ascii)
-   (cat--font-rules role)))
+(defun cat--fontset-signature (role &optional frame)
+  "Return ROLE's available fontset configuration on FRAME."
+  (let* ((graphical (display-graphic-p frame))
+         (families (and graphical (font-family-list frame)))
+         (available
+          (lambda (fonts)
+            (if graphical
+                (seq-filter (lambda (font)
+                              (member font families))
+                            fonts)
+              fonts))))
+    (list
+     (funcall available (cat--font-role-candidates role 'ascii))
+     (mapcar (lambda (rule)
+               (list (nth 0 rule)
+                     (funcall available (nth 1 rule))
+                     (nth 2 rule)))
+             (cat--font-rules role)))))
 
 (defun cat--set-fontset-candidates (fontset characters fonts &optional add)
   "Set ordered FONTS for CHARACTERS in FONTSET."
@@ -329,7 +367,7 @@ Each rule is a plist.  Supported keys are:
   "Return the configured fontset for ROLE, or nil for a non-role."
   (when (cat--font-role-spec role)
     (let* ((fontset (cat--fontset-name role))
-           (signature (cat--fontset-signature role)))
+           (signature (cat--fontset-signature role frame)))
       (cond
        ((display-graphic-p frame)
         (let ((created (not (query-fontset fontset))))
@@ -437,7 +475,7 @@ If ADD is nil, use the existing fonts as an ordered replacement."
              :font fontset :fontset fontset
              (cat--font-role-attributes 'default)))
     (cat--configure-default-fontset
-     (cat--fontset-signature 'default) frame)
+     (cat--fontset-signature 'default frame) frame)
     (run-hook-with-args 'cat-setup-fonts-hook nil frame)
     (cat-benchmark 'end "setup fonts.")))
 
@@ -507,6 +545,8 @@ If ADD is nil, use the existing fonts as an ordered replacement."
    ("Apple Symbols" . 0.9)
    ("Noto Serif .+" . 0.9)
    ("Source Han Sans" . 0.9)
+   ("Source Han Serif" . 0.9)
+   ("Zhuque Fangsong .+" . 0.9)
    ("-cdac$" . 1.3)))
 
 (defun cat--mode-font-rule-matches-p (rule)
@@ -567,15 +607,22 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                    unless (memq property '(:height-step :weight-step))
                    append (list property value))))
     (when height-step
-      (let* ((base (or (plist-get attributes :height)
-                       (plist-get role-spec :height)
+      (let* ((role-height (plist-get role-spec :height))
+             (base (or (plist-get attributes :height)
+                       role-height
                        1.0))
              (height (+ base (* height-step index))))
         (unless (and (numberp base)
                      (> height 0)
                      (or (floatp base) (integerp height)))
           (error "Invalid stepped face height %S from base %S" height base))
-        (setq attributes (plist-put attributes :height height))))
+        ;; Relative heights inherited from the role already participate in
+        ;; face remapping, so apply only the ratio needed to reach HEIGHT.
+        (setq attributes
+              (plist-put attributes :height
+                         (if (and (floatp role-height) (floatp height))
+                             (/ height role-height)
+                           height)))))
     (when weight-step
       (let ((base (or (plist-get attributes :weight)
                       (plist-get role-spec :weight)
@@ -600,22 +647,40 @@ If ADD is nil, use the existing fonts as an ordered replacement."
                                         (symbol-name right)))))
       (and (facep face) (list face)))))
 
-(defun cat--apply-mode-font-rule (rule)
-  "Apply a mode font RULE to the current buffer."
+(defun cat--matching-mode-font-rules ()
+  "Return the module font rules for the current buffer.
+Use the first matching fallback rule only when no module rule matches."
+  (let ((rules (seq-filter #'cat--mode-font-rule-matches-p
+                           (mapcar #'cdr cat-font-rule-alist))))
+    (or rules
+        (when-let* ((fallback
+                     (seq-find #'cat--mode-font-rule-matches-p
+                               cat-mode-font-rules)))
+          (list fallback)))))
+
+(defun cat--apply-mode-font-rules (rules)
+  "Apply matching mode font RULES to the current buffer."
   (cat--clear-mode-font)
-  (when-let* ((font (plist-get rule :font)))
-    (when-let* ((spec (+safe-buffer-face-set-fonts font)))
-      (setq cat--mode-buffer-face spec)))
-  (pcase-dolist (`(,face ,fonts . ,attributes) (plist-get rule :faces))
-    (cl-loop for matched-face in (cat--font-rule-faces face)
-             for index from 0
-             for stepped = (cat--font-stepped-attributes
-                            fonts attributes index)
-             for spec = (cat--resolved-face-spec fonts stepped)
-             when spec
-             do (push (face-remap-add-relative matched-face spec)
-                      cat--mode-face-remap-cookies)))
-  (when-let* ((rescale (plist-get rule :rescale)))
+  (when-let* ((rule (seq-find (lambda (candidate)
+                                (plist-get candidate :font))
+                              rules))
+              (font (plist-get rule :font))
+              (spec (+safe-buffer-face-set-fonts font)))
+    (setq cat--mode-buffer-face spec))
+  (dolist (rule rules)
+    (pcase-dolist (`(,face ,fonts . ,attributes) (plist-get rule :faces))
+      (cl-loop for matched-face in (cat--font-rule-faces face)
+               for index from 0
+               for stepped = (cat--font-stepped-attributes
+                              fonts attributes index)
+               for spec = (cat--resolved-face-spec fonts stepped)
+               when spec
+               do (push (face-remap-add-relative matched-face spec)
+                        cat--mode-face-remap-cookies))))
+  (when-let* ((rule (seq-find (lambda (candidate)
+                                (plist-get candidate :rescale))
+                              rules))
+              (rescale (plist-get rule :rescale)))
     (setq cat--mode-font-rescale-state
           (list (local-variable-p 'face-font-rescale-alist)
                 face-font-rescale-alist))
@@ -627,14 +692,11 @@ With FORCE, reapply the configured fonts.  Respect a `buffer-face-mode'
 owned by other configuration."
   (unless (and (bound-and-true-p buffer-face-mode)
                (not (equal buffer-face-mode-face cat--mode-buffer-face)))
-    (let* ((rule (seq-find #'cat--mode-font-rule-matches-p
-                           (append (mapcar #'cdr
-                                           cat-font-rule-alist)
-                                   cat-mode-font-rules)))
-           (state (list major-mode rule)))
+    (let* ((rules (cat--matching-mode-font-rules))
+           (state (list major-mode rules)))
       (when (or force (not (equal state cat--mode-font-state)))
-        (if rule
-            (cat--apply-mode-font-rule rule)
+        (if rules
+            (cat--apply-mode-font-rules rules)
           (cat--clear-mode-font))
         (setq cat--mode-font-state state)))))
 

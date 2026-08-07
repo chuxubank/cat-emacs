@@ -8,26 +8,32 @@
   (org-store-link)
   :delight
   (org-cdlatex-mode (:eval (+with-icon "nf-seti-tex" " ")))
-  :cat-font (body
-             :modes org-mode
-             :faces ((org-block code)
-                     (org-code code)
-                     (org-column-title table)
-                     (org-date metadata-value)
-                     (org-document-title title)
-                     (org-done mono)
-                     (org-drawer metadata-label)
-                     (org-formula table)
-                     (org-level-* heading
-                                  :height-step -0.05
-                                  :weight bold
-                                  :weight-step -0.5)
-                     (org-link metadata-label)
-                     (org-meta-line code)
-                     (org-property-value metadata-value)
-                     (org-special-keyword metadata-label)
-                     (org-table table)
-                     (org-todo mono)))
+  :cat-font
+  (prose
+   :modes org-mode
+   :faces ((org-block code)
+           (org-code code)
+           (org-column-title table)
+           (org-date metadata-value)
+           (org-document-info prose :slant italic)
+           (org-document-title title)
+           (org-done mono)
+           (org-drawer metadata-label :height 0.9)
+           (org-formula table)
+           (org-indent prose)
+           (org-level-* heading
+                        :height 1.6
+                        :height-step -0.075
+                        :weight bold
+                        :weight-step -0.5)
+           (org-link prose :weight semi-bold)
+           (org-meta-line code :height 0.9)
+           (org-property-value metadata-value :height 0.9)
+           (org-special-keyword metadata-label :height 0.9)
+           (org-table table)
+           (org-tag metadata-label)
+           (org-todo mono)
+           (org-verbatim code)))
   :custom
   (org-directory cat-org-directory)
   (org-agenda-files (list cat-org-directory))
@@ -203,6 +209,13 @@
 (use-package org-modern
   :demand
   :after org
+  :cat-font
+  (:modes org-mode
+          :faces ((org-modern-block-name code)
+                  (org-modern-done mono)
+                  (org-modern-label metadata-label)
+                  (org-modern-tag metadata-label)
+                  (org-modern-todo mono)))
   :custom
   (org-modern-table nil)
   (org-modern-hide-stars nil)
