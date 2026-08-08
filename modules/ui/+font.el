@@ -7,6 +7,7 @@
   (setq use-default-font-for-symbols (not STIPPLE-COMPATIBLE-P))
   :config
   (require 'prosody-use-package)
+  (require 'prosody-nerd-icons)
   (add-hook 'cat-theme-refresh-hook #'prosody-setup))
 
 (if IS-MACPORT
