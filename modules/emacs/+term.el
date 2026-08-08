@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(cat-register-font-rule
+(prosody-register
  'comint
  '(:modes comint-mode
    :font terminal
@@ -35,7 +35,7 @@
 
 (use-package vterm
   :cat
-  :cat-font (terminal
+  :font-role (terminal
              :rescale (("Symbols Nerd Font" . 1.2)))
   :ensure-system-package
   (cmake . cmake)
@@ -60,7 +60,7 @@
     (("v" #'vterm "vterm")))))
 
 (use-package mistty
-  :cat-font (terminal
+  :font-role (terminal
              :rescale (("Symbols Nerd Font" . 1.2)))
   :bind
   (:map project-prefix-map
@@ -102,7 +102,7 @@
   (meow-vterm-enable))
 
 (use-package ghostel
-  :cat-font (terminal
+  :font-role (terminal
              :rescale (("Symbols Nerd Font" . 1.2)))
   :pretty-hydra
   (cat-term

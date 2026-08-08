@@ -322,7 +322,7 @@
 (use-package table
   :ensure nil
   :config
-  (+safe-set-face-fonts 'table-cell 'table))
+  (prosody-set-face-font 'table-cell 'table))
 
 (use-package comp-run
   :ensure nil

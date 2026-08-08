@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(cat-register-font-rule
+(prosody-register
  'emacs-documentation
  '(:modes (Info-mode man-common) :font documentation))
 

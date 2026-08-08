@@ -14,6 +14,9 @@
  (:if IS-MAC
       macos)
 
+ :ui
+ font
+
  :emacs
  diredx
  tramp
@@ -25,7 +28,6 @@
  :ui
  ;; (nano :cat core minibuffer)
  doom
- font
  autodark
  (beauty :cat valign)
  windows ;; :cat golden-ratio

@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(cat-register-font-rule
+(prosody-register
  'meow-cheatsheet
  '(:buffer-name "Meow Cheatsheet" :font code))
 

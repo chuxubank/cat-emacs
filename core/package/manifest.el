@@ -6,7 +6,6 @@
 
 (defvar package-vc-selected-packages nil)
 (defvar use-package-ensure-function)
-(defvar cat-font-rule-alist nil)
 
 (defconst cat-package-manifest-format-version 1
   "Current generated package manifest format version.")
@@ -26,6 +25,21 @@ The value is one of `empty', `collecting', `ready', or `failed'.")
 
 (defvar cat-package--ensure-function #'use-package-ensure-elpa
   "Original function used by `cat-package--use-package-ensure'.")
+
+(defun cat-package--snapshot-font-rules ()
+  "Return a copy of Prosody rules when its registry is available."
+  (when (fboundp 'prosody-rules)
+    (prosody-rules)))
+
+(defun cat-package--clear-font-rules ()
+  "Clear Prosody rules when its registry is available."
+  (when (fboundp 'prosody-clear-rules)
+    (prosody-clear-rules)))
+
+(defun cat-package--restore-font-rules (rules)
+  "Restore Prosody RULES when its registry is available."
+  (when (fboundp 'prosody-restore-rules)
+    (prosody-restore-rules rules)))
 
 (defun cat-package--reset-manifest ()
   "Clear package roots collected from Cat modules."
@@ -188,14 +202,14 @@ nonlocal exit."
   (let ((previous-state cat-package-manifest-state)
         (previous-elpa-roots (copy-sequence cat-package--elpa-roots))
         (previous-vc-roots (copy-tree cat-package--vc-roots))
-        (previous-font-rules (copy-tree cat-font-rule-alist))
+        (previous-font-rules (cat-package--snapshot-font-rules))
         (previous-selection (copy-sequence package-selected-packages))
         (previous-vc-selection (copy-tree package-vc-selected-packages))
         succeeded
         result)
     (setq cat-package-manifest-state 'collecting)
     (cat-package--reset-manifest)
-    (setq cat-font-rule-alist nil)
+    (cat-package--clear-font-rules)
     (unwind-protect
         (condition-case err
             (progn
@@ -211,9 +225,9 @@ nonlocal exit."
         (setq cat-package-manifest-state previous-state
               cat-package--elpa-roots previous-elpa-roots
               cat-package--vc-roots previous-vc-roots
-              cat-font-rule-alist previous-font-rules
               package-selected-packages previous-selection
-              package-vc-selected-packages previous-vc-selection)))))
+              package-vc-selected-packages previous-vc-selection)
+        (cat-package--restore-font-rules previous-font-rules)))))
 
 (defun cat-package--require-ready-manifest ()
   "Signal a user error unless the package manifest is ready."

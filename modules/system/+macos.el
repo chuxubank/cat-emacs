@@ -29,7 +29,8 @@
     (advice-add #'macpd-make-new-default-frame
                 :filter-return
                 (lambda (frame)
-                  (run-hook-with-args 'cat-setup-fonts-hook nil frame)
+                  (when (fboundp 'prosody-setup)
+                    (prosody-setup frame))
                   frame))))
 
 (define-key global-map (kbd "C-s-f") #'toggle-frame-fullscreen)

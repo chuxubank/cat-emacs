@@ -2,9 +2,9 @@
 
 (defun cat/org-fontify-src-font-role (lang start end)
   "Apply LANG's configured font role between START and END."
-  (when (fboundp 'cat-font-apply-mode-to-region)
+  (when (fboundp 'prosody-apply-to-region)
     (when-let* ((mode (org-src-get-lang-mode-if-bound lang)))
-      (cat-font-apply-mode-to-region mode start end))))
+      (prosody-apply-to-region mode start end))))
 
 (with-eval-after-load 'org-src
   (advice-add 'org-src-font-lock-fontify-block :after
@@ -18,7 +18,7 @@
   (org-store-link)
   :delight
   (org-cdlatex-mode (:eval (+with-icon "nf-seti-tex" " ")))
-  :cat-font
+  :font-role
   (prose
    :modes org-mode
    :faces ((org-block code)
@@ -221,7 +221,7 @@
 (use-package org-modern
   :demand
   :after org
-  :cat-font
+  :font-role
   (:modes org-mode
           :faces ((org-modern-block-name code)
                   (org-modern-done mono)

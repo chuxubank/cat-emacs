@@ -14,8 +14,8 @@
   (add-to-list 'org-babel-load-languages '(go . t)))
 
 (use-package templ-ts-mode
-  :cat-font code-config)
+  :font-role code-config)
 
 (use-package go-template-ts-mode
-  :cat-font code-config
+  :font-role code-config
   :vc (:url "https://github.com/cat-emacs/go-template-ts-mode"))

@@ -2,7 +2,7 @@
 
 (use-package cc-mode
   :ensure nil
-  :cat-font (code-jvm :modes (java-mode java-ts-mode)))
+  :font-role (code-jvm :modes (java-mode java-ts-mode)))
 
 (use-package java-imports
   :cat imports

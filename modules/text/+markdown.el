@@ -7,16 +7,16 @@
 
 (defun cat/markdown-fontify-code-font-role (lang start end)
   "Apply LANG's configured font role between START and END."
-  (when (fboundp 'cat-font-apply-mode-to-region)
+  (when (fboundp 'prosody-apply-to-region)
     (when-let* ((mode (if lang
                           (markdown-get-lang-mode lang)
                         markdown-fontify-code-block-default-mode)))
-      (cat-font-apply-mode-to-region mode start end))))
+      (prosody-apply-to-region mode start end))))
 
 (use-package mustache)
 
 (use-package markdown-mode
-  :cat-font (prose
+  :font-role (prose
              :faces ((markdown-blockquote-face decorative)
                      (markdown-code-face code)
                      (markdown-gfm-checkbox-face mono)

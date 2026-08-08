@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package python
-  :cat-font (code-python :modes python-base-mode)
+  :font-role (code-python :modes python-base-mode)
   :ensure-system-package
   (pylint . pylint)
   (black . black)

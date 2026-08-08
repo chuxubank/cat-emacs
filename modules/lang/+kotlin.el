@@ -1,12 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package kotlin-mode
-  :cat-font code-jvm
+  :font-role code-jvm
   :custom
   (kotlin-args-repl '("-Xrepl")))
 
 (use-package kotlin-ts-mode
-  :cat-font code-jvm)
+  :font-role code-jvm)
 
 (use-package kotlin-ts-test
   :ensure nil
