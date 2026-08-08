@@ -277,11 +277,18 @@
 
 (use-package profiler
   :ensure nil
-  :pretty-hydra
-  ((:color pink :title (+with-icon "nf-fa-tachometer" nil " Profiler") :quit-key "q")
-   ("Actions"
-    (("s" profiler-start "start")
-     ("r" (progn (profiler-report) (profiler-stop)) "stop & report" :exit t)))))
+  :init
+  (defun cat/profiler-stop-and-report ()
+    "Stop the profiler and show its report."
+    (interactive)
+    (profiler-report)
+    (profiler-stop))
+  :transient
+  (cat-profiler
+   (:description (+with-icon "nf-fa-tachometer" nil " Profiler"))
+   ["Actions"
+    ("s" "start" profiler-start :transient t)
+    ("r" "stop & report" cat/profiler-stop-and-report)]))
 
 (use-package midnight
   :ensure nil
@@ -344,7 +351,3 @@
                       '("GitHub Search" .
                         [simple-query "github.com"
 		                              "github.com/search?q=" "&type=repositories"])))
-
-(use-package transient
-  :ignore-builtin
-  :pin gnu)

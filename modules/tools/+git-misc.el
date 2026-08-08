@@ -1,29 +1,28 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-git-misc
-  (:color teal :title (+with-icon "nf-md-git" nil " Git misc"))
-  ("" ()))
+(mode-transient-define-prefix cat-git-misc ()
+  :description (+with-icon "nf-md-git" nil " Git misc"))
 
 (use-package git-timemachine
   :delight (git-timemachine-mode
             (:eval (+with-icon "nf-cod-history" " ")))
-  :pretty-hydra
+  :transient
   (cat-git-misc
-   ("Git History"
-    (("t" #'git-timemachine-toggle "git timemachine")))))
+   ["Git History"
+    ("t" "git timemachine" git-timemachine-toggle)]))
 
 (use-package git-link
   :custom
   (git-link-open-in-browser t)
-  :pretty-hydra
+  :transient
   (cat-git-misc
-   ("Git Link"
-    (("l" #'git-link-dispatch "git link")))))
+   ["Git Link"
+    ("l" "git link" git-link-dispatch)]))
 
 (use-package code-review
   :vc (code-review :url "https://github.com/doomelpa/code-review")
-  :pretty-hydra
+  :transient
   (cat-git-misc
-   ("Code Review"
-    (("r" #'code-review-forge-pr-at-point "code review forge")
-     ("R" #'code-review-start "code review start")))))
+   ["Code Review"
+    ("r" "code review forge" code-review-forge-pr-at-point)
+    ("R" "code review start" code-review-start)]))

@@ -63,10 +63,10 @@
   :hook (org-mode . org-edna-mode)
   :custom
   (org-edna-finder-use-cache t)
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Plugin"
-    (("e" org-edna-edit "edna edit")))))
+   ["Plugin"
+    ("e" "edna edit" org-edna-edit)]))
 
 (defun org-todo-with-date (&optional arg)
   "Like `org-todo' but with given date.

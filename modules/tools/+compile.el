@@ -8,10 +8,10 @@
   :bind
   (:map project-prefix-map
         ("C-c" . #'compile-multi))
-  :pretty-hydra
+  :transient
   (cat-workspace
-   ("Project"
-    (("c" #'compile-multi "compile multi"))))
+   ["Project"
+    ("c" "compile multi" compile-multi)])
   :config
   (push `((file-exists-p "Makefile")
           ,#'compile-multi-make-targets+)

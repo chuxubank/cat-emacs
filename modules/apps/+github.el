@@ -1,22 +1,21 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-github
-  (:color teal :title (+with-icon "nf-cod-github" nil " GitHub"))
-  ("" ()))
+(mode-transient-define-prefix cat-github ()
+  :description (+with-icon "nf-cod-github" nil " GitHub"))
 
 (use-package igist
-  :pretty-hydra
+  :transient
   (cat-github
-   ("gist"
-    (("i" #'igist-dispatch "gist")))))
+   ["gist"
+    ("i" "gist" igist-dispatch)]))
 
 (use-package consult-gh
   :custom
   (consult-gh-default-clone-directory "~/Developer/")
-  :pretty-hydra
+  :transient
   (cat-github
-   ("gh"
-    (("h" #'consult-gh "consult gh"))))
+   ["gh"
+    ("h" "consult gh" consult-gh)])
   :config
   ;; Remember visited orgs and repos across sessions
   (+add-to-list-multi 'savehist-additional-variables

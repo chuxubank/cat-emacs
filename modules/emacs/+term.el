@@ -6,32 +6,31 @@
    :font terminal
    :rescale (("Symbols Nerd Font" . 1.2))))
 
-(pretty-hydra-define cat-term
-  (:color teal :title (+with-icon "nf-oct-terminal" nil " Term"))
-  ("" ()))
+(mode-transient-define-prefix cat-term ()
+  :description (+with-icon "nf-oct-terminal" nil " Term"))
 
 (use-package term
   :ensure nil
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Term"
-    (("t" #'term "term")
-     ("a" #'ansi-term "ansi-term")
-     ("S" #'serial-term "serial-term")))))
+   ["Term"
+    ("t" "term" term)
+    ("a" "ansi-term" ansi-term)
+    ("S" "serial-term" serial-term)]))
 
 (use-package shell
   :ensure nil
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Shell"
-    (("s" #'shell "shell")))))
+   ["Shell"
+    ("s" "shell" shell)]))
 
 (use-package eshell
   :ensure nil
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Shell"
-    (("e" #'eshell "eshell")))))
+   ["Shell"
+    ("e" "eshell" eshell)]))
 
 (use-package vterm
   :cat
@@ -54,10 +53,10 @@
         ("C-q" . #'vterm-send-next-key))
   (:map project-prefix-map
         ("V" . project-vterm))
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Vterm"
-    (("v" #'vterm "vterm")))))
+   ["Vterm"
+    ("v" "vterm" vterm)]))
 
 (use-package mistty
   :font-role (terminal
@@ -65,10 +64,10 @@
   :bind
   (:map project-prefix-map
         ("M" . mistty-in-project))
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Mistty"
-    (("m" #'mistty "mistty")))))
+   ["Mistty"
+    ("m" "mistty" mistty)]))
 
 (with-eval-after-load 'project
   (when (catp! vterm)
@@ -88,10 +87,10 @@
         ([(control return)] . vterm-toggle-insert-cd)
         ("s-n" . vterm-toggle-forward)
         ("s-p" . vterm-toggle-backward))
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Vterm"
-    (("V" #'vterm-toggle "vterm toggle")))))
+   ["Vterm"
+    ("V" "vterm toggle" vterm-toggle)]))
 
 (use-package meow-vterm
   :cat (and (catp! vterm) (modulep! meow))
@@ -104,10 +103,10 @@
 (use-package ghostel
   :font-role (terminal
              :rescale (("Symbols Nerd Font" . 1.2)))
-  :pretty-hydra
+  :transient
   (cat-term
-   ("Ghostty"
-    (("g" #'ghostel "Ghostel")))))
+   ["Ghostty"
+    ("g" "Ghostel" ghostel)]))
 
 (use-package kitty-graphics
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el")

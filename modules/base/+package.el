@@ -32,11 +32,20 @@
 (use-package system-packages)
 (use-package nerd-icons)
 (use-package delight)
-(use-package major-mode-hydra
+
+(use-package transient
+  :ignore-builtin
+  :pin gnu)
+
+(use-package mode-transient
+  :vc (:url "https://github.com/cat-emacs/mode-transient")
   :demand t
   :init
-  (defun cat/major-mode-hydra-title-generator (_)
-    `(+with-mode-icon major-mode (s-concat (format-mode-line mode-name) " Commands")))
+  (defun cat/mode-transient-title (mode kind)
+    "Return a mode Transient title for MODE of KIND."
+    (+with-mode-icon mode (mode-transient-default-title mode kind)))
   :custom
-  (major-mode-hydra-invisible-quit-key "q")
-  (major-mode-hydra-title-generator #'cat/major-mode-hydra-title-generator))
+  (mode-transient-title-function #'cat/mode-transient-title)
+  :config
+  (require 'mode-transient-use-package)
+  (transient-bind-q-to-quit))

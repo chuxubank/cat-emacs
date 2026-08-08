@@ -17,10 +17,10 @@
   :custom
   (pet-find-file-functions '(pet-find-file-from-project-root
                              pet-locate-dominating-file))
-  :mode-hydra
+  :mode-transient
   (python-base-mode
-   ("Plugin"
-    (("v" #'pet-verify-setup "pet verify")))))
+   ["Plugin"
+    ("v" "pet verify" pet-verify-setup)]))
 
 (use-package poetry
   :cat

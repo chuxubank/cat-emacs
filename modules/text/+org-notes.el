@@ -3,10 +3,10 @@
 (use-package org-media-note
   :vc (:url "https://github.com/yuchen-lea/org-media-note")
   :hook (org-mode . org-media-note-mode)
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Notes"
-    (("v" org-media-note-show-interface "media"))))
+   ["Notes"
+    ("v" "media" org-media-note-show-interface)])
   :config
   (require 'org-attach))
 
@@ -24,10 +24,10 @@
        'vertical-split
      'horizontal-split))
   (org-noter-doc-split-fraction '(0.6 . 0.5))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Notes"
-    (("n" org-noter "noter"))))
+   ["Notes"
+    ("n" "noter" org-noter)])
   :config
   (setq org-noter--inhibit-location-change-handler t)
   (define-key org-noter-notes-mode-map (kbd "M-i") #'cat/org-noter-update-page-info)

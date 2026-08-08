@@ -16,11 +16,11 @@
                            ("bitbucket" . "https://bitbucket.org/%s")
                            ("bili". "https://bilibili.com/video/%s")
                            ("coursera". "https://www.coursera.org/%s")))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Toggle"
-    (("tl" org-toggle-link-display "link display" :color red)
-     ("tL" org-link-preview "link preview" :color red)))))
+   ["Toggle"
+    ("tl" "link display" org-toggle-link-display :transient t)
+    ("tL" "link preview" org-link-preview :transient t)]))
 
 (use-package org-yt
   :vc (:url "https://github.com/TobiasZawada/org-yt")
@@ -56,10 +56,10 @@
     (setq org-dial-program "open tel:")))
 
 (use-package org-cliplink
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Plugin"
-    (("c" org-cliplink "cliplink")))))
+   ["Plugin"
+    ("c" "cliplink" org-cliplink)]))
 
 (use-package org-link-beautify
   :pin melpa-stable
@@ -67,7 +67,7 @@
   :after org
   :custom
   (org-link-beautify-thumbnails-dir 'user-home)
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Mode"
-    (("b" org-link-beautify-mode "link beautify" :color red)))))
+   ["Mode"
+    ("b" "link beautify" org-link-beautify-mode :transient t)]))

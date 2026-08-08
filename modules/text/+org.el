@@ -91,15 +91,15 @@
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
   (+org-todo-onhold  ((t (:inherit (bold warning org-todo)))))
   (+org-todo-cancel  ((t (:inherit (bold org-done) :strike-through t))))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   (:title (+with-icon "nf-custom-orgmode" nil " Org Mode"))
-   ("Notes"
-    (("i" #'org-id-get-create "id"))
-    "Toggle"
-    (("tp" org-toggle-pretty-entities "pretty entities" :color red)
-     ("te" cat/org-toggle-emphasis "emphasis" :color red)
-     ("tm" cat/org-toggle-macro "macro" :color red))))
+   (:description (+with-icon "nf-custom-orgmode" nil " Org Mode"))
+   ["Notes"
+    ("i" "id" org-id-get-create)]
+   ["Toggle"
+    ("tp" "pretty entities" org-toggle-pretty-entities :transient t)
+    ("te" "emphasis" cat/org-toggle-emphasis :transient t)
+    ("tm" "macro" cat/org-toggle-macro :transient t)])
   :config
   (when IS-LINUX
     (add-to-list 'org-file-apps '("\\.x?html\\'" . "firefox %s")))
@@ -275,10 +275,10 @@
      ("macro" . ,(+with-icon "nf-fa-cog"))
      ("results" . ,(+with-icon "nf-cod-output" nil ":"))
      (t . t)))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Mode"
-    (("m" org-modern-mode "modern" :color red))))
+   ["Mode"
+    ("m" "modern" org-modern-mode :transient t)])
   :config
   (global-org-modern-mode))
 
@@ -293,10 +293,10 @@
   (org-appear-autolinks t)
   (org-appear-autosubmarkers t)
   (org-appear-autoentities t)
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Mode"
-    (("a" org-appear-mode "appear" :color red)))))
+   ["Mode"
+    ("a" "appear" org-appear-mode :transient t)]))
 
 (defun cat/org-toggle-emphasis ()
   "Toggle org emphasize markers."

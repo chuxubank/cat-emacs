@@ -1,8 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-blog
-  (:color teal :title (+with-icon "nf-fa-blog" nil " Blog"))
-  ("" ()))
+(mode-transient-define-prefix cat-blog ()
+  :description (+with-icon "nf-fa-blog" nil " Blog"))
 
 (defcustom cat-blog-directory
   (or (getenv "BLOG_DIR") "~/Developer/Personal/blog/")
@@ -16,18 +15,18 @@ See `hugoista-site-dir' and `easy-hugo-basedir'."
 (use-package hugoista
   :custom
   (hugoista-site-dir cat-blog-directory)
-  :pretty-hydra
+  :transient
   (cat-blog
-   ("Hugoista"
-    (("h" #'hugoista "hugoista")))))
+   ["Hugoista"
+    ("h" "hugoista" hugoista)]))
 
 (use-package easy-hugo
   :custom
   (easy-hugo-basedir cat-blog-directory)
   (easy-hugo-postdir "content/posts")
   (easy-hugo-default-ext ".org")
-  :pretty-hydra
+  :transient
   (cat-blog
-   ("EasyHugo"
-    (("e" #'easy-hugo "easy-hugo")
-     ("p" #'easy-hugo-preview "preview")))))
+   ["EasyHugo"
+    ("e" "easy-hugo" easy-hugo)
+    ("p" "preview" easy-hugo-preview)]))

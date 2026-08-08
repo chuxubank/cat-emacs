@@ -1,18 +1,17 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-language
-  (:color teal :title (+with-icon "nf-fa-language" nil " Language"))
-  ("" ()))
+(mode-transient-define-prefix cat-language ()
+  :description (+with-icon "nf-fa-language" nil " Language"))
 
 (use-package bing-dict
   :config
   (setq bing-dict-vocabulary-save t
         bing-dict-show-thesaurus 'both
         bing-dict-vocabulary-file (expand-file-name "vocabulary.org" cat-org-directory))
-  :pretty-hydra
+  :transient
   (cat-language
-   ("Dictionary"
-    (("b" #'bing-dict-brief "bing")))))
+   ["Dictionary"
+    ("b" "bing" bing-dict-brief)]))
 
 (use-package anki-vocabulary
   :custom
@@ -21,18 +20,18 @@
   (anki-vocabulary-field-alist '(("expression" . "${expression:单词}")
                                  ("glossary"   . "${glossary:释义}")
                                  ("sentence"   . "${sentence_bold:标粗的原文例句}")))
-  :pretty-hydra
+  :transient
   (cat-language
-   ("Dictionary"
-    (("a" #'anki-vocabulary "anki")))))
+   ["Dictionary"
+    ("a" "anki" anki-vocabulary)]))
 
 (use-package osx-dictionary
   :when IS-MAC
-  :pretty-hydra
+  :transient
   (cat-language
-   ("Dictionary"
-    (("o" #'osx-dictionary-search-pointer "osx")
-     ("O" #'osx-dictionary-search-input "osx input")))))
+   ["Dictionary"
+    ("o" "osx" osx-dictionary-search-pointer)
+    ("O" "osx input" osx-dictionary-search-input)]))
 
 (use-package gt
   :custom
@@ -66,13 +65,13 @@
                            :pick-pred (lambda (w) (length> w 6)))
           :engines (gt-google-engine)
           :render (gt-overlay-render :type 'help-echo)))))
-  :pretty-hydra
+  :transient
   (cat-language
-   ("Translate"
-    (("gg" #'gt-translate "go translate")
-     ("gs" #'gt-setup "go translate setup")
-     ("gS" #'gt-speak "go translate speak")
-     ("gd" #'gt-delete-render-overlays "go translate delete ov")))))
+   ["Translate"
+    ("gg" "go translate" gt-translate)
+    ("gs" "go translate setup" gt-setup)
+    ("gS" "go translate speak" gt-speak)
+    ("gd" "go translate delete ov" gt-delete-render-overlays)]))
 
 (use-package immersive-translate
   :cat it)

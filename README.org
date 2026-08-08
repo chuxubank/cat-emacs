@@ -121,6 +121,26 @@ stay disabled unless the Cat feature or expression is enabled:
   :cat)
 #+end_src
 
+** Transient Menus
+
+The =cat-emacs/mode-transient= package composes native Transient group and
+suffix specifications across =use-package= declarations.  Use =:transient= for
+a named menu, =:mode-transient= for a major-mode menu, and
+=:minor-mode-transient= for a minor-mode menu.  Cat Emacs keeps global =C-c=
+bindings in =modules/base/+keymap.el= instead of package declarations.
+
+#+begin_src emacs-lisp
+(use-package android-mode
+  :minor-mode-transient
+  (android-mode
+   ["Build"
+    ("b" "Build" android-gradle-build)
+    ("t" "Test" android-gradle-test)]))
+#+end_src
+
+The group vectors use Transient's native syntax.  Prefix =:description= values
+that are forms are made dynamic automatically, without an explicit =lambda=.
+
 ** Configuration Entry Points
 
 - =early-init.el= defines platform flags, cache directories, benchmark logging,

@@ -1,8 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-im
-  (:color teal :title (+with-icon "nf-md-chat" nil " Instant Messaging"))
-  ("" ()))
+(mode-transient-define-prefix cat-im ()
+  :description (+with-icon "nf-md-chat" nil " Instant Messaging"))
 
 (use-package imessage
   :vc (:url "https://github.com/cat-emacs/imessage")
@@ -40,10 +39,10 @@
   (telega-video-player-command "mpv")
   :custom-face
   (telega-msg-heading ((t (:inherit region :extend t))))
-  :pretty-hydra
+  :transient
   (cat-im
-   ("Telegram"
-    (("t" #'telega-transient--prefix-telega-prefix-map "telega"))))
+   ["Telegram"
+    ("t" "telega" telega-transient--prefix-telega-prefix-map)])
   :config
   (telega-transient-keymaps-mode))
 
@@ -58,15 +57,16 @@
 (use-package ement
   :custom
   (ement-save-sessions t)
-  :pretty-hydra
-  ((:color teal :title "Ement")
-   ("Action"
-    (("e" #'ement-connect "connect")
-     ("k" #'ement-kill-buffers "kill")
-     ("l" #'ement-list-rooms "rooms"))))
+  :transient
+  (cat-ement
+   (:description "Ement")
+   ["Action"
+    ("e" "connect" ement-connect)
+    ("k" "kill" ement-kill-buffers)
+    ("l" "rooms" ement-list-rooms)])
   (cat-im
-   ("Matrix"
-    (("e" #'ement-hydra/body "ement")))))
+   ["Matrix"
+    ("e" "ement" cat-ement)]))
 
 (use-package jabber
   :cat)

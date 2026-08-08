@@ -6,15 +6,16 @@
   (org-drill-spaced-repetition-algorithm 'simple8)
   (org-drill-add-random-noise-to-intervals-p t)
   (org-drill-adjust-intervals-for-early-and-late-repetitions-p t)
-  :pretty-hydra
-  ((:color teal)
-   ("Drill"
-    (("d" org-drill "drill")
-     ("a" org-drill-again "again")
-     ("c" org-drill-cram "cram"))))
+  :transient
+  (cat-org-drill
+   ["Drill"
+    ("d" "drill" org-drill)
+    ("a" "again" org-drill-again)
+    ("c" "cram" org-drill-cram)])
+  :mode-transient
   (org-mode
-   ("SRS"
-    (("d" org-drill-hydra/body "drill"))))
+   ["SRS"
+    ("d" "drill" cat-org-drill)])
   :config
   (add-to-list 'org-tag-alist
                (cons org-drill-question-tag ?d)))
@@ -29,27 +30,28 @@
                        cat-org-directory
                        (substring cat-org-roam-directory 0 -1)))
   (org-fc-review-history-file (concat cat-etc-dir "org-fc-reviews.tsv"))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("SRS"
-    (("fd" org-fc-dashboard "fc dashboard")
-     ("fh" org-fc-hydra "fc hydra")))))
+   ["SRS"
+    ("fd" "fc dashboard" org-fc-dashboard)
+    ("fh" "fc hydra" org-fc-hydra)]))
 
 (use-package org-anki
-  :pretty-hydra
-  ((:color teal)
-   ("Anki"
-    (("a" #'org-anki-sync-entry "sync entry")
-     ("b" #'org-anki-browse-entry "browse entry")
-     ("c" #'org-anki-cloze-dwim "cloze dwim")
-     ("d" #'org-anki-delete-entry "delete entry")
-     ("D" #'org-anki-delete-all "delete all")
-     ("i" #'org-anki-import-deck "import deck")
-     ("s" #'org-anki-sync-all "sync all")
-     ("u" #'org-anki-update-all "update all"))))
+  :transient
+  (cat-org-anki
+   ["Anki"
+    ("a" "sync entry" org-anki-sync-entry)
+    ("b" "browse entry" org-anki-browse-entry)
+    ("c" "cloze dwim" org-anki-cloze-dwim)
+    ("d" "delete entry" org-anki-delete-entry)
+    ("D" "delete all" org-anki-delete-all)
+    ("i" "import deck" org-anki-import-deck)
+    ("s" "sync all" org-anki-sync-all)
+    ("u" "update all" org-anki-update-all)])
+  :mode-transient
   (org-mode
-   ("SRS"
-    (("a" org-anki-hydra/body "anki")))))
+   ["SRS"
+    ("sa" "anki" cat-org-anki)]))
 
 (use-package promise
   :cat

@@ -46,25 +46,26 @@ See `org-roam-dailies-directory'."
                                     ("l" "LeetCode" plain (file ,(concat cat-org-roam-default-templates-dir "leetcode.org"))
                                      :target (file "roam/cs/oj/leetcode/${number}/${title-slug}.org")
                                      :unnarrowed t)))
-  :pretty-hydra
-  ((:color teal :title (+with-icon "nf-md-map_marker_path" nil " Org Roam"))
-   ("Action"
-    (("r" org-roam-buffer-toggle "toggle")
-     ("e" org-roam-extract-subtree "extract")
-     ("R" cat/org-roam-relocate-file "relocate"))
-    "Tags"
-    (("at" #'org-roam-tag-add "add tag")
-     ("dt" #'org-roam-tag-remove "remove tag"))
-    "Alias"
-    (("aa" #'org-roam-alias-add "add alias")
-     ("da" #'org-roam-alias-remove "remove alias"))
-    "Reference"
-    (("ar" #'org-roam-ref-add "add ref")
-     ("dr" #'org-roam-ref-remove "remove ref"))))
-  :mode-hydra
+  :transient
+  (cat-org-roam
+   (:description (+with-icon "nf-md-map_marker_path" nil " Org Roam"))
+   ["Action"
+    ("r" "toggle" org-roam-buffer-toggle)
+    ("e" "extract" org-roam-extract-subtree)
+    ("R" "relocate" cat/org-roam-relocate-file)]
+   ["Tags"
+    ("at" "add tag" org-roam-tag-add)
+    ("dt" "remove tag" org-roam-tag-remove)]
+   ["Alias"
+    ("aa" "add alias" org-roam-alias-add)
+    ("da" "remove alias" org-roam-alias-remove)]
+   ["Reference"
+    ("ar" "add ref" org-roam-ref-add)
+    ("dr" "remove ref" org-roam-ref-remove)])
+  :mode-transient
   (org-mode
-   ("Notes"
-    (("r" org-roam-hydra/body "roam"))))
+   ["Notes"
+    ("r" "roam" cat-org-roam)])
   :config
   (+mkdir-p cat-org-roam-directory)
   (org-roam-db-autosync-mode)

@@ -14,13 +14,13 @@
   :after kotlin-ts-mode
   :custom
   (kotlin-ts-test-task-alist '(("common" . "desktopTest")))
-  :mode-hydra
+  :mode-transient
   (kotlin-ts-mode
-   ("Test"
-    (("t" kotlin-ts-test-goto-file "go to test file")
-     ("r" kotlin-ts-test-run-class "run current test class")
-     ("R" kotlin-ts-test-run-function "run current test function")
-     ("l" kotlin-ts-test-rerun "rerun last test")))))
+   ["Test"
+    ("t" "go to test file" kotlin-ts-test-goto-file)
+    ("r" "run current test class" kotlin-ts-test-run-class)
+    ("R" "run current test function" kotlin-ts-test-run-function)
+    ("l" "rerun last test" kotlin-ts-test-rerun)]))
 
 (use-package ob-kotlin
   :vc (:url "https://github.com/cat-emacs/ob-kotlin")

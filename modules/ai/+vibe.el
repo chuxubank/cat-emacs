@@ -21,9 +21,8 @@ file name is resolved from the user or fallback template directory by
           (password-store-get path))
         (user-error "No GPTel API key found in pass entry %s" path))))
 
-(pretty-hydra-define cat-vibe
-  (:color teal :title (+with-icon "nf-fa-wand_sparkles" nil " Vibe Coding"))
-  ("" ()))
+(mode-transient-define-prefix cat-vibe ()
+  :description (+with-icon "nf-fa-wand_sparkles" nil " Vibe Coding"))
 
 (use-package gptel-model-updater
   :vc (:url "https://github.com/cat-emacs/gptel-model-updater")
@@ -31,33 +30,34 @@ file name is resolved from the user or fallback template directory by
   (cat-idle-preload . gptel-model-updater-update-all)
   :custom
   (gptel-model-updater-metadata-overwrite-existing t)
-  :pretty-hydra
+  :transient
   (cat-vibe
-   ("GPTel"
-    (("u" #'gptel-model-updater-transient "updater")))))
+   ["GPTel"
+    ("u" "updater" gptel-model-updater-transient)]))
 
 (use-package gptel
   :delight (gptel-mode (:eval (+with-icon "nf-md-magic_staff" " ")))
   :custom
   (gptel-expert-commands t)
   (gptel-default-mode 'org-mode)
-  :pretty-hydra
-  ((:color teal :title (+with-icon "nf-dev-emacs" nil " GPTel"))
-   ("Send"
-    (("g" #'gptel "gptel")
-     ("s" #'gptel-send "send")
-     ("r" #'gptel-rewrite "rewrite"))
-    "Tweak"
-    (("m" #'gptel-menu "menu"))
-    "Context"
-    (("a" #'gptel-add "add/remove")
-     ("A" #'gptel-add-file "add file"))
-    "Org"
-    (("t" #'gptel-org-set-topic "set topic")
-     ("p" #'gptel-org-set-properties "set properties"))))
+  :transient
+  (cat-gptel
+   (:description (+with-icon "nf-dev-emacs" nil " GPTel"))
+   ["Send"
+    ("g" "gptel" gptel)
+    ("s" "send" gptel-send)
+    ("r" "rewrite" gptel-rewrite)]
+   ["Tweak"
+    ("m" "menu" gptel-menu)]
+   ["Context"
+    ("a" "add/remove" gptel-add)
+    ("A" "add file" gptel-add-file)]
+   ["Org"
+    ("t" "set topic" gptel-org-set-topic)
+    ("p" "set properties" gptel-org-set-properties)])
   (cat-vibe
-   ("GPTel"
-    (("g" #'gptel-hydra/body "gptel"))))
+   ["GPTel"
+    ("g" "gptel" cat-gptel)])
   :config
   (setq gptel--gemini
         (gptel-make-gemini "Gemini"
@@ -138,10 +138,10 @@ Invokes CALLBACK with the generated message when done."
   :custom
   (chatgpt-shell-root-path (concat cat-local-dir "shell-maker/"))
   (chatgpt-shell-model-version "gemma4")
-  :pretty-hydra
+  :transient
   (cat-vibe
-   ("Shell"
-    (("c" #'chatgpt-shell-transient "chatgpt shell"))))
+   ["Shell"
+    ("c" "chatgpt shell" chatgpt-shell-transient)])
   :config
   (chatgpt-shell-ollama-load-models :override t))
 
@@ -152,16 +152,16 @@ Invokes CALLBACK with the generated message when done."
   :custom
   (aidermacs-backend 'vterm)
   (aidermacs-watch-files t)
-  :pretty-hydra
+  :transient
   (cat-vibe
-   ("Aider"
-    (("a" #'aidermacs-transient-menu "aidermacs")))))
+   ["Aider"
+    ("a" "aidermacs" aidermacs-transient-menu)]))
 
 (use-package aider
-  :pretty-hydra
+  :transient
   (cat-vibe
-   ("Aider"
-    (("A" #'aider-transient-menu "aider.el"))))
+   ["Aider"
+    ("A" "aider.el" aider-transient-menu)])
   :config
   (aider-magit-setup-transients))
 
@@ -181,15 +181,15 @@ Invokes CALLBACK with the generated message when done."
         ("C-c C-n" . agent-shell-ui-forward-block))
   :custom
   (agent-shell-dot-subdir-function #'agent-shell--dot-subdir-in-cache)
-  :pretty-hydra
-  (agent-shell
-   (:color teal :title (+with-icon "nf-dev-terminal" nil " Agent Shell"))
-   ("Action"
-    (("s" #'agent-shell "agent-shell")
-     ("n" #'agent-shell-new-shell "new shell"))))
+  :transient
+  (cat-agent-shell
+   (:description (+with-icon "nf-dev-terminal" nil " Agent Shell"))
+   ["Action"
+    ("s" "agent-shell" agent-shell)
+    ("n" "new shell" agent-shell-new-shell)])
   (cat-vibe
-   ("Shell"
-    (("s" #'agent-shell/body "agent-shell"))))
+   ["Shell"
+    ("s" "agent-shell" cat-agent-shell)])
   :config
   (defun agent-shell--dot-subdir-in-cache (subdir)
     "Return path to agent-shell/SUBDIR under the `cat-cache-dir'.

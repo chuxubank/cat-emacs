@@ -12,10 +12,10 @@
   (add-hook 'beancount-mode-hook #'cat/disable-electric-indent-chars)
   :custom
   (beancount-use-ido nil)
-  :mode-hydra
+  :mode-transient
   (beancount-mode
-   ("Tools"
-    (("f" #'beancount-fava "fava"))))
+   ["Tools"
+    ("f" "fava" beancount-fava)])
   :config
   (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
   (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)

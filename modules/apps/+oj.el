@@ -1,19 +1,18 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-oj
-  (:color teal :title (+with-icon "nf-md-code_tags_check" nil " Online Judging"))
-  ("" ()))
+(mode-transient-define-prefix cat-oj ()
+  :description (+with-icon "nf-md-code_tags_check" nil " Online Judging"))
 
 (use-package leetcode
   :custom
   (leetcode-python-environment (concat cat-etc-dir "leetcode-env"))
   (leetcode-prefer-language "kotlin")
-  :pretty-hydra
+  :transient
   (cat-oj
-   ("LeetCode"
-    (("l" #'leetcode "leetcode")
-     ("d" #'leetcode-daily "daily")
-     ("k" #'leetcode-quit "quit")))))
+   ["LeetCode"
+    ("l" "leetcode" leetcode)
+    ("d" "daily" leetcode-daily)
+    ("k" "quit" leetcode-quit)]))
 
 (use-package leetcode-org-roam
   :vc (:url "https://github.com/cat-emacs/leetcode-org-roam")
@@ -23,7 +22,7 @@
 
 (use-package oj
   :cat cli
-  :pretty-hydra
+  :transient
   (cat-oj
-   ("Online Judge Tools"
-    (("o" #'oj-prepare "prepare")))))
+   ["Online Judge Tools"
+    ("o" "prepare" oj-prepare)]))

@@ -37,10 +37,10 @@
    '(("Open" . "Work Started")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
-  :mode-hydra
+  :mode-transient
   (org-mode
-   ("Plugin"
-    (("j" cat/org-jira-dispatch "org jira dispatch"))))
+   ["Plugin"
+    ("j" "org jira dispatch" cat/org-jira-dispatch)])
   :config
   (+mkdir-p org-jira-working-dir)
   (add-hook 'org-jira-mode-hook #'cat/hide-trailing-whitespace)
@@ -85,10 +85,11 @@
 (advice-add 'jiralib-progress-workflow-action :after #'cat/org-jira-start-dev-work)
 
 (defun cat/org-jira-dispatch ()
-  "If `org-jira-mode' is active, show Hydra; else push current TODO to JIRA."
+  "Show issue commands when `org-jira-mode' is active.
+Otherwise push the current TODO to JIRA."
   (interactive)
   (if (bound-and-true-p org-jira-mode)
-      (cat-org-jira-issue/body)
+      (cat-org-jira-issue)
     (call-interactively #'org-jira-todo-to-jira)))
 
 (defvar-keymap org-jira-global-map
@@ -106,34 +107,27 @@
   "s" #'cat/org-jira-save-jql-files
   "d" #'cat/org-jira-delete-custom-jql-files)
 
-(pretty-hydra-define cat-org-jira-issue
-  (:title "Org-Jira Issue" :color teal :quit-key "q" :foreign-keys warn)
-  ("Navigation"
-   (("b" org-jira-browse-issue "Browse issue")
-    ("w" org-jira-copy-current-issue-key "Copy issue key")
-    ("W" cat/org-jira-copy-current-issue-url "Copy URL"))
-   
-   "Comments"
-   (("c" org-jira-update-comment "Update comment")
-    ("C" org-jira-add-comment "Add comment"))
-   
-   "Issue Management"
-   (("a" org-jira-assign-issue "Assign issue")
-    ("u" org-jira-update-issue "Update issue")
-    ("r" org-jira-set-issue-reporter "Set reporter"))
-   
-   "Progress"
-   (("p" org-jira-progress-issue "Progress")
-    ("n" org-jira-progress-issue-next "Next progress"))
-   
-   "Subtasks"
-   (("t" org-jira-get-subtasks "Get subtasks")
-    ("T" org-jira-create-subtask "Create subtask"))
-
-   "Refresh"
-   (("g" org-jira-refresh-issue "Refresh issue")
-    ("G" org-jira-refresh-issues-in-buffer "Refresh all issues"))
-
-   "Worklogs"
-   (("l" org-jira-update-worklogs-from-org-clocks "Update from org clocks"))
-   ))
+(mode-transient-define-prefix cat-org-jira-issue ()
+  :description "Org-Jira Issue"
+  ["Navigation"
+   ("b" "Browse issue" org-jira-browse-issue)
+   ("w" "Copy issue key" org-jira-copy-current-issue-key)
+   ("W" "Copy URL" cat/org-jira-copy-current-issue-url)]
+  ["Comments"
+   ("c" "Update comment" org-jira-update-comment)
+   ("C" "Add comment" org-jira-add-comment)]
+  ["Issue Management"
+   ("a" "Assign issue" org-jira-assign-issue)
+   ("u" "Update issue" org-jira-update-issue)
+   ("r" "Set reporter" org-jira-set-issue-reporter)]
+  ["Progress"
+   ("p" "Progress" org-jira-progress-issue)
+   ("n" "Next progress" org-jira-progress-issue-next)]
+  ["Subtasks"
+   ("t" "Get subtasks" org-jira-get-subtasks)
+   ("T" "Create subtask" org-jira-create-subtask)]
+  ["Refresh"
+   ("g" "Refresh issue" org-jira-refresh-issue)
+   ("G" "Refresh all issues" org-jira-refresh-issues-in-buffer)]
+  ["Worklogs"
+   ("l" "Update from org clocks" org-jira-update-worklogs-from-org-clocks)])

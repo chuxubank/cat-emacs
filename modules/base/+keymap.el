@@ -31,24 +31,24 @@
   :doc "Keymap for plugins."
   :name "Cat Plugin"
   :prefix 'cat-plugin-prefix
-  "a" #'cat-android/body
-  "b" #'cat-blog/body
+  "a" #'mode-transient/minor/android-mode
+  "b" #'cat-blog
   "c" 'chezmoi-transient
   "d" 'cat-dev-doc-prefix
   "D" 'docker
-  "g" #'cat-git-misc/body
-  "G" #'cat-github/body
-  "i" #'cat-im/body
+  "g" #'cat-git-misc
+  "G" #'cat-github
+  "i" #'cat-im
   "j" #'jira-issues
-  "m" #'cat-mail/body
+  "m" #'cat-mail
   "M" #'osm-prefix-map
   "n" #'deft
-  "o" #'cat-oj/body
+  "o" #'cat-oj
   "p" #'pass
   "P" #'password-store-menu
   "r" #'elfeed
   "R" #'magit-list-repositories
-  "t" #'cat-term/body
+  "t" #'cat-term
   "w" #'webjump)
 
 (defvar-keymap cat-map
@@ -57,20 +57,20 @@
   "a" #'org-agenda
   "c" #'org-capture
   "d" 'cat-org-roam-dailies-prefix
-  "e" #'cat-eudc/body
+  "e" #'cat-eudc
   "f" 'cat-file-prefix
   "j" 'cat-org-jira-prefix
-  "l" #'cat-language/body
+  "l" #'cat-language
   "L" #'org-store-link
-  "n" #'major-mode-hydra
+  "n" #'mode-transient
   "o" #'ace-window
   "p" 'cat-plugin-prefix
-  "P" #'profiler-hydra/body
+  "P" #'cat-profiler
   "r" 'cat-org-roam-prefix
   "s" #'rg-menu
   "t" 'cat-toggle-prefix
-  "v" #'cat-vibe/body
-  "w" #'cat-workspace/body)
+  "v" #'cat-vibe
+  "w" #'cat-workspace)
 
 (defvar-keymap cat-escape-map
   :keymap esc-map

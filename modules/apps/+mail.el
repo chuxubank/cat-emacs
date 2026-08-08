@@ -1,8 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
-(pretty-hydra-define cat-mail
-  (:color teal :title (+with-icon "nf-oct-mail" nil " Mail"))
-  ("" ()))
+(mode-transient-define-prefix cat-mail ()
+  :description (+with-icon "nf-oct-mail" nil " Mail"))
 
 (defcustom cat/mu4e-print-types
   '(("PDF"  . "pdf")
@@ -63,13 +62,13 @@ The first character of NAME is used as the shortcut."
                           ("retag message" . mu4e-action-retag-message)
                           ("browse online archive" . mu4e-action-browse-list-archive)
                           ("show this thread" . mu4e-action-show-thread)))
-  :pretty-hydra
+  :transient
   (cat-mail
-   ("Mu4e"
-    (("m" #'mu4e "mu4e")
-     ("k" #'mu4e-quit "quit")
-     ("u" #'mu4e-update-index "update index")
-     ("U" #'mu4e-update-mail-and-index "update mail and index"))))
+   ["Mu4e"
+    ("m" "mu4e" mu4e)
+    ("k" "quit" mu4e-quit)
+    ("u" "update index" mu4e-update-index)
+    ("U" "update mail and index" mu4e-update-mail-and-index)])
   :config
   (+add-to-list-multi 'mu4e-view-mime-part-actions
                       '(:name "print"
@@ -193,16 +192,16 @@ So we can take advantage of the brew service's schedule function."
   :config (mu4e-column-faces-mode))
 
 (use-package mu4e-overview
-  :pretty-hydra
+  :transient
   (cat-mail
-   ("Mu4e"
-    (("o" #'mu4e-overview "overview")))))
+   ["Mu4e"
+    ("o" "overview" mu4e-overview)]))
 
 (use-package gnus
   :ensure nil
   :custom
   (gnus-select-method '(nntp "news.gmane.io"))
-  :pretty-hydra
+  :transient
   (cat-mail
-   ("Gnus"
-    (("g" #'gnus "Gnus")))))
+   ["Gnus"
+    ("g" "Gnus" gnus)]))
