@@ -4,6 +4,11 @@
   (:color teal :title (+with-icon "nf-md-chat" nil " Instant Messaging"))
   ("" ()))
 
+(use-package imessage
+  :vc (:url "https://github.com/cat-emacs/imessage")
+  :when IS-MAC
+  :commands #'imessage)
+
 (use-package telega
   :hook
   (telega-load . telega-mode-line-mode)

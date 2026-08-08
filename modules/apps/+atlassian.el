@@ -30,6 +30,6 @@
 
 (use-package task
   :commands #'task-start-dev-work
-  :ensure nil
+  :vc (:url "https://github.com/cat-emacs/task.el")
   :custom
-  (task-jira-default-jql "assignee = currentUser() AND Sprint in (openSprints(), futureSprints()) AND resolution = Unresolved order by updated DESC"))
+  (task-default-query "assignee = currentUser() AND Sprint in (openSprints(), futureSprints()) AND resolution = Unresolved order by updated DESC"))

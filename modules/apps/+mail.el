@@ -99,7 +99,7 @@ The first character of NAME is used as the shortcut."
   (advice-add 'mu4e-action-retag-message :after #'cat/mu4e-retag-message-move))
 
 (use-package file-url-extractor
-  :ensure nil
+  :vc (:url "https://github.com/cat-emacs/file-url-extractor")
   :commands file-url-extractor-get-all)
 
 (defun cat/mu4e-retag-message-move (msg &rest _args)

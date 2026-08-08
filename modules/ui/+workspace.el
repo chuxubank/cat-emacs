@@ -164,7 +164,7 @@
     (("a" #'activities-hydra/body "activities")))))
 
 (use-package sow
-  :ensure nil
+  :vc (:url "https://github.com/cat-emacs/scroll-other-window")
   :delight
   :hook (after-init . sow-mode))
 

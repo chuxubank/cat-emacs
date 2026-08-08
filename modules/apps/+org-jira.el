@@ -4,6 +4,12 @@
   :demand t
   :after org)
 
+(use-package task
+  :vc (:url "https://github.com/cat-emacs/task.el")
+  :commands
+  (task-create-branch-from-fields
+   task-pull-remote-branch))
+
 (use-package org-jira
   :delight (org-jira-mode (:eval (+with-icon "nf-md-jira" " ")))
   :after org
@@ -74,7 +80,7 @@
     (when (member action-id start-action-id)
       (magit-read-repository)
       (task-pull-remote-branch)
-      (task-create-branch-with-key-and-text issue-key org-heading))))
+      (task-create-branch-from-fields issue-key org-heading))))
 
 (advice-add 'jiralib-progress-workflow-action :after #'cat/org-jira-start-dev-work)
 

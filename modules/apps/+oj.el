@@ -16,7 +16,7 @@
      ("k" #'leetcode-quit "quit")))))
 
 (use-package leetcode-org-roam
-  :ensure nil
+  :vc (:url "https://github.com/cat-emacs/leetcode-org-roam")
   :bind
   (:map leetcode--problems-mode-map
         ("C-c C-c" . leetcode-org-roam-capture)))

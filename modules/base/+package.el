@@ -5,7 +5,13 @@
   (cat-package-install 'use-package))
 
 (require 'use-package)
-(require 'ignore-builtin)
+
+(unless (or EMACS30+ (package-installed-p 'vc-use-package))
+  (cat-package-vc-install "https://github.com/slotThe/vc-use-package"))
+
+(use-package use-package-ignore-builtin
+  :vc (:url "https://github.com/cat-emacs/use-package-ignore-builtin")
+  :demand t)
 
 (setq-default
  use-package-always-ensure t
@@ -34,6 +40,3 @@
   :custom
   (major-mode-hydra-invisible-quit-key "q")
   (major-mode-hydra-title-generator #'cat/major-mode-hydra-title-generator))
-
-(unless (or EMACS30+ (package-installed-p 'vc-use-package))
-  (cat-package-vc-install "https://github.com/slotThe/vc-use-package"))

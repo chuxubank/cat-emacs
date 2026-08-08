@@ -9,7 +9,7 @@
   :font-role code-jvm)
 
 (use-package kotlin-ts-test
-  :ensure nil
+  :vc (:url "https://github.com/cat-emacs/kotlin-ts-test")
   :when EMACS29+
   :after kotlin-ts-mode
   :custom
