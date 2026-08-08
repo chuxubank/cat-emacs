@@ -14,7 +14,7 @@
   :after kotlin-ts-mode
   :custom
   (kotlin-ts-test-task-alist '(("common" . "desktopTest")))
-  :mode-transient
+  :major-transient
   (kotlin-ts-mode
    ["Test"
     ("t" "go to test file" kotlin-ts-test-goto-file)

@@ -125,13 +125,13 @@ stay disabled unless the Cat feature or expression is enabled:
 
 The =cat-emacs/mode-transient= package composes native Transient group and
 suffix specifications across =use-package= declarations.  Use =:transient= for
-a named menu, =:mode-transient= for a major-mode menu, and
-=:minor-mode-transient= for a minor-mode menu.  Cat Emacs keeps global =C-c=
+a named menu, =:major-transient= for a major-mode menu, and
+=:minor-transient= for a minor-mode menu.  Cat Emacs keeps global =C-c=
 bindings in =modules/base/+keymap.el= instead of package declarations.
 
 #+begin_src emacs-lisp
 (use-package android-mode
-  :minor-mode-transient
+  :minor-transient
   (android-mode
    ["Build"
     ("b" "Build" android-gradle-build)
@@ -140,6 +140,9 @@ bindings in =modules/base/+keymap.el= instead of package declarations.
 
 The group vectors use Transient's native syntax.  Prefix =:description= values
 that are forms are made dynamic automatically, without an explicit =lambda=.
+Use =C-c n= for the current major-mode menu and =C-c N= for active registered
+minor modes.  Mode-transient menu buffers hide the cursor by default so it does
+not cover a title icon.
 
 ** Configuration Entry Points
 

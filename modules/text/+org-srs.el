@@ -12,7 +12,7 @@
     ("d" "drill" org-drill)
     ("a" "again" org-drill-again)
     ("c" "cram" org-drill-cram)])
-  :mode-transient
+  :major-transient
   (org-mode
    ["SRS"
     ("d" "drill" cat-org-drill)])
@@ -30,7 +30,7 @@
                        cat-org-directory
                        (substring cat-org-roam-directory 0 -1)))
   (org-fc-review-history-file (concat cat-etc-dir "org-fc-reviews.tsv"))
-  :mode-transient
+  :major-transient
   (org-mode
    ["SRS"
     ("fd" "fc dashboard" org-fc-dashboard)
@@ -48,7 +48,7 @@
     ("i" "import deck" org-anki-import-deck)
     ("s" "sync all" org-anki-sync-all)
     ("u" "update all" org-anki-update-all)])
-  :mode-transient
+  :major-transient
   (org-mode
    ["SRS"
     ("sa" "anki" cat-org-anki)]))

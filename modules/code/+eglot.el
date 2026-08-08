@@ -39,7 +39,7 @@
     ("E" "extract" eglot-code-action-extract)
     ("I" "inline" eglot-code-action-inline)
     ("R" "rewrite" eglot-code-action-rewrite)])
-  :mode-transient
+  :major-transient
   ((prog-mode
     beancount-mode
     kotlin-ts-mode
@@ -85,7 +85,7 @@
     ("a" "actions" lsp-proxy-execute-code-action)
     ("e" "execute command" lsp-proxy-execute-command)
     ("p" "show diagnostics" lsp-proxy-show-project-diagnostics)])
-  :mode-transient
+  :major-transient
   ((prog-mode
     beancount-mode
     kotlin-ts-mode

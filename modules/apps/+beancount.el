@@ -12,7 +12,7 @@
   (add-hook 'beancount-mode-hook #'cat/disable-electric-indent-chars)
   :custom
   (beancount-use-ido nil)
-  :mode-transient
+  :major-transient
   (beancount-mode
    ["Tools"
     ("f" "fava" beancount-fava)])

@@ -37,7 +37,7 @@
    '(("Open" . "Work Started")
      ("In Progress" . "PR is created")
      ("Code Review" . "Ready for testing")))
-  :mode-transient
+  :major-transient
   (org-mode
    ["Plugin"
     ("j" "org jira dispatch" cat/org-jira-dispatch)])

@@ -11,7 +11,7 @@
   :hook ((find-file dired-mode) . cat/android-mode)
   :custom
   (android-mode-cache-dir (concat cat-cache-dir "android"))
-  :minor-mode-transient
+  :minor-transient
   (android-mode
    ["Start"
     ("a" "start app" android-start-app)
@@ -29,7 +29,7 @@
 (use-package compose-preview
   :vc (compose-preview :url "https://github.com/cat-emacs/emacs-studio"
                        :lisp-dir "compose-preview/")
-  :minor-mode-transient
+  :minor-transient
   (android-mode
    ["Compose"
     ("p" "preview" compose-preview-refresh)
@@ -44,7 +44,7 @@
   (:map elogcat-mode-map
         ("n" . #'next-line)
         ("p" . #'previous-line))
-  :minor-mode-transient
+  :minor-transient
   (android-mode
    ["Log"
     ("l" "elogcat" elogcat)])

@@ -3,7 +3,7 @@
 (use-package org-media-note
   :vc (:url "https://github.com/yuchen-lea/org-media-note")
   :hook (org-mode . org-media-note-mode)
-  :mode-transient
+  :major-transient
   (org-mode
    ["Notes"
     ("v" "media" org-media-note-show-interface)])
@@ -24,7 +24,7 @@
        'vertical-split
      'horizontal-split))
   (org-noter-doc-split-fraction '(0.6 . 0.5))
-  :mode-transient
+  :major-transient
   (org-mode
    ["Notes"
     ("n" "noter" org-noter)])

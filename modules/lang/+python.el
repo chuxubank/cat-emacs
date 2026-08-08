@@ -17,7 +17,7 @@
   :custom
   (pet-find-file-functions '(pet-find-file-from-project-root
                              pet-locate-dominating-file))
-  :mode-transient
+  :major-transient
   (python-base-mode
    ["Plugin"
     ("v" "pet verify" pet-verify-setup)]))

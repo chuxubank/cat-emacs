@@ -63,7 +63,7 @@
   :hook (org-mode . org-edna-mode)
   :custom
   (org-edna-finder-use-cache t)
-  :mode-transient
+  :major-transient
   (org-mode
    ["Plugin"
     ("e" "edna edit" org-edna-edit)]))

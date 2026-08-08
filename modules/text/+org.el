@@ -91,7 +91,7 @@
   (+org-todo-project ((t (:inherit (bold font-lock-doc-face org-todo)))))
   (+org-todo-onhold  ((t (:inherit (bold warning org-todo)))))
   (+org-todo-cancel  ((t (:inherit (bold org-done) :strike-through t))))
-  :mode-transient
+  :major-transient
   (org-mode
    (:description (+with-icon "nf-custom-orgmode" nil " Org Mode"))
    ["Notes"
@@ -275,7 +275,7 @@
      ("macro" . ,(+with-icon "nf-fa-cog"))
      ("results" . ,(+with-icon "nf-cod-output" nil ":"))
      (t . t)))
-  :mode-transient
+  :major-transient
   (org-mode
    ["Mode"
     ("m" "modern" org-modern-mode :transient t)])
@@ -293,7 +293,7 @@
   (org-appear-autolinks t)
   (org-appear-autosubmarkers t)
   (org-appear-autoentities t)
-  :mode-transient
+  :major-transient
   (org-mode
    ["Mode"
     ("a" "appear" org-appear-mode :transient t)]))

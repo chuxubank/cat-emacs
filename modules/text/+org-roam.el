@@ -62,7 +62,7 @@ See `org-roam-dailies-directory'."
    ["Reference"
     ("ar" "add ref" org-roam-ref-add)
     ("dr" "remove ref" org-roam-ref-remove)])
-  :mode-transient
+  :major-transient
   (org-mode
    ["Notes"
     ("r" "roam" cat-org-roam)])

@@ -63,7 +63,7 @@
    consult-source-recent-file consult-source-project-recent-file
    :preview-key '(:debounce 0.4 any))
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-  :mode-transient
+  :major-transient
   (org-mode
    ["Plugin"
     ("h" "headings" consult-org-heading)]))

@@ -16,7 +16,7 @@
                            ("bitbucket" . "https://bitbucket.org/%s")
                            ("bili". "https://bilibili.com/video/%s")
                            ("coursera". "https://www.coursera.org/%s")))
-  :mode-transient
+  :major-transient
   (org-mode
    ["Toggle"
     ("tl" "link display" org-toggle-link-display :transient t)
@@ -56,7 +56,7 @@
     (setq org-dial-program "open tel:")))
 
 (use-package org-cliplink
-  :mode-transient
+  :major-transient
   (org-mode
    ["Plugin"
     ("c" "cliplink" org-cliplink)]))
@@ -67,7 +67,7 @@
   :after org
   :custom
   (org-link-beautify-thumbnails-dir 'user-home)
-  :mode-transient
+  :major-transient
   (org-mode
    ["Mode"
     ("b" "link beautify" org-link-beautify-mode :transient t)]))

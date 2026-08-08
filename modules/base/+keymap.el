@@ -63,6 +63,7 @@
   "l" #'cat-language
   "L" #'org-store-link
   "n" #'mode-transient
+  "N" #'mode-transient-minor
   "o" #'ace-window
   "p" 'cat-plugin-prefix
   "P" #'cat-profiler
